@@ -17,7 +17,7 @@ function ToggleIcon({
   return (
     <button
       className={cn(
-        "p-[4px] rounded-full hover:bg-color-alias-label-normal/normal-hover focus:bg-color-alias-label-normal/normal-focus active:bg-color-alias-label-normal/normal-active",
+        "p-[4px] rounded-full hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",
         className
       )}
       onClick={() => setActive((prev) => !prev)}

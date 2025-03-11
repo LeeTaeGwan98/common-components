@@ -25,12 +25,12 @@ interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const styles = {
   normal: {
-    horizontal: "bg-color-alias-line-normal-normal w-full h-[1px]",
-    vertical: "bg-color-alias-line-normal-neutral w-[1px] h-[32px]",
+    horizontal: "bg-line-normal-normal w-full h-[1px]",
+    vertical: "bg-line-normal-neutral w-[1px] h-[32px]",
   },
   thick: {
-    horizontal: "bg-color-alias-line-normal-alternative w-full h-[12px]",
-    vertical: "bg-color-alias-line-normal-normal w-[12px] h-[32px]",
+    horizontal: "bg-line-normal-alternative w-full h-[12px]",
+    vertical: "bg-line-normal-normal w-[12px] h-[32px]",
   },
 };
 

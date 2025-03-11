@@ -29,13 +29,13 @@ function CardTitle({
   return (
     <div
       className={cn(
-        "w-full min-h-[78px] bg-color-alias-primary-normal/[0.08] border-b-[1px] border-b-color-alias-line-normal-alternative py-[12px] px-content-horizon-margin flex items-center justify-between",
+        "w-full min-h-[78px] bg-primary-normal/[0.08] border-b-[1px] border-b-line-normal-alternative py-[12px] px-content-horizon-margin flex items-center justify-between",
         className
       )}
     >
       <div className="flex items-center gap-[6px] flex-wrap">
         {number && (
-          <div className="text-body-1-normal font-bold text-color-alias-label-alternative">
+          <div className="text-body-1-normal font-bold text-label-alternative">
             No. {number}
           </div>
         )}
@@ -44,7 +44,7 @@ function CardTitle({
         {mainLabel && (
           <Label
             size="small"
-            className="bg-color-alias-primary-normal/10 text-color-alias-primary-normal" // mainLabel은 스타일 커스텀가능하게 바꿔야함
+            className="bg-primary-normal/10 text-primary-normal" // mainLabel은 스타일 커스텀가능하게 바꿔야함
           >
             {mainLabel}
           </Label>
@@ -52,7 +52,7 @@ function CardTitle({
         {positiveLabel && (
           <Label
             size="small"
-            className="bg-color-alias-status-positive/10 text-color-alias-status-positive"
+            className="bg-status-positive/10 text-status-positive"
           >
             {positiveLabel}
           </Label>
@@ -60,7 +60,7 @@ function CardTitle({
         {negativeLabel && (
           <Label
             size="small"
-            className="bg-color-alias-status-negative/10 text-color-alias-status-negative"
+            className="bg-status-negative/10 text-status-negative"
           >
             {negativeLabel}
           </Label>

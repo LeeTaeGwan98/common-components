@@ -57,11 +57,11 @@ function TextField({
   const leftIconStyle = leftIcon && "pl-[44px]";
   const rightIconStyle = subText && "pr-[54px]";
 
-  const interactiveTypeStyle = `hover:border-color-global-coolNeutral-50/[.52] focus:border-color-alias-primary-normal ${
+  const interactiveTypeStyle = `hover:border-coolNeutral-50/[.52] focus:border-primary-normal ${
     errorInfo?.isError !== undefined
       ? errorInfo.isError
-        ? "border-color-alias-status-negative"
-        : "border-color-alias-status-positive"
+        ? "border-status-negative"
+        : "border-status-positive"
       : ""
   }`;
 
@@ -70,7 +70,7 @@ function TextField({
       {label && (
         <label
           className={cn(
-            "text-color-alias-label-neutral font-medium",
+            "text-label-neutral font-medium",
             sizeStyle.label[size]
           )}
         >
@@ -85,7 +85,7 @@ function TextField({
         <input
           ref={inputRef}
           className={cn(
-            "w-full focus:outline-none border-[1px] border-color-alias-line-normal-normal rounded-[12px] text-body-1-normal placeholder:text-color-alias-label-assistive",
+            "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body-1-normal placeholder:text-label-assistive",
             sizeStyle.input[size],
             interactiveTypeStyle,
             leftIconStyle,
@@ -140,24 +140,22 @@ TextField.RightIconArea = (({
         <IconButton
           icon={
             isVisibleIcon ? (
-              <Visible className="size-[24px] fill-color-alias-label-alternative" />
+              <Visible className="size-[24px] fill-label-alternative" />
             ) : (
-              <InVisible className="size-[24px] fill-color-alias-label-alternative" />
+              <InVisible className="size-[24px] fill-label-alternative" />
             )
           }
           onClick={() => setIsVisibleIcon((prev) => !prev)}
         />
       )}
       {subText && (
-        <span className="text-body-1-normal text-color-alias-primary-normal">
+        <span className="text-body-1-normal text-primary-normal">
           {subText}
         </span>
       )}
       {closeButton && (
         <IconButton
-          icon={
-            <CloseButton className="size-[24px] fill-color-alias-label-alternative" />
-          }
+          icon={<CloseButton className="size-[24px] fill-label-alternative" />}
           onClick={onClear}
         />
       )}
@@ -181,21 +179,21 @@ TextField.HelperTextArea = (({
 }: HelperTextAreaProps) => {
   return (
     <div className="flex justify-between *:text-caption-1">
-      <div className="w-fit text-color-alias-label-assistive ml-[12px]">
+      <div className="w-fit text-label-assistive ml-[12px]">
         <span>{helperText && helperText}</span>
-        <div className="flex gap-[2px] text-color-alias-status-positive">
+        <div className="flex gap-[2px] text-status-positive">
           <span>
             {errorInfo?.isError ? (
-              <ErrorIcon className="size-[16px] fill-color-alias-status-negative" />
+              <ErrorIcon className="size-[16px] fill-status-negative" />
             ) : (
-              <SuccessIcon className="size-[16px] fill-color-alias-status-positive" />
+              <SuccessIcon className="size-[16px] fill-status-positive" />
             )}
           </span>
           <span
             className={
               errorInfo?.isError
-                ? "text-color-alias-status-negative"
-                : "text-color-alias-status-positive"
+                ? "text-status-negative"
+                : "text-status-positive"
             }
           >
             {errorInfo?.text}
@@ -204,11 +202,11 @@ TextField.HelperTextArea = (({
       </div>
       {count ? (
         <div className="w-fit font-medium text-end">
-          <span className="text-color-alias-primary-normal">
+          <span className="text-primary-normal">
             {inputRef.current?.value.length ?? 0}
           </span>
-          <span className="text-color-alias-label-alternative">/</span>
-          <span className="text-color-alias-label-alternative">50</span>
+          <span className="text-label-alternative">/</span>
+          <span className="text-label-alternative">50</span>
         </div>
       ) : null}
     </div>

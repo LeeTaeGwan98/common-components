@@ -13,7 +13,7 @@ function AffiliateLoginButton({
   return (
     <button
       className={cn(
-        "w-full relative border-[1px] rounded-large-button py-[10px] border-color-alias-label-disable text-body-1-normal font-medium",
+        "w-full relative border-[1px] rounded-large-button py-[10px] border-label-disable text-body-1-normal font-medium",
         LoginButtinInteractiveTypeStyle1,
         className
       )}

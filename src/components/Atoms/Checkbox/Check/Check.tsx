@@ -48,14 +48,14 @@ function Check({ checked, size = "normal", className, ...props }: CheckProps) {
     small: "20",
   };
   const checkedStyle = {
-    "fill-color-alias-primary-normal": checked,
-    "fill-color-alias-label-assistive": !checked,
+    "fill-primary-normal": checked,
+    "fill-label-assistive": !checked,
   };
 
   return (
     <button
       className={cn(
-        "w-fit rounded-full p-[4px] hover:bg-color-alias-label-normal/normal-hover focus:bg-color-alias-label-normal/normal-focus active:bg-color-alias-label-normal/normal-active",
+        "w-fit rounded-full p-[4px] hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",
         "disabled:opacity-[.43] disabled:cursor-not-allowed",
         className
       )}

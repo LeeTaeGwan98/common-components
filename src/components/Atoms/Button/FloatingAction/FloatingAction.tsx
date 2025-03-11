@@ -8,14 +8,14 @@ interface FloatingActionProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function FloatingAction({ disable, icon, className }: FloatingActionProps) {
   const disableStyle = {
-    "bg-color-alias-interaction-disable": disable,
+    "bg-interaction-disable": disable,
   };
   const interactiveTypeStyle =
     "hover:brightness-hover focus:brightness-focus active:brightness-active";
   return (
     <div
       className={cn(
-        "shadow-style-alias-shadow-strong w-fit bg-color-alias-primary-normal rounded-full p-[16px]",
+        "shadow-style-alias-shadow-strong w-fit bg-primary-normal rounded-full p-[16px]",
         !disable && interactiveTypeStyle,
         disableStyle,
         className

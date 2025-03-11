@@ -49,31 +49,27 @@ function Card({
   return (
     <div
       className={cn(
-        "w-fit border-[1px] border-color-alias-line-solid-normal rounded-[4px] overflow-hidden",
+        "w-fit border-[1px] border-line-solid-normal rounded-[4px] overflow-hidden",
         sizeStyle.container[size],
         slot.containerClassName
       )}
     >
       <div
         className={cn(
-          `bg-color-alias-primary-normal/[0.08] py-[10px] px-content-horizon-margin flex justify-between border-b-[1px] border-color-alias-line-solid-normal ${
+          `bg-primary-normal/[0.08] py-[10px] px-content-horizon-margin flex justify-between border-b-[1px] border-line-solid-normal ${
             hasMultiChildren ? "justify-center relative" : ""
           }`,
           sizeStyle.header[size],
           slot.headClassName
         )}
       >
-        <div
-          className={cn(
-            "text-subtitle-2 font-bold text-color-alias-label-neutral"
-          )}
-        >
+        <div className={cn("text-subtitle-2 font-bold text-label-neutral")}>
           {title}
         </div>
         {isButton && (
           <button
             className={cn(
-              `text-color-alias-label-alternative text-label-1-normal font-bold flex justify-center items-center gap-[4px] ${
+              `text-label-alternative text-label-1-normal font-bold flex justify-center items-center gap-[4px] ${
                 hasMultiChildren
                   ? "absolute right-content-horizon-margin top-1/2 -translate-y-1/2"
                   : ""
@@ -101,7 +97,7 @@ function Card({
         ) : (
           <>
             {hasMultiChildren && isLabel && (
-              <Label className="text-caption-1 py-[4px] px-[8px] font-bold w-[38px] h-[24px] bg-color-alias-primary-normal/15 text-color-alias-primary-normal">
+              <Label className="text-caption-1 py-[4px] px-[8px] font-bold w-[38px] h-[24px] bg-primary-normal/15 text-primary-normal">
                 오늘
               </Label>
             )}
@@ -111,7 +107,7 @@ function Card({
                   <React.Fragment key={index}>
                     {child}
                     {index !== children.length - 1 && (
-                      <span className="text-color-alias-label-alternative font-bold">
+                      <span className="text-label-alternative font-bold">
                         /
                       </span>
                     )}

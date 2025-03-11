@@ -56,12 +56,12 @@ function InputCheckbox({
 
   const disableStyle =
     disable &&
-    "text-color-alias-label-disable/[.16] *:hover:bg-transparent *:focus:bg-transparent *:active:bg-transparent *:opacity-[.43] cursor-not-allowed";
+    "text-label-disable/[.16] *:hover:bg-transparent *:focus:bg-transparent *:active:bg-transparent *:opacity-[.43] cursor-not-allowed";
 
   return (
     <div
       className={cn(
-        "w-fit flex items-center text-body-2-normal *:hover:bg-color-alias-label-normal/normal-hover *:focus:bg-color-alias-label-normal/normal-focus *:active:bg-color-alias-label-normal/normal-active cursor-pointer",
+        "w-fit flex items-center text-body-2-normal *:hover:bg-label-normal/normal-hover *:focus:bg-label-normal/normal-focus *:active:bg-label-normal/normal-active cursor-pointer",
         boldStyle,
         disableStyle,
         className

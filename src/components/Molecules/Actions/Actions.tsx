@@ -37,9 +37,7 @@ function Actions({
       {...props}
     >
       {caption && (
-        <div className="text-color-alias-label-alternative text-center">
-          {caption}
-        </div>
+        <div className="text-label-alternative text-center">{caption}</div>
       )}
 
       <div

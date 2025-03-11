@@ -27,14 +27,14 @@ function TextList({
     small: "py-[6px] pl-[12px] pr-[8px] text-caption-1",
   };
   const interactiveTypeStyle =
-    "hover:bg-color-alias-label-normal/light-hover focus:bg-color-alias-label-normal/light-focus active:bg-color-alias-label-normal/light-active";
+    "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active";
 
   const disableStyle = {
     text: {
-      "text-color-alias-label-disable": disable,
+      "text-label-disable": disable,
     },
     label: {
-      "color-alias-label-alternative bg-color-component-fill-normal": disable,
+      "label-alternative bg-fill-normal": disable,
     },
   };
   const textField = {
@@ -64,7 +64,7 @@ function TextList({
         {label && (
           <div
             className={cn(
-              "rounded-radius-admin py-[3px] px-[4px] text-color-alias-label-alternative bg-color-component-fill-alternative",
+              "rounded-radius-admin py-[3px] px-[4px] text-label-alternative bg-fill-alternative",
               disableStyle.label
             )}
           >

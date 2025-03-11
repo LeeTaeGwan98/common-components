@@ -26,23 +26,23 @@ function IconButton({
   };
   const interactiveTypeStyle = {
     normal:
-      "hover:bg-color-alias-label-normal/light-hover focus:bg-color-alias-label-normal/light-focus active:bg-color-alias-label-normal/light-active",
+      "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active",
     background:
-      "hover:bg-color-alias-label-normal/light-hover focus:bg-color-alias-label-normal/light-focus active:bg-color-alias-label-normal/light-active",
+      "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active",
     outlined:
-      "hover:bg-color-alias-label-normal/light-hover focus:bg-color-alias-label-normal/light-focus active:bg-color-alias-label-normal/light-active",
+      "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active",
     solid:
       "shadow-style-alias-shadow-strong hover:brightness-hover focus:brightness-focus active:brightness-active",
   };
   const typeStyle = {
     normal: "",
-    background: "bg-color-alias-line-solid-alternative",
-    outlined: "ring-1 ring-color-alias-line-normal-normal",
-    solid: "bg-color-alias-primary-normal",
+    background: "bg-line-solid-alternative",
+    outlined: "ring-1 ring-line-normal-normal",
+    solid: "bg-primary-normal",
   };
   const disableStyle = {
-    "bg-color-component-fill-alternative": disable,
-    "bg-color-component-fill-normal": disable && type === "solid",
+    "bg-fill-alternative": disable,
+    "bg-fill-normal": disable && type === "solid",
   };
   return (
     <button

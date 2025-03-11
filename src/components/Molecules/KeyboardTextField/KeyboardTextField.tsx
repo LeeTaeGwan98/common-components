@@ -17,7 +17,7 @@ function KeyboardTextField({
   className,
   ...props
 }: KeyboardTextFieldProps) {
-  const focusStyle = "focus:border-color-alias-primary-normal";
+  const focusStyle = "focus:border-primary-normal";
   return (
     <div
       className={cn(
@@ -29,7 +29,7 @@ function KeyboardTextField({
       <textarea
         value={value}
         className={cn(
-          "h-[38px] py-[8px] px-[12px] appearance-none bg-transparent outline-none resize-none w-full border-[1px] border-color-alias-line-normal-normal rounded-[12px] text-body-1-normal placeholder:text-color-alias-label-assistive overflow-hidden flex-1 leading-[20px]",
+          "h-[38px] py-[8px] px-[12px] appearance-none bg-transparent outline-none resize-none w-full border-[1px] border-line-normal-normal rounded-[12px] text-body-1-normal placeholder:text-label-assistive overflow-hidden flex-1 leading-[20px]",
           focusStyle
         )}
         {...props}

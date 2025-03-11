@@ -20,7 +20,7 @@ function Menu({
   ...props
 }: MenuProps) {
   const interactiveTypeStyle =
-    "hover:bg-color-alias-label-normal/light-hover focus:bg-color-alias-label-normal/light-focus active:bg-color-alias-label-normal/light-active";
+    "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active";
   return (
     <div
       className={cn(

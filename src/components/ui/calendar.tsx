@@ -132,7 +132,7 @@ function Calendar({
   );
   const _dayButtonClassName = cn(
     buttonVariants({ variant: "ghost" }),
-    "size-full rounded-full hover:bg-color-alias-primary-normal/strong-focus border-2 border-transparent",
+    "size-full rounded-full hover:bg-primary-normal/strong-focus border-2 border-transparent",
     props.dayButtonClassName
   );
   const buttonRangeClassName =
@@ -152,12 +152,12 @@ function Calendar({
     props.rangeMiddleClassName
   );
   const _selectedClassName = cn(
-    "border-2 border-color-alias-primary-normal rounded-full bg-color-alias-primary-normal/strong-active !text-color-alias-label-normal",
+    "border-2 border-primary-normal rounded-full bg-primary-normal/strong-active !text-label-normal",
     props.selectedClassName
   );
   const _todayClassName = cn("relative", props.todayClassName);
   const _outsideClassName = cn(
-    "text-color-alias-label-normal/normal-active",
+    "text-label-normal/normal-active",
     props.outsideClassName
   );
   const _disabledClassName = cn(

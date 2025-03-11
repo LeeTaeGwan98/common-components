@@ -45,8 +45,7 @@ function Avatar({
       className={cn(
         "overflow-hidden rounded-full relative flex items-center justify-center",
         sizeStyle[size],
-        isValidImageUrl(src) &&
-          "ring-1 ring-color-alias-line-normal-alternative",
+        isValidImageUrl(src) && "ring-1 ring-line-normal-alternative",
         className
       )}
       {...props}

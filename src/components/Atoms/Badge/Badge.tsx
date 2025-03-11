@@ -26,7 +26,7 @@ function Badge({ variant = "number", numberContent, className }: BadgeProps) {
   return (
     <div
       className={cn(
-        "bg-color-alias-primary-normal rounded-full absolute text-white text-caption-2 flex justify-center items-center",
+        "bg-primary-normal rounded-full absolute text-white text-caption-2 flex justify-center items-center",
         variantStyle[variant],
         className
       )}

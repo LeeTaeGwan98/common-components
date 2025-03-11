@@ -31,7 +31,7 @@ export function Toast({ id, title, icon, action, className }: ToastProps) {
   return (
     <div
       className={cn(
-        "bg-color-component-material-toast w-[312px] h-[54px] rounded-[8px] p-[16px] flex justify-between items-center text-white",
+        "bg-material-toast w-[312px] h-[54px] rounded-[8px] p-[16px] flex justify-between items-center text-white",
         className
       )}
     >
@@ -41,7 +41,7 @@ export function Toast({ id, title, icon, action, className }: ToastProps) {
       </div>
       {action && (
         <button
-          className="text-color-alias-inverse-primary"
+          className="text-inverse-primary"
           onClick={() => sonnerToast.dismiss(id)}
         >
           닫기

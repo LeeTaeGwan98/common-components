@@ -58,7 +58,7 @@ function Tooltip({
   return (
     <div
       className={cn(
-        "absolute min-w-[54px] min-h-[40px] w-fit py-[8px] px-[12px] rounded-radius-admin text-color-alias-static-white bg-color-component-material-toast text-body-1-normal font-medium shadow-style-alias-shadow-emphasize",
+        "absolute min-w-[54px] min-h-[40px] w-fit py-[8px] px-[12px] rounded-radius-admin text-static-white bg-material-toast text-body-1-normal font-medium shadow-style-alias-shadow-emphasize",
         className
       )}
     >
@@ -134,7 +134,7 @@ Tooltip.TooltipTail = (({ variant = "top", order = 2 }) => {
         border-l-[10px] border-l-transparent
         border-r-[10px] border-r-transparent
         border-b-[14px]
-        border-b-color-component-material-toast
+        border-b-material-toast
         ${position}
         ${rotate}
         `}

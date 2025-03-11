@@ -32,11 +32,11 @@ function BottomSheet({
       {title && (
         <>
           <DrawerHeader className="flex items-center justify-between px-[24px] pb-[12px]">
-            <DrawerTitle className="text-color-alias-label-strong text-body-1-normal font-bold">
+            <DrawerTitle className="text-label-strong text-body-1-normal font-bold">
               제목
             </DrawerTitle>
             <DrawerClose asChild className="cursor-pointer">
-              <X className="fill-color-alias-label-neutral size-[20px]" />
+              <X className="fill-label-neutral size-[20px]" />
             </DrawerClose>
           </DrawerHeader>
           {(scrollDivider || fixed) && <Divider />}

@@ -62,8 +62,8 @@ function Checkbox({
   };
 
   const checkStyle = {
-    "bg-color-alias-primary-normal": checked,
-    "border-2 border-color-alias-line-normal-normal/[0.22]": !checked,
+    "bg-primary-normal": checked,
+    "border-2 border-line-normal-normal/[0.22]": !checked,
   };
 
   const disableStyle = {
@@ -74,7 +74,7 @@ function Checkbox({
     <button
       className={cn(
         "inline-flex items-center justify-center p-[7px] rounded-full",
-        "hover:bg-color-alias-label-normal/normal-hover focus:bg-color-alias-label-normal/normal-focus active:bg-color-alias-label-normal/normal-active",
+        "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",
         disable && "cursor-not-allowed"
       )}
       disabled={disable}

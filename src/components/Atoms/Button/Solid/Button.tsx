@@ -22,14 +22,13 @@ const Button = ({
   const interactiveTypeStyle =
     "hover:brightness-hover focus:brightness-focus active:brightness-active";
   const disableStyle = {
-    "bg-color-alias-interaction-disable text-color-alias-label-assistive":
-      disable,
+    "bg-interaction-disable text-label-assistive": disable,
   };
 
   return (
     <button
       className={cn(
-        "bg-color-alias-primary-normal text-white min-w-[98px] rounded-large-button flex justify-center gap-[6px] items-center",
+        "bg-primary-normal text-white min-w-[98px] rounded-large-button flex justify-center gap-[6px] items-center",
         !disable && interactiveTypeStyle,
         disableStyle,
         sizeStyle[size],

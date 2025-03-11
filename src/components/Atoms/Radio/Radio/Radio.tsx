@@ -18,16 +18,16 @@ function Radio({
 }: RadioProps) {
   const sizeStyle =
     size === "normal" ? "w-[20px] h-[20px]" : "w-[18px] h-[18px]";
-  const checkedStyle = checked ? "bg-color-alias-primary-normal relative" : "";
+  const checkedStyle = checked ? "bg-primary-normal relative" : "";
   const disableStyle = disable && "opacity-[.43]";
   return (
     <button
-      className="w-fit p-[6px] rounded-full hover:bg-color-alias-label-normal/normal-hover focus:bg-color-alias-label-normal/normal-focus active:bg-color-alias-label-normal/normal-active cursor-pointer"
+      className="w-fit p-[6px] rounded-full hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active cursor-pointer"
       onClick={onChecked ? () => onChecked((prev) => !prev) : undefined}
     >
       <div
         className={cn(
-          "border-[2px] border-color-alias-line-normal-normal rounded-full",
+          "border-[2px] border-line-normal-normal rounded-full",
           disableStyle,
           checkedStyle,
           sizeStyle

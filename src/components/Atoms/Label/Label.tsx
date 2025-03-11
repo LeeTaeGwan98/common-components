@@ -21,13 +21,13 @@ function Label({
   };
   const variantStyle = {
     filled: "",
-    outlined: "ring-1 ring-color-alias-line-normal-normal bg-white",
+    outlined: "ring-1 ring-line-normal-normal bg-white",
   };
 
   return (
     <div
       className={cn(
-        "bg-color-component-fill-normal w-fit rounded-radius-admin text-color-alias-label-alternative flex items-center",
+        "bg-fill-normal w-fit rounded-radius-admin text-label-alternative flex items-center",
         sizeStyle[size],
         variantStyle[variant],
         className

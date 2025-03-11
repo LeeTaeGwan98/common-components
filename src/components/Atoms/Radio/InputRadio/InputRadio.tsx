@@ -18,12 +18,12 @@ function InputRadio({
 }: InputRadioProps) {
   const disableStyle =
     disable &&
-    "text-color-alias-label-disable/[.16] *:hover:bg-transparent *:focus:bg-transparent *:active:bg-transparent *:opacity-[.43]";
+    "text-label-disable/[.16] *:hover:bg-transparent *:focus:bg-transparent *:active:bg-transparent *:opacity-[.43]";
 
   return (
     <div
       className={cn(
-        "text-body-2-normal font-regular cursor-pointer flex items-center w-fit gap-[8px] *:hover:bg-color-alias-label-normal/normal-hover *:focus:bg-color-alias-label-normal/normal-focus *:active:bg-color-alias-label-normal/normal-active",
+        "text-body-2-normal font-regular cursor-pointer flex items-center w-fit gap-[8px] *:hover:bg-label-normal/normal-hover *:focus:bg-label-normal/normal-focus *:active:bg-label-normal/normal-active",
         disableStyle,
         className
       )}

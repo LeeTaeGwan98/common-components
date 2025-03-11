@@ -46,7 +46,7 @@ function Content({
         {label && (
           <Label
             className={cn(
-              "bg-color-alias-primary-normal/15 text-color-alias-primary-normal",
+              "bg-primary-normal/15 text-primary-normal",
               sizeStyle[size].label,
               slot.labelClassName
             )}
@@ -57,7 +57,7 @@ function Content({
         {summary && (
           <span
             className={cn(
-              "text-body-1-normal font-bold text-color-alias-label-alternative",
+              "text-body-1-normal font-bold text-label-alternative",
               sizeStyle[size].summary,
               slot.summaryClassName
             )}
@@ -75,7 +75,7 @@ function Content({
           })}
       </div>
 
-      <span className="text-heading-3 font-bold text-color-alias-primary-normal">
+      <span className="text-heading-3 font-bold text-primary-normal">
         {children}
       </span>
     </div>

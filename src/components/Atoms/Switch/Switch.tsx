@@ -28,8 +28,8 @@ function Switch({
   return (
     <button
       className={cn(
-        "relative w-[52px] h-[32px] bg-color-component-fill-strong rounded-full p-[4px] transition-all duration-300",
-        active ? "bg-color-alias-primary-normal" : "",
+        "relative w-[52px] h-[32px] bg-fill-strong rounded-full p-[4px] transition-all duration-300",
+        active ? "bg-primary-normal" : "",
         buttonSize,
         disableStyle,
         className

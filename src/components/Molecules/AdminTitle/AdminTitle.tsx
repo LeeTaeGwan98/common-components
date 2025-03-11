@@ -54,7 +54,7 @@ function AdminTitle({
     <Select {...props}>
       <SelectTrigger
         className={cn(
-          "p-0 w-fit h-fit flex gap-[8px] border-none [&>svg]:hidden text-color-alias-label-normal",
+          "p-0 w-fit h-fit flex gap-[8px] border-none [&>svg]:hidden text-label-normal",
           sizeStyle.text[size]
         )}
       >
@@ -63,7 +63,7 @@ function AdminTitle({
         {isButton && (
           <div
             className={cn(
-              "rounded-radius-admin w-[32px] h-[32px] border-[1px] border-color-alias-line-normal-normal flex justify-center items-center",
+              "rounded-radius-admin w-[32px] h-[32px] border-[1px] border-line-normal-normal flex justify-center items-center",
               sizeStyle.button[size]
             )}
           >

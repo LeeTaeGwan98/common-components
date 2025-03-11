@@ -34,7 +34,7 @@ NumberIndicator.Single = (({
   return (
     <div
       className={cn(
-        "bg-color-component-material-dimmer w-fit py-[2px] px-[8px] rounded-[50px] flex gap-[4px] text-caption-2 font-bold"
+        "bg-material-dimmer w-fit py-[2px] px-[8px] rounded-[50px] flex gap-[4px] text-caption-2 font-bold"
       )}
     >
       <span className="text-white">{currentNumber}</span>
@@ -53,7 +53,7 @@ NumberIndicator.Multi = (({
   const getNodeStyle = (currentNumber: number, index: number) => {
     return (
       index > currentNumber &&
-      "bg-[white] ring-1 ring-color-alias-line-normal-normal text-color-alias-label-alternative"
+      "bg-[white] ring-1 ring-line-normal-normal text-label-alternative"
     );
   };
   const getSelectStyle = (currentNumber: number, index: number) => {
@@ -66,7 +66,7 @@ NumberIndicator.Multi = (({
           <React.Fragment key={index}>
             <div
               className={cn(
-                "bg-color-alias-primary-normal rounded-full w-[24px] h-[24px] text-center *:text-caption-1 font-medium text-white",
+                "bg-primary-normal rounded-full w-[24px] h-[24px] text-center *:text-caption-1 font-medium text-white",
                 getNodeStyle(currentNumber, index + 1),
                 getSelectStyle(currentNumber, index + 1)
               )}
@@ -86,9 +86,9 @@ NumberIndicator.Multi = (({
 NumberIndicator.Multi.ThreeDot = (() => {
   return (
     <div className="flex gap-[3px] items-center *:rounded-full">
-      <div className="w-[3px] h-[3px] bg-color-alias-primary-normal" />
-      <div className="w-[3px] h-[3px] bg-color-alias-primary-normal" />
-      <div className="w-[3px] h-[3px] bg-color-alias-primary-normal" />
+      <div className="w-[3px] h-[3px] bg-primary-normal" />
+      <div className="w-[3px] h-[3px] bg-primary-normal" />
+      <div className="w-[3px] h-[3px] bg-primary-normal" />
     </div>
   );
 }) as React.FC;

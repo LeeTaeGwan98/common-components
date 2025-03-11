@@ -18,20 +18,18 @@ function OutlinedButton({
   ...props
 }: OutlinedButtonProps) {
   const typeStyle = {
-    primary:
-      "border-color-alias-primary-normal text-color-alias-primary-normal",
-    secondary:
-      "border-color-alias-line-normal-normal text-color-alias-primary-normal",
-    assistive: "border-color-alias-line-normal-normal text-label-1-normal",
+    primary: "border-primary-normal text-primary-normal",
+    secondary: "border-line-normal-normal text-primary-normal",
+    assistive: "border-line-normal-normal text-label-1-normal",
   };
 
   const interactiveTypeStyle = {
     primary:
-      "hover:bg-color-alias-primary-normal/normal-hover focus:bg-color-alias-primary-normal/normal-focus active:bg-color-alias-primary-normal/normal-active",
+      "hover:bg-primary-normal/normal-hover focus:bg-primary-normal/normal-focus active:bg-primary-normal/normal-active",
     secondary:
-      "hover:bg-color-alias-label-normal/normal-hover focus:bg-color-alias-label-normal/normal-focus active:bg-color-alias-label-normal/normal-active",
+      "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",
     assistive:
-      "hover:bg-color-alias-label-normal/normal-hover focus:bg-color-alias-label-normal/normal-focus active:bg-color-alias-label-normal/normal-active",
+      "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",
   };
 
   const sizeStyle = {
@@ -41,8 +39,7 @@ function OutlinedButton({
   };
 
   const disableStyle = {
-    "text-color-alias-label-disable border-color-alias-line-normal-normal":
-      disable,
+    "text-label-disable border-line-normal-normal": disable,
   };
 
   const fontStyle = {

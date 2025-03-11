@@ -16,7 +16,7 @@ function AvatarButton({ children, className, ...props }: AvatarButtonProps) {
       {...props}
     >
       {/* Hover, Focus, Active 시 8px 바깥쪽 효과 적용 */}
-      <span className="absolute -inset-[8px] rounded-full bg-color-alias-label-normal/0 transition-all duration-200 group-hover:bg-color-alias-label-normal/normal-hover group-focus:bg-color-alias-label-normal/normal-focus group-active:bg-color-alias-label-normal/normal-active" />
+      <span className="absolute -inset-[8px] rounded-full bg-label-normal/0 transition-all duration-200 group-hover:bg-label-normal/normal-hover group-focus:bg-label-normal/normal-focus group-active:bg-label-normal/normal-active" />
 
       {/* Avatar */}
       <div className="relative z-10">{children}</div>

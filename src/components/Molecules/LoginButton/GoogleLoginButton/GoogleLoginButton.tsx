@@ -14,7 +14,7 @@ function GoogleLoginButton({
     <button
       onClick={() => onClick()}
       className={cn(
-        "w-full h-[48px] relative border-[1px] rounded-large-button py-[10px] border-color-alias-label-disable text-body-1-normal font-medium",
+        "w-full h-[48px] relative border-[1px] rounded-large-button py-[10px] border-label-disable text-body-1-normal font-medium",
         LoginButtinInteractiveTypeStyle1,
         className
       )}

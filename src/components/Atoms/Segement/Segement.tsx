@@ -74,11 +74,11 @@ Segement.SegementItem = (({
     "rounded-tr-[24px] rounded-br-[24px]": flag === 1, // 오른쪽 기본 스타일
   };
   const selectedStyle = isSelected
-    ? "bg-color-alias-primary-normal/[0.08] text-color-alias-primary-normal border-[1px] border-transparent"
-    : "border-[1px] border-color-alias-line-normal-normal";
+    ? "bg-primary-normal/[0.08] text-primary-normal border-[1px] border-transparent"
+    : "border-[1px] border-line-normal-normal";
 
   const interactiveTypeStyle = {
-    "hover:bg-color-alias-label-normal/light-hover focus:bg-color-alias-label-normal/light-focus active:bg-color-alias-label-normal/light-active":
+    "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active":
       !isSelected,
   };
 

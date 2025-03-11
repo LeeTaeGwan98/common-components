@@ -29,7 +29,7 @@ function Skeleton({ className, fullSize = false, ...props }: SkeletonProps) {
   return (
     <div
       className={cn(
-        "animate-pulse rounded-radius-admin bg-color-component-fill-normal",
+        "animate-pulse rounded-radius-admin bg-fill-normal",
         fullSize && "absolute inset-0", // 부모를 꽉 채우는 스타일 (부모는 position: relative 필요)
         className
       )}

@@ -21,7 +21,7 @@ function Tabs({
   return (
     <div
       className={cn(
-        "flex border-b-[1px] border-b-color-alias-line-normal-normal transition-all duration-300",
+        "flex border-b-[1px] border-b-line-normal-normal transition-all duration-300",
         className
       )}
     >
@@ -57,11 +57,11 @@ Tabs.TabItem = (({
     fixed: "w-fit p-[12px]",
   };
   const currentItemStyle = {
-    "relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-[-1px] after:w-full after:h-[2px] after:bg-color-alias-primary-normal text-color-alias-primary-normal":
+    "relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-[-1px] after:w-full after:h-[2px] after:bg-primary-normal text-primary-normal":
       currentItem === item,
   };
   const interactiveTypeStyle =
-    "hover:bg-color-alias-label-normal/normal-hover focus:bg-color-alias-label-normal/normal-focus active:bg-color-alias-label-normal/normal-active";
+    "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active";
 
   return (
     <button
