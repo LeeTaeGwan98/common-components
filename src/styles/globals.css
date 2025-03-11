@@ -10,6 +10,65 @@
   font-display: swap;
 }
 
+:root {
+  @media screen and (min-width: 0px) and (max-width: 599px) {
+    --top: 64px;
+    --bottom: 48px;
+    --margin: 48px;
+    --content-horizon-margin: 16px;
+    --content-vertical-margin: 20px;
+    --dialog-max-width: 560px;
+    --dialog-height: 720px;
+    --gutter-horizon: 20px;
+    --gutter-vertical: 32px;
+    --table-min-width: 1504px;
+    --detailTable-min-width: 1044px;
+    --tableText-min-width: 300px;
+  }
+  @media screen and (min-width: 600px) and (max-width: 991px) {
+    --top: 48px;
+    --bottom: 32px;
+    --margin: 24px;
+    --content-horizon-margin: 20px;
+    --content-vertical-margin: 20px;
+    --dialog-max-width: 480px;
+    --dialog-height: 640px;
+    --gutter-horizon: 20px;
+    --gutter-vertical: 32px;
+    --table-min-width: 1151px;
+    --detailTable-min-width: 691px;
+    --tableText-min-width: 200px;
+  }
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    --top: 32px;
+    --bottom: 32px;
+    --margin: 24px;
+    --content-horizon-margin: 24px;
+    --content-vertical-margin: 24px;
+    --dialog-max-width: 400px;
+    --dialog-height: 560px;
+    --gutter-horizon: 16px;
+    --gutter-vertical: 28px;
+    --table-min-width: 1151px;
+    --detailTable-min-width: 691px;
+    --tableText-min-width: 200px;
+  }
+  @media screen and (min-width: 1200px) {
+    --top: 20px;
+    --bottom: 32px;
+    --margin: 16px;
+    --content-horizon-margin: 32px;
+    --content-vertical-margin: 32px;
+    --dialog-max-width: 360px;
+    --dialog-height: 480px;
+    --gutter-horizon: 8px;
+    --gutter-vertical: 20px;
+    --table-min-width: 0px;
+    --detailTable-min-width: 0px;
+    --tableText-min-width: 0px;
+  }
+}
+
 @layer base {
   html {
     font-family: 'font-pretendard', system-ui, sans-serif;
@@ -71,7 +130,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;

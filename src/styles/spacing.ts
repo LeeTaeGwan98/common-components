@@ -40,8 +40,18 @@ const spacing = {
   "size-lg-min-width": "784px",
 
   // Web Responsive
+  top: "var(--top)",
+  bottom: "var(--bottom)",
+  margin: "var(--margin)",
   "content-horizon-margin": "var(--content-horizon-margin)",
   "content-vertical-margin": "var(--content-vertical-margin)",
+  "dialog-max-width": "var(--dialog-max-width)",
+  "dialog-height": "var(--dialog-height)",
+  "gutter-horizon": "var(--gutter-horizon)",
+  "gutter-vertical": "var(--gutter-vertical)",
+  "table-min-width": "var(--table-min-width)",
+  "detailTable-min-width": "var(--detailTable-min-width)",
+  "tableText-min-width": "var(--tableText-min-width)",
 };
 
 export default spacing;
