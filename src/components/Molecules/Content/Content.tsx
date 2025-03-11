@@ -1,6 +1,6 @@
+import Label from "@/components/Atoms/Label/Label";
 import { cn } from "@/lib/utils";
 import React, { cloneElement, ReactElement } from "react";
-import Label from "@/stories/Atoms/Label/Label";
 
 interface ContentProps {
   size?: "large" | "small";
