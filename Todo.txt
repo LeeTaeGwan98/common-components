@@ -1,0 +1,7 @@
+disable접두사를 사용해서 disable 핸들링
+hover, focus, active 스타일을 공통으로 지정해서 import하는 방법 찾기 & 가상요소로 지정해주는 방법 찾기
+children같은 타입 React.ReactNode , ReactNode 통일 필요
+font-medium이랑 font-regular가 차이가 없는거같음
+interface에 HTML태그 타입을 extends하도록 리팩토링
+tailwind.config.ts에 정의된 스타일의 의존성을 제거해야함
+애매하게 세로가운데정렬이 안되는 문제 해결 (line-height관련 인듯)

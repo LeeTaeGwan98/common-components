@@ -1,0 +1,38 @@
+import Radio from "@/stories/Atoms/Radio/Radio/Radio";
+import { cn } from "@/lib/utils";
+import { Dispatch, ReactNode, SetStateAction, ReactElement } from "react";
+
+interface InputRadioProps {
+  onChecked: Dispatch<SetStateAction<boolean>>;
+  disable?: boolean;
+  children: ReactElement<typeof Radio> | ReactNode; // Radio컴포넌트만 children에 들어올 수 있도록 강제
+  className?: string;
+}
+
+function InputRadio({
+  onChecked,
+  disable = false,
+  children,
+  className,
+  ...props
+}: InputRadioProps) {
+  const disableStyle =
+    disable &&
+    "text-color-alias-label-disable/[.16] *:hover:bg-transparent *:focus:bg-transparent *:active:bg-transparent *:opacity-[.43]";
+
+  return (
+    <div
+      className={cn(
+        "text-body-2-normal font-regular cursor-pointer flex items-center w-fit gap-[8px] *:hover:bg-color-alias-label-normal/normal-hover *:focus:bg-color-alias-label-normal/normal-focus *:active:bg-color-alias-label-normal/normal-active",
+        disableStyle,
+        className
+      )}
+      onClick={!disable ? () => onChecked((prev) => !prev) : undefined}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+export default InputRadio;

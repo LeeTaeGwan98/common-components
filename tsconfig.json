@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "skipLibCheck": true,
+  },
+  "include": ["src"],  // 프로젝트에서 TypeScript 파일을 포함할 경로
+  "exclude": ["node_modules", "dist"]  // 검사 제외 폴더
+}
