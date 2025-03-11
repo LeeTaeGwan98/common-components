@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import {
   CommonLoginButtonPrsop,
   LoginButtinInteractiveTypeStyle1,
-} from "@/stories/Molecules/LoginButton/LoginButton";
+} from "../LoginButton";
 
 function AnotherLoginButton({
   onClick,
