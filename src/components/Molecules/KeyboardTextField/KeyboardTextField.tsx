@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { cn } from "@/lib/utils";
-import Avatar from "@/stories/Atoms/Avatar/Avatar/Avatar";
+import Avatar from "@/components/Atoms/Avatar/Avatar/Avatar";
 
 interface KeyboardTextFieldProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
