@@ -7,9 +7,10 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import Divider from "@/stories/Atoms/Divider/Divider";
-import Button from "@/stories/Atoms/Button/Solid/Button";
+
 import X from "@/assets/svg/X.svg";
+import Divider from "@/components/Atoms/Divider/Divider";
+import Button from "@/components/Atoms/Button/Solid/Button";
 
 interface BottomSheetProps {
   fixed?: boolean;
