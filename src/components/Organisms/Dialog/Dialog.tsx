@@ -5,9 +5,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import Button from "@/stories/Atoms/Button/Solid/Button";
-import OutlinedButton from "@/stories/Atoms/Button/Outlined/OutlinedButton";
-import Divider from "@/stories/Atoms/Divider/Divider";
+import Divider from "@/components/Atoms/Divider/Divider";
+import OutlinedButton from "@/components/Atoms/Button/Outlined/OutlinedButton";
+import Button from "@/components/Atoms/Button/Solid/Button";
 
 interface DialogProps {
   fixed?: boolean;
