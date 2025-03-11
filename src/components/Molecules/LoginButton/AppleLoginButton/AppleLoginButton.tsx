@@ -3,7 +3,7 @@ import AppleLogo from "@/assets/svg/logoAppleWhite.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtonInteractiveTypeStyle2,
-} from "@/stories/Molecules/LoginButton/LoginButton";
+} from "../LoginButton";
 
 function AppleLoginButton({
   onClick,

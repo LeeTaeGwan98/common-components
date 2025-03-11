@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 import RightArrow from "@/assets/svg/RightArrow.svg";
 import BottomArrow from "@/assets/svg/BottomArrow.svg";
 import Home from "@/assets/svg/home.svg";
-import Label from "@/stories/Atoms/Label/Label";
 import { ReactNode } from "react";
+import Label from "@/components/Atoms/Label/Label";
 
 interface MenuProps extends React.HTMLAttributes<HTMLDivElement> {
   labelText?: string;

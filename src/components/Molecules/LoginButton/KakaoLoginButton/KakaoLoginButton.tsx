@@ -3,7 +3,7 @@ import KakaoLogo from "@/assets/svg/logoKakaoBlack.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtonInteractiveTypeStyle2,
-} from "@/stories/Molecules/LoginButton/LoginButton";
+} from "../LoginButton";
 
 function KakaoLoginButton({
   onClick,

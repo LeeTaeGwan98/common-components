@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
 import { ReactNode, Dispatch, SetStateAction, ReactElement } from "react";
-import Check from "@/stories/Atoms/Checkbox/Check/Check";
 
 interface InputCheckProps {
   onChecked: Dispatch<SetStateAction<boolean>>;

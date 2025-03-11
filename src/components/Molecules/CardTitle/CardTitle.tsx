@@ -1,7 +1,7 @@
-import Label from "@/stories/Atoms/Label/Label";
 import { cn } from "@/lib/utils";
 import ThreeDot from "@/assets/svg/threeDot.svg";
-import IconButton from "@/stories/Atoms/Button/IconButton/IconButton";
+import Label from "@/components/Atoms/Label/Label";
+import IconButton from "@/components/Atoms/Button/IconButton/IconButton";
 
 interface CardTitleProps {
   number?: string;

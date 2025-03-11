@@ -3,7 +3,7 @@ import NaverLogo from "@/assets/svg/logoNaver.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtonInteractiveTypeStyle2,
-} from "@/stories/Molecules/LoginButton/LoginButton";
+} from "../LoginButton";
 
 function NaverLoginButton({
   onClick,

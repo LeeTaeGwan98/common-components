@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ReactElement } from "react";
-import Checkbox from "@/stories/Atoms/Checkbox/Checkbox/Checkbox";
+import Checkbox from "../Checkbox/Checkbox";
 
 /**
  * InputCheckbox 컴포넌트

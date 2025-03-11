@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/select";
 import { SelectProps } from "@radix-ui/react-select";
 import Down from "@/assets/svg/down.svg";
-import Divider from "@/stories/Atoms/Divider/Divider";
+import Divider from "@/components/Atoms/Divider/Divider";
 
 interface ItemList {
   value: string;

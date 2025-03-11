@@ -3,7 +3,7 @@ import GoogleLogo from "@/assets/svg/logoGoogleColor.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtinInteractiveTypeStyle1,
-} from "@/stories/Molecules/LoginButton/LoginButton";
+} from "../LoginButton";
 
 function GoogleLoginButton({
   onClick,

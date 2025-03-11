@@ -1,6 +1,6 @@
-import Radio from "@/stories/Atoms/Radio/Radio/Radio";
 import { cn } from "@/lib/utils";
 import { Dispatch, ReactNode, SetStateAction, ReactElement } from "react";
+import Radio from "../Radio/Radio";
 
 interface InputRadioProps {
   onChecked: Dispatch<SetStateAction<boolean>>;
