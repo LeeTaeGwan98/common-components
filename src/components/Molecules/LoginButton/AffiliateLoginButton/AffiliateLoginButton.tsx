@@ -3,7 +3,7 @@ import PersonIcon from "@/assets/svg/persons.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtinInteractiveTypeStyle1,
-} from "@/stories/Molecules/LoginButton/LoginButton";
+} from "../LoginButton";
 
 function AffiliateLoginButton({
   onClick,
