@@ -5,7 +5,6 @@ import fontSize from "./src/styles/typography";
 import spacing from "./src/styles/spacing";
 import boxShadow from "./src/styles/shadows";
 import borderRadius from "./src/styles/borderRadius";
-import fontWeight from "./src/styles/fontWeight";
 import brightness from "./src/styles/brightness";
 import opacity from "./src/styles/opacity";
 
@@ -19,7 +18,6 @@ export default {
     extend: {
       opacity,
       brightness,
-      fontWeight,
       fontSize,
       spacing,
       boxShadow,
