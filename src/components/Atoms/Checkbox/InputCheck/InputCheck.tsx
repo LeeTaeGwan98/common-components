@@ -24,7 +24,7 @@ function InputCheck({
   return (
     <button
       className={cn(
-        "w-fit flex items-center text-body-2-normal font-regular *:hover:bg-label-normal/normal-hover *:focus:bg-label-normal/normal-focus *:active:bg-label-normal/normal-active",
+        "w-fit flex items-center text-body2-normal-regular *:hover:bg-label-normal/normal-hover *:focus:bg-label-normal/normal-focus *:active:bg-label-normal/normal-active",
         disableStyle,
         className
       )}

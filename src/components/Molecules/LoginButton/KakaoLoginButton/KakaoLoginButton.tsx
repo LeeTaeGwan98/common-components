@@ -14,7 +14,7 @@ function KakaoLoginButton({
     <button
       onClick={() => onClick()}
       className={cn(
-        "w-full h-[48px] relative bg-[#FEE500] rounded-large-button py-[10px] text-body-1-normal font-medium",
+        "w-full h-[48px] relative bg-[#FEE500] rounded-large-button py-[10px] text-body1-normal-medium",
         LoginButtonInteractiveTypeStyle2,
         className
       )}

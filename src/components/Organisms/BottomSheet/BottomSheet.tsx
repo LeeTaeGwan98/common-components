@@ -32,7 +32,7 @@ function BottomSheet({
       {title && (
         <>
           <DrawerHeader className="flex items-center justify-between px-[24px] pb-[12px]">
-            <DrawerTitle className="text-label-strong text-body-1-normal font-bold">
+            <DrawerTitle className="text-label-strong text-body1-normal-bold">
               제목
             </DrawerTitle>
             <DrawerClose asChild className="cursor-pointer">

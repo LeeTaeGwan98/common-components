@@ -70,7 +70,7 @@ function TextField({
       {label && (
         <label
           className={cn(
-            "text-label-neutral font-medium",
+            "text-label-neutral text-label1-normal-medium",
             sizeStyle.label[size]
           )}
         >
@@ -85,7 +85,7 @@ function TextField({
         <input
           ref={inputRef}
           className={cn(
-            "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body-1-normal placeholder:text-label-assistive",
+            "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body1-normal-regular placeholder:text-label-assistive",
             sizeStyle.input[size],
             interactiveTypeStyle,
             leftIconStyle,
@@ -149,7 +149,7 @@ TextField.RightIconArea = (({
         />
       )}
       {subText && (
-        <span className="text-body-1-normal text-primary-normal">
+        <span className="text-body1-normal-regular text-primary-normal">
           {subText}
         </span>
       )}
@@ -178,7 +178,7 @@ TextField.HelperTextArea = (({
   inputRef,
 }: HelperTextAreaProps) => {
   return (
-    <div className="flex justify-between *:text-caption-1">
+    <div className="flex justify-between *:text-caption1-regular">
       <div className="w-fit text-label-assistive ml-[12px]">
         <span>{helperText && helperText}</span>
         <div className="flex gap-[2px] text-status-positive">
@@ -201,7 +201,7 @@ TextField.HelperTextArea = (({
         </div>
       </div>
       {count ? (
-        <div className="w-fit font-medium text-end">
+        <div className="w-fit text-end *:text-caption1-medium">
           <span className="text-primary-normal">
             {inputRef.current?.value.length ?? 0}
           </span>

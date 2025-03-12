@@ -34,7 +34,7 @@ NumberIndicator.Single = (({
   return (
     <div
       className={cn(
-        "bg-material-dimmer w-fit py-[2px] px-[8px] rounded-[50px] flex gap-[4px] text-caption-2 font-bold"
+        "bg-material-dimmer w-fit py-[2px] px-[8px] rounded-[50px] flex gap-[4px] text-caption2-bold"
       )}
     >
       <span className="text-white">{currentNumber}</span>
@@ -66,7 +66,7 @@ NumberIndicator.Multi = (({
           <React.Fragment key={index}>
             <div
               className={cn(
-                "bg-primary-normal rounded-full w-[24px] h-[24px] text-center *:text-caption-1 font-medium text-white",
+                "bg-primary-normal rounded-full w-[24px] h-[24px] text-center *:text-caption1-medium text-white",
                 getNodeStyle(currentNumber, index + 1),
                 getSelectStyle(currentNumber, index + 1)
               )}

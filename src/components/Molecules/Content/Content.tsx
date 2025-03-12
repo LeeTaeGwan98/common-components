@@ -27,15 +27,15 @@ function Content({
 }: ContentProps) {
   const sizeStyle = {
     large: {
-      label: "text-caption-1 font-bold",
-      summary: "text-body-1-normal font-bold",
-      children: "text-heading-3 font-bold",
+      label: "text-caption1-bold",
+      summary: "text-body1-normal-bold",
+      children: "text-heading3-bold",
       icon: "size-[24px]",
     },
     small: {
-      label: "text-caption-2 font-bold",
-      summary: "text-label-1-normal font-bold",
-      children: "text-subtitle-1 font-bold",
+      label: "text-caption2-bold",
+      summary: "text-label1-reading-bold",
+      children: "text-subtitle1-bold",
       icon: "size-[20px]",
     },
   };
@@ -57,7 +57,7 @@ function Content({
         {summary && (
           <span
             className={cn(
-              "text-body-1-normal font-bold text-label-alternative",
+              "text-body1-normal-bold text-label-alternative",
               sizeStyle[size].summary,
               slot.summaryClassName
             )}
@@ -75,9 +75,7 @@ function Content({
           })}
       </div>
 
-      <span className="text-heading-3 font-bold text-primary-normal">
-        {children}
-      </span>
+      <span className="text-heading3-bold text-primary-normal">{children}</span>
     </div>
   );
 }

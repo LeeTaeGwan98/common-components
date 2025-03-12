@@ -20,7 +20,7 @@ function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
   return (
     <div className="flex flex-col gap-[4px]">
       {label && (
-        <span className="text-label-1-normal text-label-neutral font-medium">
+        <span className=" text-label1-normal-medium text-label-neutral">
           {label}
         </span>
       )}
@@ -36,7 +36,7 @@ function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
         {...props}
       />
       {count ? (
-        <div className="w-full font-medium text-end *:text-caption-1 flex justify-end items-center">
+        <div className="w-full text-end *:text-caption1-medium flex justify-end items-center">
           <span className="text-primary-normal">
             {textAreaRef.current?.value.length ?? 0}
           </span>

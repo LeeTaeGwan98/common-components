@@ -15,9 +15,9 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const sizeStyle = {
-    large: "py-[12px] px-[28px] text-body-1-normal font-bold",
-    medium: "py-[9px] px-[20px] text-body-2-normal font-bold",
-    small: "py-[7px] px-[14px] text-label-2 font-bold",
+    large: "py-[12px] px-[28px] text-body1-normal-bold",
+    medium: "py-[9px] px-[20px] text-body2-normal-bold",
+    small: "py-[7px] px-[14px] text-label2-bold",
   };
   const interactiveTypeStyle =
     "hover:brightness-hover focus:brightness-focus active:brightness-active";

@@ -11,7 +11,7 @@ function SubList({ children, className }: SubListProps) {
   return (
     <li
       className={cn(
-        "rounded-[5px] pl-[32px] py-[9px] text-label-neutral text-label-1-normal font-medium",
+        "rounded-[5px] pl-[32px] py-[9px] text-label-neutral text-label1-normal-medium",
         interactiveTypeStyle,
         className
       )}

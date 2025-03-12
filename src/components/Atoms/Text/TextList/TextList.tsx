@@ -22,9 +22,9 @@ function TextList({
   className,
 }: TextListProps) {
   const sizeStyle = {
-    large: "py-[12px] px-[24px] text-body-2-normal",
-    medium: "py-[10px] px-[16px] text-label-2",
-    small: "py-[6px] pl-[12px] pr-[8px] text-caption-1",
+    large: "py-[12px] px-[24px] text-body2-normal-regular",
+    medium: "py-[10px] px-[16px] text-label2-regular",
+    small: "py-[6px] pl-[12px] pr-[8px] text-caption1-regular",
   };
   const interactiveTypeStyle =
     "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active";
@@ -51,7 +51,7 @@ function TextList({
     >
       <div
         className={cn(
-          "flex items-center gap-[6px] text-label-1-normal font-regular",
+          "flex items-center gap-[6px] text-label1-normal-regular",
           sizeStyle[size],
           disableStyle.text
         )}

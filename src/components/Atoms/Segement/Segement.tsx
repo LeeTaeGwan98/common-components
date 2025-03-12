@@ -65,9 +65,9 @@ Segement.SegementItem = (({
   const isSelected = !!flag === selected;
 
   const sizeStyle = {
-    large: "text-body-1-normal font-bold py-[12px]",
-    medium: "text-body-2-normal font-bold py-[9px]",
-    small: "text-label-2 font-medium py-[7px]",
+    large: "text-body1-normal-bold py-[12px]",
+    medium: "text-body2-normal-bold py-[9px]",
+    small: "text-label2-medium py-[7px]",
   };
   const flagStyle = {
     "rounded-tl-[24px] rounded-bl-[24px]": flag === 0, // 왼쪽 기본 스타일

@@ -23,7 +23,7 @@ function InputRadio({
   return (
     <div
       className={cn(
-        "text-body-2-normal font-regular cursor-pointer flex items-center w-fit gap-[8px] *:hover:bg-label-normal/normal-hover *:focus:bg-label-normal/normal-focus *:active:bg-label-normal/normal-active",
+        "text-body2-normal-regular cursor-pointer flex items-center w-fit gap-[8px] *:hover:bg-label-normal/normal-hover *:focus:bg-label-normal/normal-focus *:active:bg-label-normal/normal-active",
         disableStyle,
         className
       )}

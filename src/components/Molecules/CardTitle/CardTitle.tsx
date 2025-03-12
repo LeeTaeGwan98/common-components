@@ -35,7 +35,7 @@ function CardTitle({
     >
       <div className="flex items-center gap-[6px] flex-wrap">
         {number && (
-          <div className="text-body-1-normal font-bold text-label-alternative">
+          <div className="text-body1-normal-bold text-label-alternative">
             No. {number}
           </div>
         )}

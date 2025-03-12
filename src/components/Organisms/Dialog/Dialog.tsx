@@ -50,7 +50,7 @@ function Dialog({
             )}
           >
             {heading && (
-              <h1 className={cn("text-heading-5 font-bold text-label-normal")}>
+              <h1 className={cn("text-heading5-bold text-label-normal")}>
                 제목
               </h1>
             )}
@@ -58,9 +58,7 @@ function Dialog({
             {/* Todo subfont로 적용 */}
             {subTitle && (
               <div
-                className={cn(
-                  "text-heading-2 font-bold text-label-normal mb-[12px]"
-                )}
+                className={cn("text-heading2-bold text-label-normal mb-[12px]")}
               >
                 타이틀
               </div>
@@ -69,14 +67,16 @@ function Dialog({
             {summary && (
               <div
                 className={cn(
-                  "text-body-2-normal font-regular text-label-alternative mb-[16px]"
+                  "text-body2-normal-regular text-label-alternative mb-[16px]"
                 )}
               >
                 요약
               </div>
             )}
             {description && (
-              <p className={cn("text-body-1-normal text-label-normal")}>설명</p>
+              <p className={cn("text-body1-normal-regular text-label-normal")}>
+                설명
+              </p>
             )}
           </div>
         </DialogTitle>

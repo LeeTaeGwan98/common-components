@@ -12,7 +12,7 @@ function AnotherLoginButton({
   return (
     <button
       className={cn(
-        "w-full h-[48px] text-label-alternative text-label-1-normal font-bold underline rounded-large-button",
+        "w-full h-[48px] text-label-alternative text-label1-normal-bold underline rounded-large-button",
         LoginButtinInteractiveTypeStyle1,
         className
       )}

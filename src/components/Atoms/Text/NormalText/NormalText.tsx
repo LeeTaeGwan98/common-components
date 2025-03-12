@@ -26,8 +26,8 @@ function Text({
       "hover:bg-label-alternative/normal-hover focus:bg-label-alternative/normal-focus active:bg-label-alternative/normal-active",
   };
   const sizeStyle = {
-    medium: "text-body-1-normal font-bold",
-    small: "text-label-1-normal font-bold",
+    medium: "text-body1-normal-bold",
+    small: "text-label1-normal-bold",
   };
   const disableStyle = {
     "text-label-disable": disable,
@@ -35,7 +35,7 @@ function Text({
   return (
     <div
       className={cn(
-        "text-body-1-normal flex gap-[4px] w-fit py-[4px] px-[7px] rounded-radius-admin",
+        "text-body1-normal-regular flex gap-[4px] w-fit py-[4px] px-[7px] rounded-radius-admin",
         !disable && interactiveTypeStyle[type],
         typeStyle[type],
         sizeStyle[size],

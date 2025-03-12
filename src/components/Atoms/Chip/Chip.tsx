@@ -16,9 +16,10 @@ function Chip({
   className,
 }: ChipProps) {
   const sizeStyle = {
-    small: "py-[4px] px-[9px] text-caption-1 rounded-[12px]",
-    medium: "py-[6px] px-[12px] text-label-1-normal rounded-[16px]",
-    large: "py-[9px] px-[16px] text-body-2-normal rounded-[20px] gap-[5px]",
+    small: "py-[4px] px-[9px] text-caption1-regular rounded-[12px]",
+    medium: "py-[6px] px-[12px] text-label1-normal-regular rounded-[16px]",
+    large:
+      "py-[9px] px-[16px] text-body2-normal-regular rounded-[20px] gap-[5px]",
   };
   const interactiveTypeStyle = {
     fill: "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",

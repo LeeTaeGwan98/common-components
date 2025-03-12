@@ -33,8 +33,8 @@ function AdminTitle({
 }: AdminTitleProps) {
   const sizeStyle = {
     text: {
-      large: "text-heading-3 font-bold",
-      small: "text-heading-5 font-bold",
+      large: "text-heading3-bold",
+      small: "text-heading5-bold",
     },
     button: {
       large: "size-[32px] p-[7px]",

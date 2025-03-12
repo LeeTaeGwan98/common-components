@@ -52,7 +52,9 @@ function InputCheckbox({
   onClick,
   ...props
 }: InputCheckboxProps) {
-  const boldStyle = bold ? "font-bold" : "font-regular";
+  const boldStyle = bold
+    ? "text-body2-normal-bold"
+    : "text-body2-normal-regular";
 
   const disableStyle =
     disable &&
@@ -61,7 +63,7 @@ function InputCheckbox({
   return (
     <div
       className={cn(
-        "w-fit flex items-center text-body-2-normal *:hover:bg-label-normal/normal-hover *:focus:bg-label-normal/normal-focus *:active:bg-label-normal/normal-active cursor-pointer",
+        "w-fit flex items-center *:hover:bg-label-normal/normal-hover *:focus:bg-label-normal/normal-focus *:active:bg-label-normal/normal-active cursor-pointer",
         boldStyle,
         disableStyle,
         className

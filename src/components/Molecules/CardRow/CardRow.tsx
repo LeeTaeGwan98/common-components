@@ -16,9 +16,9 @@ function CardRow({ data = {}, className }: CardRowProps) {
   const { title, content, shortcut } = data;
   return (
     <div className={cn("flex flex-col gap-[2px]", className)}>
-      <div className="text-label-2 font-bold text-label-normal">{title}</div>
+      <div className="text-label2-bold text-label-normal">{title}</div>
       <div className="flex justify-between">
-        <span className="text-body-2-normal font-regular text-label-neutral">
+        <span className="text-body2-normal-regular text-label-neutral">
           {content}
         </span>
         {shortcut && (

@@ -26,7 +26,7 @@ function SelectBox({
   return (
     <div className="flex flex-col gap-[4px]">
       {label && (
-        <div className="text-label-1-normal font-medium text-label-neutral">
+        <div className="text-label1-normal-medium text-label-neutral">
           {label}
         </div>
       )}
@@ -34,7 +34,7 @@ function SelectBox({
       <Select {...props}>
         <SelectTrigger
           className={cn(
-            "hover:border-label-alternative w-full focus:ring-0 focus:ring-offset-0 data-[placeholder]:text-body-1-normal data-[placeholder]:text-label-assistive font-regular rounded-[12px] disabled:bg-interaction-disable text-label-normal",
+            "hover:border-label-alternative w-full focus:ring-0 focus:ring-offset-0 data-[placeholder]:text-body1-normal-regular data-[placeholder]:text-label-assistive rounded-[12px] disabled:bg-interaction-disable text-label-normal",
             sizeStyle[size],
             className
           )}

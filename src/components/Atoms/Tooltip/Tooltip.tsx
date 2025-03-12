@@ -58,7 +58,7 @@ function Tooltip({
   return (
     <div
       className={cn(
-        "absolute min-w-[54px] min-h-[40px] w-fit py-[8px] px-[12px] rounded-radius-admin text-static-white bg-material-toast text-body-1-normal font-medium shadow-style-alias-shadow-emphasize",
+        "absolute min-w-[54px] min-h-[40px] w-fit py-[8px] px-[12px] rounded-radius-admin text-static-white bg-material-toast text-body1-normal-medium shadow-style-alias-shadow-emphasize",
         className
       )}
     >

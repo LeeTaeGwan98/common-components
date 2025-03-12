@@ -63,13 +63,13 @@ function Card({
           slot.headClassName
         )}
       >
-        <div className={cn("text-subtitle-2 font-bold text-label-neutral")}>
+        <div className={cn("text-subtitle2-bold text-label-neutral")}>
           {title}
         </div>
         {isButton && (
           <button
             className={cn(
-              `text-label-alternative text-label-1-normal font-bold flex justify-center items-center gap-[4px] ${
+              `text-label-alternative text-label1-normal-bold flex justify-center items-center gap-[4px] ${
                 hasMultiChildren
                   ? "absolute right-content-horizon-margin top-1/2 -translate-y-1/2"
                   : ""
@@ -97,7 +97,7 @@ function Card({
         ) : (
           <>
             {hasMultiChildren && isLabel && (
-              <Label className="text-caption-1 py-[4px] px-[8px] font-bold w-[38px] h-[24px] bg-primary-normal/15 text-primary-normal">
+              <Label className="text-caption1-bold py-[4px] px-[8px] w-[38px] h-[24px] bg-primary-normal/15 text-primary-normal">
                 오늘
               </Label>
             )}

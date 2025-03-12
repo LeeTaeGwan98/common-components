@@ -20,7 +20,7 @@ function OutlinedButton({
   const typeStyle = {
     primary: "border-primary-normal text-primary-normal",
     secondary: "border-line-normal-normal text-primary-normal",
-    assistive: "border-line-normal-normal text-label-1-normal",
+    assistive: "border-line-normal-normal text-label1-normal-regular",
   };
 
   const interactiveTypeStyle = {
@@ -44,19 +44,19 @@ function OutlinedButton({
 
   const fontStyle = {
     primary: {
-      large: "text-body-1-normal font-bold",
-      medium: "text-body-2-normal font-bold",
-      small: "text-label-2 font-bold",
+      large: "text-body1-normal-bold",
+      medium: "text-body2-normal-bold",
+      small: "text-label2-bold",
     },
     secondary: {
-      large: "text-body-1-normal font-bold",
-      medium: "text-body-2-normal font-bold",
-      small: "text-label-2 font-bold",
+      large: "text-body1-normal-bold",
+      medium: "text-body2-normal-bold",
+      small: "text-label2-bold",
     },
     assistive: {
-      large: "text-body-1-normal font-medium",
-      medium: "text-body-2-normal font-medium",
-      small: "text-label-2 font-medium",
+      large: "text-body1-normal-medium",
+      medium: "text-body2-normal-medium",
+      small: "text-label2-medium",
     },
   };
 

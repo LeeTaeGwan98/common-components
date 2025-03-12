@@ -15,9 +15,9 @@ function Label({
   className,
 }: LabelProps) {
   const sizeStyle = {
-    xSmall: "py-[3px] px-[4px] text-caption-2 font-bold gap-[2px]",
-    small: "py-[4px] px-[8px] text-caption-1 font-bold gap-[3px]",
-    medium: "py-[6px] px-[12px] text-label-1-normal font-bold gap-[4px]",
+    xSmall: "py-[3px] px-[4px] text-caption2-bold gap-[2px]",
+    small: "py-[4px] px-[8px] text-caption1-bold gap-[3px]",
+    medium: "py-[6px] px-[12px] text-label1-normal-bold gap-[4px]",
   };
   const variantStyle = {
     filled: "",

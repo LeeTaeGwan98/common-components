@@ -39,7 +39,7 @@ function DatePicker({
         <Button
           variant="outline"
           className={cn(
-            "justify-start text-left font-regular py-0 px-[12px] hover:bg-line-normal-normal/light-hover focus:bg-line-normal-normal/light-focus active:bg-line-normal-normal",
+            "justify-start text-left text-body2-normal-regular py-0 px-[12px] hover:bg-line-normal-normal/light-hover focus:bg-line-normal-normal/light-focus active:bg-line-normal-normal",
             !date && "text-muted-foreground",
             sizeStyle[size],
             pickerClassName
@@ -49,11 +49,11 @@ function DatePicker({
           <CalendarIcon className="size-[20px]" />
           <span className="text-line-normal-neutral">|</span>
           {date ? (
-            <span className="text-label-normal text-body-2-normal">
+            <span className="text-label-normal text-body2-normal-regular">
               {koFormat(date)}
             </span>
           ) : (
-            <span className="text-label-normal text-body-2-normal">
+            <span className="text-label-normal text-body2-normal-regular">
               {koFormat(new Date())}
             </span>
           )}

@@ -96,7 +96,7 @@ function Calendar({
     props.weekdaysClassName
   );
   const _weekdayClassName = cn(
-    "flex justify-center items-center flex-1 text-label-2 font-medium",
+    "flex justify-center items-center flex-1 text-label2-medium",
     props.weekdayClassName
   );
   const _monthClassName = cn("w-full", props.monthClassName);
@@ -127,7 +127,7 @@ function Calendar({
   const _monthGridClassName = cn("mx-auto mt-4", props.monthGridClassName);
   const _weekClassName = cn("mt-2 flex w-max items-start", props.weekClassName);
   const _dayClassName = cn(
-    "flex flex-1 items-center justify-center p-0 text-caption-1 font-medium size-[42px]",
+    "flex flex-1 items-center justify-center p-0 text-caption1-medium size-[42px]",
     props.dayClassName
   );
   const _dayButtonClassName = cn(
