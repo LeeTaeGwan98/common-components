@@ -27,7 +27,7 @@ function SelectBox({
   return (
     <div className="flex flex-col gap-[4px]">
       {label && (
-        <div className="text-label1-normal-medium text-label-neutral">
+        <div className="text-label1-normal-bold text-label-alternative">
           {label}
         </div>
       )}
