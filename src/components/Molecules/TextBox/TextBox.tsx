@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { useRef } from "react";
 
 interface TextBoxProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -12,7 +11,6 @@ interface TextBoxProps
 function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
   const disableStyle =
     "disabled:bg-interaction-disable border-line-normal-neutral";
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const interactiveTypeStyle =
     "hover:border-coolNeutral-50/[.52] focus:border-primary-normal";
@@ -26,7 +24,6 @@ function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
       )}
       <textarea
         value={value}
-        ref={textAreaRef}
         className={cn(
           "h-[180px] p-[12px] appearance-none bg-transparent outline-none resize-none w-full border-[1px] border-line-normal-normal rounded-[12px] text-body-1-normal placeholder:text-label-assistive",
           interactiveTypeStyle,
@@ -37,9 +34,7 @@ function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
       />
       {count ? (
         <div className="w-full text-end *:text-caption1-medium flex justify-end items-center">
-          <span className="text-primary-normal">
-            {textAreaRef.current?.value.length ?? 0}
-          </span>
+          <span className="text-primary-normal">{value.length ?? 0}</span>
           <span className="text-label-alternative">/</span>
           <span className="text-label-alternative">50</span>
         </div>
