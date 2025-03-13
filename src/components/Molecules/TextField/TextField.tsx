@@ -24,6 +24,7 @@ interface TextFieldProps
   buttonElement?: ReactNode;
   closeButton?: boolean;
   onClear?: () => void;
+  value: string;
 }
 
 function TextField({
@@ -35,6 +36,7 @@ function TextField({
   leftIcon = false,
   subText = "",
   isVisible = true,
+  value = "",
   buttonElement,
   closeButton = false,
   onClear,
@@ -91,6 +93,7 @@ function TextField({
             leftIconStyle,
             rightIconStyle
           )}
+          value={value}
           type={isVisibleIcon ? "text" : "password"}
           maxLength={50}
           {...props}

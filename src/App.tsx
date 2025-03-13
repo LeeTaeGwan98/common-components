@@ -15,10 +15,22 @@ import Radio from "./components/Atoms/Radio/Radio/Radio";
 import SelectBox from "./components/Molecules/SelectBox/SelectBox";
 import TextBox from "./components/Molecules/TextBox/TextBox";
 import CardTitle from "./components/Molecules/CardTitle/CardTitle";
+import TextField from "./components/Molecules/TextField/TextField";
 
 function App() {
   const [date, setDate] = useState<undefined | Date>();
   const [check, setCheck] = useState(false);
+  const [textbox, setTextbox] = useState("");
+  const [textfield, setTextfield] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextbox(e.target.value);
+  };
+
+  const fieldHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTextfield(e.target.value);
+  };
+
   return (
     <div className="p-[40px]">
       <DatePicker date={date} setDate={setDate} disable={true} />
@@ -74,7 +86,12 @@ function App() {
       </InputCheckbox>
       <Radio checked={false} size="small"></Radio>
       <SelectBox size="large" placeholder="dwododmsmdskmsk"></SelectBox>
-      <TextBox value="ds" label="text"></TextBox>
+      <TextBox
+        value={textbox}
+        onChange={handleChange}
+        label="text"
+        count
+      ></TextBox>
       <CardTitle
         mainLabel="mainLabel"
         subLabel="subLabel"
@@ -82,6 +99,14 @@ function App() {
         date="date"
       ></CardTitle>
       <CardRow></CardRow>
+      <TextField
+        count={true}
+        value={textfield}
+        onChange={fieldHandleChange}
+        size="medium"
+        closeButton={true}
+        onClear={() => setTextfield("")}
+      ></TextField>
     </div>
   );
 }

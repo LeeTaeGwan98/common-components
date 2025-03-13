@@ -30,13 +30,14 @@ function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
           disableStyle,
           className
         )}
+        maxLength={300}
         {...props}
       />
       {count ? (
         <div className="w-full text-end *:text-caption1-medium flex justify-end items-center">
           <span className="text-primary-normal">{value.length ?? 0}</span>
           <span className="text-label-alternative">/</span>
-          <span className="text-label-alternative">50</span>
+          <span className="text-label-alternative">300</span>
         </div>
       ) : null}
     </div>
