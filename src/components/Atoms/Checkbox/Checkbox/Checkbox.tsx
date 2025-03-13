@@ -28,7 +28,7 @@ interface CheckboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** 체크 상태 여부 */
   checked: boolean;
   /** 체크박스 크기 (normal: 18x18px, small: 16x16px) */
-  size?: "normal" | "small";
+  size?: "large" | "medium" | "small";
   /** 비활성화 여부 */
   disable?: boolean;
   /** 체크 아이콘 타입 (check: 체크표시, partial: 대시표시) */
@@ -49,7 +49,7 @@ interface CheckboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
  */
 function Checkbox({
   checked,
-  size = "normal",
+  size = "medium",
   disable = false,
   checkIconType = "check",
   isRound = false,
@@ -57,7 +57,8 @@ function Checkbox({
   ...props
 }: CheckboxProps) {
   const computedSizeStyle = {
-    normal: isRound ? "w-[20px] h-[20px] rounded-full" : "w-[18px] h-[18px]",
+    large: isRound ? "w-[23px] h-[23px] rounded-full" : "w-[22px] h-[22px]",
+    medium: isRound ? "w-[20px] h-[20px] rounded-full" : "w-[18px] h-[18px]",
     small: isRound ? "w-[18px] h-[18px] rounded-full" : "w-[16px] h-[16px]",
   };
 
