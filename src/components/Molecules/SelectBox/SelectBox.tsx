@@ -6,7 +6,7 @@ import { SelectProps } from "@radix-ui/react-select";
 interface SelectBoxProps extends SelectProps {
   label?: string;
   placeholder?: string;
-  size?: "large" | "medium";
+  size?: "large" | "medium" | "small";
   className?: string;
   children?: ReactNode;
 }
@@ -22,6 +22,7 @@ function SelectBox({
   const sizeStyle = {
     large: "p-[12px] h-[48px]",
     medium: "py-[9px] px-[12px]",
+    small: "py-[7px] h-[32px]",
   };
   return (
     <div className="flex flex-col gap-[4px]">
