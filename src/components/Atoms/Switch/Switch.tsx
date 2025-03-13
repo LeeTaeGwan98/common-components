@@ -5,7 +5,7 @@ interface SwitchProps {
   active: boolean;
   setActive: Dispatch<SetStateAction<boolean>>;
   disable?: boolean;
-  size?: "small" | "medium";
+  size?: "small" | "large";
   className?: string;
 }
 
@@ -13,7 +13,7 @@ function Switch({
   active = false,
   setActive,
   disable = false,
-  size = "medium",
+  size = "large",
   className,
 }: SwitchProps) {
   const disableStyle = disable && "opacity-[.43]";
