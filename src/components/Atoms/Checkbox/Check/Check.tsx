@@ -28,7 +28,7 @@ interface CheckProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** 체크 상태 여부 */
   checked: boolean;
   /** 체크 아이콘 크기 (normal: 24px, small: 20px) */
-  size?: "normal" | "small";
+  size?: "large" | "medium" | "small";
   /** 추가 CSS 클래스 */
   className?: string;
 }
@@ -42,9 +42,10 @@ interface CheckProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * @param props - CheckProps
  * @returns React 컴포넌트
  */
-function Check({ checked, size = "normal", className, ...props }: CheckProps) {
+function Check({ checked, size = "medium", className, ...props }: CheckProps) {
   const sizeStyle = {
-    normal: "24",
+    large: "28",
+    medium: "24",
     small: "20",
   };
   const checkedStyle = {
