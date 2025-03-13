@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from "react";
 interface RadioProps {
   checked: boolean;
   onChecked?: Dispatch<SetStateAction<boolean>>;
-  size?: "normal" | "small";
+  size?: "large" | "medium" | "small";
   disable?: boolean;
   className?: string;
 }
@@ -12,12 +12,15 @@ interface RadioProps {
 function Radio({
   checked = true,
   onChecked,
-  size = "normal",
+  size = "medium",
   disable = false,
   className,
 }: RadioProps) {
-  const sizeStyle =
-    size === "normal" ? "w-[20px] h-[20px]" : "w-[18px] h-[18px]";
+  const sizeStyle = {
+    large: "w-[24px] h-[24px]",
+    medium: "w-[20px] h-[20px]",
+    small: "w-[16px] h-[16px]",
+  };
   const checkedStyle = checked ? "bg-primary-normal relative" : "";
   const disableStyle = disable && "opacity-[.43]";
   return (
@@ -30,7 +33,7 @@ function Radio({
           "border-[2px] border-line-normal-normal rounded-full",
           disableStyle,
           checkedStyle,
-          sizeStyle
+          sizeStyle[size]
         )}
       >
         {checked && (
