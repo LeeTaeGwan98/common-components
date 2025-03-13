@@ -72,7 +72,7 @@ function TextField({
       {label && (
         <label
           className={cn(
-            "text-label-neutral text-label1-normal-medium",
+            "text-label-alternative text-label1-normal-bold",
             sizeStyle.label[size]
           )}
         >

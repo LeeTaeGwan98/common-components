@@ -102,6 +102,7 @@ function App() {
         size="medium"
         closeButton={true}
         onClear={() => setTextfield("")}
+        label="label"
       ></TextField>
     </div>
   );
