@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useState } from "react";
 import { cn } from "@/lib/utils";
 import SuccessIcon from "@/assets/svg/success.svg";
 import ErrorIcon from "@/assets/svg/error.svg";
@@ -43,12 +43,11 @@ function TextField({
   ...props
 }: TextFieldProps) {
   const [isVisibleIcon, setIsVisibleIcon] = useState(true);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const sizeStyle = {
     label: {
-      large: "text-label-1-normal",
-      medium: "text-label-2",
+      large: "text-label1-normal-bold",
+      medium: "text-label2-bold",
     },
     input: {
       large: "p-[12px] h-[48px]",
@@ -72,7 +71,7 @@ function TextField({
       {label && (
         <label
           className={cn(
-            "text-label-alternative text-label1-normal-bold",
+            "text-label1-normal-bold text-label-alternative ",
             sizeStyle.label[size]
           )}
         >
