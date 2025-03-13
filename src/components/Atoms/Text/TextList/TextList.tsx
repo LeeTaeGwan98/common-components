@@ -7,6 +7,7 @@ interface TextListProps {
   label?: string;
   leftIcons?: React.ReactNode[];
   RightIcon?: React.ReactNode | "radio" | "checkbox" | "check";
+  marginFixed?: boolean;
   children?: string | number;
   className?: string;
 }
@@ -18,6 +19,7 @@ function TextList({
   label,
   leftIcons = [],
   RightIcon,
+  marginFixed = false,
   children,
   className,
 }: TextListProps) {
@@ -40,6 +42,7 @@ function TextList({
   const textField = {
     "max-w-[328px]": textFixed,
   };
+  const marginFixedStyle = marginFixed && "p-[16px]";
   return (
     <div
       className={cn(
@@ -53,7 +56,8 @@ function TextList({
         className={cn(
           "flex items-center gap-[6px] text-label1-normal-regular",
           sizeStyle[size],
-          disableStyle.text
+          disableStyle.text,
+          marginFixedStyle
         )}
       >
         {leftIcons &&
