@@ -23,14 +23,6 @@ function App() {
   const [textbox, setTextbox] = useState("");
   const [textfield, setTextfield] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextbox(e.target.value);
-  };
-
-  const fieldHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTextfield(e.target.value);
-  };
-
   return (
     <div className="p-[40px]">
       <DatePicker date={date} setDate={setDate} disable={true} />
@@ -88,7 +80,9 @@ function App() {
       <SelectBox size="large" placeholder="dwododmsmdskmsk"></SelectBox>
       <TextBox
         value={textbox}
-        onChange={handleChange}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+          setTextbox(e.target.value);
+        }}
         label="text"
         count
       ></TextBox>
@@ -102,7 +96,9 @@ function App() {
       <TextField
         count={true}
         value={textfield}
-        onChange={fieldHandleChange}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setTextfield(e.target.value);
+        }}
         size="medium"
         closeButton={true}
         onClear={() => setTextfield("")}

@@ -85,7 +85,6 @@ function TextField({
           <SearchIcon className="absolute top-1/2 -translate-y-1/2 left-[12px]" />
         )}
         <input
-          ref={inputRef}
           className={cn(
             "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body1-normal-regular placeholder:text-label-assistive",
             sizeStyle.input[size],
@@ -113,7 +112,7 @@ function TextField({
         helperText={helperText}
         errorInfo={errorInfo}
         count={count}
-        inputRef={inputRef}
+        value={value}
       />
     </div>
   );
@@ -171,14 +170,14 @@ type HelperTextAreaProps = Pick<
   TextFieldProps,
   "helperText" | "errorInfo" | "count"
 > & {
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  value: string;
 };
 
 TextField.HelperTextArea = (({
   helperText,
   errorInfo,
   count,
-  inputRef,
+  value,
 }: HelperTextAreaProps) => {
   return (
     <div className="flex justify-between *:text-caption1-regular">
@@ -205,9 +204,7 @@ TextField.HelperTextArea = (({
       </div>
       {count ? (
         <div className="w-fit text-end *:text-caption1-medium">
-          <span className="text-primary-normal">
-            {inputRef.current?.value.length ?? 0}
-          </span>
+          <span className="text-primary-normal">{value.length ?? 0}</span>
           <span className="text-label-alternative">/</span>
           <span className="text-label-alternative">50</span>
         </div>
