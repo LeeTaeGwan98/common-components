@@ -33,7 +33,7 @@ function Label({
         className
       )}
     >
-      {children}
+      <span className="leading-[150%] h-[14px]">{children}</span>{" "}
     </div>
   );
 }
