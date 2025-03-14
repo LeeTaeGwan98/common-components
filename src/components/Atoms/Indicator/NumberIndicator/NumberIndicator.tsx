@@ -1,6 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import Check from "@/assets/svg/check.svg";
+import Check from "@/assets/svg/common/check.svg";
 
 interface NumberIndicatorProps {
   variant: "single" | "multi";

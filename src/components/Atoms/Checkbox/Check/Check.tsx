@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ButtonHTMLAttributes } from "react";
-import CheckIcon from "@/assets/svg/check.svg";
+import CheckIcon from "@/assets/svg/common/check.svg";
 
 /**
  * Check 컴포넌트

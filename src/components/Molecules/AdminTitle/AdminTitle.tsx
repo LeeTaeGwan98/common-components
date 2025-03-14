@@ -3,7 +3,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import DownIcon from "@/assets/svg/down.svg";
+import DownIcon from "@/assets/svg/common/down.svg";
 import Divider from "@/components/Atoms/Divider/Divider";
 import { cn } from "@/lib/utils";
 

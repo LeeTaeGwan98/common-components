@@ -4,3 +4,4 @@ children같은 타입 React.ReactNode , ReactNode 통일 필요
 interface에 HTML태그 타입을 extends하도록 리팩토링
 tailwind.config.ts에 정의된 스타일의 의존성을 제거해야함
 애매하게 세로가운데정렬이 안되는 문제 해결 (line-height관련 인듯)
+ 

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import KakaoLogo from "@/assets/svg/logoKakaoBlack.svg";
+import KakaoLogo from "@/assets/svg/common/logoKakaoBlack.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtonInteractiveTypeStyle2,

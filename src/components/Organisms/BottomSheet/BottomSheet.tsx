@@ -8,7 +8,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 
-import X from "@/assets/svg/X.svg";
+import X from "@/assets/svg/common/X.svg";
 import Divider from "@/components/Atoms/Divider/Divider";
 import Button from "@/components/Atoms/Button/Solid/Button";
 

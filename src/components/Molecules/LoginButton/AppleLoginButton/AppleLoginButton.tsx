@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import AppleLogo from "@/assets/svg/logoAppleWhite.svg";
+import AppleLogo from "@/assets/svg/common/logoAppleWhite.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtonInteractiveTypeStyle2,

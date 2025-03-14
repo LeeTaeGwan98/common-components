@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import RightArrow from "@/assets/svg/RightArrow.svg";
-import BottomArrow from "@/assets/svg/BottomArrow.svg";
-import Home from "@/assets/svg/home.svg";
+import RightArrow from "@/assets/svg/common/RightArrow.svg";
+import BottomArrow from "@/assets/svg/common/BottomArrow.svg";
+import Home from "@/assets/svg/common/home.svg";
 import { ReactNode } from "react";
 import Label from "@/components/Atoms/Label/Label";
 

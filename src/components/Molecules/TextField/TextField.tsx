@@ -1,11 +1,11 @@
 import { ReactNode, useState } from "react";
 import { cn } from "@/lib/utils";
-import SuccessIcon from "@/assets/svg/success.svg";
-import ErrorIcon from "@/assets/svg/error.svg";
-import SearchIcon from "@/assets/svg/search.svg";
-import CloseButton from "@/assets/svg/circleClose.svg";
-import Visible from "@/assets/svg/visible.svg";
-import InVisible from "@/assets/svg/invisible.svg";
+import SuccessIcon from "@/assets/svg/common/success.svg";
+import ErrorIcon from "@/assets/svg/common/error.svg";
+import SearchIcon from "@/assets/svg/common/search.svg";
+import CloseButton from "@/assets/svg/common/circleClose.svg";
+import Visible from "@/assets/svg/common/visible.svg";
+import InVisible from "@/assets/svg/common/invisible.svg";
 import IconButton from "@/components/Atoms/Button/IconButton/IconButton";
 
 interface TextFieldProps

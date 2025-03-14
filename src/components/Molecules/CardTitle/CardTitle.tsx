@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import ThreeDot from "@/assets/svg/threeDot.svg";
+import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Label from "@/components/Atoms/Label/Label";
 import IconButton from "@/components/Atoms/Button/IconButton/IconButton";
 
