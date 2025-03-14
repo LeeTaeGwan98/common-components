@@ -1,22 +1,30 @@
 import { cn } from "@/lib/utils";
-import RightArrow from "@/assets/svg/RightArrow.svg";
-import BottomArrow from "@/assets/svg/BottomArrow.svg";
-import Home from "@/assets/svg/home.svg";
 import { ReactNode } from "react";
-import Label from "@/components/Atoms/Label/Label";
+import Label from "@/components/common/Atoms/Label/Label";
 
 interface MenuProps extends React.HTMLAttributes<HTMLDivElement> {
   labelText?: string;
   rightIcon?: ReactNode;
-  children: string;
+  arrowIcon?: ReactNode;
+  children: ReactNode;
+  path?: string;
+  icon?: ReactNode;
+  slot?: {
+    containerClassName?: string;
+    labelClassName?: string;
+  };
   className?: string;
 }
 
 function Menu({
   labelText,
   rightIcon,
+  arrowIcon,
   children,
   className,
+  icon,
+  path,
+  slot,
   ...props
 }: MenuProps) {
   const interactiveTypeStyle =
@@ -31,14 +39,18 @@ function Menu({
       {...props}
     >
       <div className={cn("flex items-center")}>
-        <RightArrow className="size-[20px]" />
-        <Home className="size-[20px]" />
+        {arrowIcon}
+        {icon}
         <span className="ml-[4px]">{children}</span>
       </div>
 
       <div className={cn("flex gap-[4px] items-center")}>
         {labelText && (
-          <Label variant="outlined" size="xSmall" className="">
+          <Label
+            variant="outlined"
+            size="xSmall"
+            className={cn(slot?.labelClassName)}
+          >
             {labelText}
           </Label>
         )}
