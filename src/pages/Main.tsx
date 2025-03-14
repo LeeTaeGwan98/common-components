@@ -1,0 +1,139 @@
+import Card from "@/components/common/Molecules/Card/Card";
+import Content from "@/components/common/Molecules/Content/Content";
+import Up from "@/assets/svg/common/Up.svg";
+
+function Main() {
+  return (
+    <div className="px-[48px] pt-[64px] pb-[48px]">
+      <div className="text-heading3-bold text-label-normal border-b-[1px] border-line-normal-neutral pb-[11px]">
+        북카롱
+        <span className="border-r-[1px] border-line-normal-neutral mx-2"></span>
+        메인
+      </div>
+      <div className="mt-[32px]">
+        <div className="flex flex-nowrap gap-[20px]">
+          <Card
+            title="회원현황"
+            size="large"
+            isLabel={true}
+            isButton={true}
+            isSkeleton={false}
+            slot={{
+              containerClassName: " flex-1",
+            }}
+          >
+            <Content
+              label="오늘"
+              summary="320명"
+              icon={<Up />}
+              slot={{
+                summaryClassName:
+                  "text-label-alternative text-body1-normal-bold",
+                labelClassName: "text-primary-normal text-caption1-bold",
+              }}
+            >
+              51,000명
+            </Content>
+          </Card>
+          <Card
+            title="출판 승인 요청"
+            size="large"
+            isLabel={true}
+            isButton={true}
+            isSkeleton={false}
+            slot={{
+              containerClassName: " flex-1",
+            }}
+          >
+            <Content
+              summary="승인대기중"
+              slot={{
+                summaryClassName:
+                  "text-label-alternative text-body1-normal-bold",
+                labelClassName: "text-primary-normal text-caption1-bold",
+              }}
+            >
+              20권
+            </Content>
+          </Card>
+          <Card
+            title="최근 6개월 누적 플랜 결제금"
+            size="large"
+            isLabel={true}
+            isButton={true}
+            isSkeleton={false}
+            slot={{
+              containerClassName: " flex-1",
+            }}
+          >
+            <Content
+              label="오늘"
+              summary="262,200원"
+              icon={<Up />}
+              slot={{
+                summaryClassName:
+                  "text-label-alternative text-body1-normal-bold",
+              }}
+            >
+              324,000,000원
+            </Content>
+          </Card>
+          <Card
+            title="최근 6개월 누적 충전소 결제금"
+            size="large"
+            isLabel={true}
+            isButton={true}
+            isSkeleton={false}
+            slot={{
+              containerClassName: " flex-1",
+            }}
+          >
+            <Content
+              label="오늘"
+              summary="36,000원"
+              icon={<Up />}
+              slot={{
+                summaryClassName:
+                  "text-label-alternative text-body1-normal-bold",
+                labelClassName: "text-primary-normal text-caption1-bold",
+              }}
+            >
+              1,160,000원
+            </Content>
+          </Card>
+          <Card
+            title="문의현황"
+            size="large"
+            isLabel={true}
+            isButton={true}
+            isSkeleton={false}
+            slot={{
+              containerClassName: " flex-1",
+            }}
+          >
+            <Content
+              summary="미답변"
+              slot={{
+                summaryClassName:
+                  "text-label-alternative text-body1-normal-bold",
+                labelClassName: "text-primary-normal text-caption1-bold",
+              }}
+            >
+              22건
+            </Content>
+          </Card>
+        </div>
+        <div className="mt-[49px]">
+          <div className="text-heading4-bold text-label-normal">
+            최근 일주일 플랜 결제 현황
+            <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
+              단위: 원
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Main;
