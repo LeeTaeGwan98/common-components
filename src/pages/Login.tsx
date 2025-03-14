@@ -2,7 +2,7 @@ import Button from "@/components/common/Atoms/Button/Solid/Button";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import { useState, KeyboardEvent } from "react";
 
-function Index() {
+function Login() {
   const [idField, setIdField] = useState("");
   const [passwordField, setPasswordField] = useState("");
 
@@ -26,7 +26,7 @@ function Index() {
 
   return (
     <div className="flex h-screen">
-      <div className="flex flex-1 bg-primary-normal bg-opacity-10 p-8 items-center justify-center">
+      <div className="flex flex-1 bg-primary-normal/[0.08] p-8 items-center justify-center sm:hidden">
         <div className="flex flex-col justify-between items-center h-full">
           {/* 중앙 정렬된 콘텐츠 */}
           <div className="flex flex-col items-center flex-grow justify-center">
@@ -104,4 +104,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default Login;
