@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import React, { ReactElement } from "react";
 import Content from "../Content/Content";
-import Skeleton from "@/components/Atoms/Skeleton/Skeleton";
-import Label from "@/components/Atoms/Label/Label";
+import Skeleton from "@/components/common/Atoms/Skeleton/Skeleton";
+import Label from "@/components/common/Atoms/Label/Label";
 
 interface CardProps {
   title?: string;
