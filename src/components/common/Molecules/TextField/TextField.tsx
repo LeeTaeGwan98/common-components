@@ -1,12 +1,12 @@
 import { ReactNode, useState } from "react";
 import { cn } from "@/lib/utils";
-import SuccessIcon from "@/assets/svg/success.svg";
-import ErrorIcon from "@/assets/svg/error.svg";
-import SearchIcon from "@/assets/svg/search.svg";
-import CloseButton from "@/assets/svg/circleClose.svg";
-import Visible from "@/assets/svg/visible.svg";
-import InVisible from "@/assets/svg/invisible.svg";
-import IconButton from "@/components/Atoms/Button/IconButton/IconButton";
+import SuccessIcon from "@/assets/svg/common/success.svg";
+import ErrorIcon from "@/assets/svg/common/error.svg";
+import SearchIcon from "@/assets/svg/common/search.svg";
+import CloseButton from "@/assets/svg/common/circleClose.svg";
+import Visible from "@/assets/svg/common/visible.svg";
+import InVisible from "@/assets/svg/common/invisible.svg";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 
 interface TextFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
@@ -182,24 +182,26 @@ TextField.HelperTextArea = (({
     <div className="flex justify-between *:text-caption1-regular">
       <div className="w-fit text-label-assistive ml-[12px]">
         <span>{helperText && helperText}</span>
-        <div className="flex gap-[2px] text-status-positive">
-          <span>
-            {errorInfo?.isError ? (
-              <ErrorIcon className="size-[16px] fill-status-negative" />
-            ) : (
-              <SuccessIcon className="size-[16px] fill-status-positive" />
-            )}
-          </span>
-          <span
-            className={
-              errorInfo?.isError
-                ? "text-status-negative"
-                : "text-status-positive"
-            }
-          >
-            {errorInfo?.text}
-          </span>
-        </div>
+        {errorInfo && (
+          <div className="flex gap-[2px] text-status-positive">
+            <span>
+              {errorInfo?.isError ? (
+                <ErrorIcon className="size-[16px] fill-status-negative" />
+              ) : (
+                <SuccessIcon className="size-[16px] fill-status-positive" />
+              )}
+            </span>
+            <span
+              className={
+                errorInfo?.isError
+                  ? "text-status-negative"
+                  : "text-status-positive"
+              }
+            >
+              {errorInfo?.text}
+            </span>
+          </div>
+        )}
       </div>
       {count ? (
         <div className="w-fit text-end *:text-caption1-medium">

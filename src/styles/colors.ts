@@ -197,7 +197,7 @@ const colors = {
   "static-black": "#000",
 
   // Primary
-  "primary-normal": "#6B39F6",
+  "primary-normal": "#28A8FB",
   "primary-strong": "#6B39F6",
   "primary-heavy": "#6B39F6",
 
