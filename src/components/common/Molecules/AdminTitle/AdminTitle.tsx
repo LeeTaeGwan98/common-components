@@ -4,7 +4,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import DownIcon from "@/assets/svg/common/down.svg";
-import Divider from "@/components/Atoms/Divider/Divider";
+import Divider from "@/components/common/Atoms/Divider/Divider";
 import { cn } from "@/lib/utils";
 
 interface AdminTitleProps {

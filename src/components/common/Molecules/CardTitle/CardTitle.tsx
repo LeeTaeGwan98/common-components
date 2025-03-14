@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
-import Label from "@/components/Atoms/Label/Label";
-import IconButton from "@/components/Atoms/Button/IconButton/IconButton";
+import Label from "@/components/common/Atoms/Label/Label";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 
 interface CardTitleProps {
   number?: string;

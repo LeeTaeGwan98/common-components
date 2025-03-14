@@ -1,4 +1,4 @@
-import Label from "@/components/Atoms/Label/Label";
+import Label from "@/components/common/Atoms/Label/Label";
 import { cn } from "@/lib/utils";
 import React, { cloneElement, ReactElement } from "react";
 

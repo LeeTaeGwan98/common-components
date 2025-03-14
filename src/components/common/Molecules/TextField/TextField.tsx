@@ -6,7 +6,7 @@ import SearchIcon from "@/assets/svg/common/search.svg";
 import CloseButton from "@/assets/svg/common/circleClose.svg";
 import Visible from "@/assets/svg/common/visible.svg";
 import InVisible from "@/assets/svg/common/invisible.svg";
-import IconButton from "@/components/Atoms/Button/IconButton/IconButton";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 
 interface TextFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {

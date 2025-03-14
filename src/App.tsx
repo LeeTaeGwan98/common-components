@@ -1,20 +1,20 @@
-import DatePicker from "@/components/Molecules/DatePicker/DatePicker";
+import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { PopoverContent } from "@/components/ui/popover";
-import AdminTitle from "@/components/Molecules/AdminTitle/AdminTitle";
-import TextList from "@/components/Atoms/Text/TextList/TextList";
-import Card from "@/components/Molecules/Card/Card";
-import Content from "@/components/Molecules/Content/Content";
-import Menu from "@/components/Molecules/Menu/Menu";
-import Checkbox from "@/components/Atoms/Checkbox/Checkbox/Checkbox";
-import InputCheckbox from "@/components/Atoms/Checkbox/InputCheckbox/InputCheckbox";
-import SelectBox from "@/components/Molecules/SelectBox/SelectBox";
-import Radio from "@/components/Atoms/Radio/Radio/Radio";
-import TextBox from "@/components/Molecules/TextBox/TextBox";
-import CardTitle from "@/components/Molecules/CardTitle/CardTitle";
-import CardRow from "@/components/Molecules/CardRow/CardRow";
-import TextField from "@/components/Molecules/TextField/TextField";
+import AdminTitle from "@/components/common/Molecules/AdminTitle/AdminTitle";
+import TextList from "@/components/common/Atoms/Text/TextList/TextList";
+import Card from "@/components/common/Molecules/Card/Card";
+import Content from "@/components/common/Molecules/Content/Content";
+import Menu from "@/components/common/Molecules/Menu/Menu";
+import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
+import InputCheckbox from "@/components/common/Atoms/Checkbox/InputCheckbox/InputCheckbox";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import Radio from "@/components/common/Atoms/Radio/Radio/Radio";
+import TextBox from "@/components/common/Molecules/TextBox/TextBox";
+import CardTitle from "@/components/common/Molecules/CardTitle/CardTitle";
+import CardRow from "@/components/common/Molecules/CardRow/CardRow";
+import TextField from "@/components/common/Molecules/TextField/TextField";
 
 function App() {
   const [date, setDate] = useState<undefined | Date>();

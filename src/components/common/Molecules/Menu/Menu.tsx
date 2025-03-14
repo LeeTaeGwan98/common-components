@@ -3,7 +3,7 @@ import RightArrow from "@/assets/svg/common/RightArrow.svg";
 import BottomArrow from "@/assets/svg/common/BottomArrow.svg";
 import Home from "@/assets/svg/common/home.svg";
 import { ReactNode } from "react";
-import Label from "@/components/Atoms/Label/Label";
+import Label from "@/components/common/Atoms/Label/Label";
 
 interface MenuProps extends React.HTMLAttributes<HTMLDivElement> {
   labelText?: string;

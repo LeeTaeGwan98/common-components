@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import Badge from "@/components/Atoms/Badge/Badge";
+import Badge from "@/components/common/Atoms/Badge/Badge";
 
 interface IconButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
