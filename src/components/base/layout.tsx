@@ -12,7 +12,7 @@ function Layout({ children }: LayoutProps) {
   return isIndex ? (
     <main>{children}</main>
   ) : (
-    <main className="bg-red-600">{children}</main>
+    <main className="">{children}</main>
   );
 }
 
