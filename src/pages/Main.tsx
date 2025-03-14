@@ -10,8 +10,10 @@ function Main() {
         <span className="border-r-[1px] border-line-normal-neutral mx-2"></span>
         메인
       </div>
+
+      {/* 메인 카드 부분 */}
       <div className="mt-[32px]">
-        <div className="flex flex-nowrap gap-[20px]">
+        <div className="grid grid-cols-4 gap-[20px]">
           <Card
             title="회원현황"
             size="large"
@@ -19,7 +21,7 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: " flex-1",
+              containerClassName: "min-w-[360px]",
             }}
           >
             <Content
@@ -42,7 +44,7 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: " flex-1",
+              containerClassName: "min-w-[360px]",
             }}
           >
             <Content
@@ -63,7 +65,7 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: " flex-1",
+              containerClassName: "min-w-[360px]",
             }}
           >
             <Content
@@ -85,7 +87,7 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: " flex-1",
+              containerClassName: "min-w-[360px]",
             }}
           >
             <Content
@@ -108,7 +110,7 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: " flex-1",
+              containerClassName: "min-w-[360px] max-w-[360px]",
             }}
           >
             <Content
@@ -123,13 +125,27 @@ function Main() {
             </Content>
           </Card>
         </div>
-        <div className="mt-[49px]">
-          <div className="text-heading4-bold text-label-normal">
+
+        {/* 플랜 현황 표  */}
+        <div className="mt-[49px] mb-[49px]">
+          <div className="text-heading4-bold text-label-normal mb-[13px]">
             최근 일주일 플랜 결제 현황
             <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
               단위: 원
             </span>
           </div>
+          <div className="bg-slate-500 h-[520px]"></div>
+        </div>
+
+        {/* 충전소 현황 표  */}
+        <div className="mt-[49px]">
+          <div className="text-heading4-bold text-label-normal mb-[13px]">
+            최근 일주일 충전소 결제 현황
+            <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
+              단위: 원
+            </span>
+          </div>
+          <div className="bg-slate-500 h-[520px]"></div>
         </div>
       </div>
     </div>
