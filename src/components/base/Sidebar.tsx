@@ -19,7 +19,7 @@ function Sidebar({}: SideBarProps) {
   };
 
   return (
-    <div className="w-[320px] pt-[64px] border-r-[1px] border-line-normal-normal">
+    <div className="min-w-[320px] pt-[64px] border-r-[1px] border-line-normal-normal">
       <div className="px-[30px] text-body2-normal-bold flex items-center gap-[8px] pb-[12px]">
         <CompanyIcon />
         Admin999
