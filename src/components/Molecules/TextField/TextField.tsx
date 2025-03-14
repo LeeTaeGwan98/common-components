@@ -182,24 +182,26 @@ TextField.HelperTextArea = (({
     <div className="flex justify-between *:text-caption1-regular">
       <div className="w-fit text-label-assistive ml-[12px]">
         <span>{helperText && helperText}</span>
-        <div className="flex gap-[2px] text-status-positive">
-          <span>
-            {errorInfo?.isError ? (
-              <ErrorIcon className="size-[16px] fill-status-negative" />
-            ) : (
-              <SuccessIcon className="size-[16px] fill-status-positive" />
-            )}
-          </span>
-          <span
-            className={
-              errorInfo?.isError
-                ? "text-status-negative"
-                : "text-status-positive"
-            }
-          >
-            {errorInfo?.text}
-          </span>
-        </div>
+        {errorInfo && (
+          <div className="flex gap-[2px] text-status-positive">
+            <span>
+              {errorInfo?.isError ? (
+                <ErrorIcon className="size-[16px] fill-status-negative" />
+              ) : (
+                <SuccessIcon className="size-[16px] fill-status-positive" />
+              )}
+            </span>
+            <span
+              className={
+                errorInfo?.isError
+                  ? "text-status-negative"
+                  : "text-status-positive"
+              }
+            >
+              {errorInfo?.text}
+            </span>
+          </div>
+        )}
       </div>
       {count ? (
         <div className="w-fit text-end *:text-caption1-medium">
