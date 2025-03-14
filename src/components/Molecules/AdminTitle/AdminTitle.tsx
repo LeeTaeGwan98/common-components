@@ -69,7 +69,7 @@ function AdminTitle({
 
 export default AdminTitle;
 /**
- * 사용법
+ * 사용방법
  * import { PopoverContent } from "@/components/ui/popover";
  * <AdminTitle
         title="asdf"
