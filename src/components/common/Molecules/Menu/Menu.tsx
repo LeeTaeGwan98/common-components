@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import Label from "@/components/common/Atoms/Label/Label";
 
-interface MenuProps extends React.HTMLAttributes<HTMLDivElement> {
+interface MenuProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "slot"> {
   labelText?: string;
   rightIcon?: ReactNode;
   arrowIcon?: ReactNode;
