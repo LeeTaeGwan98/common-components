@@ -198,7 +198,7 @@ const colors = {
 
   // Primary
   "primary-normal": "#28A8FB",
-  "primary-strong": "#6B39F6",
+  "primary-strong": "#009CE7",
   "primary-heavy": "#6B39F6",
 
   // Label
