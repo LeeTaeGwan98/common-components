@@ -1,16 +1,11 @@
 import Card from "@/components/common/Molecules/Card/Card";
 import Content from "@/components/common/Molecules/Content/Content";
 import Up from "@/assets/svg/common/Up.svg";
+import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 
 function Main() {
   return (
-    <div className="px-[48px] pt-[64px] pb-[48px]">
-      <div className="text-heading3-bold text-label-normal border-b-[1px] border-line-normal-neutral pb-[11px]">
-        북카롱
-        <span className="border-r-[1px] border-line-normal-neutral mx-2"></span>
-        메인
-      </div>
-
+    <BreadcrumbContainer breadcrumbNode={<>메인</>}>
       {/* 메인 카드 부분 */}
       <div className="mt-[32px]">
         <div className="grid grid-cols-4 gap-[20px]">
@@ -148,7 +143,7 @@ function Main() {
           <div className="bg-slate-500 h-[520px]"></div>
         </div>
       </div>
-    </div>
+    </BreadcrumbContainer>
   );
 }
 
