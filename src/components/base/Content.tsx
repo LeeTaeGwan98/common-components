@@ -6,7 +6,11 @@ interface ContentProps {
 }
 
 function Content({ children }: ContentProps) {
-  return <div className={cn("h-svh")}>{children}</div>;
+  return (
+    <div className={cn("min-h-svh min-w-[calc(100%-320px)] ml-[320px]")}>
+      {children}
+    </div>
+  );
 }
 
 export default Content;
