@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "@/components/base/layout";
 import Login from "@/pages/Login";
 import Main from "@/pages/Main";
+import UserList from "@/pages/User/UserList";
 
 function App() {
   return (
@@ -9,9 +10,9 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/test" element={<div>test</div>} />
-          <Route path="/asdf" element={<div>asdf</div>} />
           <Route path="/main" element={<Main />} />
+          <Route path="/user-list" element={<UserList />} />
+          <Route path="/asdf" element={<div>asdf</div>} />
         </Routes>
       </Layout>
     </BrowserRouter>
