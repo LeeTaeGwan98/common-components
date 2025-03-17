@@ -7,6 +7,11 @@ import PublishList from "@/pages/Ebook/PublishList";
 import PublishListDetail from "@/pages/Ebook/PublishListDetail";
 import Cover from "@/pages/Ebook/Cover";
 import Charging from "@/pages/Ebook/Charging";
+import Terms from "@/pages/Admin/Terms";
+import CommonCode from "@/pages/Admin/CommonCode";
+import Account from "@/pages/Admin/Account";
+import TermsDetail from "@/pages/Admin/TermsDetail";
+import TermsRegistration from "@/pages/Admin/TermsRegistration";
 
 function App() {
   return (
@@ -20,6 +25,12 @@ function App() {
           <Route path="/publish-list-detail" element={<PublishListDetail />} />
           <Route path="/cover" element={<Cover />} />
           <Route path="/charging" element={<Charging />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/common-code" element={<CommonCode />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/terms-detail" element={<TermsDetail />} />
+          <Route path="/terms-regisreation" element={<TermsRegistration />} />
+          <Route path="/asdf" element={<div>asdf</div>} />
         </Routes>
       </Layout>
     </BrowserRouter>
