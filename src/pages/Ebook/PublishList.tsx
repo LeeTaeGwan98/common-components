@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
+import ContentWrapper from "@/components/ContentWrapper";
 
 const data = [
   {
