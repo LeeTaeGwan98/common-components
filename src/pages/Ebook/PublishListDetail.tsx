@@ -2,7 +2,6 @@ import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Divider from "@/components/common/Atoms/Divider/Divider";
-import NormalText from "@/components/common/Atoms/Text/NormalText/NormalText";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
 
