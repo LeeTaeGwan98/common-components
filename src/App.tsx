@@ -3,6 +3,7 @@ import Layout from "@/components/base/layout";
 import Login from "@/pages/Login";
 import Main from "@/pages/Main";
 import UserList from "@/pages/User/UserList";
+import PublishList from "@/pages/Ebook/PublishList";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/main" element={<Main />} />
           <Route path="/user-list" element={<UserList />} />
-          <Route path="/asdf" element={<div>asdf</div>} />
+          <Route path="/publish-list" element={<PublishList />} />
         </Routes>
       </Layout>
     </BrowserRouter>
