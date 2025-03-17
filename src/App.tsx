@@ -8,6 +8,10 @@ import PublishListDetail from "@/pages/Ebook/Publish/PublishListDetail";
 import Cover from "@/pages/Ebook/Cover/Cover";
 import Charging from "@/pages/Ebook/Charging";
 import CoverDetail from "@/pages/Ebook/Cover/CoverDetail";
+import PublishList from "@/pages/Ebook/PublishList";
+import PublishListDetail from "@/pages/Ebook/PublishListDetail";
+import Cover from "@/pages/Ebook/Cover";
+import Charging from "@/pages/Ebook/Charging";
 
 function App() {
   return (
