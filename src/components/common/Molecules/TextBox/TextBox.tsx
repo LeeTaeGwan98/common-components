@@ -9,10 +9,12 @@ interface TextBoxProps
 }
 
 function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
+  const { readOnly } = props;
   const disableStyle =
     "disabled:bg-interaction-disable border-line-normal-neutral";
 
   const interactiveTypeStyle =
+    !readOnly &&
     "hover:border-coolNeutral-50/[.52] focus:border-primary-normal";
 
   return (
