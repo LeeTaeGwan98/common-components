@@ -14,6 +14,7 @@ function Chip({
   disable = false,
   children,
   className,
+  ...props
 }: ChipProps) {
   const sizeStyle = {
     small: "py-[4px] px-[9px] text-caption1-regular rounded-[12px]",
@@ -46,6 +47,7 @@ function Chip({
         disableStyle,
         className
       )}
+      {...props}
     >
       {children}
     </div>
