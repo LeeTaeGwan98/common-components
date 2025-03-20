@@ -1,11 +1,16 @@
 import { cn } from "@/lib/utils";
 import { Dispatch, SetStateAction } from "react";
 
+interface TabItemType {
+  title: string;
+  value: string;
+}
+
 interface TabsProps {
   variant?: "filled" | "fixed";
-  items: string[] | number[];
+  items: TabItemType[];
   currentItem: string | number;
-  onClick: Dispatch<SetStateAction<number | string>>;
+  onClick: Dispatch<SetStateAction<string>>;
   className?: string;
   tableItemClassName?: string;
 }
@@ -28,10 +33,10 @@ function Tabs({
       {items.map((item) => {
         return (
           <Tabs.TabItem
-            key={item}
+            key={item.value}
             item={item}
             variant={variant}
-            onClick={() => onClick(item)}
+            onClick={() => onClick(item.value)}
             currentItem={currentItem}
             tableItemClassName={tableItemClassName}
           />
@@ -42,7 +47,7 @@ function Tabs({
 }
 
 type TabItemProps = Omit<TabsProps, "className" | "items"> & {
-  item: string | number;
+  item: TabItemType;
 };
 
 Tabs.TabItem = (({
@@ -58,14 +63,14 @@ Tabs.TabItem = (({
   };
   const currentItemStyle = {
     "relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-[-1px] after:w-full after:h-[2px] after:bg-primary-normal text-primary-normal":
-      currentItem === item,
+      currentItem === item.value,
   };
   const interactiveTypeStyle =
     "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active";
 
   return (
     <button
-      onClick={() => onClick(item)}
+      onClick={() => onClick(item.value)}
       className={cn(
         "py-[12px] rounded-radius-admin",
         interactiveTypeStyle,
@@ -75,7 +80,7 @@ Tabs.TabItem = (({
       )}
       onMouseUp={(e) => e.currentTarget.blur()}
     >
-      {item}
+      {item.title}
     </button>
   );
 }) as React.FC<TabItemProps>;
