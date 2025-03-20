@@ -66,13 +66,13 @@ Tabs.TabItem = (({
       currentItem === item.value,
   };
   const interactiveTypeStyle =
-    "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active";
+    "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active rounded-b-none";
 
   return (
     <button
       onClick={() => onClick(item.value)}
       className={cn(
-        "py-[12px] rounded-radius-admin",
+        "py-[12px] rounded-radius-admin text-subtitle2-bold text-label-assistive",
         interactiveTypeStyle,
         currentItemStyle,
         variantStyle[variant],
