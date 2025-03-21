@@ -26,7 +26,13 @@ function TemplateDetail() {
           <>상세</>
         </div>
       }
-      button={<Button size="large">삭제</Button>}
+      button={
+        <div>
+          <Button className="w-[180px]" size="large">
+            삭제
+          </Button>
+        </div>
+      }
     >
       <ContentWrapper>
         <div className="flex *:flex-1 gap-gutter-horizontal">
