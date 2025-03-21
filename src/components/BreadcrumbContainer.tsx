@@ -5,7 +5,7 @@ import Button from "@/components/common/Atoms/Button/Solid/Button";
 interface BreadcrumbContainerProps {
   breadcrumbNode: ReactNode;
   children: ReactNode;
-  button: ReactNode;
+  button?: ReactNode;
 }
 
 function BreadcrumbContainer({
