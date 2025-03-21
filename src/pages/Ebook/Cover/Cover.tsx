@@ -36,6 +36,7 @@ const data = [
 function Cover() {
   return (
     <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 표지 관리</>}>
+      <div className="h-[48px] mb-[12px]"></div>
       <TableContainer>
         <Table>
           <TableHeader>

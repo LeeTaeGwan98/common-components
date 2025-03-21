@@ -2,6 +2,7 @@ import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Divider from "@/components/common/Atoms/Divider/Divider";
+import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
 
@@ -40,6 +41,20 @@ function PublishListDetail() {
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <TextField label="저자/역자" readOnly value={"카테고리"} />
           <TextField label="표지" readOnly value={"표지 방식"} />
+        </div>
+        <div className="flex justify-center *:flex-1 gap-[20px]">
+          <div className="relative">
+            <TextField label="표지" readOnly value={"표지명"} />
+            <Text
+              size="medium"
+              type="assistive"
+              className="flex justify-center !flex-none h-fit items-center underline cursor-pointer"
+            >
+              표지명.jpg
+            </Text>
+          </div>
+
+          <TextField label="표지 방식" readOnly value={"구매한 표지"} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <TextField label="원고 파일" readOnly value={"원고 파일"} />

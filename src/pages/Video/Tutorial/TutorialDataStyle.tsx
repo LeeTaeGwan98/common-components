@@ -50,7 +50,17 @@ function TutorialDataStyle({
           <>{type === "detail" ? "상세" : "등록"}</>
         </div>
       }
-      button={<Button size="large">삭제</Button>}
+      button={
+        type === "detail" ? (
+          <div>
+            <Button className="w-[180px]" size="large">
+              삭제
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )
+      }
     >
       <ContentWrapper>
         {/* 튜토리얼명 */}
@@ -63,7 +73,7 @@ function TutorialDataStyle({
           }}
         />
 
-        <div className="flex *:flex-1 gap-gutter-horizon">
+        <div className="flex *:flex-1 gap-gutter-horizontal">
           {/* 카테고리 */}
           <SelectBox
             size="large"
@@ -83,12 +93,14 @@ function TutorialDataStyle({
           />
         </div>
 
-        <div className="flex *:flex-1 gap-gutter-horizon">
+        <div className="flex *:flex-1 gap-gutter-horizontal">
           {/* 노출 상태 */}
           <div>
             <Title label={"노출 상태"} />
             <Segement
               className="w-full"
+              itemClassName="text-body1-normal-medium"
+              size="large"
               setSelected={setIsNoExposure}
               selected={isNoExposure}
               textList={["노출", "비노출"]}
