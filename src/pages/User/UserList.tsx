@@ -1,4 +1,5 @@
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import {
   TableContainer,
   Table,
@@ -7,6 +8,12 @@ import {
   TableRow,
   TableCell,
 } from "@/components/common/Tables";
+import { Link } from "react-router-dom";
+
+import ThreeDot from "@/assets/svg/common/threeDot.svg";
+import { ACCOUNT_DETAIL } from "@/Constants/ServiceUrl";
+import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
+import { useState } from "react";
 
 const data = [
   {
@@ -17,7 +24,7 @@ const data = [
     plan: "Starter",
     ebook: "1",
     point: "1,000",
-    state: "asdf",
+    state: "active",
     detail: true,
   },
   {
@@ -28,14 +35,34 @@ const data = [
     plan: "Starter",
     ebook: "1",
     point: "1,000",
-    state: "asdf",
+    state: "inactive",
+    detail: true,
+  },
+  {
+    no: 0,
+    createAt: "9999-12-31 24:59:00",
+    nickName: "여덟글자여덟글자홍길",
+    email: "a12345a12345a12345a12345a12345@gmail.com",
+    plan: "Starter",
+    ebook: "1",
+    point: "1,000",
+    state: "withdrawl",
     detail: true,
   },
 ];
 
 function UserList() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+
   return (
-    <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 유저 목록</>}>
+    <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
+      <div className="flex justify-between mb-[12px]">
+        <div className="flex items-center gap-[20px]">
+          가입일
+          <DatePicker date={selectedDate} setDate={setSelectedDate} />
+        </div>
+        <div>dd </div>
+      </div>
       <TableContainer>
         <Table>
           <TableHeader>
@@ -63,8 +90,48 @@ function UserList() {
                   <TableCell>{item.plan}</TableCell>
                   <TableCell>{item.ebook}</TableCell>
                   <TableCell>{item.point}</TableCell>
-                  <TableCell>{item.state}</TableCell>
-                  <TableCell>{item.state}</TableCell>
+                  <TableCell>
+                    {(() => {
+                      switch (item.state) {
+                        case "active":
+                          return (
+                            <div className="w-full flex justify-center items-center">
+                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-positive/10 text-label1-normal-bold text-status-positive">
+                                활성
+                              </div>
+                            </div>
+                          );
+                        case "inactive":
+                          return (
+                            <div className="w-full flex justify-center items-center">
+                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
+                                비활성
+                              </div>
+                            </div>
+                          );
+                        case "withdrawl":
+                          return (
+                            <div className="w-full flex justify-center items-center">
+                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-negative/10 text-label1-normal-bold text-status-negative">
+                                탈퇴
+                              </div>
+                            </div>
+                          );
+                        default:
+                          return null;
+                      }
+                    })()}
+                  </TableCell>
+                  <TableCell>
+                    {" "}
+                    <Link to={ACCOUNT_DETAIL}>
+                      <IconButton
+                        icon={
+                          <ThreeDot className="size-[24px] fill-label-alternative" />
+                        }
+                      />
+                    </Link>
+                  </TableCell>
                 </TableRow>
               );
             })}
