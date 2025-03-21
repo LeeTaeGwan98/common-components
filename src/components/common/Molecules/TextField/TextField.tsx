@@ -104,7 +104,7 @@ function TextField({
           className={cn(
             "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body1-normal-regular placeholder:text-label-assistive",
             readOnly &&
-              "border-line-normal-neutral bg-line-normal-neutral text-label-alternative",
+              "border-line-normal-neutral bg-interaction-disable text-label-alternative",
             sizeStyle.input[size],
             !readOnly && interactiveTypeStyle,
             searchIconStyle,
