@@ -50,7 +50,17 @@ function TutorialDataStyle({
           <>{type === "detail" ? "상세" : "등록"}</>
         </div>
       }
-      button={<Button size="large">삭제</Button>}
+      button={
+        type === "detail" ? (
+          <div>
+            <Button className="w-[180px]" size="large">
+              삭제
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )
+      }
     >
       <ContentWrapper>
         {/* 튜토리얼명 */}
