@@ -9,11 +9,12 @@ import {
   TableCell,
 } from "@/components/common/Tables";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
+import { ACCOUNT_DETAIL } from "@/Constants/ServiceUrl";
 
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
-import { ACCOUNT_DETAIL } from "@/Constants/ServiceUrl";
-import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
-import { useState } from "react";
+import Updown from "@/assets/svg/common/UpdownIcons.svg";
 
 const data = [
   {
@@ -52,22 +53,35 @@ const data = [
 ];
 
 function UserList() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [starmDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
   return (
     <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
-      <div className="flex justify-between mb-[12px]">
-        <div className="flex items-center gap-[20px]">
+      <div className="flex items-center bg-slate-400 justify-center h-[48px] mb-[12px]">
+        Header
+        {/* <div className="flex items-center gap-[20px]">
           가입일
-          <DatePicker date={selectedDate} setDate={setSelectedDate} />
+          <div className="flex items-center">
+            <DatePicker date={starmDate} setDate={setStartDate} />
+            <div className="w-[14px] flex items-center justify-center text-body2-normal-medium">
+              ~
+            </div>
+            <DatePicker date={endDate} setDate={setEndDate} />
+          </div>
         </div>
-        <div>dd </div>
+
+        <div>dd </div> */}
       </div>
       <TableContainer>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell isHeader>No</TableCell>
+              <TableCell isHeader>
+                <div className="flex items-center justify-center gap-[2px]">
+                  No <Updown />
+                </div>
+              </TableCell>
               <TableCell isHeader>가입일</TableCell>
               <TableCell isHeader>닉네임</TableCell>
               <TableCell isHeader>이메일</TableCell>
