@@ -14,13 +14,19 @@ import TermsDetail from "@/pages/Admin/TermsDetail";
 import TermsRegistration from "@/pages/Admin/TermsRegistration";
 import CoverDetail from "@/pages/Ebook/Cover/CoverDetail";
 import {
+  ACCOUNT,
+  ASDF,
   CHARGING,
+  COMMON_CODE,
   COVER,
   COVER_DETAIL,
   LOGIN,
   MAIN,
   PUBLISH_LIST,
   PUBLISH_LIST_DETAIL,
+  TERMS,
+  TERMS_DETAIL,
+  TERMS_REGISTRATION,
   USER_LIST,
 } from "@/Constants/ServiceUrl";
 
@@ -37,12 +43,12 @@ function App() {
           <Route path={COVER} element={<Cover />} />
           <Route path={COVER_DETAIL} element={<CoverDetail />} />
           <Route path={CHARGING} element={<Charging />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/common-code" element={<CommonCode />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/terms-detail" element={<TermsDetail />} />
-          <Route path="/terms-regisreation" element={<TermsRegistration />} />
-          <Route path="/asdf" element={<div>asdf</div>} />
+          <Route path={TERMS} element={<Terms />} />
+          <Route path={COMMON_CODE} element={<CommonCode />} />
+          <Route path={ACCOUNT} element={<Account />} />
+          <Route path={TERMS_DETAIL} element={<TermsDetail />} />
+          <Route path={TERMS_REGISTRATION} element={<TermsRegistration />} />
+          <Route path={ASDF} element={<div>asdf</div>} />
         </Routes>
       </Layout>
     </BrowserRouter>

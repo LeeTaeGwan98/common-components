@@ -5,7 +5,10 @@ import VideioIcon from "@/assets/svg/Sidebar/Videobook.svg";
 import BoardIcon from "@/assets/svg/Sidebar/Board.svg";
 import Manager from "@/assets/svg/Sidebar/Manager.svg";
 import {
+  ACCOUNT,
   CHARGING,
+  CHATBOT,
+  COMMON_CODE,
   COVER,
   INQUIRY,
   MAIN,
@@ -15,6 +18,7 @@ import {
   PUBLISH_LIST,
   SERVICE_GUIDE,
   TEMPLATE,
+  TERMS,
   TUTORIAL,
   USER_LIST,
   WITHDRAWL_REASON,
@@ -24,105 +28,105 @@ const SIDEBAR_MENU_ITEM = [
   {
     title: "메인",
     icon: <HomeIcon />,
-    path: { MAIN },
+    path: MAIN,
     child: [],
   },
   {
     title: "회원 관리",
     icon: <User />,
-    path: { USER_LIST },
+    path: USER_LIST,
     child: [
       {
         title: "회원 목록",
-        path: { USER_LIST },
+        path: USER_LIST,
       },
       {
         title: "결제 관리",
-        path: { PAY },
+        path: PAY,
       },
       {
         title: "탈퇴 사유 관리",
-        path: { WITHDRAWL_REASON },
+        path: WITHDRAWL_REASON,
       },
     ],
   },
   {
     title: "전자책 관리",
     icon: <BookIcon />,
-    path: { PUBLISH_LIST },
+    path: PUBLISH_LIST,
     child: [
       {
         title: "출판 목록",
-        path: { PUBLISH_LIST },
+        path: PUBLISH_LIST,
       },
       {
         title: "표지 관리",
-        path: { COVER },
+        path: COVER,
       },
       {
         title: "충전소 관리",
-        path: { CHARGING },
+        path: CHARGING,
       },
     ],
   },
   {
     title: "비디오북 관리",
     icon: <VideioIcon />,
-    path: { PLAN },
+    path: PLAN,
     child: [
       {
         title: "플랜 관리",
-        path: { PLAN },
+        path: PLAN,
       },
       {
         title: "튜토리얼 관리",
-        path: { TUTORIAL },
+        path: TUTORIAL,
       },
       {
         title: "템플릿 관리",
-        path: { TEMPLATE },
+        path: TEMPLATE,
       },
     ],
   },
   {
     title: "게시판 관리",
     icon: <BoardIcon />,
-    path: { INQUIRY },
+    path: INQUIRY,
     child: [
       {
         title: "1:1 문의",
-        path: { INQUIRY },
+        path: INQUIRY,
       },
       {
         title: "공지사항",
-        path: { NOTICE },
+        path: NOTICE,
       },
       {
         title: "서비스 가이드",
-        path: { SERVICE_GUIDE },
+        path: SERVICE_GUIDE,
       },
       {
         title: "쳇봇 관리",
-        path: "/chatbot",
+        path: CHATBOT,
       },
     ],
   },
   {
     title: "관리자",
     icon: <Manager />,
-    path: "/terms",
+    path: TERMS,
     child: [
       {
         title: "약관 관리",
-        path: "/terms",
+        path: TERMS,
       },
       {
         title: "계정 관리",
-        path: "/account",
+        path: ACCOUNT,
       },
       {
         title: "공통 코드 관리",
-        path: "/common-code",
+        path: COMMON_CODE,
       },
     ],
   },
