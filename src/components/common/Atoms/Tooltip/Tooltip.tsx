@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { ReactNode } from "react";
 
 interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -23,7 +24,7 @@ interface TooltipProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * 툴팁에 표시될 텍스트 내용입니다.
    */
-  text?: string;
+  text?: ReactNode | string;
 
   /**
    * 추가적인 CSS 클래스를 지정합니다.

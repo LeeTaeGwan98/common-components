@@ -1,7 +1,7 @@
 // 참고 문서 https://mynaui.com/components/avatar-groups
 import { cn } from "@/lib/utils";
 import React, { cloneElement, HTMLAttributes } from "react";
-import { AvatarProps } from "@/components/Atoms/Avatar/Avatar/Avatar";
+import { AvatarProps } from "@/components/common/Atoms/Avatar/Avatar/Avatar";
 
 interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactElement<

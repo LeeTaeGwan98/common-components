@@ -8,9 +8,9 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 
-import X from "@/assets/svg/X.svg";
-import Divider from "@/components/Atoms/Divider/Divider";
-import Button from "@/components/Atoms/Button/Solid/Button";
+import X from "@/assets/svg/common/X.svg";
+import Divider from "@/components/common/Atoms/Divider/Divider";
+import Button from "@/components/common/Atoms/Button/Solid/Button";
 
 interface BottomSheetProps {
   fixed?: boolean;
