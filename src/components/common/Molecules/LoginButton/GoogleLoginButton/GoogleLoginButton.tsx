@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import GoogleLogo from "@/assets/svg/logoGoogleColor.svg";
+import GoogleLogo from "@/assets/svg/common/logoGoogleColor.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtinInteractiveTypeStyle1,

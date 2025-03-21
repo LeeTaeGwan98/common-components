@@ -35,7 +35,7 @@ function TextField({
   errorInfo,
   leftIcon = false,
   subText = "",
-  isVisible = true,
+  isVisible = false,
   value = "",
   buttonElement,
   closeButton = false,
@@ -67,7 +67,7 @@ function TextField({
   }`;
 
   return (
-    <div className="flex flex-col gap-[4px]">
+    <div className="flex flex-col flex-1 gap-[4px]">
       {label && (
         <label
           className={cn(

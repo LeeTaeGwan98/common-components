@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import PersonIcon from "@/assets/svg/persons.svg";
+import PersonIcon from "@/assets/svg/common/persons.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtinInteractiveTypeStyle1,
