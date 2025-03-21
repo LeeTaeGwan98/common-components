@@ -15,6 +15,8 @@ import TermsRegistration from "@/pages/Admin/TermsRegistration";
 import CoverDetail from "@/pages/Ebook/Cover/CoverDetail";
 import {
   ACCOUNT,
+  ACCOUNT_DETAIL,
+  ACCOUNT_REGISTRATION,
   ASDF,
   CHARGING,
   COMMON_CODE,
@@ -38,6 +40,8 @@ import {
   USER_LIST,
 } from "@/Constants/ServiceUrl";
 import CoverCreate from "@/pages/Ebook/Cover/CoverCreate";
+import AccountRegistration from "@/pages/Admin/AccountRegistration";
+import AccountDetail from "@/pages/Admin/AccountDetail";
 import Plan from "@/pages/Video/Plan/Plan";
 import PlanDetail from "@/pages/Video/Plan/PlanDetail";
 import Tutorial from "@/pages/Video/Tutorial/Tutorial";
@@ -73,6 +77,11 @@ function App() {
           <Route path={TERMS_DETAIL} element={<TermsDetail />} />
           <Route path={TERMS_REGISTRATION} element={<TermsRegistration />} />
           <Route path={ASDF} element={<div>asdf</div>} />
+          <Route
+            path={ACCOUNT_REGISTRATION}
+            element={<AccountRegistration />}
+          />
+          <Route path={ACCOUNT_DETAIL} element={<AccountDetail />} />
         </Routes>
       </Layout>
     </BrowserRouter>

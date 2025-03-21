@@ -26,3 +26,5 @@ export const TERMS_REGISTRATION = "/terms-regisreation";
 export const ACCOUNT = "/account";
 export const COMMON_CODE = "/common-code";
 export const ASDF = "/asdf";
+export const ACCOUNT_REGISTRATION = "/account-regisreation";
+export const ACCOUNT_DETAIL = "/account-detail";
