@@ -5,6 +5,7 @@ export const PUBLISH_LIST = "/publish-list";
 export const PUBLISH_LIST_DETAIL = "/publish-list-detail";
 export const COVER = "/cover";
 export const COVER_DETAIL = "/cover-detail";
+export const COVER_CREATE = "/cover-create";
 export const CHARGING = "/charging";
 export const PAY = "/pay";
 export const WITHDRAWL_REASON = "/withdraw-reasons";

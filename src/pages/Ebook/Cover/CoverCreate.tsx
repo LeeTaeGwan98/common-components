@@ -1,7 +1,7 @@
 import CoverDataStyle from "@/pages/Ebook/Cover/CoverDataStyle";
 import { useState } from "react";
 
-function CoverDetail() {
+function CoverCreate() {
   const [coverName, setCoverName] = useState<string>(""); //표지명
   const coverNumber: string = ""; //표지번호
   const [creater, setCreater] = useState<string>(""); //제작자
@@ -10,7 +10,7 @@ function CoverDetail() {
   const [intro, setIntro] = useState<string>(""); //소개
   return (
     <CoverDataStyle
-      type="detail"
+      type="create"
       coverName={coverName}
       setCoverName={setCoverName}
       coverNumber={coverNumber}
@@ -31,4 +31,4 @@ function CoverDetail() {
   );
 }
 
-export default CoverDetail;
+export default CoverCreate;

@@ -19,6 +19,7 @@ import {
   CHARGING,
   COMMON_CODE,
   COVER,
+  COVER_CREATE,
   COVER_DETAIL,
   LOGIN,
   MAIN,
@@ -29,6 +30,7 @@ import {
   TERMS_REGISTRATION,
   USER_LIST,
 } from "@/Constants/ServiceUrl";
+import CoverCreate from "@/pages/Ebook/Cover/CoverCreate";
 
 function App() {
   return (
@@ -42,6 +44,7 @@ function App() {
           <Route path={PUBLISH_LIST_DETAIL} element={<PublishListDetail />} />
           <Route path={COVER} element={<Cover />} />
           <Route path={COVER_DETAIL} element={<CoverDetail />} />
+          <Route path={COVER_CREATE} element={<CoverCreate />} />
           <Route path={CHARGING} element={<Charging />} />
           <Route path={TERMS} element={<Terms />} />
           <Route path={COMMON_CODE} element={<CommonCode />} />
