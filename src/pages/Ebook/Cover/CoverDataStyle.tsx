@@ -20,8 +20,8 @@ interface CoverDataStyleProps {
   creater: string;
   setCreater: Dispatch<SetStateAction<string>>;
   //가격
-  price: number;
-  setPrice: Dispatch<SetStateAction<number>>;
+  price: number | undefined;
+  setPrice: Dispatch<SetStateAction<number | undefined>>;
   //표지 샘플 이미지
   sampleImg: string;
   //표지 디자인 파일
@@ -57,14 +57,16 @@ function CoverDataStyle({
   return (
     <BreadcrumbContainer
       breadcrumbNode={
-        <div className="flex">
-          <div className="flex justify-center items-center">
-            <>전자책 관리 / 표지 관리</>
-            <Divider vertical className="h-[20px] mx-[12px]" />
-            <>{type === "detail" ? "상세" : "등록"}</>
-          </div>
-          <OutlinedButton>표지 미리보기</OutlinedButton>
+        <div className="flex justify-center items-center">
+          <>전자책 관리 / 표지 관리</>
+          <Divider vertical className="h-[20px] mx-[12px]" />
+          <>{type === "detail" ? "상세" : "등록"}</>
         </div>
+      }
+      button={
+        <OutlinedButton type="assistive" size="large">
+          표지 미리보기
+        </OutlinedButton>
       }
     >
       <ContentWrapper>
@@ -79,6 +81,7 @@ function CoverDataStyle({
           />
           <TextField
             label="표지 번호"
+            readOnly
             placeholder="표지 등록 시 표지번호가 자동 배분됩니다"
             value={coverNumber}
           />
@@ -94,9 +97,14 @@ function CoverDataStyle({
           <TextField
             label="가격"
             placeholder="표지 가격을 입력해주세요"
-            value={price.toLocaleString("kr")}
+            value={price !== undefined ? price.toLocaleString("kr") : ""}
+            slot={{ subTextClassName: "" }}
             onChange={(e) => {
-              setPrice(Number(e.target.value.replaceAll(",", "")));
+              if (e.target.value === "") {
+                setPrice(undefined);
+              } else {
+                setPrice(Number(e.target.value.replaceAll(",", "")));
+              }
             }}
             buttonElement={<>포인트</>}
           />
