@@ -15,14 +15,16 @@ function TextList({ number, point, amount }: TextListProps) {
       <TextField
         label={`${number}번 항목`}
         value={point}
-        buttonElement={<>포인트</>}
+        subText="포인트"
+        slot={{ subTextClassName: "text-label-alternative" }}
         isVisible={false}
       />
       <TextField
         label="&nbsp;"
         value={amount}
         isVisible={false}
-        buttonElement={<>금액</>}
+        subText="금액"
+        slot={{ subTextClassName: "text-label-alternative" }}
       />
     </div>
   );
@@ -40,7 +42,15 @@ function Charging() {
         <TextList number={6} point={"1000"} amount={"1000"} />
         <TextList number={7} point={"1000"} amount={"1000"} />
         <TextList number={8} point={"1000"} amount={"1000"} />
-        <OutlinedButton>저장</OutlinedButton>
+        <div className="flex justify-end w-full">
+          <OutlinedButton
+            className="max-w-[180px] w-full"
+            type="secondary"
+            size="large"
+          >
+            저장
+          </OutlinedButton>
+        </div>
       </ContentWrapper>
     </BreadcrumbContainer>
   );

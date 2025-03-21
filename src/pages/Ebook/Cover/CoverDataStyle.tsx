@@ -117,12 +117,13 @@ function CoverDataStyle({
             placeholder="표지 가격을 입력해주세요"
             value={price !== undefined ? price.toLocaleString("kr") : ""}
             onChange={(e) => {
-              if (e.target.value.replaceAll(",", "").length <= 6) {
-                if (e.target.value === "") {
-                  setPrice(undefined);
-                } else {
-                  setPrice(Number(e.target.value.replaceAll(",", "")));
-                }
+              // 숫자만 필터링
+              const numericValue = e.target.value.replace(/\D/g, "");
+
+              if (numericValue.length <= 6) {
+                setPrice(
+                  numericValue === "" ? undefined : Number(numericValue)
+                );
               }
             }}
             buttonElement={<>포인트</>}
