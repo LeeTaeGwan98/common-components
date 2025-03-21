@@ -11,7 +11,7 @@ import {
 } from "@/components/common/Tables";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
-import { TERMS_DETAIL } from "@/Constants/ServiceUrl";
+import { TERMS_DETAIL, TERMS_REGISTRATION } from "@/Constants/ServiceUrl";
 
 const data = [
   {
@@ -39,7 +39,7 @@ function Terms() {
     <BreadcrumbContainer
       breadcrumbNode={<>관리자 / 약관 관리 </>}
       button={
-        <Link to="/terms-regisreation">
+        <Link to={TERMS_REGISTRATION}>
           <Button className="rounded-radius-admin w-[180px] h-[48px]">
             등록
           </Button>

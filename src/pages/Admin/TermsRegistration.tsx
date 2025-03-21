@@ -21,7 +21,7 @@ function TermsRegistration() {
       }
       button={false}
     >
-      <div className="flex w-full items-center justify-center text-label-alternative">
+      <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
         <div className="w-[1004px]  ">
           {/* 이용약관명 */}
           <div className=" gap-gutter-horizon ">
