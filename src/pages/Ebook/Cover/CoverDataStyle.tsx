@@ -98,7 +98,6 @@ function CoverDataStyle({
             label="가격"
             placeholder="표지 가격을 입력해주세요"
             value={price !== undefined ? price.toLocaleString("kr") : ""}
-            slot={{ subTextClassName: "" }}
             onChange={(e) => {
               if (e.target.value === "") {
                 setPrice(undefined);
@@ -113,6 +112,7 @@ function CoverDataStyle({
           <TextField
             label="표지 샘플 이미지"
             value={"파일을 첨부해주세요"}
+            readOnly
             buttonElement={
               <OutlinedButton size="small">파일 업로드</OutlinedButton>
             }
@@ -120,6 +120,7 @@ function CoverDataStyle({
           <TextField
             label="표지 디자인 파일"
             value={"파일을 첨부해주세요"}
+            readOnly
             buttonElement={
               <OutlinedButton size="small">파일 업로드</OutlinedButton>
             }
