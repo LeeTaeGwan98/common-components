@@ -52,7 +52,21 @@ function CoverDataStyle({
   setIntro,
   onClickSave,
 }: CoverDataStyleProps) {
-  const isDetail = true;
+  //저장 버튼 disable 여부
+  const handleSaveBtnDisable = () => {
+    if (
+      coverName.length > 0 &&
+      coverNumber.length > 0 &&
+      creater.length > 0 &&
+      price !== undefined &&
+      sampleImg.length > 0 &&
+      designFile.length > 0
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   return (
     <BreadcrumbContainer
@@ -92,7 +106,7 @@ function CoverDataStyle({
         <div className="flex justify-center *:flex-1 gap-gutter-horizontal">
           <TextField
             label="제작자"
-            value={creater === "" ? "북카롱" : creater}
+            value={creater}
             maxLength={100}
             onChange={(e) => {
               setCreater(e.target.value);
@@ -156,6 +170,7 @@ function CoverDataStyle({
             }}
           />
         </div>
+
         <div className="flex justify-end gap-[12px]">
           <OutlinedButton
             className="max-w-[180px] w-full"
@@ -168,6 +183,7 @@ function CoverDataStyle({
             className="max-w-[180px] w-full"
             size="large"
             type="secondary"
+            disable={handleSaveBtnDisable()}
             onClick={onClickSave}
           >
             저장

@@ -5,7 +5,7 @@ function CoverCreate() {
   const [coverName, setCoverName] = useState<string>(""); //표지명
   const coverNumber: string = ""; //표지번호
   const [creater, setCreater] = useState<string>(""); //제작자
-  const [price, setPrice] = useState<number>(0); //가격
+  const [price, setPrice] = useState<number | undefined>(); //가격
   const [isCoverNoExposure, setIsCoverNoExposure] = useState<boolean>(false); //표지 노출 비노출 여부
   const [intro, setIntro] = useState<string>(""); //소개
   return (
