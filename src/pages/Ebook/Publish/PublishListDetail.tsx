@@ -42,6 +42,10 @@ function PublishListDetail() {
           <TextField label="표지" readOnly value={"표지 방식"} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
+          <TextField label="표지" readOnly value={"표지명"} />
+          <TextField label="표지 방식" readOnly value={"구매한 표지"} />
+        </div>
+        <div className="flex justify-center *:flex-1 gap-[20px]">
           <TextField label="원고 파일" readOnly value={"원고 파일"} />
           <TextField label="용량" readOnly value={"7.68MB"} />
         </div>

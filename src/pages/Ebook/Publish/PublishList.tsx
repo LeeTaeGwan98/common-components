@@ -37,6 +37,7 @@ const data = [
 function PublishList() {
   return (
     <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
+      <div className="h-[48px] mb-[12px]"></div>
       <TableContainer>
         <Table>
           <TableHeader>

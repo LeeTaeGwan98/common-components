@@ -36,6 +36,7 @@ const data = [
 function Tutorial() {
   return (
     <BreadcrumbContainer breadcrumbNode={<>비디오북 관리 / 튜토리얼 관리</>}>
+      <div className="h-[48px] mb-[12px]"></div>
       <TableContainer>
         <Table>
           <TableHeader>
