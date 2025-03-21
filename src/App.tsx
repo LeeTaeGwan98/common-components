@@ -27,6 +27,8 @@ import {
   PLAN_DETAIL,
   PUBLISH_LIST,
   PUBLISH_LIST_DETAIL,
+  TEMPLATE,
+  TEMPLATE_DETAIL,
   TERMS,
   TERMS_DETAIL,
   TERMS_REGISTRATION,
@@ -41,6 +43,8 @@ import PlanDetail from "@/pages/Video/Plan/PlanDetail";
 import Tutorial from "@/pages/Video/Tutorial/Tutorial";
 import TutorialCreate from "@/pages/Video/Tutorial/TutorialCreate";
 import TutorialDetail from "@/pages/Video/Tutorial/TutorialDetail";
+import Template from "@/pages/Video/Template/Template";
+import TemplateDetail from "@/pages/Video/Template/TemplateDetail";
 
 function App() {
   return (
@@ -61,6 +65,8 @@ function App() {
           <Route path={TUTORIAL} element={<Tutorial />} />
           <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
           <Route path={TUTORIAL_DETAIL} element={<TutorialDetail />} />
+          <Route path={TEMPLATE} element={<Template />} />
+          <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
           <Route path={TERMS} element={<Terms />} />
           <Route path={COMMON_CODE} element={<CommonCode />} />
           <Route path={ACCOUNT} element={<Account />} />

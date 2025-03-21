@@ -8,7 +8,7 @@ function TutorialDetail() {
 
   return (
     <TutorialDataStyle
-      type={"create"}
+      type={"detail"}
       tutorialName={tutorialName}
       setTutorialName={setTutorialName}
       category={category}
@@ -18,7 +18,7 @@ function TutorialDetail() {
       isNoExposure={isNoExposure}
       setIsNoExposure={setIsNoExposure}
       onClickSave={() => {
-        console.log("등록");
+        console.log("저장");
       }}
     />
   );
