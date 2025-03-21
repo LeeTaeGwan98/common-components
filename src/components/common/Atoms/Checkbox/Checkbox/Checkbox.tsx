@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import Check from "@/assets/svg/check.svg";
-import Dash from "@/assets/svg/partialCheck.svg";
+import Check from "@/assets/svg/common/check.svg";
+import Dash from "@/assets/svg/common/partialCheck.svg";
 
 /**
  * Checkbox 컴포넌트

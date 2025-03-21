@@ -3,8 +3,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import DownIcon from "@/assets/svg/down.svg";
-import Divider from "@/components/Atoms/Divider/Divider";
+import DownIcon from "@/assets/svg/common/down.svg";
+import Divider from "@/components/common/Atoms/Divider/Divider";
 import { cn } from "@/lib/utils";
 
 interface AdminTitleProps {
@@ -69,7 +69,7 @@ function AdminTitle({
 
 export default AdminTitle;
 /**
- * 사용법
+ * 사용방법
  * import { PopoverContent } from "@/components/ui/popover";
  * <AdminTitle
         title="asdf"
