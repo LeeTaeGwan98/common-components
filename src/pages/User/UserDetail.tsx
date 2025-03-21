@@ -4,8 +4,10 @@ import Up from "@/assets/svg/common/Up.svg";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 
-import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import CardRow from "@/components/common/Molecules/CardRow/CardRow";
+
+import ThreeDot from "@/assets/svg/common/threeDot.svg";
+import Write from "@/assets/svg/common/WriteIcons.svg";
 
 function UserDetail() {
   return (
@@ -24,6 +26,7 @@ function UserDetail() {
                 />
               ),
             }}
+            slot={{ shortcutClassName: "size-[24px]" }}
           />
           <CardRow
             data={{
@@ -35,7 +38,9 @@ function UserDetail() {
             data={{
               title: "닉네임",
               content: "홍길동홍길동홍길",
+              shortcut: <Write />,
             }}
+            slot={{ shortcutClassName: "size-[24px]" }}
           />
           <CardRow
             data={{

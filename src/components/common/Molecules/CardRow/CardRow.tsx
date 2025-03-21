@@ -5,6 +5,11 @@ interface CardRowDataType {
   title?: string;
   content?: string;
   shortcut?: ReactElement<{ className: string }>;
+}
+
+interface CardRowProps {
+  data?: CardRowDataType;
+  className?: string;
   slot?: {
     containerClassName?: string;
     titleClassname?: string;
@@ -13,13 +18,8 @@ interface CardRowDataType {
   };
 }
 
-interface CardRowProps {
-  data?: CardRowDataType;
-  className?: string;
-}
-
-function CardRow({ data = {}, className }: CardRowProps) {
-  const { title, content, shortcut, slot = {} } = data;
+function CardRow({ data = {}, slot = {} }: CardRowProps) {
+  const { title, content, shortcut } = data;
   return (
     <div className={cn("flex flex-col gap-[2px]", slot.containerClassName)}>
       <div className="flex items-center justify-between">
