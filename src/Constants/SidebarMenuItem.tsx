@@ -4,87 +4,102 @@ import BookIcon from "@/assets/svg/Sidebar/Book.svg";
 import VideioIcon from "@/assets/svg/Sidebar/Videobook.svg";
 import BoardIcon from "@/assets/svg/Sidebar/Board.svg";
 import Manager from "@/assets/svg/Sidebar/Manager.svg";
+import {
+  CHARGING,
+  COVER,
+  INQUIRY,
+  MAIN,
+  NOTICE,
+  PAY,
+  PLAN,
+  PUBLISH_LIST,
+  SERVICE_GUIDE,
+  TEMPLATE,
+  TUTORIAL,
+  USER_LIST,
+  WITHDRAWL_REASON,
+} from "@/Constants/ServiceUrl";
 
 const SIDEBAR_MENU_ITEM = [
   {
     title: "메인",
     icon: <HomeIcon />,
-    path: "/main",
+    path: { MAIN },
     child: [],
   },
   {
     title: "회원 관리",
     icon: <User />,
-    path: "/user-list",
+    path: { USER_LIST },
     child: [
       {
         title: "회원 목록",
-        path: "/user-list",
+        path: { USER_LIST },
       },
       {
         title: "결제 관리",
-        path: "/pay",
+        path: { PAY },
       },
       {
         title: "탈퇴 사유 관리",
-        path: "/withdraw-reasons",
+        path: { WITHDRAWL_REASON },
       },
     ],
   },
   {
     title: "전자책 관리",
     icon: <BookIcon />,
-    path: "/publish-list",
+    path: { PUBLISH_LIST },
     child: [
       {
         title: "출판 목록",
-        path: "/publish-list",
+        path: { PUBLISH_LIST },
       },
       {
         title: "표지 관리",
-        path: "/cover",
+        path: { COVER },
       },
       {
         title: "충전소 관리",
-        path: "/charging",
+        path: { CHARGING },
       },
     ],
   },
   {
     title: "비디오북 관리",
     icon: <VideioIcon />,
-    path: "/plan",
+    path: { PLAN },
     child: [
       {
         title: "플랜 관리",
-        path: "/plan",
+        path: { PLAN },
       },
       {
         title: "튜토리얼 관리",
-        path: "/tutorial",
+        path: { TUTORIAL },
       },
       {
         title: "템플릿 관리",
-        path: "/template",
+        path: { TEMPLATE },
       },
     ],
   },
   {
     title: "게시판 관리",
     icon: <BoardIcon />,
-    path: "/inquiry",
+    path: { INQUIRY },
     child: [
       {
         title: "1:1 문의",
-        path: "/inquiry",
+        path: { INQUIRY },
       },
       {
         title: "공지사항",
-        path: "/notice",
+        path: { NOTICE },
       },
       {
         title: "서비스 가이드",
-        path: "/service-guide",
+        path: { SERVICE_GUIDE },
       },
       {
         title: "쳇봇 관리",

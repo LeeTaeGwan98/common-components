@@ -1,0 +1,16 @@
+export const LOGIN = "/";
+export const MAIN = "/main";
+export const USER_LIST = "/user-list";
+export const PUBLISH_LIST = "/publish-list";
+export const PUBLISH_LIST_DETAIL = "/publish-list-detail";
+export const COVER = "/cover";
+export const COVER_DETAIL = "/cover-detail";
+export const CHARGING = "/charging";
+export const PAY = "/pay";
+export const WITHDRAWL_REASON = "/withdraw-reasons";
+export const PLAN = "/plan";
+export const TUTORIAL = "/tutorial";
+export const TEMPLATE = "/template";
+export const INQUIRY = "/inquiry";
+export const NOTICE = "/notice";
+export const SERVICE_GUIDE = "/service-guide";

@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "@/components/base/Sidebar";
 import Content from "@/components/base/Content";
+import { LOGIN } from "@/Constants/ServiceUrl";
 
 interface LayoutProps {
   children: ReactNode;
@@ -9,7 +10,7 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const isIndex = location.pathname === "/";
+  const isIndex = location.pathname === LOGIN;
 
   return isIndex ? (
     <main>{children}</main>

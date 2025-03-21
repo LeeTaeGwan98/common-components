@@ -8,20 +8,30 @@ import PublishListDetail from "@/pages/Ebook/Publish/PublishListDetail";
 import Cover from "@/pages/Ebook/Cover/Cover";
 import Charging from "@/pages/Ebook/Charging";
 import CoverDetail from "@/pages/Ebook/Cover/CoverDetail";
+import {
+  CHARGING,
+  COVER,
+  COVER_DETAIL,
+  LOGIN,
+  MAIN,
+  PUBLISH_LIST,
+  PUBLISH_LIST_DETAIL,
+  USER_LIST,
+} from "@/Constants/ServiceUrl";
 
 function App() {
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/main" element={<Main />} />
-          <Route path="/user-list" element={<UserList />} />
-          <Route path="/publish-list" element={<PublishList />} />
-          <Route path="/publish-list-detail" element={<PublishListDetail />} />
-          <Route path="/cover" element={<Cover />} />
-          <Route path="/cover-detail" element={<CoverDetail />} />
-          <Route path="/charging" element={<Charging />} />
+          <Route path={LOGIN} element={<Login />} />
+          <Route path={MAIN} element={<Main />} />
+          <Route path={USER_LIST} element={<UserList />} />
+          <Route path={PUBLISH_LIST} element={<PublishList />} />
+          <Route path={PUBLISH_LIST_DETAIL} element={<PublishListDetail />} />
+          <Route path={COVER} element={<Cover />} />
+          <Route path={COVER_DETAIL} element={<CoverDetail />} />
+          <Route path={CHARGING} element={<Charging />} />
         </Routes>
       </Layout>
     </BrowserRouter>
