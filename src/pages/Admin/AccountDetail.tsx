@@ -127,7 +127,7 @@ function AccountDetail() {
             <div className="w-full">
               비밀번호
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive"
+                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
                 value={passwordField}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setPasswordField(e.target.value);
@@ -142,7 +142,7 @@ function AccountDetail() {
             <div className="w-full">
               이름
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive"
+                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
                 value={nameField}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setNameField(e.target.value);
@@ -153,7 +153,7 @@ function AccountDetail() {
             <div className="w-full">
               연락처
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive"
+                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
                 value={contactField}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setContactField(e.target.value);
@@ -167,7 +167,7 @@ function AccountDetail() {
             <div className="w-full">
               직책
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive"
+                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
                 value={positionField}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setPositionField(e.target.value);
