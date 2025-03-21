@@ -72,11 +72,12 @@ function CoverDataStyle({
       }
     >
       <ContentWrapper>
-        <div className="flex justify-center *:flex-1 gap-gutter-horizon">
+        <div className="flex justify-center *:flex-1 gap-gutter-horizontal">
           <TextField
             label="표지명"
             placeholder="표지명을 입력해주세요"
             value={coverName}
+            maxLength={30}
             onChange={(e) => {
               setCoverName(e.target.value);
             }}
@@ -88,10 +89,11 @@ function CoverDataStyle({
             value={coverNumber}
           />
         </div>
-        <div className="flex justify-center *:flex-1 gap-gutter-horizon">
+        <div className="flex justify-center *:flex-1 gap-gutter-horizontal">
           <TextField
             label="제작자"
             value={creater === "" ? "북카롱" : creater}
+            maxLength={100}
             onChange={(e) => {
               setCreater(e.target.value);
             }}
@@ -101,10 +103,12 @@ function CoverDataStyle({
             placeholder="표지 가격을 입력해주세요"
             value={price !== undefined ? price.toLocaleString("kr") : ""}
             onChange={(e) => {
-              if (e.target.value === "") {
-                setPrice(undefined);
-              } else {
-                setPrice(Number(e.target.value.replaceAll(",", "")));
+              if (e.target.value.replaceAll(",", "").length <= 6) {
+                if (e.target.value === "") {
+                  setPrice(undefined);
+                } else {
+                  setPrice(Number(e.target.value.replaceAll(",", "")));
+                }
               }
             }}
             buttonElement={<>포인트</>}
@@ -128,7 +132,7 @@ function CoverDataStyle({
             }
           />
         </div>
-        <div className="flex gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
           <div className="w-[50%]">
             <Title size="medium" label={"표지"} />
             <Segement
@@ -146,6 +150,7 @@ function CoverDataStyle({
           <Title size="large" label={"소개"} />
           <TextBox
             value={intro}
+            maxLength={1000}
             onChange={(e) => {
               setIntro(e.target.value);
             }}
