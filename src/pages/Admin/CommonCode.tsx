@@ -146,7 +146,7 @@ function CommonCode() {
                                         그룹코드명
                                         <div className="w-full">
                                           <TextField
-                                            value="템플릿d"
+                                            value="템플릿"
                                             slot={{
                                               inputClassName:
                                                 "px-[12px] py-[9px] w-full border rounded-[4px]",
