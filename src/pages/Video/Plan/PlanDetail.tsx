@@ -25,7 +25,7 @@ function PlanDetail() {
         {/* 플랜 */}
         <TextField label="플랜" readOnly={true} value={"Advanced"} />
         {/* 연/월간 요금 */}
-        <div className="flex gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
           <TextField
             label="연간 요금(월)"
             placeholder="Placeholder"
@@ -48,13 +48,13 @@ function PlanDetail() {
           />
         </div>
 
-        <div className="flex gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
           {/* 포인트 */}
           <div className="w-full">
             <TextField label="포인트" value={"10,000"} />
           </div>
           {/* 전자책 출판 등록 */}
-          <div className="flex w-full gap-gutter-horizon">
+          <div className="flex w-full gap-gutter-horizontal">
             <TextField
               label="전자책 출판 등록"
               placeholder="횟수"
@@ -70,7 +70,7 @@ function PlanDetail() {
           </div>
         </div>
 
-        <div className="flex gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
           {/* 워터마크 */}
           <div className="w-full">
             <Title label={"워터마크"} />
@@ -93,60 +93,60 @@ function PlanDetail() {
           </div>
         </div>
 
-        <div className="flex gap-gutter-horizon">
-          <div className="flex w-full gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
+          <div className="flex w-full gap-gutter-horizontal">
             {/* AI 글쓰기 */}
             <TextField label="AI 글쓰기" subText="회" value={""} />
             <TextField label="&nbsp;" subText="차감" value={""} />
           </div>
-          <div className="flex w-full gap-gutter-horizon">
+          <div className="flex w-full gap-gutter-horizontal">
             {/* 대본생성 */}
             <TextField label="대본생성" subText="회" value={""} />
             <TextField label="&nbsp;" subText="차감" value={""} />
           </div>
         </div>
 
-        <div className="flex gap-gutter-horizon">
-          <div className="flex w-full gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
+          <div className="flex w-full gap-gutter-horizontal">
             {/* 장면 이미지 생성 */}
             <TextField label="장면 이미지 생성" subText="회" value={""} />
             <TextField label="&nbsp;" subText="차감" value={""} />
           </div>
-          <div className="flex w-full gap-gutter-horizon">
+          <div className="flex w-full gap-gutter-horizontal">
             {/* 아바타 배경 생성 */}
             <TextField label="아바타 배경 생성" subText="회" value={""} />
             <TextField label="&nbsp;" subText="차감" value={""} />
           </div>
         </div>
 
-        <div className="flex gap-gutter-horizon">
-          <div className="flex w-full gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
+          <div className="flex w-full gap-gutter-horizontal">
             {/* 씬별 립싱크 */}
             <TextField label="씬별 립싱크" subText="회" value={""} />
             <TextField label="&nbsp;" subText="차감" value={""} />
           </div>
-          <div className="flex w-full gap-gutter-horizon">
+          <div className="flex w-full gap-gutter-horizontal">
             {/* AI 목소리 생성 */}
             <TextField label="AI 목소리 생성" subText="회" value={""} />
             <TextField label="&nbsp;" subText="차감" value={""} />
           </div>
         </div>
 
-        <div className="flex gap-gutter-horizon">
-          <div className="flex w-full gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
+          <div className="flex w-full gap-gutter-horizontal">
             {/* 이미지 생성 */}
             <TextField label="이미지 생성" subText="회" value={""} />
             <TextField label="&nbsp;" subText="차감" value={""} />
           </div>
-          <div className="flex w-full gap-gutter-horizon">
+          <div className="flex w-full gap-gutter-horizontal">
             {/* 배경음 생성 */}
             <TextField label="배경음 생성" subText="회" value={""} />
             <TextField label="&nbsp;" subText="차감" value={""} />
           </div>
         </div>
 
-        <div className="flex gap-gutter-horizon">
-          <div className="flex w-full gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
+          <div className="flex w-full gap-gutter-horizontal">
             {/* 효과음 생성 */}
             <TextField label="효과음 생성" subText="회" value={""} />
             <TextField label="&nbsp;" subText="차감" value={""} />

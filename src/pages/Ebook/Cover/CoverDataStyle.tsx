@@ -114,7 +114,7 @@ function CoverDataStyle({
             buttonElement={<>포인트</>}
           />
         </div>
-        <div className="flex justify-center *:flex-1 gap-gutter-horizon">
+        <div className="flex justify-center *:flex-1 gap-gutter-horizontal">
           <TextField
             label="표지 샘플 이미지"
             value={"파일을 첨부해주세요"}

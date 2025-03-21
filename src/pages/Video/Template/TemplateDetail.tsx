@@ -29,7 +29,7 @@ function TemplateDetail() {
       button={<Button size="large">삭제</Button>}
     >
       <ContentWrapper>
-        <div className="flex *:flex-1 gap-gutter-horizon">
+        <div className="flex *:flex-1 gap-gutter-horizontal">
           {/* 템플릿명 */}
           <TextField
             label="템플릿명"
@@ -47,7 +47,7 @@ function TemplateDetail() {
           />
         </div>
 
-        <div className="flex *:flex-1 gap-gutter-horizon">
+        <div className="flex *:flex-1 gap-gutter-horizontal">
           {/* 노출 상태 */}
           <div>
             <Title label={"노출 상태"} />
@@ -70,7 +70,7 @@ function TemplateDetail() {
           </div>
         </div>
 
-        <div className="flex *:flex-1 gap-gutter-horizon">
+        <div className="flex *:flex-1 gap-gutter-horizontal">
           {/* 비율 */}
           <TextField label="비율" readOnly value={ratio} />
           {/* 길이 */}

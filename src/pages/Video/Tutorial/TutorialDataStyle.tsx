@@ -63,7 +63,7 @@ function TutorialDataStyle({
           }}
         />
 
-        <div className="flex *:flex-1 gap-gutter-horizon">
+        <div className="flex *:flex-1 gap-gutter-horizontal">
           {/* 카테고리 */}
           <SelectBox
             size="large"
@@ -83,7 +83,7 @@ function TutorialDataStyle({
           />
         </div>
 
-        <div className="flex *:flex-1 gap-gutter-horizon">
+        <div className="flex *:flex-1 gap-gutter-horizontal">
           {/* 노출 상태 */}
           <div>
             <Title label={"노출 상태"} />
