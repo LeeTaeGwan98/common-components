@@ -9,7 +9,7 @@ import InVisible from "@/assets/svg/common/invisible.svg";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 
 interface TextFieldProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "slot"> {
   size?: "large" | "medium";
   label?: string;
   count?: boolean;
@@ -18,13 +18,20 @@ interface TextFieldProps
     isError?: boolean;
     text?: string;
   };
-  leftIcon?: boolean;
+  searchIcon?: boolean;
   subText?: string;
   isVisible?: boolean;
   buttonElement?: ReactNode;
   closeButton?: boolean;
   onClear?: () => void;
   value: string;
+  slot?: {
+    containerClassName?: string;
+    labelClassname?: string;
+    searchIconClassName?: string;
+    inputClassName?: string;
+    subTextClassName?: string;
+  };
 }
 
 function TextField({
@@ -33,13 +40,14 @@ function TextField({
   count = false,
   helperText = "",
   errorInfo,
-  leftIcon = false,
+  searchIcon = false,
   subText = "",
-  isVisible = true,
+  isVisible = false,
   value = "",
   buttonElement,
   closeButton = false,
   onClear,
+  slot = {},
   ...props
 }: TextFieldProps) {
   const [isVisibleIcon, setIsVisibleIcon] = useState(true);
@@ -55,7 +63,7 @@ function TextField({
     },
   };
 
-  const leftIconStyle = leftIcon && "pl-[44px]";
+  const searchIconStyle = searchIcon && "pl-[44px]";
   const rightIconStyle = subText && "pr-[54px]";
 
   const interactiveTypeStyle = `hover:border-coolNeutral-50/[.52] focus:border-primary-normal ${
@@ -67,12 +75,15 @@ function TextField({
   }`;
 
   return (
-    <div className="flex flex-col gap-[4px]">
+    <div
+      className={cn("flex flex-col flex-1 gap-[8px]", slot.containerClassName)}
+    >
       {label && (
         <label
           className={cn(
             "text-label1-normal-bold text-label-alternative ",
-            sizeStyle.label[size]
+            sizeStyle.label[size],
+            slot.labelClassname
           )}
         >
           {label}
@@ -80,16 +91,22 @@ function TextField({
       )}
 
       <div className={cn("relative")}>
-        {leftIcon && (
-          <SearchIcon className="absolute top-1/2 -translate-y-1/2 left-[12px]" />
+        {searchIcon && (
+          <SearchIcon
+            className={cn(
+              "absolute top-1/2 -translate-y-1/2 left-[12px]",
+              slot.searchIconClassName
+            )}
+          />
         )}
         <input
           className={cn(
             "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body1-normal-regular placeholder:text-label-assistive",
             sizeStyle.input[size],
             interactiveTypeStyle,
-            leftIconStyle,
-            rightIconStyle
+            searchIconStyle,
+            rightIconStyle,
+            slot.inputClassName
           )}
           value={value}
           type={isVisibleIcon ? "text" : "password"}
@@ -104,22 +121,25 @@ function TextField({
           subText={subText}
           closeButton={closeButton}
           onClear={onClear}
+          slot={slot}
         />
       </div>
 
-      <TextField.HelperTextArea
-        helperText={helperText}
-        errorInfo={errorInfo}
-        count={count}
-        value={value}
-      />
+      {helperText && (
+        <TextField.HelperTextArea
+          helperText={helperText}
+          errorInfo={errorInfo}
+          count={count}
+          value={value}
+        />
+      )}
     </div>
   );
 }
 
 type RightIconAreaProps = Pick<
   TextFieldProps,
-  "isVisible" | "buttonElement" | "subText" | "closeButton" | "onClear"
+  "isVisible" | "buttonElement" | "subText" | "closeButton" | "onClear" | "slot"
 > & {
   isVisibleIcon: boolean;
   setIsVisibleIcon: React.Dispatch<React.SetStateAction<boolean>>;
@@ -133,6 +153,7 @@ TextField.RightIconArea = (({
   subText,
   closeButton,
   onClear,
+  slot,
 }: RightIconAreaProps) => {
   return (
     <div className="flex absolute top-1/2 -translate-y-1/2 right-[12px] items-center">
@@ -150,7 +171,12 @@ TextField.RightIconArea = (({
         />
       )}
       {subText && (
-        <span className="text-body1-normal-regular text-primary-normal">
+        <span
+          className={cn(
+            "text-body1-normal-regular text-primary-normal",
+            slot?.subTextClassName
+          )}
+        >
           {subText}
         </span>
       )}
