@@ -11,10 +11,11 @@ import {
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-import { ACCOUNT_DETAIL } from "@/Constants/ServiceUrl";
+import { USER_DETAIL } from "@/Constants/ServiceUrl";
 
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
+import Divider from "@/components/common/Atoms/Divider/Divider";
 
 const data = [
   {
@@ -23,7 +24,7 @@ const data = [
     nickName: "여덟글자여덟글자홍길",
     email: "a12345a12345a12345a12345a12345@gmail.com",
     plan: "Starter",
-    ebook: "1",
+    ebook: "0",
     point: "1,000",
     state: "active",
     detail: true,
@@ -35,7 +36,7 @@ const data = [
     email: "a12345a12345a12345a12345a12345@gmail.com",
     plan: "Starter",
     ebook: "1",
-    point: "1,000",
+    point: "0",
     state: "inactive",
     detail: true,
   },
@@ -102,8 +103,24 @@ function UserList() {
                   <TableCell>{item.nickName}</TableCell>
                   <TableCell>{item.email}</TableCell>
                   <TableCell>{item.plan}</TableCell>
-                  <TableCell>{item.ebook}</TableCell>
-                  <TableCell>{item.point}</TableCell>
+                  <TableCell>
+                    {Number(item.ebook) === 0 ? (
+                      <div className="flex items-center justify-center h-[20px]">
+                        <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
+                      </div>
+                    ) : (
+                      item.ebook
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {Number(item.point) === 0 ? (
+                      <div className="flex items-center justify-center h-[20px]">
+                        <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
+                      </div>
+                    ) : (
+                      item.point
+                    )}
+                  </TableCell>
                   <TableCell>
                     {(() => {
                       switch (item.state) {
@@ -137,8 +154,7 @@ function UserList() {
                     })()}
                   </TableCell>
                   <TableCell>
-                    {" "}
-                    <Link to={ACCOUNT_DETAIL}>
+                    <Link to={USER_DETAIL}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
