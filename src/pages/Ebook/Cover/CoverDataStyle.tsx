@@ -20,8 +20,8 @@ interface CoverDataStyleProps {
   creater: string;
   setCreater: Dispatch<SetStateAction<string>>;
   //가격
-  price: number;
-  setPrice: Dispatch<SetStateAction<number>>;
+  price: number | undefined;
+  setPrice: Dispatch<SetStateAction<number | undefined>>;
   //표지 샘플 이미지
   sampleImg: string;
   //표지 디자인 파일
@@ -57,36 +57,43 @@ function CoverDataStyle({
   return (
     <BreadcrumbContainer
       breadcrumbNode={
-        <div className="flex">
-          <div className="flex justify-center items-center">
-            <>전자책 관리 / 표지 관리</>
-            <Divider vertical className="h-[20px] mx-[12px]" />
-            <>{type === "detail" ? "상세" : "등록"}</>
-          </div>
-          <OutlinedButton>표지 미리보기</OutlinedButton>
+        <div className="flex justify-center items-center">
+          <>전자책 관리 / 표지 관리</>
+          <Divider vertical className="h-[20px] mx-[12px]" />
+          <>{type === "detail" ? "상세" : "등록"}</>
+        </div>
+      }
+      button={
+        <div>
+          <OutlinedButton className="w-[180px]" type="assistive" size="large">
+            표지 미리보기
+          </OutlinedButton>
         </div>
       }
     >
       <ContentWrapper>
-        <div className="flex justify-center *:flex-1 gap-gutter-horizon">
+        <div className="flex justify-center *:flex-1 gap-gutter-horizontal">
           <TextField
             label="표지명"
             placeholder="표지명을 입력해주세요"
             value={coverName}
+            maxLength={30}
             onChange={(e) => {
               setCoverName(e.target.value);
             }}
           />
           <TextField
             label="표지 번호"
+            readOnly
             placeholder="표지 등록 시 표지번호가 자동 배분됩니다"
             value={coverNumber}
           />
         </div>
-        <div className="flex justify-center *:flex-1 gap-gutter-horizon">
+        <div className="flex justify-center *:flex-1 gap-gutter-horizontal">
           <TextField
             label="제작자"
             value={creater === "" ? "북카롱" : creater}
+            maxLength={100}
             onChange={(e) => {
               setCreater(e.target.value);
             }}
@@ -94,9 +101,15 @@ function CoverDataStyle({
           <TextField
             label="가격"
             placeholder="표지 가격을 입력해주세요"
-            value={price.toLocaleString("kr")}
+            value={price !== undefined ? price.toLocaleString("kr") : ""}
             onChange={(e) => {
-              setPrice(Number(e.target.value.replaceAll(",", "")));
+              if (e.target.value.replaceAll(",", "").length <= 6) {
+                if (e.target.value === "") {
+                  setPrice(undefined);
+                } else {
+                  setPrice(Number(e.target.value.replaceAll(",", "")));
+                }
+              }
             }}
             buttonElement={<>포인트</>}
           />
@@ -105,6 +118,7 @@ function CoverDataStyle({
           <TextField
             label="표지 샘플 이미지"
             value={"파일을 첨부해주세요"}
+            readOnly
             buttonElement={
               <OutlinedButton size="small">파일 업로드</OutlinedButton>
             }
@@ -112,12 +126,13 @@ function CoverDataStyle({
           <TextField
             label="표지 디자인 파일"
             value={"파일을 첨부해주세요"}
+            readOnly
             buttonElement={
               <OutlinedButton size="small">파일 업로드</OutlinedButton>
             }
           />
         </div>
-        <div className="flex gap-gutter-horizon">
+        <div className="flex gap-gutter-horizontal">
           <div className="w-[50%]">
             <Title size="medium" label={"표지"} />
             <Segement
@@ -135,6 +150,7 @@ function CoverDataStyle({
           <Title size="large" label={"소개"} />
           <TextBox
             value={intro}
+            maxLength={1000}
             onChange={(e) => {
               setIntro(e.target.value);
             }}
@@ -151,7 +167,7 @@ function CoverDataStyle({
           <OutlinedButton
             className="max-w-[180px] w-full"
             size="large"
-            type="assistive"
+            type="secondary"
             onClick={onClickSave}
           >
             저장

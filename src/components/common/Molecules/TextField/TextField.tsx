@@ -102,9 +102,9 @@ function TextField({
         )}
         <input
           className={cn(
-            "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body1-normal-regular placeholder:text-label-assistive",
+            "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-radius-admin text-body1-normal-regular placeholder:text-label-assistive",
             readOnly &&
-              "border-line-normal-neutral bg-line-normal-neutral text-label-alternative",
+              "border-line-normal-neutral bg-interaction-disable placeholder:text-label-assistive text-label-alternative",
             sizeStyle.input[size],
             !readOnly && interactiveTypeStyle,
             searchIconStyle,

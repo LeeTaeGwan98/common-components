@@ -63,7 +63,7 @@ function OutlinedButton({
   return (
     <button
       className={cn(
-        "min-w-[98px] flex justify-center items-center gap-[6px] rounded-large-button border-[1px]",
+        "min-w-[98px] flex justify-center items-center gap-[6px] rounded-[4px] border-[1px]",
         typeStyle[type],
         !disable && interactiveTypeStyle[type],
         sizeStyle[size],

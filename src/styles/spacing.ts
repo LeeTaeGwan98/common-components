@@ -45,15 +45,18 @@ const spacing = {
   margin: "var(--margin)",
   "content-horizon-margin": "var(--content-horizon-margin)",
   "content-vertical-margin": "var(--content-vertical-margin)",
+  "gutter-horizontal": "var(--gutter-horizontal)",
+  "gutter-vertical": "var(--gutter-vertical)",
+  "gutter-large": "var(--gutter-large)",
+  "gutter-medium": "var(--gutter-medium)",
+  "gutter-vertical-heading": "var(--gutter-vertical-heading)",
+  "gutter-vertical-section-large": "var(--gutter-vertical-section-large)",
+  "gutter-vertical-section-small": "var(--gutter-vertical-section-small)",
   "dialog-max-width": "var(--dialog-max-width)",
   "dialog-height": "var(--dialog-height)",
-  "gutter-horizon": "var(--gutter-horizon)",
-  "gutter-vertical": "var(--gutter-vertical)",
   "table-min-width": "var(--table-min-width)",
   "detailTable-min-width": "var(--detailTable-min-width)",
   "tableText-min-width": "var(--tableText-min-width)",
 };
 
 export default spacing;
-
-// Todo: Wep Responsive부분은 추후 추가

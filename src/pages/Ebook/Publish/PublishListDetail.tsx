@@ -9,41 +9,55 @@ function PublishListDetail() {
   return (
     <BreadcrumbContainer
       breadcrumbNode={
-        <div className="flex">
-          <div className="flex justify-center items-center">
-            <>전자책 관리 / 출판 목록</>
-            <Divider vertical className="h-[20px] mx-[12px]" />
-            <>상세</>
-          </div>
+        <div className="flex justify-center items-center">
+          <>전자책 관리 / 출판 목록</>
+          <Divider vertical className="h-[20px] mx-[12px]" />
+          <>상세</>
+        </div>
+      }
+      button={
+        <div>
           <div className="flex gap-[8px]">
-            <OutlinedButton>보류</OutlinedButton>
-            <Button>승인</Button>
+            <OutlinedButton className="w-[180px]" type="assistive" size="large">
+              보류
+            </OutlinedButton>
+            <Button className="w-[180px]" size="large">
+              승인
+            </Button>
           </div>
         </div>
       }
     >
       <ContentWrapper>
         <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="닉네임" value={"닉네임"} />
-          <TextField label="제출일" value={"2025-03-02 12:31:31"} />
+          <TextField label="닉네임" readOnly value={"닉네임"} />
+          <TextField label="제출일" readOnly value={"2025-03-02 12:31:31"} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="도서명" value={"도서명"} />
-          <TextField label="부제" value={"부제"} />
+          <TextField label="도서명" readOnly value={"도서명"} />
+          <TextField label="부제" readOnly value={"부제"} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="저자/역자" value={"카테고리"} />
-          <TextField label="표지" value={"표지 방식"} />
+          <TextField label="저자/역자" readOnly value={"카테고리"} />
+          <TextField label="표지" readOnly value={"표지 방식"} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="원고 파일" value={"원고 파일"} />
-          <TextField label="용량" value={"7.68MB"} />
+          <TextField label="원고 파일" readOnly value={"원고 파일"} />
+          <TextField label="용량" readOnly value={"7.68MB"} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="전자책 정가(판매가)" value={"8,900원"} />
-          <TextField label="제작 방식" value={"원고 제출"} />
+          <TextField label="전자책 정가(판매가)" readOnly value={"8,900원"} />
+          <TextField label="제작 방식" readOnly value={"원고 제출"} />
         </div>
-        <OutlinedButton>확인</OutlinedButton>
+        <div className="flex justify-end">
+          <OutlinedButton
+            className="max-w-[180px] w-full"
+            type="assistive"
+            size="large"
+          >
+            확인
+          </OutlinedButton>
+        </div>
       </ContentWrapper>
     </BreadcrumbContainer>
   );
