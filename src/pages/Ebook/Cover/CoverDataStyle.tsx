@@ -64,9 +64,11 @@ function CoverDataStyle({
         </div>
       }
       button={
-        <OutlinedButton type="assistive" size="large">
-          표지 미리보기
-        </OutlinedButton>
+        <div>
+          <OutlinedButton className="w-[180px]" type="assistive" size="large">
+            표지 미리보기
+          </OutlinedButton>
+        </div>
       }
     >
       <ContentWrapper>
@@ -160,7 +162,7 @@ function CoverDataStyle({
           <OutlinedButton
             className="max-w-[180px] w-full"
             size="large"
-            type="assistive"
+            type="secondary"
             onClick={onClickSave}
           >
             저장
