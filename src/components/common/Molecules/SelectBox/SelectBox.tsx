@@ -35,7 +35,7 @@ function SelectBox({
       <Select {...props}>
         <SelectTrigger
           className={cn(
-            "hover:border-label-alternative w-full focus:ring-0 focus:ring-offset-0 data-[placeholder]:text-body1-normal-regular data-[placeholder]:text-label-assistive rounded-[12px] disabled:bg-interaction-disable text-label-normal",
+            "hover:border-label-alternative w-full focus:ring-0 focus:ring-offset-0 data-[placeholder]:text-body1-normal-regular data-[placeholder]:text-label-assistive rounded-large-input disabled:bg-interaction-disable text-label-normal",
             sizeStyle[size],
             className
           )}
