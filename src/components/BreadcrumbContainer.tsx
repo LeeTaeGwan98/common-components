@@ -26,7 +26,7 @@ function BreadcrumbContainer({
             className: "absolute right-0 bottom-0",
           })}
       </div>
-      <Divider className="mt-[12px] mb-[32px]" />
+      <Divider className="mt-[12px] mb-gutter-vertical" />
       {children}
     </div>
   );

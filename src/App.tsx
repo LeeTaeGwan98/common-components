@@ -37,6 +37,7 @@ import {
   TUTORIAL,
   TUTORIAL_CREATE,
   TUTORIAL_DETAIL,
+  USER_DETAIL,
   USER_LIST,
 } from "@/Constants/ServiceUrl";
 import CoverCreate from "@/pages/Ebook/Cover/CoverCreate";
@@ -49,6 +50,7 @@ import TutorialCreate from "@/pages/Video/Tutorial/TutorialCreate";
 import TutorialDetail from "@/pages/Video/Tutorial/TutorialDetail";
 import Template from "@/pages/Video/Template/Template";
 import TemplateDetail from "@/pages/Video/Template/TemplateDetail";
+import UserDetail from "@/pages/User/UserDetail";
 
 function App() {
   return (
@@ -82,6 +84,7 @@ function App() {
             element={<AccountRegistration />}
           />
           <Route path={ACCOUNT_DETAIL} element={<AccountDetail />} />
+          <Route path={USER_DETAIL} element={<UserDetail />} />
         </Routes>
       </Layout>
     </BrowserRouter>

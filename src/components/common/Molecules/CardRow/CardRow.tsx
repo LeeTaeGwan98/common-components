@@ -5,6 +5,12 @@ interface CardRowDataType {
   title?: string;
   content?: string;
   shortcut?: ReactElement<{ className: string }>;
+  slot?: {
+    containerClassName?: string;
+    titleClassname?: string;
+    contentClassName?: string;
+    shortcutClassName?: string;
+  };
 }
 
 interface CardRowProps {
@@ -13,16 +19,34 @@ interface CardRowProps {
 }
 
 function CardRow({ data = {}, className }: CardRowProps) {
-  const { title, content, shortcut } = data;
+  const { title, content, shortcut, slot = {} } = data;
   return (
-    <div className={cn("flex flex-col gap-[2px]", className)}>
-      <div className="text-label2-bold text-label-normal">{title}</div>
-      <div className="flex justify-between">
-        <span className="text-body2-normal-regular text-label-neutral">
-          {content}
-        </span>
+    <div className={cn("flex flex-col gap-[2px]", slot.containerClassName)}>
+      <div className="flex items-center justify-between">
+        <div>
+          <div
+            className={cn(
+              "text-label2-bold text-label-normal",
+              slot.titleClassname
+            )}
+          >
+            {title}
+          </div>
+          <span
+            className={cn(
+              "text-body2-normal-regular text-label-neutral",
+              slot.titleClassname
+            )}
+          >
+            {content}
+          </span>
+        </div>
         {shortcut && (
-          <span>{cloneElement(shortcut, { className: "size-[48px]" })}</span> // 기본 사이즈 48px
+          <span>
+            {cloneElement(shortcut, {
+              className: cn("size-[48px]", slot.shortcutClassName),
+            })}
+          </span> // 기본 사이즈 48px
         )}
       </div>
     </div>

@@ -9,11 +9,13 @@ import {
   TableCell,
 } from "@/components/common/Tables";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
+import { USER_DETAIL } from "@/Constants/ServiceUrl";
 
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
-import { ACCOUNT_DETAIL } from "@/Constants/ServiceUrl";
-import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
-import { useState } from "react";
+import Updown from "@/assets/svg/common/UpdownIcons.svg";
+import Divider from "@/components/common/Atoms/Divider/Divider";
 
 const data = [
   {
@@ -22,7 +24,7 @@ const data = [
     nickName: "여덟글자여덟글자홍길",
     email: "a12345a12345a12345a12345a12345@gmail.com",
     plan: "Starter",
-    ebook: "1",
+    ebook: "0",
     point: "1,000",
     state: "active",
     detail: true,
@@ -34,7 +36,7 @@ const data = [
     email: "a12345a12345a12345a12345a12345@gmail.com",
     plan: "Starter",
     ebook: "1",
-    point: "1,000",
+    point: "0",
     state: "inactive",
     detail: true,
   },
@@ -52,22 +54,35 @@ const data = [
 ];
 
 function UserList() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [starmDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
   return (
     <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
-      <div className="flex justify-between mb-[12px]">
-        <div className="flex items-center gap-[20px]">
+      <div className="flex items-center bg-slate-400 justify-center h-[48px] mb-[12px]">
+        Header
+        {/* <div className="flex items-center gap-[20px]">
           가입일
-          <DatePicker date={selectedDate} setDate={setSelectedDate} />
+          <div className="flex items-center">
+            <DatePicker date={starmDate} setDate={setStartDate} />
+            <div className="w-[14px] flex items-center justify-center text-body2-normal-medium">
+              ~
+            </div>
+            <DatePicker date={endDate} setDate={setEndDate} />
+          </div>
         </div>
-        <div>dd </div>
+
+        <div>dd </div> */}
       </div>
       <TableContainer>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell isHeader>No</TableCell>
+              <TableCell isHeader>
+                <div className="flex items-center justify-center gap-[2px]">
+                  No <Updown />
+                </div>
+              </TableCell>
               <TableCell isHeader>가입일</TableCell>
               <TableCell isHeader>닉네임</TableCell>
               <TableCell isHeader>이메일</TableCell>
@@ -88,8 +103,24 @@ function UserList() {
                   <TableCell>{item.nickName}</TableCell>
                   <TableCell>{item.email}</TableCell>
                   <TableCell>{item.plan}</TableCell>
-                  <TableCell>{item.ebook}</TableCell>
-                  <TableCell>{item.point}</TableCell>
+                  <TableCell>
+                    {Number(item.ebook) === 0 ? (
+                      <div className="flex items-center justify-center h-[20px]">
+                        <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
+                      </div>
+                    ) : (
+                      item.ebook
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {Number(item.point) === 0 ? (
+                      <div className="flex items-center justify-center h-[20px]">
+                        <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
+                      </div>
+                    ) : (
+                      item.point
+                    )}
+                  </TableCell>
                   <TableCell>
                     {(() => {
                       switch (item.state) {
@@ -123,8 +154,7 @@ function UserList() {
                     })()}
                   </TableCell>
                   <TableCell>
-                    {" "}
-                    <Link to={ACCOUNT_DETAIL}>
+                    <Link to={USER_DETAIL}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
