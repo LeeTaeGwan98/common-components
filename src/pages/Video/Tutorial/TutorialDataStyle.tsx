@@ -1,5 +1,6 @@
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
+import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
@@ -49,6 +50,7 @@ function TutorialDataStyle({
           <>{type === "detail" ? "상세" : "등록"}</>
         </div>
       }
+      button={<Button size="large">삭제</Button>}
     >
       <ContentWrapper>
         {/* 튜토리얼명 */}
