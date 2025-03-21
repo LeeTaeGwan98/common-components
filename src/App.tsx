@@ -25,16 +25,26 @@ import {
   COVER_DETAIL,
   LOGIN,
   MAIN,
+  PLAN,
+  PLAN_DETAIL,
   PUBLISH_LIST,
   PUBLISH_LIST_DETAIL,
   TERMS,
   TERMS_DETAIL,
   TERMS_REGISTRATION,
+  TUTORIAL,
+  TUTORIAL_CREATE,
+  TUTORIAL_DETAIL,
   USER_LIST,
 } from "@/Constants/ServiceUrl";
 import CoverCreate from "@/pages/Ebook/Cover/CoverCreate";
 import AccountRegistration from "@/pages/Admin/AccountRegistration";
 import AccountDetail from "@/pages/Admin/AccountDetail";
+import Plan from "@/pages/Video/Plan/Plan";
+import PlanDetail from "@/pages/Video/Plan/PlanDetail";
+import Tutorial from "@/pages/Video/Tutorial/Tutorial";
+import TutorialCreate from "@/pages/Video/Tutorial/TutorialCreate";
+import TutorialDetail from "@/pages/Video/Tutorial/TutorialDetail";
 
 function App() {
   return (
@@ -50,6 +60,11 @@ function App() {
           <Route path={COVER_DETAIL} element={<CoverDetail />} />
           <Route path={COVER_CREATE} element={<CoverCreate />} />
           <Route path={CHARGING} element={<Charging />} />
+          <Route path={PLAN} element={<Plan />} />
+          <Route path={PLAN_DETAIL} element={<PlanDetail />} />
+          <Route path={TUTORIAL} element={<Tutorial />} />
+          <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
+          <Route path={TUTORIAL_DETAIL} element={<TutorialDetail />} />
           <Route path={TERMS} element={<Terms />} />
           <Route path={COMMON_CODE} element={<CommonCode />} />
           <Route path={ACCOUNT} element={<Account />} />
