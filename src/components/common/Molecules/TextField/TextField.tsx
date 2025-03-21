@@ -51,6 +51,7 @@ function TextField({
   ...props
 }: TextFieldProps) {
   const [isVisibleIcon, setIsVisibleIcon] = useState(true);
+  const { readOnly } = props;
 
   const sizeStyle = {
     label: {
@@ -102,8 +103,10 @@ function TextField({
         <input
           className={cn(
             "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body1-normal-regular placeholder:text-label-assistive",
+            readOnly &&
+              "border-line-normal-neutral bg-line-normal-neutral text-label-alternative",
             sizeStyle.input[size],
-            interactiveTypeStyle,
+            !readOnly && interactiveTypeStyle,
             searchIconStyle,
             rightIconStyle,
             slot.inputClassName
