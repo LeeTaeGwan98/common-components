@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
+import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import Radio from "@/components/common/Atoms/Radio/Radio/Radio";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
@@ -103,7 +104,12 @@ function CommonCode() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableCell isHeader>No1</TableCell>
+                  <TableCell isHeader>
+                    {" "}
+                    <div className="flex items-center justify-center gap-[2px]">
+                      No <Updown />
+                    </div>
+                  </TableCell>
                   <TableCell isHeader>코드 ID</TableCell>
                   <TableCell isHeader>코드명</TableCell>
                   <TableCell isHeader>싱세 설명</TableCell>
