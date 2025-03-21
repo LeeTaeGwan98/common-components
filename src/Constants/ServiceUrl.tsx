@@ -10,6 +10,7 @@ export const CHARGING = "/charging";
 export const PAY = "/pay";
 export const WITHDRAWL_REASON = "/withdraw-reasons";
 export const PLAN = "/plan";
+export const PLAN_DETAIL = "/plan-detail";
 export const TUTORIAL = "/tutorial";
 export const TEMPLATE = "/template";
 export const INQUIRY = "/inquiry";
