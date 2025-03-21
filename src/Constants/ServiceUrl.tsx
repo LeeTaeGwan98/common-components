@@ -28,3 +28,4 @@ export const COMMON_CODE = "/common-code";
 export const ASDF = "/asdf";
 export const ACCOUNT_REGISTRATION = "/account-regisreation";
 export const ACCOUNT_DETAIL = "/account-detail";
+export const USER_DETAIL = "/user-detail";
