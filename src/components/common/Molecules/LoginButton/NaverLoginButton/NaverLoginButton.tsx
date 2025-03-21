@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import NaverLogo from "@/assets/svg/logoNaver.svg";
+import NaverLogo from "@/assets/svg/common/logoNaver.svg";
 import {
   CommonLoginButtonPrsop,
   LoginButtonInteractiveTypeStyle2,
