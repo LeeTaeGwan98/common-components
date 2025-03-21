@@ -15,6 +15,7 @@ export const TUTORIAL = "/tutorial";
 export const TUTORIAL_CREATE = "/tutorial-create";
 export const TUTORIAL_DETAIL = "/tutorial-detail";
 export const TEMPLATE = "/template";
+export const TEMPLATE_DETAIL = "/template-detail";
 export const INQUIRY = "/inquiry";
 export const NOTICE = "/notice";
 export const SERVICE_GUIDE = "/service-guide";
