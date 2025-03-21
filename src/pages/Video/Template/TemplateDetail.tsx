@@ -53,6 +53,8 @@ function TemplateDetail() {
             <Title label={"노출 상태"} />
             <Segement
               className="w-full"
+              itemClassName="text-body1-normal-medium"
+              size="large"
               setSelected={setIsNoExposure}
               selected={isNoExposure}
               textList={["노출", "비노출"]}
@@ -63,6 +65,8 @@ function TemplateDetail() {
             <Title label={"관리자 추천"} />
             <Segement
               className="w-full"
+              itemClassName="text-body1-normal-medium"
+              size="large"
               setSelected={setIsNoRecommend}
               selected={isNoRecommend}
               textList={["추천", "비추천"]}
