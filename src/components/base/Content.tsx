@@ -11,7 +11,7 @@ function Content({ children }: ContentProps) {
     <div
       className={cn("min-h-svh overflow-hidden")}
       style={{
-        maxWidth: `calc(100% - ${SIDEBAR_WIDTH})`,
+        width: `calc(100% - ${SIDEBAR_WIDTH})`,
         marginLeft: SIDEBAR_WIDTH,
       }}
     >

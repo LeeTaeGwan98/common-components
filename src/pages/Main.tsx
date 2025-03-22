@@ -2,6 +2,63 @@ import Card from "@/components/common/Molecules/Card/Card";
 import Content from "@/components/common/Molecules/Content/Content";
 import Up from "@/assets/svg/common/Up.svg";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import { ResponsiveLine } from "@nivo/line";
+
+export const mockLineData = [
+  {
+    id: "japan",
+    data: [
+      {
+        x: "plane",
+        y: 101,
+      },
+      {
+        x: "helicopter",
+        y: 75,
+      },
+      {
+        x: "boat",
+        y: 36,
+      },
+      {
+        x: "train",
+        y: 216,
+      },
+      {
+        x: "subway",
+        y: 35,
+      },
+      {
+        x: "bus",
+        y: 236,
+      },
+      {
+        x: "car",
+        y: 88,
+      },
+      {
+        x: "moto",
+        y: 232,
+      },
+      {
+        x: "bicycle",
+        y: 281,
+      },
+      {
+        x: "horse",
+        y: 1,
+      },
+      {
+        x: "skateboard",
+        y: 35,
+      },
+      {
+        x: "others",
+        y: 14,
+      },
+    ],
+  },
+];
 
 function Main() {
   return (
@@ -122,6 +179,7 @@ function Main() {
         </div>
 
         {/* 플랜 현황 표  */}
+
         <div className="mt-[49px] mb-[49px]">
           <div className="text-heading4-bold text-label-normal mb-[13px]">
             최근 일주일 플랜 결제 현황
@@ -129,7 +187,24 @@ function Main() {
               단위: 원
             </span>
           </div>
-          <div className="bg-slate-500 h-[520px]"></div>
+          <div className="h-[520px]">
+            <ResponsiveLine
+              data={mockLineData}
+              colors="#28A8FB"
+              xScale={{ type: "point" }}
+              pointSize={10}
+              pointBorderWidth={2}
+              pointBorderColor={{ from: "serieColor" }}
+              theme={{
+                grid: {
+                  line: {
+                    stroke: "#70737C29",
+                    strokeWidth: 1,
+                  },
+                },
+              }}
+            />
+          </div>
         </div>
 
         {/* 충전소 현황 표  */}
@@ -140,7 +215,25 @@ function Main() {
               단위: 원
             </span>
           </div>
-          <div className="bg-slate-500 h-[520px]"></div>
+
+          <div className="h-[520px]">
+            <ResponsiveLine
+              data={mockLineData}
+              colors="#28A8FB"
+              xScale={{ type: "point" }}
+              pointSize={10}
+              pointBorderWidth={2}
+              pointBorderColor={{ from: "serieColor" }}
+              theme={{
+                grid: {
+                  line: {
+                    stroke: "#70737C29",
+                    strokeWidth: 1,
+                  },
+                },
+              }}
+            />
+          </div>
         </div>
       </div>
     </BreadcrumbContainer>
@@ -148,3 +241,8 @@ function Main() {
 }
 
 export default Main;
+
+/**
+ * 그래프 참고
+ * https://codesandbox.io/p/sandbox/react-admin-0lp1zw?file=%2Fsrc%2Fdata%2FmockData.js%3A433%2C1-597%2C1
+ */
