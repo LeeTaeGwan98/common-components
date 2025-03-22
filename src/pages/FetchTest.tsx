@@ -14,11 +14,12 @@ interface TestType {
 }
 
 function FetchTest() {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["test"],
     queryFn: () => testGet(),
     staleTime: 1000000000,
     gcTime: 1000000000,
+    enabled: false,
   });
 
   const obj = { title: "foo", body: "bar", userId: 1 };
@@ -69,6 +70,16 @@ function FetchTest() {
 
   return (
     <div>
+      <button
+        onClick={() => {
+          PostAction.mutate(obj);
+        }}
+      >
+        Get
+      </button>
+
+      <br />
+
       <button
         onClick={() => {
           PostAction.mutate(obj);
