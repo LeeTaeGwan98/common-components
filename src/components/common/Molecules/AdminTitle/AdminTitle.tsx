@@ -13,6 +13,12 @@ interface AdminTitleProps {
   isButton?: boolean;
   isDivider?: boolean;
   popoverContent?: React.ReactElement<typeof PopoverContent>;
+  slot?: {
+    containerClassName?: string;
+    titleClassName?: string;
+    buttonClassName?: string;
+    dividerClassName?: string;
+  };
 }
 
 function AdminTitle({
@@ -21,6 +27,7 @@ function AdminTitle({
   isButton = false,
   isDivider = true,
   popoverContent,
+  slot = {},
 }: AdminTitleProps) {
   const sizeTitleStyle = {
     title: {
@@ -42,8 +49,10 @@ function AdminTitle({
   };
 
   return (
-    <div className="flex items-center gap-[8px]">
-      <span className={cn(sizeTitleStyle.title[size])}>{title}</span>
+    <div className={cn("flex items-center gap-[8px]", slot.containerClassName)}>
+      <span className={cn(sizeTitleStyle.title[size], slot.titleClassName)}>
+        {title}
+      </span>
       {isButton && (
         <Popover>
           <PopoverTrigger
@@ -52,7 +61,9 @@ function AdminTitle({
               sizeTitleStyle.checkBox[size]
             )}
           >
-            <DownIcon className={cn(sizeTitleStyle.icon[size])} />
+            <DownIcon
+              className={(cn(sizeTitleStyle.icon[size]), slot.buttonClassName)}
+            />
           </PopoverTrigger>
           {popoverContent}
         </Popover>
@@ -60,7 +71,11 @@ function AdminTitle({
       {isDivider && (
         <Divider
           vertical={true}
-          className={cn("ml-[4px]", sizeTitleStyle.divider[size])}
+          className={cn(
+            "ml-[4px]",
+            sizeTitleStyle.divider[size],
+            slot.dividerClassName
+          )}
         />
       )}
     </div>
