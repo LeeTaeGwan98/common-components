@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { SIDEBAR_WIDTH } from "@/Constants/UIMagicNumber";
 
 interface ContentProps {
   children: ReactNode;
@@ -7,7 +8,13 @@ interface ContentProps {
 
 function Content({ children }: ContentProps) {
   return (
-    <div className={cn("min-h-svh min-w-[calc(100%-320px)] ml-[320px]")}>
+    <div
+      className={cn("min-h-svh overflow-hidden")}
+      style={{
+        maxWidth: `calc(100% - ${SIDEBAR_WIDTH})`,
+        marginLeft: SIDEBAR_WIDTH,
+      }}
+    >
       {children}
     </div>
   );
