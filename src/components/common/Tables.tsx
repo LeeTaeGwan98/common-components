@@ -41,7 +41,16 @@ const TableContainer: React.FC<TableContainerProps> = ({
   children,
   className,
 }) => {
-  return <div className={cn("overflow-x-auto", className)}>{children}</div>;
+  return (
+    <div
+      className={cn(
+        "overflow-x-auto border-[1px] border-line-solid-normal rounded-radius-admin",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
 };
 
 // Table Component
