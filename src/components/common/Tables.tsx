@@ -69,7 +69,16 @@ const Table: React.FC<TableProps> = ({ children, className }) => {
 
 // TableHeader Component
 const TableHeader: React.FC<TableHeaderProps> = ({ children, className }) => {
-  return <thead className={cn("bg-fill-normal", className)}>{children}</thead>;
+  return (
+    <thead
+      className={cn(
+        "bg-fill-normal border-b border-line-solid-normal",
+        className
+      )}
+    >
+      {children}
+    </thead>
+  );
 };
 
 // TableBody Component
@@ -79,7 +88,16 @@ const TableBody: React.FC<TableBodyProps> = ({ children, className }) => {
 
 // TableRow Component
 const TableRow: React.FC<TableRowProps> = ({ children, className }) => {
-  return <tr className={cn("h-[60px] items-center", className)}>{children}</tr>;
+  return (
+    <tr
+      className={cn(
+        "h-[60px] items-center border-b border-line-solid-normal",
+        className
+      )}
+    >
+      {children}
+    </tr>
+  );
 };
 
 // TableCell Component
