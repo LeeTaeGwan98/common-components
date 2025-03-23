@@ -14,7 +14,7 @@ function BreadcrumbContainer({
   button,
 }: BreadcrumbContainerProps) {
   return (
-    <div className="w-full  px-[48px] pt-[64px] pb-[48px]">
+    <div className="w-full px-[48px] pt-[64px] pb-[48px]">
       <div className="relative flex w-full justify-between">
         <div className="flex items-center text-heading3-bold text-label-normal">
           북카롱

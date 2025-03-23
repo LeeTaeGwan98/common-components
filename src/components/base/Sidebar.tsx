@@ -7,6 +7,7 @@ import React, { cloneElement } from "react";
 import BottomArrowIcon from "@/assets/svg/Sidebar/Bottom.svg";
 import RightArrowIcon from "@/assets/svg/Sidebar/right.svg";
 import Menu from "@/components/common/Molecules/Menu/Menu";
+import { SIDEBAR_WIDTH } from "@/Constants/UIMagicNumber";
 
 interface SideBarProps {}
 
@@ -19,7 +20,10 @@ function Sidebar({}: SideBarProps) {
   };
 
   return (
-    <div className="fixed h-screen w-[320px] pt-[64px] border-r-[1px] border-line-normal-normal">
+    <div
+      className="fixed h-screen pt-[64px] border-r-[1px] border-line-normal-normal"
+      style={{ width: SIDEBAR_WIDTH }}
+    >
       <div className="px-[30px] text-body2-normal-bold flex items-center gap-[8px]">
         <CompanyIcon />
         Admin999
