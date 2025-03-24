@@ -23,7 +23,7 @@ const data = [
     id: 1,
     createAt: "9999-12-31 24:59:00",
     adminSubmitAt: "9999-12-31 24:59:00",
-    nickName: "여덞글자여덞글자여덞글자여덞글자여덞글자",
+    nickName: "여덞",
     price: "12,900",
     bookName: "도서명도서명도서명도서명도서명도서명도서명도서명도서명도서명",
     writer: "여덞글자여덞글자여덞글자여덞글자",
@@ -34,7 +34,7 @@ const data = [
     id: 2,
     createAt: "9999-12-31 24:59:00",
     adminSubmitAt: "9999-12-31 24:59:00",
-    nickName: "여덞글자여덞글자여덞글자여덞글자",
+    nickName: "여덞글자여덞글자여덞글자여덞글자여덞글자",
     price: "12,900",
     bookName: "도서명도서명도서명도서명도서명도서명도서명도서명도서명도서명",
     writer: "여덞글자여덞글자여덞글자여덞글자",
@@ -65,7 +65,7 @@ function PublishList() {
     <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
       <div className="h-[48px] mb-[12px]"></div>
       <TableContainer>
-        <Table className="w-[1504px]">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableCell isHeader>
@@ -127,7 +127,7 @@ function PublishList() {
           <TableBody>
             {data.map((item, index) => {
               return (
-                <TableRow className="gap" key={index}>
+                <TableRow key={index}>
                   <TableCell>
                     <Checkbox
                       checked={selectId.some((id) => item.id === id)}
