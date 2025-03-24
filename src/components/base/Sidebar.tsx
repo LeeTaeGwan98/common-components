@@ -8,16 +8,26 @@ import BottomArrowIcon from "@/assets/svg/Sidebar/Bottom.svg";
 import RightArrowIcon from "@/assets/svg/Sidebar/right.svg";
 import Menu from "@/components/common/Molecules/Menu/Menu";
 import { SIDEBAR_WIDTH } from "@/Constants/UIMagicNumber";
+import { useMutation } from "@tanstack/react-query";
+import { logout } from "@/api/auth/auth";
+import { useNavigate } from "react-router-dom";
+import { LOGIN } from "@/Constants/ServiceUrl";
+import { removeCookie } from "@/lib/cookie";
 
 interface SideBarProps {}
 
 function Sidebar({}: SideBarProps) {
+  const navigate = useNavigate();
   const location = useLocation();
   const currentPathname = location.pathname;
 
-  const logoutHandler = () => {
-    console.log("logout");
-  };
+  const { mutate: handleLogoutMutation } = useMutation({
+    mutationFn: () => logout(),
+    onSuccess() {
+      removeCookie("accessToken");
+      navigate(LOGIN);
+    },
+  });
 
   return (
     <div
@@ -91,7 +101,7 @@ function Sidebar({}: SideBarProps) {
         })}
         <button
           className="mx-auto mt-[24px] font-semibold text-[14px] text-label-alternative underline"
-          onClick={logoutHandler}
+          onClick={() => handleLogoutMutation()}
         >
           로그아웃
         </button>

@@ -10,3 +10,9 @@ export const login = (userInfo: LoginParams) => {
 
   return data;
 };
+
+export const logout = () => {
+  const data = API.post("/auth/logout");
+
+  return data;
+};
