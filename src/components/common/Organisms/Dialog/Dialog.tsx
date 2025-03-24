@@ -101,7 +101,7 @@ function Dialog({
               <div className="flex items-center h-[28px]">
                 <IconButton
                   onClick={() => useModalStore.getState().closeModal()}
-                  icon={<X width={20} height={20} fill="text-label-neutral" />}
+                  icon={<X className="w-[20px] h-[20px] text-label-neutral" />}
                 />
               </div>
             )}
