@@ -12,6 +12,7 @@
       "@/*": ["src/*"]
     },
     "skipLibCheck": true,
+    "types": ["vite/client"]
   },
   "include": ["src"],  // 프로젝트에서 TypeScript 파일을 포함할 경로
   "exclude": ["node_modules", "dist"]  // 검사 제외 폴더

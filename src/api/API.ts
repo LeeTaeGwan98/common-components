@@ -1,8 +1,8 @@
 import axios, { AxiosResponse, isAxiosError } from "axios";
 
-export default class ApiClient {
+export default class API {
   static instance = axios.create({
-    baseURL: "https://jsonplaceholder.typicode.com/todos/1",
+    baseURL: import.meta.env.API_URL,
     withCredentials: true,
   });
 
@@ -42,7 +42,7 @@ export default class ApiClient {
     });
   }
 
-  static delete<T = any, R = AxiosResponse<T>, D = any>(
+  static async delete<T = any, R = AxiosResponse<T>, D = any>(
     ...params: Parameters<typeof axios.delete<T, R, D>>
   ): Promise<R> {
     return this.instance.delete<T, R, D>(...params).catch((error: unknown) => {
