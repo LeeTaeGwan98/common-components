@@ -75,7 +75,7 @@ const AdminEdit: React.FC<AdminEditProps> = ({
   };
 
   return (
-    <div className="quill-root-container">
+    <div className="quill-root-container w-full">
       <CustomToolbar />
       <ReactQuill
         ref={quillRef}
