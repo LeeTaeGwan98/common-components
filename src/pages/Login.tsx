@@ -1,26 +1,44 @@
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import { useState, KeyboardEvent } from "react";
+import { login } from "@/api/auth/auth";
+import { useMutation } from "@tanstack/react-query";
+import { setCookie } from "@/lib/cookie";
+import { useNavigate } from "react-router-dom";
+import { MAIN } from "@/Constants/ServiceUrl";
 
 function Login() {
-  const [idField, setIdField] = useState("");
-  const [passwordField, setPasswordField] = useState("");
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const isFieldCheck = idField !== "" && passwordField !== "";
+  const isFieldCheck = email !== "" && password !== "";
 
-  const handleMessage = () => {
-    console.log("로그인 버튼 클릭");
+  const { mutate: handleLoginMutation } = useMutation({
+    mutationFn: () => login({ email, password }),
+    onSuccess(res) {
+      const { accessToken, refreshToken } = res.data.data;
+      setCookie("accessToken", accessToken);
+      setCookie("refreshToken", refreshToken);
+      navigate(MAIN);
+    },
+  });
+
+  const handleLogin = () => {
+    if (isFieldCheck) {
+      handleLoginMutation();
+    }
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && isFieldCheck) {
-      handleMessage();
+      handleLoginMutation();
     }
   };
 
   const handleButtonKeyPress = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === "Enter" && isFieldCheck) {
-      handleMessage();
+      handleLoginMutation();
     }
   };
 
@@ -57,9 +75,9 @@ function Login() {
 
           <div className="flex flex-col gap-[16px]">
             <TextField
-              value={idField}
+              value={email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setIdField(e.target.value);
+                setEmail(e.target.value);
               }}
               isVisible={false}
               placeholder="이메일을 입력해주세요"
@@ -71,9 +89,9 @@ function Login() {
               onKeyDown={handleKeyPress}
             />
             <TextField
-              value={passwordField}
+              value={password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setPasswordField(e.target.value);
+                setPassword(e.target.value);
               }}
               isVisible={false}
               placeholder="비밀번호를 입력해주세요"
@@ -93,7 +111,7 @@ function Login() {
                 : "bg-interaction-disable text-label-assistive cursor-not-allowed"
             }`}
             disabled={!isFieldCheck}
-            onClick={handleMessage}
+            onClick={handleLogin}
             onKeyDown={handleButtonKeyPress}
           >
             관리자 로그인
