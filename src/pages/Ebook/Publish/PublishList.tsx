@@ -10,14 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getEbookList } from "@/api/ebook";
 import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/modal";
 import { useModalStore } from "@/store/modalStore";
 
 const data = [
   {
-    no: 0,
+    id: 1,
     createAt: "9999-12-31 24:59:00",
     nickName: "여덟글자여덟글자홍길",
     email: "a12345a12345a12345a12345a12345@gmail.com",
@@ -28,7 +28,7 @@ const data = [
     detail: true,
   },
   {
-    no: 0,
+    id: 2,
     createAt: "9999-12-31 24:59:00",
     nickName: "여덟글자여덟글자홍길",
     email: "a12345a12345a12345a12345a12345@gmail.com",
@@ -42,6 +42,7 @@ const data = [
 
 function PublishList() {
   const { openModal } = useModalStore();
+  const [selectId, setSelectId] = useState<number[]>([]);
 
   //전자책 전체 목록 가져오기
   useEffect(() => {
@@ -90,7 +91,18 @@ function PublishList() {
               return (
                 <TableRow key={index}>
                   <TableCell>
-                    <Checkbox checked={false} />
+                    <Checkbox
+                      checked={selectId.some((id) => item.id === id)}
+                      onClick={() => {
+                        if (selectId.some((id) => item.id === id)) {
+                          // selectId에서 항목 제거
+                          setSelectId(selectId.filter((id) => item.id !== id));
+                        } else {
+                          // selectId에 항목 추가
+                          setSelectId([...selectId, item.id]);
+                        }
+                      }}
+                    />
                   </TableCell>
                   <TableCell>{item.createAt}</TableCell>
                   <TableCell>{item.nickName}</TableCell>

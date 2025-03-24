@@ -35,6 +35,7 @@ function Dialog({
 }: DialogProps) {
   return (
     <DialogContent
+      onOpenAutoFocus={(event) => event.preventDefault()}
       className={cn(
         "min-w-[360px] w-fit p-0 border-none rounded-[12px] gap-0 [&>button]:hidden",
         className
@@ -99,14 +100,8 @@ function Dialog({
             {close && (
               <div className="flex items-center h-[28px]">
                 <IconButton
-                  icon={
-                    <X
-                      width={20}
-                      height={20}
-                      fill="text-label-neutral"
-                      onClick={() => useModalStore.getState().closeModal()}
-                    />
-                  }
+                  onClick={() => useModalStore.getState().closeModal()}
+                  icon={<X width={20} height={20} fill="text-label-neutral" />}
                 />
               </div>
             )}
