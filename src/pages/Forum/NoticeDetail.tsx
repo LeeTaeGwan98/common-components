@@ -28,8 +28,8 @@ const NoticeDetail = () => {
     <BreadcrumbContainer
       breadcrumbNode={
         <>
-          관리자 / 공지사항 <Divider vertical className="h-[20px] mx-[12px]" />{" "}
-          상세
+          게시판 관리 / 공지사항{" "}
+          <Divider vertical className="h-[20px] mx-[12px]" /> 상세
         </>
       }
       button={
