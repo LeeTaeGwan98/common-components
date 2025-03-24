@@ -2,7 +2,7 @@ import axios, { AxiosResponse, isAxiosError } from "axios";
 
 export default class API {
   static instance = axios.create({
-    baseURL: import.meta.env.API_URL,
+    baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true,
   });
 

@@ -10,7 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import ContentWrapper from "@/components/ContentWrapper";
+import { useEffect } from "react";
+import { getEbookList } from "@/api/ebook";
+import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/modal";
+import { useModalStore } from "@/store/modalStore";
 
 const data = [
   {
@@ -38,6 +41,22 @@ const data = [
 ];
 
 function PublishList() {
+  const { openModal } = useModalStore();
+
+  //전자책 전체 목록 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getEbookList();
+      console.log(res);
+      console.log(import.meta.env.VITE_API_URL);
+    };
+    fetchData();
+  }, []);
+
+  const handlePublishRejectModal = () => {
+    openModal(<PublishRejectReasonModal />);
+  };
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
       <div className="h-[48px] mb-[12px]"></div>
@@ -49,7 +68,7 @@ function PublishList() {
                 <div>
                   <Checkbox checked={false} />
                   <IconButton
-                    className="p-[8px] ml-[-6px]"
+                    //className="p-[8px] ml-[-6px]"
                     icon={<DownArrow width={20} height={20} />}
                   />
                 </div>
@@ -67,9 +86,9 @@ function PublishList() {
           </TableHeader>
 
           <TableBody>
-            {data.map((item) => {
+            {data.map((item, index) => {
               return (
-                <TableRow>
+                <TableRow key={index}>
                   <TableCell>
                     <Checkbox checked={false} />
                   </TableCell>
@@ -79,7 +98,14 @@ function PublishList() {
                   <TableCell>{item.plan}</TableCell>
                   <TableCell>{item.ebook}</TableCell>
                   <TableCell>{item.point}</TableCell>
-                  <TableCell>{item.state}</TableCell>
+                  <TableCell>
+                    <div
+                      className="cursor-pointer underline"
+                      onClick={handlePublishRejectModal}
+                    >
+                      보류
+                    </div>
+                  </TableCell>
                   <TableCell>{item.state}</TableCell>
                   <TableCell>{item.state}</TableCell>
                 </TableRow>
