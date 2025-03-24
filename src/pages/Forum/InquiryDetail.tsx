@@ -1,41 +1,13 @@
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
-import Chip from "@/components/common/Atoms/Chip/Chip";
 import Divider from "@/components/common/Atoms/Divider/Divider";
-import Segement from "@/components/common/Atoms/Segement/Segement";
-import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import { useState } from "react";
 
-import Check from "@/assets/svg/admin/CheckIcons.svg";
-import Plus from "@/assets/svg/admin/PlusIcons.svg";
-
-import {
-  Dialog as DefaultDialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
-  DialogPortal,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import InquiryModal from "@/components/modal/forum/InquiryModal";
 import { useModalStore } from "@/store/modalStore";
-
-const buttonList = [
-  "회원 관리",
-  "전자책 관리",
-  "비디오북 관리",
-  "게시판 관리",
-  "약관 관리",
-  "공통코드 관리",
-  "관리자 계정",
-];
 
 function InquiryDetail() {
   const [answerContents, setAnswerContents] = useState("");

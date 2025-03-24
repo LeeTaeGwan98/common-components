@@ -45,6 +45,12 @@ import {
   SERVICE_GUIDE,
   CHATBOT,
   INQUIRY_DETAIL,
+  NOTICE_DETAIL,
+  NOTICE_REGISTRATION,
+  SERVICE_GUIDE_DETAIL,
+  SERVICE_GUIDE_REGISTRATION,
+  CHATBOT_DETAIL,
+  CHATBOT_REGISTRATION,
 } from "@/Constants/ServiceUrl";
 import CoverCreate from "@/pages/Ebook/Cover/CoverCreate";
 import AccountRegistration from "@/pages/Admin/AccountRegistration";
@@ -68,6 +74,15 @@ import Inquiry from "@/pages/Forum/Inquiry";
 import InquiryDetail from "@/pages/Forum/InquiryDetail";
 import { CookiesProvider } from "react-cookie";
 import ProtectedRoute from "@/components/base/ProtectedRoute";
+import Notice from "@/pages/Forum/Notice";
+import NoticeDetail from "@/pages/Forum/NoticeDetail";
+import NoticeRegistration from "@/pages/Forum/NoticeRegistration";
+import ServiceGuide from "@/pages/Forum/ServiceGuide";
+import ServiceGuideDetail from "@/pages/Forum/ServiceGuideDetail";
+import ServiceGuideRegistration from "@/pages/Forum/ServiceGuideRegistration";
+import Chatbot from "@/pages/Forum/Chatbot";
+import ChatbotDetail from "@/pages/Forum/ChatbotDetail";
+import ChatbotRegistration from "@/pages/Forum/ChatbotRegistration";
 
 const queryClient = new QueryClient();
 
@@ -93,15 +108,6 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path={MAIN} element={<Main />} />
 
-                {/* 회원관리 */}
-                <Route path={USER_LIST} element={<UserList />} />
-                <Route path={PAY} element={<PaymentManagement />} />
-                <Route
-                  path={WITHDRAWL_REASON}
-                  element={<Withdrawalmanagement />}
-                />
-                <Route path={USER_DETAIL} element={<UserDetail />} />
-
                 {/* 전자책 관리 */}
                 <Route path={PUBLISH_LIST} element={<PublishList />} />
                 <Route
@@ -116,12 +122,27 @@ function App() {
                 {/* 게시판 관리 */}
                 <Route path={INQUIRY} element={<Inquiry />} />
                 <Route path={INQUIRY_DETAIL} element={<InquiryDetail />} />
-                <Route path={NOTICE} element={<div>공지사항</div>} />
+                <Route path={NOTICE} element={<Notice />} />
+                <Route path={NOTICE_DETAIL} element={<NoticeDetail />} />
                 <Route
-                  path={SERVICE_GUIDE}
-                  element={<div>서비스 가이드</div>}
+                  path={NOTICE_REGISTRATION}
+                  element={<NoticeRegistration />}
                 />
-                <Route path={CHATBOT} element={<div>챗봇 관리</div>} />
+                <Route path={SERVICE_GUIDE} element={<ServiceGuide />} />
+                <Route
+                  path={SERVICE_GUIDE_DETAIL}
+                  element={<ServiceGuideDetail />}
+                />
+                <Route
+                  path={SERVICE_GUIDE_REGISTRATION}
+                  element={<ServiceGuideRegistration />}
+                />
+                <Route path={CHATBOT} element={<Chatbot />} />
+                <Route path={CHATBOT_DETAIL} element={<ChatbotDetail />} />
+                <Route
+                  path={CHATBOT_REGISTRATION}
+                  element={<ChatbotRegistration />}
+                />
                 {/* 비디오북 관리 */}
                 <Route path={PLAN} element={<Plan />} />
                 <Route path={PLAN_DETAIL} element={<PlanDetail />} />
@@ -130,15 +151,6 @@ function App() {
                 <Route path={TUTORIAL_DETAIL} element={<TutorialDetail />} />
                 <Route path={TEMPLATE} element={<Template />} />
                 <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
-
-                {/* 게시판 관리 */}
-                <Route path={INQUIRY} element={<div>1:1 문의</div>} />
-                <Route path={NOTICE} element={<div>공지사항</div>} />
-                <Route
-                  path={SERVICE_GUIDE}
-                  element={<div>서비스 가이드</div>}
-                />
-                <Route path={CHATBOT} element={<div>챗봇 관리</div>} />
 
                 {/* 관리자 */}
                 <Route path={TERMS} element={<Terms />} />

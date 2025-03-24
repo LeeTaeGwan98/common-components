@@ -28,13 +28,19 @@ export const TEMPLATE_DETAIL = "/template-detail";
 export const INQUIRY = "/inquiry";
 export const INQUIRY_DETAIL = "/inquiry_detail";
 export const NOTICE = "/notice";
+export const NOTICE_DETAIL = "/notice_detail";
+export const NOTICE_REGISTRATION = "/notice_registreation";
 export const SERVICE_GUIDE = "/service-guide";
+export const SERVICE_GUIDE_DETAIL = "/service-guide_detail";
+export const SERVICE_GUIDE_REGISTRATION = "/service-guide_registreation";
 export const CHATBOT = "/chatbot";
+export const CHATBOT_DETAIL = "/chatbot_detail";
+export const CHATBOT_REGISTRATION = "/chatbot_registreation";
 
 // 관리자
 export const TERMS = "/terms";
 export const TERMS_DETAIL = "/terms-detail";
-export const TERMS_REGISTRATION = "/terms-regisreation";
+export const TERMS_REGISTRATION = "/terms-registreation";
 export const ACCOUNT = "/account";
 export const COMMON_CODE = "/common-code";
 export const ACCOUNT_REGISTRATION = "/account-regisreation";
