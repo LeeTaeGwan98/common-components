@@ -84,19 +84,16 @@ function UserDetail() {
           <div className="">
             <div className="grid grid-cols-2 gap-[20px]">
               <Card
-                title="회원현황"
+                title="이용중인 플랜"
                 size="large"
-                isLabel={true}
-                isButton={true}
+                isLabel={false}
+                isButton={false}
                 isSkeleton={false}
                 slot={{
                   containerClassName: "w-full",
                 }}
               >
                 <Content
-                  label="오늘"
-                  summary="320명"
-                  icon={<Up />}
                   slot={{
                     summaryClassName:
                       "text-label-alternative text-body1-normal-bold",
@@ -107,7 +104,7 @@ function UserDetail() {
                 </Content>
               </Card>
               <Card
-                title="출판 승인 요청"
+                title="보유 포인트"
                 size="large"
                 isLabel={true}
                 isButton={true}
@@ -117,18 +114,17 @@ function UserDetail() {
                 }}
               >
                 <Content
-                  summary="승인대기중"
                   slot={{
                     summaryClassName:
                       "text-label-alternative text-body1-normal-bold",
                     labelClassName: "text-primary-normal text-caption1-bold",
                   }}
                 >
-                  20권
+                  3,000 포인트
                 </Content>
               </Card>
               <Card
-                title="최근 6개월 누적 플랜 결제금"
+                title="출판 전자책"
                 size="large"
                 isLabel={true}
                 isButton={true}
@@ -138,19 +134,16 @@ function UserDetail() {
                 }}
               >
                 <Content
-                  label="오늘"
-                  summary="262,200원"
-                  icon={<Up />}
                   slot={{
                     summaryClassName:
                       "text-label-alternative text-body1-normal-bold",
                   }}
                 >
-                  324,000,000원
+                  1권
                 </Content>
               </Card>
               <Card
-                title="최근 6개월 누적 충전소 결제금"
+                title="신분증"
                 size="large"
                 isLabel={true}
                 isButton={true}
@@ -160,37 +153,54 @@ function UserDetail() {
                 }}
               >
                 <Content
-                  label="오늘"
-                  summary="36,000원"
-                  icon={<Up />}
+                  label="일반 개인"
                   slot={{
                     summaryClassName:
                       "text-label-alternative text-body1-normal-bold",
-                    labelClassName: "text-primary-normal text-caption1-bold",
+                    labelClassName:
+                      "bg-fill-normal text-label-alternative text-caption1-bold px-[8px ] py-[4px]",
                   }}
                 >
-                  1,160,000원
+                  010-1111-2222
                 </Content>
               </Card>
               <Card
-                title="문의현황"
+                title="통장 사본"
                 size="large"
-                isLabel={true}
+                isLabel={false}
                 isButton={true}
                 isSkeleton={false}
                 slot={{
                   containerClassName: "w-full",
+                  bodyClassName: "",
                 }}
               >
                 <Content
-                  summary="미답변"
                   slot={{
                     summaryClassName:
                       "text-label-alternative text-body1-normal-bold",
                     labelClassName: "text-primary-normal text-caption1-bold",
                   }}
                 >
-                  22건
+                  홍길동
+                </Content>
+                <Content
+                  slot={{
+                    summaryClassName:
+                      "text-label-alternative text-body1-normal-bold",
+                    labelClassName: "text-primary-normal text-caption1-bold",
+                  }}
+                >
+                  하나은행
+                </Content>
+                <Content
+                  slot={{
+                    summaryClassName:
+                      "text-label-alternative text-body1-normal-bold",
+                    labelClassName: "text-primary-normal text-caption1-bold",
+                  }}
+                >
+                  111-11-11111
                 </Content>
               </Card>
             </div>
