@@ -54,7 +54,7 @@ const data = [
 function UserList() {
   return (
     <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
-      <SubTitleBar />
+      <SubTitleBar title="가입일" />
 
       <TableContainer>
         <Table>
