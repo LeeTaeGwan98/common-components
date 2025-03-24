@@ -73,7 +73,7 @@ function CommonCode() {
     <BreadcrumbContainer breadcrumbNode={<>관리자 / 공통 코드 관리</>}>
       <div className="flex gap-[20px] justify-between">
         <div className="w-full">
-          <TableContainer className="border border-line-normal-alternative">
+          <TableContainer>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -100,12 +100,11 @@ function CommonCode() {
           </TableContainer>
         </div>
         <div className="w-full">
-          <TableContainer className="border border-line-normal-alternative w-[1100px]">
+          <TableContainer>
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableCell isHeader>
-                    {" "}
                     <div className="flex items-center justify-center gap-[2px]">
                       No <Updown />
                     </div>
