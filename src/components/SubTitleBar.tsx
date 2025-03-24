@@ -6,7 +6,11 @@ import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ExcelImage from "@/assets/Image/Excel.png";
 
-function SubTitleBar() {
+interface SubtitleBar {
+  title: string;
+}
+
+function SubTitleBar({ title }: SubtitleBar) {
   const [starmDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [search, setSearch] = useState("");
@@ -15,7 +19,7 @@ function SubTitleBar() {
     <div className="flex items-center justify-between mb-[12px] flex-wrap gap-[8px]">
       <div className="flex">
         <AdminTitle
-          title="가입일"
+          title={title}
           slot={{
             titleClassName: "text-body2-normal-medium",
             dividerClassName: "mr-[12px]",
