@@ -1,4 +1,7 @@
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
+import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
+import DownArrow from "@/assets/svg/common/caretDown.svg";
 import {
   Table,
   TableBody,
@@ -42,7 +45,15 @@ function PublishList() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell isHeader>No</TableCell>
+              <TableCell isHeader>
+                <div>
+                  <Checkbox checked={false} />
+                  <IconButton
+                    className="p-[8px] ml-[-6px]"
+                    icon={<DownArrow width={20} height={20} />}
+                  />
+                </div>
+              </TableCell>
               <TableCell isHeader>제출일</TableCell>
               <TableCell isHeader>관리자 승인일</TableCell>
               <TableCell isHeader>닉네임</TableCell>
@@ -59,7 +70,9 @@ function PublishList() {
             {data.map((item) => {
               return (
                 <TableRow>
-                  <TableCell>{item.no}</TableCell>
+                  <TableCell>
+                    <Checkbox checked={false} />
+                  </TableCell>
                   <TableCell>{item.createAt}</TableCell>
                   <TableCell>{item.nickName}</TableCell>
                   <TableCell>{item.email}</TableCell>
