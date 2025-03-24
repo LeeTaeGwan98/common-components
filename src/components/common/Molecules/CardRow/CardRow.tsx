@@ -35,7 +35,7 @@ function CardRow({ data = {}, slot = {} }: CardRowProps) {
           <span
             className={cn(
               "text-body2-normal-regular text-label-neutral",
-              slot.titleClassname
+              slot.contentClassName
             )}
           >
             {content}

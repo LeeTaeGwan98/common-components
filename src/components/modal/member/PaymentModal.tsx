@@ -1,0 +1,110 @@
+import { useModalStore } from "@/store/modalStore";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { testGet, testPost } from "@/api/example";
+
+import Button from "@/components/common/Atoms/Button/Solid/Button";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import CardRow from "@/components/common/Molecules/CardRow/CardRow";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
+import Divider from "@/components/common/Atoms/Divider/Divider";
+
+const PaymentModal = () => {
+  // 모달에서 GET API요청이 필요한 경우
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["secondModalData"],
+    queryFn: () => testGet(),
+    enabled: false, // 자동 실행 비활성화, 이 속성을 없애면 모달이 열리자마자 GET요청이 실행됨
+  });
+
+  return (
+    <DialogContent className="p-0 rounded-[12px] ">
+      <DialogHeader className="w-full">
+        <DialogTitle className="flex flex-col justify-start ">
+          <div className="flex justify-start p-content-vertical-margin text-heading5-bold">
+            결제 상세
+          </div>
+          <Divider />
+        </DialogTitle>
+        <DialogDescription className="px-content-vertical-margin pt-content-vertical-margin">
+          <div className="flex flex-col  border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin  gap-[12px]">
+            <CardRow
+              className="w-[432px]"
+              data={{
+                title: "닉네임",
+                content: "닉네임",
+              }}
+              slot={{ shortcutClassName: "size-[24px]" }}
+            />
+            <CardRow
+              data={{
+                title: "결제 이메일",
+                content: "결제 이메일",
+              }}
+            />
+
+            <CardRow
+              data={{
+                title: "결제 내역",
+                content: "결제 내역",
+              }}
+            />
+            <CardRow
+              data={{
+                title: "결제 상세 내역",
+                content: "결제 상세 내역",
+              }}
+            />
+            <CardRow
+              data={{
+                title: "결제일",
+                content: "결제일",
+              }}
+            />
+            <CardRow
+              data={{
+                title: "결제 금액",
+                content: "결제 금액",
+              }}
+            />
+            <CardRow
+              data={{
+                title: "카드 종류",
+                content: "카드 종류",
+              }}
+            />
+            <CardRow
+              data={{
+                title: "카드 번호",
+                content: "카드 번호",
+              }}
+            />
+          </div>
+        </DialogDescription>
+        <DialogDescription>
+          {isLoading ? "로딩중임" : data?.data.title}
+        </DialogDescription>
+      </DialogHeader>
+      <DialogFooter>
+        <div className="flex gap-[8px] pb-content-vertical-margin px-content-vertical-margin">
+          <Button className="bg-static-white text-label-normal text-body1-normal-medium border border-line-normal-normal rounded-[4px]">
+            환불
+          </Button>
+          <Button
+            onClick={() => useModalStore.getState().closeModal()}
+            className="w-full py-[12px]"
+          >
+            확인
+          </Button>
+        </div>
+      </DialogFooter>
+    </DialogContent>
+  );
+};
+
+export default PaymentModal;
