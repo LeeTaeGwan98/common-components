@@ -91,7 +91,7 @@ const TableRow: React.FC<TableRowProps> = ({ children, className }) => {
   return (
     <tr
       className={cn(
-        "min-w-[1504px] flex justify-between h-[60px] items-center border-b border-line-solid-normal last:border-b-0",
+        "h-[60px] border-b border-line-solid-normal last:border-b-0",
         className
       )}
     >
@@ -109,7 +109,10 @@ const TableCell: React.FC<TableCellProps> = ({
   const CellTag = isHeader ? "th" : "td";
   return (
     <CellTag
-      className={cn("text-center first:pl-[48px] last:pr-[48px]", className)}
+      className={cn(
+        "text-center pl-[30px] first:pl-[48px] last:pr-[48px]",
+        className
+      )}
     >
       {children}
     </CellTag>
