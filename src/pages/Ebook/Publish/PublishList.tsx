@@ -17,6 +17,7 @@ import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/modal
 import { useModalStore } from "@/store/modalStore";
 import AdminTableTitle from "@/components/common/BookaroongAdmin/AdminTableTitle";
 import AdminTableDescription from "@/components/common/BookaroongAdmin/AdminTableDescription";
+import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 
 const data = [
   {
@@ -205,6 +206,7 @@ function PublishList() {
           </TableBody>
         </Table>
       </TableContainer>
+      <TableIndicator />
     </BreadcrumbContainer>
   );
 }
