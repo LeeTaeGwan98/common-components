@@ -44,6 +44,7 @@ import {
   NOTICE,
   SERVICE_GUIDE,
   CHATBOT,
+  INQUIRY_DETAIL,
 } from "@/Constants/ServiceUrl";
 import CoverCreate from "@/pages/Ebook/Cover/CoverCreate";
 import AccountRegistration from "@/pages/Admin/AccountRegistration";
@@ -63,6 +64,8 @@ import ModalTest from "@/pages/ModalTest";
 import UserDetail from "@/pages/User/UserDetail";
 import PaymentManagement from "@/pages/User/PaymentManagement";
 import Withdrawalmanagement from "@/pages/User/Withdrawalmanagement";
+import Inquiry from "@/pages/Forum/Inquiry";
+import InquiryDetail from "@/pages/Forum/InquiryDetail";
 
 const queryClient = new QueryClient();
 
@@ -101,7 +104,8 @@ function App() {
             <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
 
             {/* 게시판 관리 */}
-            <Route path={INQUIRY} element={<div>1:1 문의</div>} />
+            <Route path={INQUIRY} element={<Inquiry />} />
+            <Route path={INQUIRY_DETAIL} element={<InquiryDetail />} />
             <Route path={NOTICE} element={<div>공지사항</div>} />
             <Route path={SERVICE_GUIDE} element={<div>서비스 가이드</div>} />
             <Route path={CHATBOT} element={<div>챗봇 관리</div>} />

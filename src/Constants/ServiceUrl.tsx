@@ -26,6 +26,7 @@ export const TEMPLATE_DETAIL = "/template-detail";
 
 // 게시판 관리
 export const INQUIRY = "/inquiry";
+export const INQUIRY_DETAIL = "/inquiry_detail";
 export const NOTICE = "/notice";
 export const SERVICE_GUIDE = "/service-guide";
 export const CHATBOT = "/chatbot";
