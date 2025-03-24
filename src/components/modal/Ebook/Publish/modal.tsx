@@ -3,6 +3,7 @@ import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Actions from "@/components/common/Molecules/Actions/Actions";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import Dialog from "@/components/common/Organisms/Dialog/Dialog";
+import { useModalStore } from "@/store/modalStore";
 import { useState } from "react";
 
 //출판 보류 사유 모달
@@ -33,7 +34,12 @@ export const PublishRejectReasonModal = () => {
       close={true}
       buttonElements={
         <Actions className="w-full h-[48px]" priority={"neutral"}>
-          <OutlinedButton className="!flex-none" size="large" type="assistive">
+          <OutlinedButton
+            className="!flex-none"
+            size="large"
+            type="assistive"
+            onClick={() => useModalStore.getState().closeModal()}
+          >
             취소
           </OutlinedButton>
           <Button size="large">전송</Button>
