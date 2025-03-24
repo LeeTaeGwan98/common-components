@@ -2,62 +2,22 @@ import Card from "@/components/common/Molecules/Card/Card";
 import Content from "@/components/common/Molecules/Content/Content";
 import Up from "@/assets/svg/common/Up.svg";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import { ResponsiveLine } from "@nivo/line";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-export const mockLineData = [
-  {
-    id: "japan",
-    data: [
-      {
-        x: "plane",
-        y: 101,
-      },
-      {
-        x: "helicopter",
-        y: 75,
-      },
-      {
-        x: "boat",
-        y: 36,
-      },
-      {
-        x: "train",
-        y: 216,
-      },
-      {
-        x: "subway",
-        y: 35,
-      },
-      {
-        x: "bus",
-        y: 236,
-      },
-      {
-        x: "car",
-        y: 88,
-      },
-      {
-        x: "moto",
-        y: 232,
-      },
-      {
-        x: "bicycle",
-        y: 281,
-      },
-      {
-        x: "horse",
-        y: 1,
-      },
-      {
-        x: "skateboard",
-        y: 35,
-      },
-      {
-        x: "others",
-        y: 14,
-      },
-    ],
-  },
+const data = [
+  { 군구: "광진구", 유동인구수: 32760 },
+  { 군구: "동대문구", 유동인구수: 30480 },
+  { 군구: "마포구", 유동인구수: 27250 },
+  { 군구: "구로구", 유동인구수: 49870 },
+  { 군구: "강남구", 유동인구수: 51420 },
 ];
 
 function Main() {
@@ -187,24 +147,24 @@ function Main() {
               단위: 원
             </span>
           </div>
-          <div className="h-[520px]">
-            <ResponsiveLine
-              data={mockLineData}
-              colors="#28A8FB"
-              xScale={{ type: "point" }}
-              pointSize={10}
-              pointBorderWidth={2}
-              pointBorderColor={{ from: "serieColor" }}
-              theme={{
-                grid: {
-                  line: {
-                    stroke: "#70737C29",
-                    strokeWidth: 1,
-                  },
-                },
-              }}
-            />
-          </div>
+          <ResponsiveContainer className="h-[520px] border border-line-normal-normal py-[32px] pl-[12px] pr-[32px]">
+            <LineChart
+              data={data}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="군구" />
+              <YAxis />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="유동인구수"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+              />
+              <Line type="monotone" dataKey="비유동인구수" stroke="#82ca9d" />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
 
         {/* 충전소 현황 표  */}
@@ -216,24 +176,7 @@ function Main() {
             </span>
           </div>
 
-          <div className="h-[520px]">
-            <ResponsiveLine
-              data={mockLineData}
-              colors="#28A8FB"
-              xScale={{ type: "point" }}
-              pointSize={10}
-              pointBorderWidth={2}
-              pointBorderColor={{ from: "serieColor" }}
-              theme={{
-                grid: {
-                  line: {
-                    stroke: "#70737C29",
-                    strokeWidth: 1,
-                  },
-                },
-              }}
-            />
-          </div>
+          <div className="h-[520px] border border-line-normal-normal">차트</div>
         </div>
       </div>
     </BreadcrumbContainer>
