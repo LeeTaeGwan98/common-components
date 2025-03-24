@@ -63,6 +63,7 @@ import ModalTest from "@/pages/ModalTest";
 import UserDetail from "@/pages/User/UserDetail";
 import PaymentManagement from "@/pages/User/PaymentManagement";
 import Withdrawalmanagement from "@/pages/User/Withdrawalmanagement";
+import { CookiesProvider } from "react-cookie";
 
 const queryClient = new QueryClient();
 
@@ -72,57 +73,68 @@ function App() {
       <ReactQueryDevtools initialIsOpen={false} />
       <Modal />
       <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path={LOGIN} element={<Login />} />
-            <Route path={MAIN} element={<Main />} />
+        <CookiesProvider>
+          <Layout>
+            <Routes>
+              <Route path={LOGIN} element={<Login />} />
+              <Route path={MAIN} element={<Main />} />
 
-            {/* 회원관리 */}
-            <Route path={USER_LIST} element={<UserList />} />
-            <Route path={PAY} element={<PaymentManagement />} />
-            <Route path={WITHDRAWL_REASON} element={<Withdrawalmanagement />} />
-            <Route path={USER_DETAIL} element={<UserDetail />} />
+              {/* 회원관리 */}
+              <Route path={USER_LIST} element={<UserList />} />
+              <Route path={PAY} element={<PaymentManagement />} />
+              <Route
+                path={WITHDRAWL_REASON}
+                element={<Withdrawalmanagement />}
+              />
+              <Route path={USER_DETAIL} element={<UserDetail />} />
 
-            {/* 전자책 관리 */}
-            <Route path={PUBLISH_LIST} element={<PublishList />} />
-            <Route path={PUBLISH_LIST_DETAIL} element={<PublishListDetail />} />
-            <Route path={COVER} element={<Cover />} />
-            <Route path={COVER_DETAIL} element={<CoverDetail />} />
-            <Route path={COVER_CREATE} element={<CoverCreate />} />
-            <Route path={CHARGING} element={<Charging />} />
+              {/* 전자책 관리 */}
+              <Route path={PUBLISH_LIST} element={<PublishList />} />
+              <Route
+                path={PUBLISH_LIST_DETAIL}
+                element={<PublishListDetail />}
+              />
+              <Route path={COVER} element={<Cover />} />
+              <Route path={COVER_DETAIL} element={<CoverDetail />} />
+              <Route path={COVER_CREATE} element={<CoverCreate />} />
+              <Route path={CHARGING} element={<Charging />} />
 
-            {/* 비디오북 관리 */}
-            <Route path={PLAN} element={<Plan />} />
-            <Route path={PLAN_DETAIL} element={<PlanDetail />} />
-            <Route path={TUTORIAL} element={<Tutorial />} />
-            <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
-            <Route path={TUTORIAL_DETAIL} element={<TutorialDetail />} />
-            <Route path={TEMPLATE} element={<Template />} />
-            <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
+              {/* 비디오북 관리 */}
+              <Route path={PLAN} element={<Plan />} />
+              <Route path={PLAN_DETAIL} element={<PlanDetail />} />
+              <Route path={TUTORIAL} element={<Tutorial />} />
+              <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
+              <Route path={TUTORIAL_DETAIL} element={<TutorialDetail />} />
+              <Route path={TEMPLATE} element={<Template />} />
+              <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
 
-            {/* 게시판 관리 */}
-            <Route path={INQUIRY} element={<div>1:1 문의</div>} />
-            <Route path={NOTICE} element={<div>공지사항</div>} />
-            <Route path={SERVICE_GUIDE} element={<div>서비스 가이드</div>} />
-            <Route path={CHATBOT} element={<div>챗봇 관리</div>} />
+              {/* 게시판 관리 */}
+              <Route path={INQUIRY} element={<div>1:1 문의</div>} />
+              <Route path={NOTICE} element={<div>공지사항</div>} />
+              <Route path={SERVICE_GUIDE} element={<div>서비스 가이드</div>} />
+              <Route path={CHATBOT} element={<div>챗봇 관리</div>} />
 
-            {/* 관리자 */}
-            <Route path={TERMS} element={<Terms />} />
-            <Route path={TERMS_DETAIL} element={<TermsDetail />} />
-            <Route path={TERMS_REGISTRATION} element={<TermsRegistration />} />
-            <Route path={ACCOUNT} element={<Account />} />
-            <Route path={COMMON_CODE} element={<CommonCode />} />
-            <Route
-              path={ACCOUNT_REGISTRATION}
-              element={<AccountRegistration />}
-            />
-            <Route path={ACCOUNT_DETAIL} element={<AccountDetail />} />
-            <Route path={USER_DETAIL} element={<UserDetail />} />
+              {/* 관리자 */}
+              <Route path={TERMS} element={<Terms />} />
+              <Route path={TERMS_DETAIL} element={<TermsDetail />} />
+              <Route
+                path={TERMS_REGISTRATION}
+                element={<TermsRegistration />}
+              />
+              <Route path={ACCOUNT} element={<Account />} />
+              <Route path={COMMON_CODE} element={<CommonCode />} />
+              <Route
+                path={ACCOUNT_REGISTRATION}
+                element={<AccountRegistration />}
+              />
+              <Route path={ACCOUNT_DETAIL} element={<AccountDetail />} />
+              <Route path={USER_DETAIL} element={<UserDetail />} />
 
-            <Route path="/fetchTest" element={<FetchTest />} />
-            <Route path="/modalTest" element={<ModalTest />} />
-          </Routes>
-        </Layout>
+              <Route path="/fetchTest" element={<FetchTest />} />
+              <Route path="/modalTest" element={<ModalTest />} />
+            </Routes>
+          </Layout>
+        </CookiesProvider>
       </BrowserRouter>
     </QueryClientProvider>
   );
