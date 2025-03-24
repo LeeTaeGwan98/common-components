@@ -61,6 +61,8 @@ import FetchTest from "@/pages/FetchTest";
 import { Modal } from "@/components/Modal";
 import ModalTest from "@/pages/ModalTest";
 import UserDetail from "@/pages/User/UserDetail";
+import PaymentManagement from "@/pages/User/PaymentManagement";
+import Withdrawalmanagement from "@/pages/User/Withdrawalmanagement";
 
 const queryClient = new QueryClient();
 
@@ -77,8 +79,8 @@ function App() {
 
             {/* 회원관리 */}
             <Route path={USER_LIST} element={<UserList />} />
-            <Route path={PAY} element={<div>결제관리</div>} />
-            <Route path={WITHDRAWL_REASON} element={<div>탈퇴사유관리</div>} />
+            <Route path={PAY} element={<PaymentManagement />} />
+            <Route path={WITHDRAWL_REASON} element={<Withdrawalmanagement />} />
             <Route path={USER_DETAIL} element={<UserDetail />} />
 
             {/* 전자책 관리 */}
