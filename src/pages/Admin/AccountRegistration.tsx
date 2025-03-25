@@ -10,6 +10,7 @@ import Check from "@/assets/svg/admin/CheckIcons.svg";
 import Plus from "@/assets/svg/admin/PlusIcons.svg";
 import { useMutation } from "@tanstack/react-query";
 import { postAccountList, PostAccountType } from "@/api/account";
+import { useNavigate } from "react-router-dom";
 
 const buttonList = [
   "회원 관리",
@@ -32,6 +33,8 @@ function AccountRegistration() {
     new Array(buttonList.length).fill(false)
   );
 
+  const navigate = useNavigate();
+
   const handleChipClick = (index: number) => {
     setSelectedTemplates((prevState) => {
       const newState = [...prevState];
@@ -46,6 +49,9 @@ function AccountRegistration() {
       console.log("post 요청 성공");
       console.log(res);
       console.log(obj);
+
+      navigate("/account", { replace: true }); // 이전 페이지로 이동 (replace는 history에 기록 남지 않음)
+      window.location.reload();
     },
   });
 

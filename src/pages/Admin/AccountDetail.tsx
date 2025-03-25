@@ -6,7 +6,7 @@ import Segement from "@/components/common/Atoms/Segement/Segement";
 import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Check from "@/assets/svg/admin/CheckIcons.svg";
 import Plus from "@/assets/svg/admin/PlusIcons.svg";
@@ -23,6 +23,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  deleteAccountList,
+  getDetailAccountList,
+  patchAccountList,
+  PatchAccountType,
+} from "@/api/account";
 
 const buttonList = [
   "회원 관리",
@@ -35,17 +43,61 @@ const buttonList = [
 ];
 
 function AccountDetail() {
-  const [idField, setIdField] = useState("admin_jth");
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["GetDetailAccount", id],
+    queryFn: () => getDetailAccountList(id),
+    staleTime: 1000000000,
+    gcTime: 1000000000,
+
+    select: (data) => data.data.data,
+  });
+
+  const PatchAccount = useMutation({
+    mutationFn: (obj: PatchAccountType) => patchAccountList(obj, id),
+    onSuccess(res, obj) {
+      console.log("patch 요청 성공", res);
+      alert("저장이 완료되었습니다.");
+
+      navigate("/account", { replace: true }); // 이전 페이지로 이동 (replace는 history에 기록 남지 않음)
+      window.location.reload();
+    },
+    onError(error) {
+      console.error("patch 요청 실패", error);
+      alert("저장에 실패했습니다.");
+    },
+  });
+
+  const DeleteAction = useMutation({
+    mutationFn: () => deleteAccountList(id),
+    onSuccess(res, obj) {
+      console.log("delete 요청 성공");
+      console.log(res);
+      console.log(obj);
+    },
+  });
+
+  console.log(data?.permissions);
+
+  const [idField, setIdField] = useState("");
   const [passwordField, setPasswordField] = useState("");
-  const [nameField, setNameField] = useState("홍길동");
-  const [contactField, setContactField] = useState("010-1111-2222");
-  const [positionField, setPositionField] = useState("팀장");
-  const [situationSelected, setSituationSelected] = useState<boolean>(true);
+  const [nameField, setNameField] = useState("");
+  const [contactField, setContactField] = useState("");
+  const [positionField, setPositionField] = useState("");
+  const [situationSelected, setSituationSelected] = useState<boolean>();
   const [modal, setModal] = useState<boolean>(false);
 
   const [selectedTemplates, setSelectedTemplates] = useState<boolean[]>(
     new Array(buttonList.length).fill(false)
   );
+
+  const getSelectedPermissions = () => {
+    return selectedTemplates
+      .map((isSelected, index) => (isSelected ? buttonList[index] : null))
+      .filter((permission) => permission !== null);
+  };
 
   const handleChipClick = (index: number) => {
     setSelectedTemplates((prevState) => {
@@ -89,7 +141,15 @@ function AccountDetail() {
                           취소
                         </Button>
                       </DialogClose>
-                      <Button className="px-[188px] py-[12px] rounded-[4px] text-body1-normal-medium">
+                      <Button
+                        onClick={() => {
+                          DeleteAction.mutate();
+                          alert("계정이 삭제되었습니다.");
+                          navigate("/account", { replace: true });
+                          window.location.reload();
+                        }}
+                        className="px-[188px] py-[12px] rounded-[4px] text-body1-normal-medium"
+                      >
                         확인
                       </Button>
                     </div>
@@ -117,11 +177,11 @@ function AccountDetail() {
               아이디
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
-                value={idField}
+                value={(data?.email ? null : idField) as string}
+                defaultValue={data?.email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setIdField(e.target.value);
                 }}
-                isVisible={false}
               />
             </div>
             <div className="w-full">
@@ -132,7 +192,6 @@ function AccountDetail() {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setPasswordField(e.target.value);
                 }}
-                isVisible={false}
                 type="password"
               />
             </div>
@@ -143,7 +202,8 @@ function AccountDetail() {
               이름
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
-                value={nameField}
+                value={(data?.name ? null : nameField) as string}
+                defaultValue={data?.name}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setNameField(e.target.value);
                 }}
@@ -154,7 +214,8 @@ function AccountDetail() {
               연락처
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
-                value={contactField}
+                value={(data?.phoneNumber ? null : contactField) as string}
+                defaultValue={data?.phoneNumber as string}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setContactField(e.target.value);
                 }}
@@ -168,7 +229,8 @@ function AccountDetail() {
               직책
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
-                value={positionField}
+                value={(data?.position ? null : positionField) as string}
+                defaultValue={data?.position}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setPositionField(e.target.value);
                 }}
@@ -179,7 +241,7 @@ function AccountDetail() {
               상태
               <Segement
                 size="large"
-                selected={situationSelected}
+                selected={data?.isActive}
                 setSelected={() => setModal(true)}
                 textList={["활성", "비활성"]}
                 className="ml-auto w-full mt-[12px]"
@@ -192,7 +254,7 @@ function AccountDetail() {
             <div className="flex gap-[8px] mt-[8px]">
               {buttonList.map((text, index) => {
                 const isSelected = selectedTemplates[index];
-
+                console.log("isSelected", isSelected);
                 return (
                   <Chip
                     key={index}
@@ -252,6 +314,20 @@ function AccountDetail() {
                     console.log(contentsMessage);
                   }
                 }
+                PatchAccount.mutate({
+                  email: idField === "" ? data?.email ?? "" : idField,
+                  name: nameField === "" ? data?.name ?? "" : nameField,
+                  password: passwordField,
+                  phoneNumber:
+                    contactField === ""
+                      ? data?.phoneNumber ?? ""
+                      : contactField,
+                  position:
+                    positionField === "" ? data?.position ?? "" : positionField,
+                  isActive: true,
+                  permissions: getSelectedPermissions(), // 권한 설정
+                  updatedBy: 1,
+                });
               }}
               className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium "
             >
@@ -347,3 +423,5 @@ function AccountDetail() {
 }
 
 export default AccountDetail;
+
+// as string 써도 될까..?

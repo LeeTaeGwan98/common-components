@@ -165,7 +165,10 @@ function App() {
                   path={ACCOUNT_REGISTRATION}
                   element={<AccountRegistration />}
                 />
-                <Route path={ACCOUNT_DETAIL} element={<AccountDetail />} />
+                <Route
+                  path={`${ACCOUNT_DETAIL}/:id`}
+                  element={<AccountDetail />}
+                />
                 <Route path={USER_DETAIL} element={<UserDetail />} />
 
                 <Route path="/fetchTest" element={<FetchTest />} />
