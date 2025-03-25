@@ -154,7 +154,7 @@ function App() {
 
                 {/* 관리자 */}
                 <Route path={TERMS} element={<Terms />} />
-                <Route path={TERMS_DETAIL} element={<TermsDetail />} />
+                <Route path={`${TERMS_DETAIL}/:id`} element={<TermsDetail />} />
                 <Route
                   path={TERMS_REGISTRATION}
                   element={<TermsRegistration />}
