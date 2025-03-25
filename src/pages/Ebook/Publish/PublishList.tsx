@@ -180,11 +180,11 @@ function PublishList() {
                     />
                   </TableCell>
                   <TableCell className="w-[142px]">
-                    <div onClick={handlePublishRejectModal}>
-                      <AdminTableDescription
-                        className={"text-left cursor-pointer underline"}
-                        text="보류"
-                      />
+                    <div
+                      className="cursor-pointer underline"
+                      onClick={handlePublishRejectModal}
+                    >
+                      보류
                     </div>
                   </TableCell>
                   <TableCell>
