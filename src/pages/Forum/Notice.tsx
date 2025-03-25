@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import { useState } from "react";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import {
@@ -17,35 +16,50 @@ import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import SubTitleBar from "@/components/SubTitleBar";
 import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
+import { getNotice, ResNoticeDataType } from "@/api/notice/notice";
+import { useQuery } from "@tanstack/react-query";
+import { ReqNoticeQueryStringType } from "@/api/notice/notice";
+import Label from "@/components/common/Atoms/Label/Label";
+import { cn } from "@/lib/utils";
 
-const initialData = [
+const initialData: ResNoticeDataType[] = [
   {
     id: 1,
-    date: "9999-12-31 24:59:00",
+    createdAt: "9999-12-31 24:59:00",
     title: "문의제목문의제목문의제목",
-    manager: true,
-    state: "exposure",
+    isPinned: true,
+    isVisible: true,
   },
   {
     id: 2,
-    date: "9999-12-31 24:59:00",
+    createdAt: "9999-12-31 24:59:00",
     title: "문의제목문의제목문의제목",
-    manager: false,
-    state: "nonExposure",
+    isPinned: false,
+    isVisible: false,
   },
 ];
 
 const Notice = () => {
-  const [data, setData] = useState(initialData);
+  const [tmpData] = useState(initialData);
 
-  // 체크박스 클릭 시 manager 값 토글
-  const handleCheckboxChange = (id: number) => {
-    setData((prevData) =>
-      prevData.map((item) =>
-        item.id === id ? { ...item, manager: !item.manager } : item
-      )
-    );
+  const obj: ReqNoticeQueryStringType = {
+    sortOrder: "DESC",
+    fromDt: "2025-03-01",
+    toDt: "2025-03-01",
+    isVisible: false,
+    keyword: "",
+    take: 10,
+    page: 1,
   };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["notice"],
+    queryFn: () => getNotice(obj),
+    select: (data) => data.data.data,
+  });
+
+  console.log(data);
+
   return (
     <BreadcrumbContainer
       breadcrumbNode={<>게시판 관리 / 공지사항</>}
@@ -76,47 +90,30 @@ const Notice = () => {
           </TableHeader>
 
           <TableBody>
-            {data.map((item) => {
+            {tmpData.map((item) => {
+              const { id, createdAt, title, isPinned, isVisible } = item;
               return (
-                <TableRow key={item.id}>
-                  <TableCell>{item.date}</TableCell>
-                  <TableCell>{item.title}</TableCell>
+                <TableRow key={id}>
+                  <TableCell>{createdAt}</TableCell>
+                  <TableCell>{title}</TableCell>
                   <TableCell>
-                    {/* {item.manager === true ? (
-                      <Checkbox checked />
-                    ) : (
-                      <Checkbox checked={false} />
-                    )} */}
-                    <Checkbox
-                      checked={item.manager}
-                      onClick={() => handleCheckboxChange(item.id)}
-                    />
+                    <Checkbox checked={isPinned} />
                   </TableCell>
 
                   <TableCell>
-                    {(() => {
-                      switch (item.state) {
-                        case "exposure":
-                          return (
-                            <div className="w-full flex justify-center items-center">
-                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-primary-normal/10 text-label1-normal-bold text-primary-normal">
-                                노출
-                              </div>
-                            </div>
-                          );
-                        case "nonExposure":
-                          return (
-                            <div className="w-full flex justify-center items-center">
-                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
-                                비노출
-                              </div>
-                            </div>
-                          );
-
-                        default:
-                          return null;
-                      }
-                    })()}
+                    {
+                      <div className="w-full flex justify-center items-center">
+                        <Label
+                          size="medium"
+                          className={cn(
+                            isVisible &&
+                              "bg-primary-normal/normal-focus text-primary-normal"
+                          )}
+                        >
+                          {isVisible ? "노출" : "비노출"}
+                        </Label>
+                      </div>
+                    }
                   </TableCell>
 
                   <TableCell>
