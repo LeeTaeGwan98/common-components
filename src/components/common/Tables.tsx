@@ -110,7 +110,7 @@ const TableCell: React.FC<TableCellProps> = ({
   return (
     <CellTag
       className={cn(
-        "text-center pl-[30px] first:pl-[48px] last:pr-[48px]",
+        "text-center pl-[30px] first:pl-[48px] last:pr-[48px] max-w-[300px]",
         className
       )}
     >
