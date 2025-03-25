@@ -20,7 +20,6 @@ function TermsDetail() {
   });
 
   const termInfo = data?.data.data;
-  console.log(termInfo);
 
   const [termsField, setTermsField] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);

@@ -1,0 +1,121 @@
+import API from "@/api/API";
+
+export interface AccountType {
+  id: number;
+  email: string;
+  name: string;
+  rele: string;
+  password: string;
+  providerCode: string;
+  providerId: string;
+  socialAccessToken: string;
+  phoneNumber: string;
+  position: string;
+  createdBy: number;
+  createdAt: string;
+  updatedBy: number;
+  updatedAt: string;
+  lastLoginAt: string;
+  isActive: boolean;
+}
+
+export interface GetAccountType {
+  id: number;
+  email: string;
+  name: string;
+  createdAt: string;
+  lastLoginAt: string;
+  isActive: boolean;
+}
+
+export interface GetAccountList {
+  list: GetAccountType[];
+  meta: {
+    page: number;
+    take: number;
+    totalCount: number;
+    totalPage: number;
+    hasNextPage: boolean;
+  };
+}
+
+export interface PostAccountType {
+  email: string;
+  name: string;
+  password: string;
+  phoneNumber: string;
+  position: string;
+  isActive: boolean;
+  permissions: string[];
+  createdBy: number;
+  updatedBy: number;
+}
+
+interface AccountPermission {
+  id: number;
+  userId: number;
+  menuCode: string;
+}
+
+export interface GetDetailAccountType {
+  id: number;
+  email: string;
+  name: string;
+  role: string;
+  providerCode: string | null;
+  providerId: string | null;
+  socialAccessToken: string | null;
+  phoneNumber: string | null;
+  position: string;
+  createdBy: number;
+  createdAt: string; // ISO 8601 날짜 포맷
+  updatedBy: number;
+  updatedAt: string; // ISO 8601 날짜 포맷
+  lastLoginAt: string | null;
+  isActive: boolean;
+  permissions: AccountPermission[];
+}
+
+export interface PatchAccountType {
+  email: string;
+  name: string;
+  password: string;
+  phoneNumber: string;
+  position: string;
+  isActive: boolean;
+  permissions: string[];
+  updatedBy: number;
+}
+
+// 계정 조회
+export const getAccountList = () => {
+  const data = API.get<{ data: GetAccountList }>("/admin/account");
+  return data;
+};
+
+// 계정 생성
+export const postAccountList = (body: any) => {
+  const data = API.post<{ data: PostAccountType }>("/admin/account", body);
+  return data;
+};
+
+// 계정 상세 조회
+export const getDetailAccountList = (id: string | undefined) => {
+  const data = API.get<{ data: GetDetailAccountType }>(`/admin/account/${id}`);
+  return data;
+};
+
+// 계정 수정
+export const patchAccountList = (body: any, id: string | undefined) => {
+  const data = API.patch<{ data: PatchAccountType }>(
+    `/admin/account/${id}`,
+    body
+  );
+  return data;
+};
+
+// 계정 삭제
+export const deleteAccountList = (id: string | undefined) => {
+  const data = API.delete(`/admin/account/${id}`);
+  return data;
+};

@@ -14,25 +14,21 @@ import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import { ACCOUNT_DETAIL, ACCOUNT_REGISTRATION } from "@/Constants/ServiceUrl";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import SubTitleBar from "@/components/SubTitleBar";
-
-const data = [
-  {
-    idDate: "admin9999admin9999admin9999admin9999@gmail.com",
-    userName: "홍길동홍길동여럽",
-    recentlyDate: "2024-08-06 00:00",
-    status: "active",
-    ebook: "ds",
-  },
-  {
-    idDate: "admin9999admin9999admin9999admin9999@gmail.com",
-    userName: "홍길동홍길동여럽",
-    recentlyDate: "2024-08-06 00:00",
-    status: "inactive",
-    ebook: "ds",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { getAccountList, GetAccountType } from "@/api/account";
 
 function Account() {
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["accountGet"],
+    queryFn: () => getAccountList(),
+    staleTime: 1000000000,
+    gcTime: 1000000000,
+    //enabled: false,
+    select: (data) => data.data.data,
+  });
+
+  console.log("data", data);
+
   return (
     <BreadcrumbContainer
       button={
@@ -59,15 +55,15 @@ function Account() {
           </TableHeader>
 
           <TableBody>
-            {data.map((item) => {
+            {data?.list.map((item: GetAccountType) => {
               return (
                 <TableRow>
-                  <TableCell>{item.idDate}</TableCell>
-                  <TableCell>{item.userName}</TableCell>
-                  <TableCell>{item.recentlyDate}</TableCell>
+                  <TableCell>{item.id}</TableCell>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.lastLoginAt}</TableCell>
 
                   <TableCell className=" pr-0">
-                    {item.status === "active" ? (
+                    {item.isActive ? (
                       <div className="w-full flex justify-center items-center ">
                         <div className="w-fit  border border-none rounded-[4px] py-[6px] px-[12px] bg-status-positive/10 text-label1-normal-bold text-status-positive">
                           활성
@@ -83,7 +79,7 @@ function Account() {
                   </TableCell>
 
                   <TableCell>
-                    <Link to={ACCOUNT_DETAIL}>
+                    <Link to={`${ACCOUNT_DETAIL}/${item.id}`}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
