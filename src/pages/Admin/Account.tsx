@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import { ACCOUNT_DETAIL, ACCOUNT_REGISTRATION } from "@/Constants/ServiceUrl";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
+import SubTitleBar from "@/components/SubTitleBar";
 
 const data = [
   {
@@ -43,6 +44,8 @@ function Account() {
       }
       breadcrumbNode={<>관리자 / 계정 관리</>}
     >
+      <SubTitleBar title="문의일" />
+
       <TableContainer>
         <Table>
           <TableHeader>
