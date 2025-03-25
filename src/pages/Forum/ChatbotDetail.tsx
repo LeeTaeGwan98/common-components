@@ -21,7 +21,7 @@ import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import ChatbotModal from "@/components/modal/forum/ChatbotModal";
 
 const ChatbotDetail = () => {
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(false);
+  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true);
   const [contentsField, setContentsField] =
     useState("출판 단계는 어떻게 이루어지나요");
 

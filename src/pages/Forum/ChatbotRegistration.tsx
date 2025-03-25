@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 const ChatbotRegistration = () => {
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(false);
+  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true);
   const [contentsField, setContentsField] = useState("");
 
   const { openModal } = useModalStore();

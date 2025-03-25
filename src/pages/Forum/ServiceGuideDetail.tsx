@@ -23,8 +23,8 @@ import ServiceGuideModal from "@/components/modal/forum/ServiceGuideModal";
 const ServiceGuideDetail = () => {
   const [titleContents, setTitleContents] =
     useState("[공지] 전자책 진행 일정 관련");
-  const [isNoExposure, setIsNoExposure] = useState<boolean>(false);
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(false);
+  const [isNoExposure, setIsNoExposure] = useState<boolean>(true);
+  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true);
   const [answerContents, setAnswerContents] = useState(
     "안녕하세요 북카롱입니다 현재 작업량이 많아"
   );

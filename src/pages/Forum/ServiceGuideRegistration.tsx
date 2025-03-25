@@ -20,8 +20,8 @@ import {
 } from "@/components/ui/select";
 const ServiceGuideRegistration = () => {
   const [titleContents, setTitleContents] = useState("");
-  const [isNoExposure, setIsNoExposure] = useState<boolean>(false);
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(false);
+  const [isNoExposure, setIsNoExposure] = useState<boolean>(true);
+  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true);
   const [answerContents, setAnswerContents] = useState("");
 
   const { openModal } = useModalStore();
