@@ -27,7 +27,6 @@ export interface PatchTermsType {
 // 모든 약관 조회
 export const getTermsList = () => {
   const data = API.get<{ data: TermsType[] }>("/admin/term");
-
   return data;
 };
 
