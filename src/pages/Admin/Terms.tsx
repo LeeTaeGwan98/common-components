@@ -21,10 +21,10 @@ function Terms() {
     queryFn: () => getTermsList(),
     staleTime: 1000000000,
     gcTime: 1000000000,
+
+    select: (data) => data.data.data,
     //enabled: false,
   });
-
-  const termsList = data?.data.data;
 
   return (
     <BreadcrumbContainer
@@ -51,7 +51,7 @@ function Terms() {
           </TableHeader>
 
           <TableBody>
-            {termsList?.map((item: TermsType) => {
+            {data?.map((item: TermsType) => {
               return (
                 <TableRow>
                   <TableCell>{item.updatedAt}</TableCell>
