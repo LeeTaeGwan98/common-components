@@ -11,8 +11,8 @@ import Title from "@/components/common/BookaroongAdmin/Title";
 
 const NoticeRegistration = () => {
   const [titleContents, setTitleContents] = useState("");
-  const [isNoExposure, setIsNoExposure] = useState<boolean>(false);
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(false);
+  const [isNoExposure, setIsNoExposure] = useState<boolean>(true);
+  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true);
   const [answerContents, setAnswerContents] = useState("");
 
   return (

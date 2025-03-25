@@ -8,6 +8,8 @@ import { useState } from "react";
 
 import Check from "@/assets/svg/admin/CheckIcons.svg";
 import Plus from "@/assets/svg/admin/PlusIcons.svg";
+import { useMutation } from "@tanstack/react-query";
+import { postAccountList, PostAccountType } from "@/api/account";
 
 const buttonList = [
   "회원 관리",
@@ -25,7 +27,7 @@ function AccountRegistration() {
   const [nameField, setNameField] = useState("");
   const [contactField, setContactField] = useState("");
   const [positionField, setPositionField] = useState("");
-  const [situationSelected, setSituationSelected] = useState<boolean>(false);
+  const [situationSelected, setSituationSelected] = useState<boolean>(true);
   const [selectedTemplates, setSelectedTemplates] = useState<boolean[]>(
     new Array(buttonList.length).fill(false)
   );
@@ -37,6 +39,15 @@ function AccountRegistration() {
       return newState;
     });
   };
+
+  const PostAccount = useMutation({
+    mutationFn: (obj: PostAccountType) => postAccountList(obj),
+    onSuccess(res, obj) {
+      console.log("post 요청 성공");
+      console.log(res);
+      console.log(obj);
+    },
+  });
 
   return (
     <BreadcrumbContainer
@@ -167,29 +178,37 @@ function AccountRegistration() {
             </Button>
             <Button
               onClick={() => {
-                const termsMessage = idField
-                  ? idField
-                  : "아이디를 입력해주세요.";
-                const contentsMessage = nameField
-                  ? nameField
-                  : "내용이 없습니다.";
+                // 선택된 권한 목록 추출
+                const selectedPermissions = buttonList.filter(
+                  (_, index) => selectedTemplates[index]
+                );
 
-                // 하나라도 비어 있으면 해당 메시지만 출력
-                if (!idField && !nameField) {
-                  console.log("이용약관명과 내용이 없습니다.");
-                } else {
-                  if (!idField) {
-                    console.log("아이디를 입력해주세요");
-                  } else {
-                    console.log(termsMessage);
-                  }
-
-                  if (!nameField) {
-                    console.log("이름을 입력해주세요");
-                  } else {
-                    console.log(contentsMessage);
-                  }
+                // 필수 필드 체크
+                if (!idField) {
+                  console.log("아이디를 입력해주세요");
+                  return;
                 }
+                if (!nameField) {
+                  console.log("이름을 입력해주세요");
+                  return;
+                }
+
+                // API 요청 데이터 생성
+                const accountData: PostAccountType = {
+                  email: idField,
+                  name: nameField,
+                  password: passwordField,
+                  phoneNumber: contactField,
+                  position: positionField,
+                  isActive: situationSelected,
+                  permissions: selectedPermissions,
+                  createdBy: 1,
+                  updatedBy: 1,
+                };
+
+                console.log(accountData);
+                // API 호출
+                PostAccount.mutate(accountData);
               }}
               className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium "
             >

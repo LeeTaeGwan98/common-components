@@ -40,7 +40,7 @@ function AccountDetail() {
   const [nameField, setNameField] = useState("홍길동");
   const [contactField, setContactField] = useState("010-1111-2222");
   const [positionField, setPositionField] = useState("팀장");
-  const [situationSelected, setSituationSelected] = useState<boolean>(false);
+  const [situationSelected, setSituationSelected] = useState<boolean>(true);
   const [modal, setModal] = useState<boolean>(false);
 
   const [selectedTemplates, setSelectedTemplates] = useState<boolean[]>(
