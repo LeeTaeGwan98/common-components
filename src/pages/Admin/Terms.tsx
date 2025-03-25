@@ -12,29 +12,20 @@ import {
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import { TERMS_DETAIL, TERMS_REGISTRATION } from "@/Constants/ServiceUrl";
-
-const data = [
-  {
-    editDate: "9999-12-31 24:59:00",
-    applyDate: "2024-09-06",
-    editer:
-      "admin_jthadmin_jthadmin_jthadmin_jthadmin_jthadmin_jthadmin_jthadmin_jth",
-    termsName: "개인정보 처리방침",
-    fileName: "terms_123456789.html",
-    ebook: "ds",
-  },
-  {
-    editDate: "9999-12-31 24:59:00",
-    applyDate: "2024-09-06",
-    editer:
-      "admin_jthadmin_jthadmin_jthadmin_jthadmin_jthadmin_jthadmin_jthadmin_jth",
-    termsName: "서비스 이용약관",
-    fileName: "terms_123456789.html",
-    ebook: "1",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { getTermsList, TermsType } from "@/api/terms";
 
 function Terms() {
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["termsGet"],
+    queryFn: () => getTermsList(),
+    staleTime: 1000000000,
+    gcTime: 1000000000,
+    //enabled: false,
+  });
+
+  const termsList = data?.data.data;
+
   return (
     <BreadcrumbContainer
       breadcrumbNode={<>관리자 / 약관 관리 </>}
@@ -60,16 +51,16 @@ function Terms() {
           </TableHeader>
 
           <TableBody>
-            {data.map((item) => {
+            {termsList?.map((item: TermsType) => {
               return (
                 <TableRow>
-                  <TableCell>{item.editDate}</TableCell>
-                  <TableCell>{item.applyDate}</TableCell>
-                  <TableCell>{item.editer}</TableCell>
-                  <TableCell>{item.termsName}</TableCell>
-                  <TableCell>{item.fileName}</TableCell>
+                  <TableCell>{item.updatedAt}</TableCell>
+                  <TableCell>{item.effectiveDate}</TableCell>
+                  <TableCell>{item.updatedBy}</TableCell>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell>terms_123456789.html</TableCell>
                   <TableCell>
-                    <Link to={TERMS_DETAIL}>
+                    <Link to={`${TERMS_DETAIL}/${item.id}`}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

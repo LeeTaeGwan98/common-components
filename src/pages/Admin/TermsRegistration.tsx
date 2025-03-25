@@ -1,15 +1,38 @@
+import { postTermsList } from "@/api/terms";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+
+interface TermsType {
+  title: string;
+  content: string;
+  isRequired: boolean;
+  effectiveDate: string;
+  sortOrd: number;
+  createdBy: number;
+  updatedBy: number;
+}
 
 function TermsRegistration() {
   const [termsField, setTermsField] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [contentsField, setContentsField] = useState("");
+
+  const obj = { title: "foo", body: "bar", userId: 1 };
+
+  const PostTerms = useMutation({
+    mutationFn: (obj: TermsType) => postTermsList(obj),
+    onSuccess(res, obj) {
+      console.log("post 요청 성공");
+      console.log(res);
+      console.log(obj);
+    },
+  });
 
   return (
     <BreadcrumbContainer
@@ -72,20 +95,24 @@ function TermsRegistration() {
                   : "내용이 없습니다.";
 
                 // 하나라도 비어 있으면 해당 메시지만 출력
-                if (!termsField && !contentsField) {
-                  console.log("이용약관명과 내용이 없습니다.");
+                if (!termsField || !contentsField || !selectedDate) {
+                  // 필수 입력값들이 비어 있으면 경고 메시지를 출력
+                  console.log("필수 입력값이 비어 있습니다.");
                 } else {
-                  if (!termsField) {
-                    console.log("이용약관명이 없습니다.");
-                  } else {
-                    console.log(termsMessage);
-                  }
+                  // 데이터를 객체로 만들어 API 요청
+                  const postData: TermsType = {
+                    title: termsField,
+                    content: contentsField,
+                    isRequired: true,
+                    effectiveDate: selectedDate.toISOString(),
+                    sortOrd: 1,
+                    createdBy: 1,
+                    updatedBy: 1,
+                  };
+                  console.log(postData);
 
-                  if (!contentsField) {
-                    console.log("내용이 없습니다.");
-                  } else {
-                    console.log(contentsMessage);
-                  }
+                  // post 요청을 실행
+                  PostTerms.mutate(postData);
                 }
               }}
               className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium "
