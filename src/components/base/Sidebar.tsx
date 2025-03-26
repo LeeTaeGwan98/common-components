@@ -5,7 +5,7 @@ import SIDEBAR_MENU_ITEM from "@/Constants/SidebarMenuItem";
 import { Link, useLocation } from "react-router-dom";
 import React, { cloneElement } from "react";
 import BottomArrowIcon from "@/assets/svg/Sidebar/Bottom.svg";
-import RightArrowIcon from "@/assets/svg/Sidebar/right.svg";
+import RightArrowIcon from "@/assets/svg/Sidebar/Right.svg";
 import Menu from "@/components/common/Molecules/Menu/Menu";
 import { SIDEBAR_WIDTH } from "@/Constants/UIMagicNumber";
 import { useMutation } from "@tanstack/react-query";
