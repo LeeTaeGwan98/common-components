@@ -18,6 +18,8 @@ import { useModalStore } from "@/store/modalStore";
 import AdminTableTitle from "@/components/common/BookaroongAdmin/AdminTableTitle";
 import AdminTableDescription from "@/components/common/BookaroongAdmin/AdminTableDescription";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
+import { Link } from "react-router-dom";
+import { PUBLISH_LIST_DETAIL } from "@/Constants/ServiceUrl";
 
 const data = [
   {
@@ -194,11 +196,13 @@ function PublishList() {
                     />
                   </TableCell>
                   <TableCell className="w-[56px]">
-                    <IconButton
-                      icon={
-                        <ThreeDot className="size-[24px] fill-label-alternative" />
-                      }
-                    />
+                    <Link to={PUBLISH_LIST_DETAIL}>
+                      <IconButton
+                        icon={
+                          <ThreeDot className="size-[24px] fill-label-alternative" />
+                        }
+                      />
+                    </Link>
                   </TableCell>
                 </TableRow>
               );
