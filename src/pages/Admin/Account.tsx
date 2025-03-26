@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import { ACCOUNT_DETAIL, ACCOUNT_REGISTRATION } from "@/Constants/ServiceUrl";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
-import SubTitleBar from "@/components/SubTitleBar";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import { useQuery } from "@tanstack/react-query";
 import { getAccountList, GetAccountType } from "@/api/account";
 

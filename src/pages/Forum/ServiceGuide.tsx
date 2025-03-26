@@ -15,7 +15,7 @@ import {
 } from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
-import SubTitleBar from "@/components/SubTitleBar";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 
 const data = [

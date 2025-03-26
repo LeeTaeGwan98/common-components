@@ -13,7 +13,7 @@ import { INQUIRY_DETAIL, USER_DETAIL } from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import Divider from "@/components/common/Atoms/Divider/Divider";
-import SubTitleBar from "@/components/SubTitleBar";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 
 const data = [
   {
