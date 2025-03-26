@@ -76,13 +76,11 @@ function TextField({
   }`;
 
   return (
-    <div
-      className={cn("flex flex-col flex-1 gap-[8px]", slot.containerClassName)}
-    >
+    <div className={cn("flex flex-col flex-1", slot.containerClassName)}>
       {label && (
         <label
           className={cn(
-            "text-label1-normal-bold text-label-alternative ",
+            "text-label1-normal-bold text-label-alternative mb-[8px]",
             sizeStyle.label[size],
             slot.labelClassname
           )}
@@ -102,9 +100,9 @@ function TextField({
         )}
         <input
           className={cn(
-            "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body1-normal-regular placeholder:text-label-assistive",
+            "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-large-input text-body1-normal-regular placeholder:text-label-assistive",
             readOnly &&
-              "border-line-normal-neutral bg-interaction-disable text-label-alternative",
+              "border-line-normal-neutral bg-interaction-disable placeholder:text-label-assistive text-label-alternative",
             sizeStyle.input[size],
             !readOnly && interactiveTypeStyle,
             searchIconStyle,
@@ -160,19 +158,6 @@ TextField.RightIconArea = (({
 }: RightIconAreaProps) => {
   return (
     <div className="flex absolute top-1/2 -translate-y-1/2 right-[12px] items-center">
-      {buttonElement}
-      {isVisible && (
-        <IconButton
-          icon={
-            isVisibleIcon ? (
-              <Visible className="size-[24px] fill-label-alternative" />
-            ) : (
-              <InVisible className="size-[24px] fill-label-alternative" />
-            )
-          }
-          onClick={() => setIsVisibleIcon((prev) => !prev)}
-        />
-      )}
       {subText && (
         <span
           className={cn(
@@ -185,10 +170,23 @@ TextField.RightIconArea = (({
       )}
       {closeButton && (
         <IconButton
-          icon={<CloseButton className="size-[24px] fill-label-alternative" />}
+          icon={<CloseButton className="size-[24px] text-label-alternative" />}
           onClick={onClear}
         />
       )}
+      {isVisible && (
+        <IconButton
+          icon={
+            isVisibleIcon ? (
+              <Visible className="size-[24px] fill-label-alternative" />
+            ) : (
+              <InVisible className="size-[24px] fill-label-alternative" />
+            )
+          }
+          onClick={() => setIsVisibleIcon((prev) => !prev)}
+        />
+      )}
+      {buttonElement}
     </div>
   );
 }) as React.FC<RightIconAreaProps>;
@@ -208,7 +206,7 @@ TextField.HelperTextArea = (({
   value,
 }: HelperTextAreaProps) => {
   return (
-    <div className="flex justify-between *:text-caption1-regular">
+    <div className="flex justify-between *:text-caption1-regular mt-[4px]">
       <div className="w-fit text-label-assistive ml-[12px]">
         <span>{helperText && helperText}</span>
         {errorInfo && (
