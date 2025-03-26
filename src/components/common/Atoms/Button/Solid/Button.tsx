@@ -15,9 +15,9 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const sizeStyle = {
-    large: "py-[12px] px-[28px] text-body1-normal-bold",
-    medium: "py-[9px] px-[20px] text-body2-normal-bold",
-    small: "py-[7px] px-[14px] text-label2-bold",
+    large: "py-[12px] px-[28px] text-body1-normal-bold rounded-large-button",
+    medium: "py-[9px] px-[20px] text-body2-normal-bold rounded-medium-button",
+    small: "py-[7px] px-[14px] text-label2-bold rounded-small-button",
   };
   const interactiveTypeStyle =
     "hover:brightness-hover focus:brightness-focus active:brightness-active";
@@ -28,7 +28,7 @@ const Button = ({
   return (
     <button
       className={cn(
-        "bg-primary-normal text-white min-w-[98px] rounded-large-button flex justify-center gap-[6px] items-center",
+        "bg-primary-normal text-white min-w-[98px] flex justify-center gap-[6px] items-center",
         !disable && interactiveTypeStyle,
         disableStyle,
         sizeStyle[size],
