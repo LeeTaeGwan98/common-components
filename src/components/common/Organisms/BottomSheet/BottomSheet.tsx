@@ -18,6 +18,9 @@ interface BottomSheetProps {
   scrollDivider?: boolean;
   actions?: boolean;
   children?: ReactNode;
+  slot?: {
+    contentClassName?: string;
+  };
 }
 
 function BottomSheet({
@@ -26,6 +29,7 @@ function BottomSheet({
   scrollDivider = true,
   actions = true,
   children,
+  slot = {},
 }: BottomSheetProps) {
   return (
     <DrawerContent className="pb-[32px]">
@@ -45,7 +49,8 @@ function BottomSheet({
       <div
         className={cn(
           "flex flex-col min-h-[240px]",
-          fixed && "h-[274px] overflow-auto scrollbar-hide"
+          fixed && "h-[274px] overflow-auto scrollbar-hide",
+          slot.contentClassName
         )}
       >
         {children}
