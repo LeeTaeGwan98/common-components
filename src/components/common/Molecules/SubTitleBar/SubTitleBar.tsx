@@ -7,7 +7,7 @@ import TextField from "@/components/common/Molecules/TextField/TextField";
 import ExcelImage from "@/assets/Image/Excel.png";
 import { useQuery } from "@tanstack/react-query";
 import { getNotice, ReqNoticeQueryStringType } from "@/api/notice/notice";
-import dateToString from "@/lib/dateToString";
+import { dateToString, stringToDate } from "@/lib/dateParse";
 
 interface SubtitleBarProps {
   title: string;
@@ -15,6 +15,8 @@ interface SubtitleBarProps {
 
 const initState: ReqNoticeQueryStringType = {
   sortOrder: "DESC",
+  fromDt: dateToString(new Date()),
+  toDt: dateToString(new Date()),
   isVisible: null,
   keyword: "",
   take: 10,
@@ -46,17 +48,15 @@ const boolToString = (boolString: string) => {
 };
 
 function SubTitleBar({ title }: SubtitleBarProps) {
-  const [fromDt, setFromDt] = useState<Date | undefined>(new Date());
-  const [toDt, setToDt] = useState<Date | undefined>(new Date());
   const [filterInfo, dispatch] = useReducer(reducer, initState);
-  const { isVisible, keyword, take, page } = filterInfo;
+  const { fromDt, toDt, isVisible, keyword, take, page } = filterInfo;
 
   const { refetch } = useQuery({
     queryKey: ["notice"],
     queryFn: () =>
       getNotice({
-        fromDt: dateToString(fromDt),
-        toDt: dateToString(fromDt),
+        fromDt: fromDt,
+        toDt: toDt,
         ...filterInfo,
       }),
     select: (data) => data.data.data,
@@ -65,10 +65,20 @@ function SubTitleBar({ title }: SubtitleBarProps) {
 
   useEffect(() => {
     refetch();
-  }, [filterInfo.isVisible, toDt, filterInfo.take, filterInfo.page]);
+  }, [filterInfo.isVisible, fromDt, toDt, filterInfo.take, filterInfo.page]);
 
-  const handletoDt = (date: Date) => {
-    setToDt(date);
+  const handletoFromDt = (date: Date) => {
+    dispatch({
+      type: "fromDt",
+      value: dateToString(date),
+    });
+  };
+
+  const handletotoDt = (date: Date) => {
+    dispatch({
+      type: "toDt",
+      value: dateToString(date),
+    });
   };
 
   const handleKeywordOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,6 +108,8 @@ function SubTitleBar({ title }: SubtitleBarProps) {
     });
   };
 
+  console.log(fromDt, fromDt);
+
   return (
     <div className="flex items-center justify-between mb-[12px] flex-wrap gap-[8px]">
       <div className="flex">
@@ -108,13 +120,16 @@ function SubTitleBar({ title }: SubtitleBarProps) {
             dividerClassName: "mr-[12px]",
           }}
         />
-        <DatePicker date={fromDt} setDate={setFromDt} />
+        <DatePicker
+          date={stringToDate(fromDt!)}
+          setDate={(date: Date) => handletoFromDt(date)}
+        />
         <span className="w-[14px] flex items-center justify-center text-body2-normal-medium">
           ~
         </span>
         <DatePicker
-          date={toDt}
-          setDate={(date: Date) => handletoDt(date)}
+          date={stringToDate(toDt!)}
+          setDate={(date: Date) => handletotoDt(date)}
           pickerClassName="mr-[12px]"
         />
       </div>
@@ -170,7 +185,5 @@ function SubTitleBar({ title }: SubtitleBarProps) {
 
 export default SubTitleBar;
 
-// 데이터를 사용하는 곳은 SubTitleBar와 Notice
-// 데이터를 보여주기만 하는곳은 Notice
+// 데이터를 가지고있는 곳은 다른 페이지
 // 데이터를 수정하는 곳은 SubtitleBar
-// 즉 SubTitleBar에서 필터링이 되면 데이터 reFetch가 일어나야함

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import {
@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { NOTICE_DETAIL, NOTICE_REGISTRATION } from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
-import SubTitleBar from "@/components/SubTitleBar";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import { getNotice, ResNoticeDataType } from "@/api/notice/notice";
@@ -21,6 +21,37 @@ import { useQuery } from "@tanstack/react-query";
 import { ReqNoticeQueryStringType } from "@/api/notice/notice";
 import Label from "@/components/common/Atoms/Label/Label";
 import { cn } from "@/lib/utils";
+import { dateToString } from "@/lib/dateParse";
+
+const initQuery: ReqNoticeQueryStringType = {
+  sortOrder: "DESC",
+  fromDt: dateToString(new Date()),
+  toDt: dateToString(new Date()),
+  isVisible: null,
+  keyword: "",
+  take: 10,
+  page: 1,
+};
+
+type ActionType = {
+  [K in keyof ReqNoticeQueryStringType]: {
+    type: K;
+    value: ReqNoticeQueryStringType[K];
+  };
+}[keyof ReqNoticeQueryStringType];
+
+const reducer = (
+  queryInfo: ReqNoticeQueryStringType,
+  action: ActionType
+): ReqNoticeQueryStringType => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
 
 const initialData: ResNoticeDataType[] = [
   {
@@ -40,25 +71,14 @@ const initialData: ResNoticeDataType[] = [
 ];
 
 const Notice = () => {
+  const [queryInfo, dispatch] = useReducer(reducer, initQuery);
   const [tmpData] = useState(initialData);
-
-  const obj: ReqNoticeQueryStringType = {
-    sortOrder: "DESC",
-    fromDt: "2025-03-01",
-    toDt: "2025-03-01",
-    isVisible: false,
-    keyword: "",
-    take: 10,
-    page: 1,
-  };
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["notice"],
-    queryFn: () => getNotice(obj),
+    queryFn: () => getNotice(initQuery),
     select: (data) => data.data.data,
   });
-
-  console.log(data);
 
   return (
     <BreadcrumbContainer

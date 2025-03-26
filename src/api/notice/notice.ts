@@ -10,7 +10,7 @@ export interface ReqNoticeQueryStringType {
   sortOrder?: "DESC" | "ASC";
   fromDt?: string;
   toDt?: string;
-  isVisible?: boolean;
+  isVisible?: boolean | null;
   keyword?: string;
   take?: number;
   page?: number;
@@ -35,9 +35,20 @@ export const getNotice = (queryStringObj: ReqNoticeQueryStringType) => {
     page,
   } = queryStringObj;
 
-  const queryString = `/admin/notice?sortOrder=${sortOrder}&fromDt=${fromDt}&toDt=${toDt}${
-    isVisible ? "&isVisible=true" : ""
-  }${keyword ? `&keyword=${keyword}` : ""}&take=${take}&page=${page}`;
+  const getVisibleQueryParam = (isVisible: boolean | null): string => {
+    if (isVisible === true) return "&isVisible=true";
+    if (isVisible === false) return "&isVisible=false";
+    return "";
+  };
+
+  const queryString = `/admin/notice?
+  sortOrder=${sortOrder}
+  &fromDt=${fromDt}
+  &toDt=${toDt}
+  ${getVisibleQueryParam(isVisible)}
+  ${keyword ? `&keyword=${keyword}` : ""}
+  &take=${take}
+  &page=${page}`;
 
   const data = API.get<{ data: ResNoticeDataType }>(queryString);
 
