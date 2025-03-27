@@ -1,5 +1,3 @@
-import { AxiosResponse } from "axios";
-
 export interface PaginationMetaType {
   hasNextPage: boolean;
   page: number;
