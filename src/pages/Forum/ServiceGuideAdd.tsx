@@ -27,7 +27,11 @@ const ServiceGuideRegistration = () => {
   const [content, setContent] = useState("");
 
   const { data: codeInfo } = useSuspenseQuery({
-    queryKey: ["serviceGuideCategories"],
+    queryKey: [
+      "serviceGuideGroupCodes",
+      COMMON_GROUP_CODE_MAPPING.서비스코드,
+      COMMON_GROUP_CODE_MAPPING.전자책만들기서비스가이드카테고리,
+    ],
     queryFn: () =>
       getGroupCodes([
         COMMON_GROUP_CODE_MAPPING.서비스코드,
