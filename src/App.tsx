@@ -79,7 +79,7 @@ import NoticeDetail from "@/pages/Forum/NoticeDetail";
 import NoticeRegistration from "@/pages/Forum/NoticeAdd";
 import ServiceGuide from "@/pages/Forum/ServiceGuide";
 import ServiceGuideDetail from "@/pages/Forum/ServiceGuideDetail";
-import ServiceGuideRegistration from "@/pages/Forum/ServiceGuideRegistration";
+import ServiceGuideRegistration from "@/pages/Forum/ServiceGuideAdd";
 import Chatbot from "@/pages/Forum/Chatbot";
 import ChatbotDetail from "@/pages/Forum/ChatbotDetail";
 import ChatbotRegistration from "@/pages/Forum/ChatbotRegistration";
