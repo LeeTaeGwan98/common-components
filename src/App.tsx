@@ -83,6 +83,7 @@ import ServiceGuideRegistration from "@/pages/Forum/ServiceGuideRegistration";
 import Chatbot from "@/pages/Forum/Chatbot";
 import ChatbotDetail from "@/pages/Forum/ChatbotDetail";
 import ChatbotRegistration from "@/pages/Forum/ChatbotRegistration";
+import { Toaster } from "@/components/ui/sonner";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster />
       <Modal />
       <BrowserRouter>
         <CookiesProvider>

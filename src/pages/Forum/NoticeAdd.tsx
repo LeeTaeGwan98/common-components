@@ -10,6 +10,7 @@ import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
 import { useMutation } from "@tanstack/react-query";
 import { addNotice, type AddNoticePayload } from "@/api/notice/notice";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
 
 const NoticeRegistration = () => {
   const [title, setTitle] = useState("");
@@ -19,11 +20,16 @@ const NoticeRegistration = () => {
 
   const { mutate: addNoticeFn } = useMutation({
     mutationFn: (obj: AddNoticePayload) => addNotice(obj),
-    onSuccess(res, obj) {
-      console.log("post 요청 성공");
-      console.log(res);
-      console.log(obj);
-    },
+    // onSuccess() {
+    //   customToast({
+    //     title: "공지사항을 등록했습니다.",
+    //   });
+    // },
+    // onError() {
+    //   customToast({
+    //     title: "공지사항을 등록중에 에러가 발생했습니다.",
+    //   });
+    // },
   });
 
   console.log(title, isPinned, isVisible, content);
