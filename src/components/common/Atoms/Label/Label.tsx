@@ -10,7 +10,6 @@ interface LabelProps {
 function Label({
   size = "medium",
   variant = "filled",
-
   children,
   className,
 }: LabelProps) {
