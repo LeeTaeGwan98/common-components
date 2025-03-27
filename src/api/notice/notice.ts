@@ -1,7 +1,29 @@
 import API from "@/api/API";
 
-export const addNotice = () => {
-  const data = API.post("/admin/notice");
+export interface AddNoticePayload {
+  title: string;
+  content: string;
+  isPinned: boolean;
+  isVisible: boolean;
+  createdBy: number;
+  updatedBy: number;
+}
+
+export interface AddNoticeRes {
+  id: number;
+  title: string;
+  content: string;
+  isPinned: boolean;
+  isVisible: boolean;
+  createdBy: number;
+  createdAt: string;
+  updatedBy: number;
+  updatedAt: string;
+}
+
+export const addNotice = (payload: AddNoticePayload) => {
+  console.log(payload);
+  const data = API.post<{ data: AddNoticeRes }>("/admin/notice", payload);
 
   return data;
 };

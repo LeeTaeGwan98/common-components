@@ -8,12 +8,25 @@ import { useState } from "react";
 import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
+import { useMutation } from "@tanstack/react-query";
+import { addNotice, type AddNoticePayload } from "@/api/notice/notice";
 
 const NoticeRegistration = () => {
-  const [titleContents, setTitleContents] = useState("");
-  const [isNoExposure, setIsNoExposure] = useState<boolean>(true);
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true);
-  const [answerContents, setAnswerContents] = useState("");
+  const [title, setTitle] = useState("");
+  const [isPinned, setIsPinned] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
+  const [content, setContent] = useState("");
+
+  const { mutate: addNoticeFn } = useMutation({
+    mutationFn: (obj: AddNoticePayload) => addNotice(obj),
+    onSuccess(res, obj) {
+      console.log("post 요청 성공");
+      console.log(res);
+      console.log(obj);
+    },
+  });
+
+  console.log(title, isPinned, isVisible, content);
 
   return (
     <BreadcrumbContainer
@@ -32,9 +45,9 @@ const NoticeRegistration = () => {
               제목
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular text-label-normal"
-                value={titleContents}
+                value={title}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setTitleContents(e.target.value);
+                  setTitle(e.target.value);
                 }}
                 placeholder="공지사항 제목을 입력해주세요"
                 isVisible={false}
@@ -49,8 +62,8 @@ const NoticeRegistration = () => {
                 className="w-full"
                 itemClassName="text-body1-normal-medium"
                 size="large"
-                setSelected={setIsNoRecommend}
-                selected={isNoRecommend}
+                setSelected={setIsVisible}
+                selected={isVisible}
                 textList={["고정", "미고정"]}
               />
             </div>
@@ -60,8 +73,8 @@ const NoticeRegistration = () => {
                 className="w-full"
                 itemClassName="text-body1-normal-medium"
                 size="large"
-                setSelected={setIsNoExposure}
-                selected={isNoExposure}
+                setSelected={setIsPinned}
+                selected={isPinned}
                 textList={["노출", "비노출"]}
               />
             </div>
@@ -70,7 +83,7 @@ const NoticeRegistration = () => {
           {/* 세번째 줄 */}
           <div className="w-full flex flex-col gap-[8px]">
             답변내용
-            <AdminEdit value={answerContents} onChange={setAnswerContents} />
+            <AdminEdit value={content} onChange={setContent} />
           </div>
           {/* 버튼 */}
           <div className="mt-[32px] flex justify-end space-x-4">
@@ -82,7 +95,19 @@ const NoticeRegistration = () => {
             >
               취소
             </Button>
-            <Button className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium ">
+            <Button
+              onClick={() =>
+                addNoticeFn({
+                  title,
+                  isPinned,
+                  isVisible,
+                  content,
+                  createdBy: 1,
+                  updatedBy: 1,
+                })
+              }
+              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium "
+            >
               저장
             </Button>
           </div>
