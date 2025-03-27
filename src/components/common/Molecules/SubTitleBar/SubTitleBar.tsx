@@ -6,7 +6,7 @@ import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ExcelImage from "@/assets/Image/Excel.png";
 import { useQuery } from "@tanstack/react-query";
-import { getNotice, ReqNoticeQueryStringType } from "@/api/notice/notice";
+import { getNotice, ReqNoticeQueryStringType } from "@/api/notice/noticeAPI";
 import { dateToString, stringToDate } from "@/lib/dateParse";
 
 interface SubtitleBarProps {

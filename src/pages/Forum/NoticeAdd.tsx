@@ -9,7 +9,7 @@ import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
 import { useMutation } from "@tanstack/react-query";
-import { addNotice, type AddNoticePayload } from "@/api/notice/notice";
+import { addNotice, type AddNoticePayload } from "@/api/notice/noticeAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
 
 const NoticeRegistration = () => {
