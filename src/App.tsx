@@ -76,7 +76,7 @@ import { CookiesProvider } from "react-cookie";
 import ProtectedRoute from "@/components/base/ProtectedRoute";
 import Notice from "@/pages/Forum/Notice";
 import NoticeDetail from "@/pages/Forum/NoticeDetail";
-import NoticeRegistration from "@/pages/Forum/NoticeRegistration";
+import NoticeRegistration from "@/pages/Forum/NoticeAdd";
 import ServiceGuide from "@/pages/Forum/ServiceGuide";
 import ServiceGuideDetail from "@/pages/Forum/ServiceGuideDetail";
 import ServiceGuideRegistration from "@/pages/Forum/ServiceGuideRegistration";
