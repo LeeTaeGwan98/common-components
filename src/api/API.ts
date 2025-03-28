@@ -1,51 +1,61 @@
-import axios, { AxiosResponse, isAxiosError } from "axios";
+import axios, { AxiosResponse } from "axios";
+import { useAuthStore } from "@/store/authStore";
+
+export const APIInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+});
+
+// API헤더의 Authorization에 accessToken을 심어주는 인터셉터
+APIInstance.interceptors.request.use((config) => {
+  const accessToken = useAuthStore.getState().accessToken;
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
+});
 
 export default class API {
-  static instance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    withCredentials: true,
-  });
-
   static async get<T = any, R = AxiosResponse<T>, D = any>(
-    ...params: Parameters<typeof axios.get<T, R, D>>
+    ...params: Parameters<typeof APIInstance.get<T, R, D>>
   ): Promise<R> {
-    return this.instance.get<T, R, D>(...params).catch((error: unknown) => {
+    return APIInstance.get<T, R, D>(...params).catch((error: unknown) => {
       alert(error);
       throw Error;
     });
   }
 
   static async post<T = any, R = AxiosResponse<T>, D = any>(
-    ...params: Parameters<typeof axios.post<T, R, D>>
+    ...params: Parameters<typeof APIInstance.post<T, R, D>>
   ): Promise<R> {
-    return this.instance.post<T, R, D>(...params).catch((error: unknown) => {
+    return APIInstance.post<T, R, D>(...params).catch((error: unknown) => {
       alert(error);
       throw Error;
     });
   }
 
   static async put<T = any, R = AxiosResponse<T>, D = any>(
-    ...params: Parameters<typeof axios.put<T, R, D>>
+    ...params: Parameters<typeof APIInstance.put<T, R, D>>
   ): Promise<R> {
-    return this.instance.put<T, R, D>(...params).catch((error: unknown) => {
+    return APIInstance.put<T, R, D>(...params).catch((error: unknown) => {
       alert(error);
       throw Error;
     });
   }
 
   static async patch<T = any, R = AxiosResponse<T>, D = any>(
-    ...params: Parameters<typeof axios.patch<T, R, D>>
+    ...params: Parameters<typeof APIInstance.patch<T, R, D>>
   ): Promise<R> {
-    return this.instance.patch<T, R, D>(...params).catch((error: unknown) => {
+    return APIInstance.patch<T, R, D>(...params).catch((error: unknown) => {
       alert(error);
       throw Error;
     });
   }
 
   static async delete<T = any, R = AxiosResponse<T>, D = any>(
-    ...params: Parameters<typeof axios.delete<T, R, D>>
+    ...params: Parameters<typeof APIInstance.delete<T, R, D>>
   ): Promise<R> {
-    return this.instance.delete<T, R, D>(...params).catch((error: unknown) => {
+    return APIInstance.delete<T, R, D>(...params).catch((error: unknown) => {
       alert(error);
       throw Error;
     });

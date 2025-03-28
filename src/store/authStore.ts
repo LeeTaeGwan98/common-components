@@ -27,6 +27,8 @@ export const useAuthStore = create<AuthState>()(
         console.log(userResponse);
         set({
           user: userResponse,
+          accessToken: userResponse.accessToken,
+          refreshToken: userResponse.refreshToken,
           isLogin: true,
         });
       },
