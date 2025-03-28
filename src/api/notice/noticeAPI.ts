@@ -33,13 +33,13 @@ export const addNotice = (payload: AddNoticePayload) => {
 };
 
 export interface ReqNoticeQueryStringType {
-  sortOrder?: "DESC" | "ASC";
-  fromDt?: string;
-  toDt?: string;
+  sortOrder: "DESC" | "ASC";
+  fromDt: string;
+  toDt: string;
   isVisible?: boolean | null;
   keyword?: string;
-  take?: number;
-  page?: number;
+  take: number;
+  page: number;
 }
 
 export interface ResNoticeDataType {
