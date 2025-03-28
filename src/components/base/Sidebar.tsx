@@ -12,10 +12,12 @@ import { useMutation } from "@tanstack/react-query";
 import { logout } from "@/api/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { LOGIN } from "@/Constants/ServiceUrl";
+import { useAuthStore } from "@/store/authStore";
 
 interface SideBarProps {}
 
 function Sidebar({}: SideBarProps) {
+  const delUserInfo = useAuthStore((state) => state.delUserInfo);
   const navigate = useNavigate();
   const location = useLocation();
   const currentPathname = location.pathname;
@@ -23,6 +25,7 @@ function Sidebar({}: SideBarProps) {
   const { mutate: handleLogoutMutation } = useMutation({
     mutationFn: () => logout(),
     onSuccess() {
+      delUserInfo();
       navigate(LOGIN);
     },
   });
