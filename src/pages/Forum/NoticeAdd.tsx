@@ -32,7 +32,7 @@ const NoticeRegistration = () => {
     // },
   });
 
-  console.log(title, isPinned, isVisible, content);
+  console.log("고정", isPinned, "노출", isVisible);
 
   return (
     <BreadcrumbContainer
@@ -68,8 +68,8 @@ const NoticeRegistration = () => {
                 className="w-full"
                 itemClassName="text-body1-normal-medium"
                 size="large"
-                setSelected={setIsVisible}
-                selected={isVisible}
+                setSelected={setIsPinned}
+                selected={isPinned}
                 textList={["고정", "미고정"]}
               />
             </div>
@@ -79,8 +79,8 @@ const NoticeRegistration = () => {
                 className="w-full"
                 itemClassName="text-body1-normal-medium"
                 size="large"
-                setSelected={setIsPinned}
-                selected={isPinned}
+                setSelected={setIsVisible}
+                selected={isVisible}
                 textList={["노출", "비노출"]}
               />
             </div>
