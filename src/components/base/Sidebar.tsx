@@ -12,7 +12,6 @@ import { useMutation } from "@tanstack/react-query";
 import { logout } from "@/api/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { LOGIN } from "@/Constants/ServiceUrl";
-import { removeCookie } from "@/lib/cookie";
 
 interface SideBarProps {}
 
@@ -24,7 +23,6 @@ function Sidebar({}: SideBarProps) {
   const { mutate: handleLogoutMutation } = useMutation({
     mutationFn: () => logout(),
     onSuccess() {
-      removeCookie("accessToken");
       navigate(LOGIN);
     },
   });
