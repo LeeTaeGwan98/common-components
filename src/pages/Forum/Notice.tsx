@@ -15,21 +15,15 @@ import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
-import { getNotice, ResNoticeDataType } from "@/api/notice/noticeAPI";
+import { getNotice } from "@/api/notice/noticeAPI";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { ReqNoticeQueryStringType } from "@/api/notice/noticeAPI";
+import { TableQueryStringType } from "@/api/common/commonType";
 import Label from "@/components/common/Atoms/Label/Label";
 import { cn } from "@/lib/utils";
-import { dateToString, stringToDate } from "@/lib/dateParse";
-import AdminTitle from "@/components/common/Molecules/AdminTitle/AdminTitle";
-import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
-import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
-import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
-import TextField from "@/components/common/Molecules/TextField/TextField";
-import ExcelImage from "@/assets/Image/Excel.png";
+import { dateToString } from "@/lib/dateParse";
 import { useEffect, useReducer } from "react";
-
-const initState: ReqNoticeQueryStringType = {
+import { ActionType } from "@/api/common/commonType";
+const initState: TableQueryStringType = {
   sortOrder: "DESC",
   fromDt: dateToString(new Date()),
   toDt: dateToString(new Date()),
@@ -38,13 +32,6 @@ const initState: ReqNoticeQueryStringType = {
   take: 10,
   page: 1,
 };
-
-type ActionType<T> = {
-  [K in keyof T]: {
-    type: K;
-    value: T[K];
-  };
-}[keyof T];
 
 const reducer = <T extends Record<string, any>>(
   queryInfo: T,
@@ -59,13 +46,8 @@ const reducer = <T extends Record<string, any>>(
   };
 };
 
-const boolToString = (boolString: string) => {
-  return boolString === "true" ? true : false;
-};
-
 const Notice = () => {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
-
   const { data, refetch } = useSuspenseQuery({
     queryKey: ["noticeList"],
     queryFn: () => getNotice(filterInfo),
@@ -79,50 +61,10 @@ const Notice = () => {
     });
   };
 
-  const handletoFromDt = (date: Date) => {
-    dispatch({
-      type: "fromDt",
-      value: dateToString(date),
-    });
-  };
-
-  const handletotoDt = (date: Date) => {
-    dispatch({
-      type: "toDt",
-      value: dateToString(date),
-    });
-  };
-
-  const handleKeywordOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: "keyword",
-      value: e.target.value,
-    });
-  };
-
-  const handleKeywordEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      refetch();
-    }
-  };
-
-  const handleisVisible = (visible: string) => {
-    dispatch({
-      type: "isVisible",
-      value: visible === "ALL" ? null : boolToString(visible),
-    });
-  };
-
-  const handleTake = (take: number) => {
-    dispatch({
-      type: "take",
-      value: take,
-    });
-  };
-
   useEffect(() => {
     refetch();
   }, [
+    // 검색어는 Enter를 눌렀을 때 refetch를 실행
     filterInfo.sortOrder,
     filterInfo.isVisible,
     filterInfo.fromDt,
@@ -142,75 +84,12 @@ const Notice = () => {
         </Link>
       }
     >
-      <div className="flex items-center justify-between mb-[12px] flex-wrap gap-[8px]">
-        <div className="flex">
-          <AdminTitle
-            title={"등록일"}
-            slot={{
-              titleClassName: "text-body2-normal-medium",
-              dividerClassName: "mr-[12px]",
-            }}
-          />
-          <DatePicker
-            date={stringToDate(filterInfo.fromDt!)}
-            setDate={(date: Date) => handletoFromDt(date)}
-          />
-          <span className="w-[14px] flex items-center justify-center text-body2-normal-medium">
-            ~
-          </span>
-          <DatePicker
-            date={stringToDate(filterInfo.toDt!)}
-            setDate={(date: Date) => handletotoDt(date)}
-            pickerClassName="mr-[12px]"
-          />
-        </div>
-
-        <div className="flex gap-[12px]">
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            onValueChange={(value) => handleisVisible(value)}
-            defaultValue="ALL"
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">전체</SelectItem>
-                <SelectItem value="true">노출</SelectItem>
-                <SelectItem value="false">비노출</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
-
-          <TextField
-            value={filterInfo.keyword || ""}
-            searchIcon
-            placeholder="검색어를 입력해주세요"
-            onChange={handleKeywordOnchange}
-            onKeyDown={handleKeywordEnter}
-          />
-
-          <SelectBox
-            placeholder="10개 씩"
-            className="min-w-[108px]"
-            size="large"
-            defaultValue="10"
-            onValueChange={(value) => handleTake(Number(value))}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="10">10개 씩</SelectItem>
-                <SelectItem value="20">20개 씩</SelectItem>
-                <SelectItem value="30">30개 씩</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
-
-          <button>
-            <img src={ExcelImage} className="size-[48px]" />
-          </button>
-        </div>
-      </div>
+      <SubTitleBar
+        filterInfo={filterInfo}
+        title="등록일"
+        dispatch={dispatch}
+        refetch={refetch}
+      />
 
       <TableContainer>
         <Table>

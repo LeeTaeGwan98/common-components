@@ -4,12 +4,72 @@ import AdminTitle from "@/components/common/Molecules/AdminTitle/AdminTitle";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ExcelImage from "@/assets/Image/Excel.png";
+import { ActionDispatch } from "react";
+import { TableQueryStringType } from "@/api/common/commonType";
+import { dateToString, stringToDate } from "@/lib/dateParse";
+import { ActionType } from "@/api/common/commonType";
+
+const boolToString = (boolString: string) => {
+  // shadcn의 selectItem에는 string타입만 들어갈 수 있어서 만든 함수
+  return boolString === "true" ? true : false;
+};
 
 interface SubtitleBarProps {
   title: string;
+  filterInfo: TableQueryStringType;
+  dispatch: ActionDispatch<[action: ActionType<TableQueryStringType>]>;
+  refetch: () => void;
 }
 
-function SubTitleBar({ title }: SubtitleBarProps) {
+function SubTitleBar({
+  filterInfo,
+  title,
+  dispatch,
+  refetch,
+}: SubtitleBarProps) {
+  const { fromDt, toDt, keyword, isVisible, take } = filterInfo;
+  const handletoFromDt = (date: Date) => {
+    dispatch({
+      type: "fromDt",
+      value: dateToString(date),
+    });
+  };
+
+  const handletotoDt = (date: Date) => {
+    dispatch({
+      type: "toDt",
+      value: dateToString(date),
+    });
+  };
+
+  const handleKeywordOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: "keyword",
+      value: e.target.value,
+    });
+  };
+
+  const handleKeywordEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // 검색어는 Enter를 눌렀을 때 refetch를 실행
+    if (e.key === "Enter") {
+      refetch();
+    }
+  };
+
+  const handleisVisible = (visible: string) => {
+    dispatch({
+      type: "isVisible",
+      value: visible === "ALL" ? null : boolToString(visible),
+    });
+  };
+
+  const handleTake = (take: number) => {
+    dispatch({
+      type: "take",
+      value: take,
+    });
+  };
+
   return (
     <div className="flex items-center justify-between mb-[12px] flex-wrap gap-[8px]">
       <div className="flex">
@@ -20,11 +80,11 @@ function SubTitleBar({ title }: SubtitleBarProps) {
             dividerClassName: "mr-[12px]",
           }}
         />
-        <DatePicker date={new Date()} setDate={() => {}} />
+        <DatePicker date={stringToDate(fromDt)} setDate={handletoFromDt} />
         <span className="w-[14px] flex items-center justify-center text-body2-normal-medium">
           ~
         </span>
-        <DatePicker date={new Date()} setDate={() => {}} />
+        <DatePicker date={stringToDate(toDt)} setDate={handletotoDt} />
       </div>
 
       <div className="flex gap-[12px]">
@@ -33,6 +93,7 @@ function SubTitleBar({ title }: SubtitleBarProps) {
           className="min-w-[240px]"
           size="large"
           defaultValue="ALL"
+          onValueChange={handleisVisible}
         >
           <SelectContent>
             <SelectGroup>
@@ -43,13 +104,20 @@ function SubTitleBar({ title }: SubtitleBarProps) {
           </SelectContent>
         </SelectBox>
 
-        <TextField value={""} searchIcon placeholder="검색어를 입력해주세요" />
+        <TextField
+          value={""}
+          onChange={handleKeywordOnchange}
+          onKeyDown={handleKeywordEnter}
+          searchIcon
+          placeholder="검색어를 입력해주세요"
+        />
 
         <SelectBox
           placeholder="10개 씩"
           className="min-w-[108px]"
           size="large"
           defaultValue="10"
+          onValueChange={(value) => handleTake(Number(value))}
         >
           <SelectContent>
             <SelectGroup>
