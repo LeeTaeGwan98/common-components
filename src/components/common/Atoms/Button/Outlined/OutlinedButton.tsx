@@ -33,10 +33,9 @@ function OutlinedButton({
   };
 
   const sizeStyle = {
-    large: "py-[12px] px-[28px] rounded-large-button",
-    medium: "py-[9px] px-[20px] rounded-medium-button",
-    small: "py-[7px] px-[14px] rounded-small-button",
-    "detail-small": "detail-mobile:py-[7px] detail-mobile:px-[14px]",
+    large: "py-[12px] px-[28px]",
+    medium: "py-[9px] px-[20px]",
+    small: "py-[7px] px-[14px]",
   };
 
   const disableStyle = {
@@ -48,34 +47,29 @@ function OutlinedButton({
       large: "text-body1-normal-bold",
       medium: "text-body2-normal-bold",
       small: "text-label2-bold",
-      "detail-small": " detail-mobile:text-label2-bold",
     },
     secondary: {
       large: "text-body1-normal-bold",
       medium: "text-body2-normal-bold",
       small: "text-label2-bold",
-      "detail-small": " detail-mobile:text-label2-bold",
     },
     assistive: {
       large: "text-body1-normal-medium",
       medium: "text-body2-normal-medium",
       small: "text-label2-medium",
-      "detail-small": " detail-mobile:text-label2-medium",
     },
   };
 
   return (
     <button
       className={cn(
-        "min-w-[98px] flex justify-center items-center gap-[6px] border-[1px]",
+        "min-w-[98px] flex justify-center items-center gap-[6px] rounded-[4px] border-[1px]",
         typeStyle[type],
         !disable && interactiveTypeStyle[type],
         sizeStyle[size],
-        disableStyle,
         fontStyle[type][size],
-        sizeStyle["detail-small"],
-        fontStyle[type]["detail-small"],
-        className
+        className,
+        disableStyle
       )}
       onMouseUp={(e) => e.currentTarget.blur()}
       {...props}
