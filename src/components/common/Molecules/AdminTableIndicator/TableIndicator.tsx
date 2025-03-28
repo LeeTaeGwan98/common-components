@@ -36,6 +36,9 @@ function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
   }, [inputNumber]);
 
   const handlePage = (pageType: "increase" | "decrease") => {
+    setInputNumber(
+      pageType === "increase" ? String(page + 1) : String(page - 1)
+    );
     dispatch({
       type: "page",
       value: pageType === "increase" ? Number(page) + 1 : Number(page) - 1,
