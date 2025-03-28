@@ -1,5 +1,6 @@
 import API from "@/api/API";
 import { type TableResSuccessType } from "@/api/common/commonType";
+import { TableQueryStringType } from "@/api/common/commonType";
 
 export interface AddNoticePayload {
   title: string;
@@ -32,16 +33,6 @@ export const addNotice = (payload: AddNoticePayload) => {
   return data;
 };
 
-export interface ReqNoticeQueryStringType {
-  sortOrder: "DESC" | "ASC";
-  fromDt: string;
-  toDt: string;
-  isVisible?: boolean | null;
-  keyword?: string;
-  take: number;
-  page: number;
-}
-
 export interface ResNoticeDataType {
   id: number;
   createdAt: string;
@@ -50,7 +41,7 @@ export interface ResNoticeDataType {
   isVisible: boolean;
 }
 
-export const getNotice = (queryStringObj: ReqNoticeQueryStringType) => {
+export const getNotice = (queryStringObj: TableQueryStringType) => {
   const {
     sortOrder,
     fromDt,
