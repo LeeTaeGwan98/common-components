@@ -86,6 +86,8 @@ const Notice = () => {
     return emptyRows;
   };
 
+  console.log(data.meta.page === 1);
+
   return (
     <BreadcrumbContainer
       breadcrumbNode={<>게시판 관리 / 공지사항</>}
@@ -165,7 +167,7 @@ const Notice = () => {
         </Table>
       </TableContainer>
 
-      {data.list.length >= 10 && (
+      {(data.list.length >= 10 || data.meta.page !== 1) && (
         <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
       )}
     </BreadcrumbContainer>
