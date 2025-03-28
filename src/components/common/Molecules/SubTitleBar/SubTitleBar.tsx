@@ -27,7 +27,8 @@ function SubTitleBar({
   dispatch,
   refetch,
 }: SubtitleBarProps) {
-  const { fromDt, toDt, keyword, isVisible, take } = filterInfo;
+  const { fromDt, toDt, keyword } = filterInfo;
+
   const handletoFromDt = (date: Date) => {
     dispatch({
       type: "fromDt",
@@ -105,7 +106,7 @@ function SubTitleBar({
         </SelectBox>
 
         <TextField
-          value={""}
+          value={keyword || ""}
           onChange={handleKeywordOnchange}
           onKeyDown={handleKeywordEnter}
           searchIcon

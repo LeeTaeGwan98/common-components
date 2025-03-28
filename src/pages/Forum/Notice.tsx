@@ -23,6 +23,9 @@ import { cn } from "@/lib/utils";
 import { dateToString } from "@/lib/dateParse";
 import { useEffect, useReducer } from "react";
 import { ActionType } from "@/api/common/commonType";
+import CACHE_TIME from "@/Constants/CacheTime";
+import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
+
 const initState: TableQueryStringType = {
   sortOrder: "DESC",
   fromDt: dateToString(new Date()),
@@ -48,10 +51,13 @@ const reducer = <T extends Record<string, any>>(
 
 const Notice = () => {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
+
   const { data, refetch } = useSuspenseQuery({
-    queryKey: ["noticeList"],
+    queryKey: ["noticeList", filterInfo],
     queryFn: () => getNotice(filterInfo),
     select: (data) => data.data.data,
+    staleTime: CACHE_TIME,
+    gcTime: CACHE_TIME,
   });
 
   const handleSortOrder = () => {
@@ -61,17 +67,24 @@ const Notice = () => {
     });
   };
 
-  useEffect(() => {
-    refetch();
-  }, [
-    // 검색어는 Enter를 눌렀을 때 refetch를 실행
-    filterInfo.sortOrder,
-    filterInfo.isVisible,
-    filterInfo.fromDt,
-    filterInfo.toDt,
-    filterInfo.take,
-    filterInfo.page,
-  ]);
+  const renderEmptyRows = () => {
+    const emptyRowsCount = Math.max(0, filterInfo.take - data.list.length);
+    const emptyRows = [];
+
+    for (let i = 0; i < emptyRowsCount; i++) {
+      emptyRows.push(
+        <TableRow key={`empty-row-${i}`}>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+        </TableRow>
+      );
+    }
+
+    return emptyRows;
+  };
 
   return (
     <BreadcrumbContainer
@@ -147,9 +160,14 @@ const Notice = () => {
                 </TableRow>
               );
             })}
+            {renderEmptyRows()}
           </TableBody>
         </Table>
       </TableContainer>
+
+      {data.list.length >= 10 && (
+        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+      )}
     </BreadcrumbContainer>
   );
 };
