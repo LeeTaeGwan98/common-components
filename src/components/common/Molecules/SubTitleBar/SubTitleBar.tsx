@@ -4,7 +4,7 @@ import AdminTitle from "@/components/common/Molecules/AdminTitle/AdminTitle";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ExcelImage from "@/assets/Image/Excel.png";
-import { ActionDispatch } from "react";
+import { ActionDispatch, Dispatch, SetStateAction } from "react";
 import { TableQueryStringType } from "@/api/common/commonType";
 import { dateToString, stringToDate } from "@/lib/dateParse";
 import { ActionType } from "@/api/common/commonType";
@@ -19,6 +19,8 @@ interface SubtitleBarProps {
   filterInfo: TableQueryStringType;
   dispatch: ActionDispatch<[action: ActionType<TableQueryStringType>]>;
   refetch: () => void;
+  setInputKeyword: Dispatch<SetStateAction<string>>;
+  inputKeyword?: string;
 }
 
 function SubTitleBar({
@@ -26,8 +28,10 @@ function SubTitleBar({
   title,
   dispatch,
   refetch,
+  setInputKeyword,
+  inputKeyword,
 }: SubtitleBarProps) {
-  const { fromDt, toDt, keyword } = filterInfo;
+  const { fromDt, toDt } = filterInfo;
 
   const handletoFromDt = (date: Date) => {
     dispatch({
@@ -44,16 +48,17 @@ function SubTitleBar({
   };
 
   const handleKeywordOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: "keyword",
-      value: e.target.value,
-    });
+    // onChange는 API 호출을 하지 않음
+    setInputKeyword(e.target.value);
   };
 
   const handleKeywordEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // 검색어는 Enter를 눌렀을 때 refetch를 실행
+    // Enter를 눌렀을때만 API호출
     if (e.key === "Enter") {
-      refetch();
+      dispatch({
+        type: "keyword",
+        value: inputKeyword!,
+      });
     }
   };
 
@@ -98,7 +103,7 @@ function SubTitleBar({
         >
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="ALL">전체</SelectItem>
+              <SelectItem value="ALL">모든상태</SelectItem>
               <SelectItem value="true">노출</SelectItem>
               <SelectItem value="false">비노출</SelectItem>
             </SelectGroup>
@@ -106,7 +111,7 @@ function SubTitleBar({
         </SelectBox>
 
         <TextField
-          value={keyword || ""}
+          value={inputKeyword || ""}
           onChange={handleKeywordOnchange}
           onKeyDown={handleKeywordEnter}
           searchIcon

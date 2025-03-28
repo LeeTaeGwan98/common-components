@@ -21,7 +21,7 @@ import { TableQueryStringType } from "@/api/common/commonType";
 import Label from "@/components/common/Atoms/Label/Label";
 import { cn } from "@/lib/utils";
 import { dateToString } from "@/lib/dateParse";
-import { useEffect, useReducer } from "react";
+import { useReducer, useState } from "react";
 import { ActionType } from "@/api/common/commonType";
 import CACHE_TIME from "@/Constants/CacheTime";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
@@ -53,7 +53,7 @@ const Notice = () => {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
 
   const { data, refetch } = useSuspenseQuery({
-    queryKey: ["noticeList", filterInfo],
+    queryKey: ["noticeList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getNotice(filterInfo),
     select: (data) => data.data.data,
     staleTime: CACHE_TIME,
@@ -86,7 +86,9 @@ const Notice = () => {
     return emptyRows;
   };
 
-  console.log(data.meta.page === 1);
+  // 입력 중인 keyword를 별도로 관리
+  // onchange중에는 API를 호출하지 않기 위해
+  const [inputKeyword, setInputKeyword] = useState(initState.keyword);
 
   return (
     <BreadcrumbContainer
@@ -100,10 +102,12 @@ const Notice = () => {
       }
     >
       <SubTitleBar
-        filterInfo={filterInfo}
+        filterInfo={{ ...filterInfo, keyword: inputKeyword }}
         title="등록일"
         dispatch={dispatch}
         refetch={refetch}
+        inputKeyword={inputKeyword}
+        setInputKeyword={setInputKeyword}
       />
 
       <TableContainer>

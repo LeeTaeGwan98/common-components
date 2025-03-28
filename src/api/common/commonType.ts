@@ -20,8 +20,8 @@ export interface TableQueryStringType {
   sortOrder: "DESC" | "ASC";
   fromDt: string;
   toDt: string;
-  isVisible?: boolean | null;
-  keyword?: string;
+  isVisible: boolean | null;
+  keyword: string;
   take: number;
   page: number;
 }
