@@ -58,14 +58,9 @@ export const getNotice = (queryStringObj: TableQueryStringType) => {
     return "";
   };
 
-  const queryString = `/admin/notice?
-  sortOrder=${sortOrder}
-  &fromDt=${fromDt}
-  &toDt=${toDt}
-  ${getVisibleQueryParam(isVisible)}
-  ${keyword ? `&keyword=${keyword}` : ""}
-  &take=${take}
-  &page=${page}`;
+  const queryString = `/admin/notice?sortOrder=${sortOrder}&fromDt=${fromDt}&toDt=${toDt}${getVisibleQueryParam(
+    isVisible
+  )}${keyword ? `&keyword=${keyword}` : ""}&take=${take}&page=${page}`;
 
   const data = API.get<TableResSuccessType<ResNoticeDataType>>(queryString);
 
