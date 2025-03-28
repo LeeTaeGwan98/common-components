@@ -28,7 +28,9 @@ import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/Ta
 
 const initState: TableQueryStringType = {
   sortOrder: "DESC",
-  fromDt: dateToString(new Date()),
+  fromDt: dateToString(
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+  ),
   toDt: dateToString(new Date()),
   isVisible: null,
   keyword: "",
