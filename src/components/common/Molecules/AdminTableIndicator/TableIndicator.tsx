@@ -17,7 +17,7 @@ interface TableIndicatorProps {
 
 function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
   const { hasNextPage, page, take, totalCount, totalPage } = PaginationMetaType;
-  const [inputNumber, setInputNumber] = useState("1");
+  const [inputNumber, setInputNumber] = useState(1);
 
   const hiddenTextRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -36,9 +36,7 @@ function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
   }, [inputNumber]);
 
   const handlePage = (pageType: "increase" | "decrease") => {
-    setInputNumber(
-      pageType === "increase" ? String(page + 1) : String(page - 1)
-    );
+    setInputNumber(pageType === "increase" ? page + 1 : page - 1);
     dispatch({
       type: "page",
       value: pageType === "increase" ? Number(page) + 1 : Number(page) - 1,
@@ -71,12 +69,11 @@ function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
           <input
             ref={inputRef}
             className={inputClassName}
-            value={inputNumber}
+            value={inputNumber || ""}
             onKeyDown={handlePageSearchOnKeyDown}
             onChange={(e) => {
-              // 숫자만 필터링
-              const numericValue = e.target.value.replace(/\D/g, "");
-              setInputNumber(numericValue);
+              console.log(e.target.value);
+              setInputNumber(Number(e.target.value));
             }}
           />
           {/* 입력된 너비를 측정하기 위한 숨겨진 요소 */}
