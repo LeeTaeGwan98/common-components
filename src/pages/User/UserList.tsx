@@ -14,8 +14,39 @@ import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import { ActionType, TableQueryStringType } from "@/api/common/commonType";
+import { useReducer, useState } from "react";
+import { dateToString } from "@/lib/dateParse";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import CACHE_TIME from "@/Constants/CacheTime";
+import { getUserList, ResUserDataType } from "@/api/user/userAPI";
 
-const data = [
+const initState: TableQueryStringType = {
+  sortOrder: "DESC",
+  fromDt: dateToString(
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+  ),
+  toDt: dateToString(new Date()),
+  keyword: "",
+  take: 10,
+  page: 1,
+  isVisible: false,
+};
+
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
+
+const falseData = [
   {
     no: 0,
     createAt: "9999-12-31 24:59:00",
@@ -52,9 +83,29 @@ const data = [
 ];
 
 function UserList() {
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
+  const { data, refetch } = useSuspenseQuery({
+    queryKey: ["userList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => {
+      getUserList(filterInfo);
+    },
+    select: (data) => data,
+    staleTime: CACHE_TIME,
+    gcTime: CACHE_TIME,
+  });
+  // 입력 중인 keyword를 별도로 관리
+  // onchange중에는 API를 호출하지 않기 위해
+  const [inputKeyword, setInputKeyword] = useState(initState.keyword);
   return (
     <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
-      <SubTitleBar title="가입일" />
+      <SubTitleBar
+        filterInfo={{ ...filterInfo, keyword: inputKeyword }}
+        title="가입일"
+        dispatch={dispatch}
+        refetch={refetch}
+        inputKeyword={inputKeyword}
+        setInputKeyword={setInputKeyword}
+      />
 
       <TableContainer>
         <Table>
@@ -77,7 +128,7 @@ function UserList() {
           </TableHeader>
 
           <TableBody>
-            {data.map((item) => {
+            {falseData.map((item) => {
               return (
                 <TableRow>
                   <TableCell>{item.no}</TableCell>
