@@ -9,7 +9,7 @@ import { TableQueryStringType } from "@/api/common/commonType";
 import { dateToString, stringToDate } from "@/lib/dateParse";
 import { ActionType } from "@/api/common/commonType";
 
-const boolToString = (boolString: string) => {
+export const boolToString = (boolString: string) => {
   // shadcn의 selectItem에는 string타입만 들어갈 수 있어서 만든 함수
   return boolString === "true" ? true : false;
 };

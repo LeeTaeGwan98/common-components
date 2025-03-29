@@ -34,7 +34,7 @@ const ChatbotRegistration = () => {
   //챗봇 공통 카테고리 가져오기
   const { data: codeInfo } = useSuspenseQuery({
     queryKey: [
-      "serviceGuideGroupCodes",
+      "chatbotCategoryGroupCodes",
       COMMON_GROUP_CODE_MAPPING.챗봇공통카테고리,
     ],
     queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.챗봇공통카테고리]),

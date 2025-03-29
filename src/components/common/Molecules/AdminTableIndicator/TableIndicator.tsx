@@ -7,12 +7,11 @@ import RightArrow from "@/assets/svg/common/rightThinArrow.svg";
 import {
   type ActionType,
   type PaginationMetaType,
-  type TableQueryStringType,
 } from "@/api/common/commonType";
 
 interface TableIndicatorProps {
   PaginationMetaType: PaginationMetaType;
-  dispatch: ActionDispatch<[action: ActionType<TableQueryStringType>]>;
+  dispatch: ActionDispatch<[action: ActionType<{ page: number }>]>;
 }
 
 function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
@@ -35,18 +34,32 @@ function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
     }
   }, [inputNumber]);
 
+  useEffect(() => {
+    setInputNumber(page);
+  }, [page]);
+
+  //페이지 이동버튼 핸들
   const handlePage = (pageType: "increase" | "decrease") => {
-    setInputNumber(pageType === "increase" ? page + 1 : page - 1);
-    dispatch({
-      type: "page",
-      value: pageType === "increase" ? Number(page) + 1 : Number(page) - 1,
-    });
+    if (pageType === "increase" && page < totalPage) {
+      setInputNumber(page + 1);
+      dispatch({
+        type: "page",
+        value: Number(page) + 1,
+      });
+    } else if (pageType === "decrease" && page > 1) {
+      setInputNumber(page - 1);
+      dispatch({
+        type: "page",
+        value: Number(page) - 1,
+      });
+    } else {
+    }
   };
 
   const handlePageSearchOnKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && Number(e.currentTarget.value) > 0) {
       dispatch({
         type: "page",
         value: Number(e.currentTarget.value),
@@ -106,6 +119,7 @@ function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
             className="flex justify-center items-center rounded-radius-admin p-0 w-[40px] h-[40px]"
             type="outlined"
             icon={<LeftArrow className="w-[20px] h-[20px]" />}
+            disable={page == 1}
             onClick={() => handlePage("decrease")}
           />
           {/* 다음 페이지 이동 버튼 */}
@@ -113,6 +127,7 @@ function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
             className="flex justify-center items-center rounded-radius-admin p-0 w-[40px] h-[40px]"
             type="outlined"
             icon={<RightArrow className="w-[20px] h-[20px]" />}
+            disable={page == totalPage}
             onClick={() => handlePage("increase")}
           />
         </div>
