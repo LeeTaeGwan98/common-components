@@ -1,8 +1,9 @@
 import API from "@/api/API";
 import { type TableResSuccessType } from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
+import { APIResponse } from "@/api/common/commonType";
 
-export interface AddNoticePayload {
+export interface NoticeRes {
   title: string;
   content: string;
   isPinned: boolean;
@@ -23,7 +24,7 @@ export interface AddNoticeRes {
   updatedAt: string;
 }
 
-export const addNotice = (payload: AddNoticePayload) => {
+export const addNotice = (payload: NoticeRes) => {
   console.log(payload);
   const data = API.post<TableResSuccessType<AddNoticeRes>>(
     "/admin/notice",
@@ -33,7 +34,7 @@ export const addNotice = (payload: AddNoticePayload) => {
   return data;
 };
 
-export interface ResNoticeDataType {
+export interface NoticeDataTypeRes {
   id: number;
   createdAt: string;
   title: string;
@@ -72,7 +73,13 @@ export const getNotice = (queryStringObj: TableQueryStringType) => {
     qs = qs.slice(0, -1);
   }
 
-  const data = API.get<TableResSuccessType<ResNoticeDataType>>(qs);
+  const data = API.get<TableResSuccessType<NoticeDataTypeRes>>(qs);
+
+  return data;
+};
+
+export const getNoticeDetail = (id: number) => {
+  const data = API.get<APIResponse<NoticeRes>>(`/admin/notice/${id}`);
 
   return data;
 };
