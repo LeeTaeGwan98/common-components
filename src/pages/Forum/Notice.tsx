@@ -137,7 +137,11 @@ const Notice = () => {
                   <TableCell>{createdAt}</TableCell>
                   <TableCell>{title}</TableCell>
                   <TableCell>
-                    <Checkbox checked={isPinned} />
+                    <Checkbox
+                      checked={isPinned}
+                      isInteraction={false}
+                      disabled
+                    />
                   </TableCell>
 
                   <TableCell>
