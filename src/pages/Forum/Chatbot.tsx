@@ -16,7 +16,7 @@ import Button from "@/components/common/Atoms/Button/Solid/Button";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   ChatBotQueryStringType,
@@ -69,27 +69,35 @@ const Chatbot = () => {
   const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
   const categoryCodes = codeInfo[keys[0]]; // 카테고리 코드들
 
-  //챗봇 목록 조회
-  const { data } = useSuspenseQuery({
-    queryKey: ["chatBotList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+  //챗봇 목록 조회 api
+  const { data, refetch } = useSuspenseQuery({
+    queryKey: ["chatBotList"], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getChatBotList(filterInfo),
     select: (data) => data.data.data,
     staleTime: CACHE_TIME,
     gcTime: CACHE_TIME,
   });
 
+  useEffect(() => {
+    //챗봇 목록 조회
+    refetch();
+  }, [
+    filterInfo.isVisible,
+    filterInfo.keyword,
+    filterInfo.take,
+    filterInfo.page,
+  ]);
+
   //카테고리 변경시 핸들
   const handleisVisible = (visible: string | null) => {
     if (!visible) return;
-    ReactDOM.unstable_batchedUpdates(() => {
-      dispatch({
-        type: "isVisible",
-        value: visible === "ALL" ? null : boolToString(visible),
-      });
-      dispatch({
-        type: "page",
-        value: 1,
-      });
+    dispatch({
+      type: "isVisible",
+      value: visible === "ALL" ? null : boolToString(visible),
+    });
+    dispatch({
+      type: "page",
+      value: 1,
     });
   };
 
@@ -189,9 +197,9 @@ const Chatbot = () => {
           </TableHeader>
 
           <TableBody>
-            {data.list.map((item) => {
+            {data.list.map((item, index) => {
               return (
-                <TableRow>
+                <TableRow key={index}>
                   <TableCell>
                     {
                       categoryCodes.find(

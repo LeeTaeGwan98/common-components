@@ -34,7 +34,7 @@ export const SERVICE_GUIDE = "/service-guide";
 export const SERVICE_GUIDE_DETAIL = "/service-guide";
 export const SERVICE_GUIDE_REGISTRATION = "/service-guide-registreation";
 export const CHATBOT = "/chatbot";
-export const CHATBOT_DETAIL = "/chatbot";
+export const CHATBOT_DETAIL = "/chatbot-detail";
 export const CHATBOT_REGISTRATION = "/chatbot-registreation";
 
 // 관리자

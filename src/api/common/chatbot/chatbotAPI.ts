@@ -23,7 +23,9 @@ export interface CreateChatBotRes {
 
 //챗봇 목록 조회
 export interface ChatBotQueryStringType
-  extends Omit<TableQueryStringType, "fromDt" | "toDt" | "sortOrder"> {}
+  extends Omit<TableQueryStringType, "fromDt" | "toDt" | "sortOrder"> {
+  isVisible: boolean | null;
+}
 
 //챗봇 목록 조회 응답
 export interface ResChatBotDataType {
@@ -56,6 +58,15 @@ export const getChatBotList = (queryStringObj: ChatBotQueryStringType) => {
   }&take=${take}&page=${page}`;
 
   const data = API.get<TableResSuccessType<ResChatBotDataType>>(queryString);
+
+  return data;
+};
+
+//챗봇 상세 조회
+export const getChatBotDetail = (id: number) => {
+  const queryString = `/admin/chatbot/${id}`;
+
+  const data = API.get<ResChatBotDataType>(queryString);
 
   return data;
 };

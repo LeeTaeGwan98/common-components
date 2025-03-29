@@ -27,7 +27,9 @@ import {
 } from "@/Constants/CommonGroupCode";
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
+import { useNavigate } from "react-router-dom";
 const ChatbotRegistration = () => {
+  const naviate = useNavigate(); //네비게이션
   const [categoryCode, setCategoryCode] = useState<string>(""); //카테고리
   const [isVisible, setIsVisible] = useState<boolean>(true); //노출 상태
   const [question, setQuestion] = useState<string>(""); //질문
@@ -54,9 +56,7 @@ const ChatbotRegistration = () => {
         updatedBy: 0,
       }),
     onSuccess(res, data) {
-      console.log("post 요청 성공");
-      console.log(res);
-      console.log(data);
+      naviate(-1);
     },
   });
 
