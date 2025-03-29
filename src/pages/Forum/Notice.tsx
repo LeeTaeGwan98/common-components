@@ -161,7 +161,7 @@ const Notice = () => {
                   </TableCell>
 
                   <TableCell>
-                    <Link to={NOTICE_DETAIL}>
+                    <Link to={`${NOTICE_DETAIL}/${item.id}`}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
