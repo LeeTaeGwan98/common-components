@@ -4,12 +4,12 @@ import AdminTitle from "@/components/common/Molecules/AdminTitle/AdminTitle";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ExcelImage from "@/assets/Image/Excel.png";
-import { ActionDispatch, Dispatch, SetStateAction } from "react";
+import { ActionDispatch, Dispatch, ReactNode, SetStateAction } from "react";
 import { TableQueryStringType } from "@/api/common/commonType";
 import { dateToString, stringToDate } from "@/lib/dateParse";
 import { ActionType } from "@/api/common/commonType";
 
-const boolToString = (boolString: string) => {
+export const boolToString = (boolString: string) => {
   // shadcn의 selectItem에는 string타입만 들어갈 수 있어서 만든 함수
   return boolString === "true" ? true : false;
 };
@@ -18,18 +18,18 @@ interface SubtitleBarProps {
   title: string;
   filterInfo: TableQueryStringType;
   dispatch: ActionDispatch<[action: ActionType<TableQueryStringType>]>;
-  refetch: () => void;
   setInputKeyword: Dispatch<SetStateAction<string>>;
   inputKeyword?: string;
+  CustomSelectComponent: ReactNode;
 }
 
 function SubTitleBar({
   filterInfo,
   title,
   dispatch,
-  refetch,
   setInputKeyword,
   inputKeyword,
+  CustomSelectComponent,
 }: SubtitleBarProps) {
   const { fromDt, toDt } = filterInfo;
 
@@ -62,13 +62,6 @@ function SubTitleBar({
     }
   };
 
-  const handleisVisible = (visible: string) => {
-    dispatch({
-      type: "isVisible",
-      value: visible === "ALL" ? null : boolToString(visible),
-    });
-  };
-
   const handleTake = (take: number) => {
     dispatch({
       type: "take",
@@ -94,21 +87,7 @@ function SubTitleBar({
       </div>
 
       <div className="flex gap-[12px]">
-        <SelectBox
-          placeholder="모든 상태"
-          className="min-w-[240px]"
-          size="large"
-          defaultValue="ALL"
-          onValueChange={handleisVisible}
-        >
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="ALL">모든상태</SelectItem>
-              <SelectItem value="true">노출</SelectItem>
-              <SelectItem value="false">비노출</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </SelectBox>
+        {CustomSelectComponent}
 
         <TextField
           value={inputKeyword || ""}

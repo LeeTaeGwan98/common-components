@@ -12,7 +12,9 @@ import { Link } from "react-router-dom";
 import { NOTICE_DETAIL, NOTICE_REGISTRATION } from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
-import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import SubTitleBar, {
+  boolToString,
+} from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import { getNotice } from "@/api/notice/noticeAPI";
@@ -24,8 +26,10 @@ import { useReducer, useState } from "react";
 import { ActionType } from "@/api/common/commonType";
 import CACHE_TIME from "@/Constants/CacheTime";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 
-const initState: TableQueryStringType = {
+const initState: TableQueryStringType & { isVisible: boolean | null } = {
   sortOrder: "DESC",
   fromDt: undefined,
   toDt: undefined,
@@ -51,7 +55,7 @@ const reducer = <T extends Record<string, any>>(
 const Notice = () => {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
 
-  const { data, refetch } = useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["noticeList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getNotice(filterInfo),
     select: (data) => data.data.data,
@@ -66,6 +70,13 @@ const Notice = () => {
     });
   };
 
+  const handleisVisible = (visible: string) => {
+    dispatch({
+      type: "isVisible",
+      value: visible === "ALL" ? null : boolToString(visible),
+    });
+  };
+
   const renderEmptyRows = () => {
     const emptyRowsCount = Math.max(
       0,
@@ -73,7 +84,7 @@ const Notice = () => {
     );
     const emptyRows = [];
 
-    for (let i = 0; i < emptyRowsCount - data.list.length; i++) {
+    for (let i = 0; i < emptyRowsCount; i++) {
       emptyRows.push(
         <TableRow key={`empty-row-${i}`}>
           <TableCell>&nbsp;</TableCell>
@@ -90,7 +101,7 @@ const Notice = () => {
 
   // 입력 중인 keyword를 별도로 관리
   // onchange중에는 API를 호출하지 않기 위해
-  const [inputKeyword, setInputKeyword] = useState(initState.keyword);
+  const [inputKeyword, setInputKeyword] = useState(initState.keyword || "");
 
   return (
     <BreadcrumbContainer
@@ -107,9 +118,25 @@ const Notice = () => {
         filterInfo={{ ...filterInfo, keyword: inputKeyword }}
         title="등록일"
         dispatch={dispatch}
-        refetch={refetch}
         inputKeyword={inputKeyword}
         setInputKeyword={setInputKeyword}
+        CustomSelectComponent={
+          <SelectBox
+            placeholder="모든 상태"
+            className="min-w-[240px]"
+            size="large"
+            defaultValue="ALL"
+            onValueChange={handleisVisible}
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">모든상태</SelectItem>
+                <SelectItem value="true">노출</SelectItem>
+                <SelectItem value="false">비노출</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
+        }
       />
 
       <TableContainer>
