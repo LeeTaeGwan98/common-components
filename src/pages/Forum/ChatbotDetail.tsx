@@ -3,10 +3,7 @@ import React from "react";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Divider from "@/components/common/Atoms/Divider/Divider";
-import TextField from "@/components/common/Molecules/TextField/TextField";
 import { useState } from "react";
-
-import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import { useModalStore } from "@/store/modalStore";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
@@ -19,16 +16,35 @@ import {
 } from "@/components/ui/select";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import ChatbotModal from "@/components/modal/forum/ChatbotModal";
+import { createChatBot } from "@/api/common/chatbot/chatbotAPI";
+import { useMutation } from "@tanstack/react-query";
 
 const ChatbotDetail = () => {
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true);
-  const [contentsField, setContentsField] =
-    useState("출판 단계는 어떻게 이루어지나요");
-
+  const [isVisible, setIsVisible] = useState<boolean>(true); //노출 상태
+  const [question, setQuestion] = useState<string>(""); //질문
   const { openModal } = useModalStore();
+
+  // 챗봇 삭제 모달
   const deleteModal = () => {
     openModal(<ChatbotModal />);
   };
+
+  //챗봇 생성 api
+  const CreateChatBot = useMutation({
+    mutationFn: () =>
+      createChatBot({
+        categoryCode: "",
+        question: question,
+        isVisible: isVisible,
+        createdBy: 0,
+        updatedBy: 0,
+      }),
+    onSuccess(res, data) {
+      console.log("post 요청 성공");
+      console.log(res);
+      console.log(data);
+    },
+  });
 
   return (
     <BreadcrumbContainer
@@ -72,19 +88,19 @@ const ChatbotDetail = () => {
                 className="w-full"
                 itemClassName="text-body1-normal-medium"
                 size="large"
-                setSelected={setIsNoRecommend}
-                selected={isNoRecommend}
+                setSelected={setIsVisible}
+                selected={isVisible}
                 textList={["노출", "비노출"]}
               />
             </div>
           </div>
 
           <div className="w-full flex flex-col gap-[8px]">
-            내용
+            질문
             <TextBox
-              value={contentsField}
+              value={question}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                setContentsField(e.target.value);
+                setQuestion(e.target.value);
               }}
               placeholder="질문을 입력하세요"
             />
@@ -99,7 +115,10 @@ const ChatbotDetail = () => {
             >
               취소
             </Button>
-            <Button className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium ">
+            <Button
+              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium "
+              onClick={() => CreateChatBot.mutate()}
+            >
               저장
             </Button>
           </div>

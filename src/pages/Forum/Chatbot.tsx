@@ -9,16 +9,14 @@ import {
   TableCell,
 } from "@/components/common/Tables";
 import { Link } from "react-router-dom";
-import {
-  CHATBOT_DETAIL,
-  CHATBOT_REGISTRATION,
-  INQUIRY_DETAIL,
-  USER_DETAIL,
-} from "@/Constants/ServiceUrl";
+import { CHATBOT_DETAIL, CHATBOT_REGISTRATION } from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
-import Divider from "@/components/common/Atoms/Divider/Divider";
-import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import ExcelImage from "@/assets/Image/Excel.png";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
+import TextField from "@/components/common/Molecules/TextField/TextField";
+import { useState } from "react";
 
 const data = [
   {
@@ -37,6 +35,7 @@ const data = [
   },
 ];
 const Chatbot = () => {
+  const [searchWord, setSearchWord] = useState<string>("");
   return (
     <BreadcrumbContainer
       breadcrumbNode={<>게시판 관리 / 챗봇 관리</>}
@@ -48,7 +47,53 @@ const Chatbot = () => {
         </Link>
       }
     >
-      <SubTitleBar title="문의일" />
+      <div className="flex justify-end gap-[12px] mb-[12px]">
+        <SelectBox
+          placeholder="모든 상태"
+          className="w-[240px]"
+          size="large"
+          defaultValue="ALL"
+        >
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="ALL">모든상태</SelectItem>
+              <SelectItem value="true">노출</SelectItem>
+              <SelectItem value="false">비노출</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </SelectBox>
+
+        <div className="w-[240px]">
+          <TextField
+            value={searchWord}
+            onChange={(e) => {
+              setSearchWord(e.target.value);
+            }}
+            onKeyDown={() => {}}
+            searchIcon
+            placeholder="검색어를 입력해주세요"
+          />
+        </div>
+
+        <SelectBox
+          placeholder="10개 씩"
+          className="w-[108px]"
+          size="large"
+          defaultValue="10"
+        >
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="10">10개 씩</SelectItem>
+              <SelectItem value="20">20개 씩</SelectItem>
+              <SelectItem value="30">30개 씩</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </SelectBox>
+
+        <button>
+          <img src={ExcelImage} className="size-[48px]" />
+        </button>
+      </div>
 
       <TableContainer>
         <Table>

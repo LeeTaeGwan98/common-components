@@ -19,13 +19,54 @@ import {
   SelectLabel,
 } from "@/components/ui/select";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { createChatBot } from "@/api/common/chatbot/chatbotAPI";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 const ChatbotRegistration = () => {
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true);
-  const [contentsField, setContentsField] = useState("");
+  const [categoryCode, setCategoryCode] = useState<string>(""); //카테고리
+  const [isVisible, setIsVisible] = useState<boolean>(true); //노출 상태
+  const [question, setQuestion] = useState<string>(""); //질문
+  //챗봇 공통 카테고리 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: [
+      "serviceGuideGroupCodes",
+      COMMON_GROUP_CODE_MAPPING.챗봇공통카테고리,
+    ],
+    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.챗봇공통카테고리]),
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const categoryCodes = codeInfo[keys[0]]; // 카테고리 코드들
 
-  const { openModal } = useModalStore();
-  const deleteModal = () => {
-    openModal(<NoticeDetailModal />);
+  //챗봇 생성 api
+  const CreateChatBot = useMutation({
+    mutationFn: () =>
+      createChatBot({
+        categoryCode: categoryCode,
+        question: question,
+        isVisible: isVisible,
+        createdBy: 0,
+        updatedBy: 0,
+      }),
+    onSuccess(res, data) {
+      console.log("post 요청 성공");
+      console.log(res);
+      console.log(data);
+    },
+  });
+
+  //저장 버튼 disable 여부
+  const isDisableSave = () => {
+    if (categoryCode === "" || question === "") {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -41,15 +82,22 @@ const ChatbotRegistration = () => {
         <div className="w-[1004px] flex flex-col gap-gutter-vertical">
           <div className="flex *:flex-1 items-center gap-gutter-horizontal">
             <div className="w-full">
-              <SelectBox label="카테고리" placeholder="카테고리를 선택해주세요">
+              <SelectBox
+                label="카테고리"
+                placeholder="카테고리를 선택해주세요"
+                onValueChange={(value) => {
+                  setCategoryCode(value);
+                }}
+              >
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>asdf</SelectLabel>
-                    <SelectItem value="asdf">asdf</SelectItem>
-                    <SelectItem value="asdf1">asdf1</SelectItem>
-                    <SelectItem value="asdf2">asdf2</SelectItem>
-                    <SelectItem value="asdf3">asdf3</SelectItem>
-                    <SelectItem value="asdf4">asdf4</SelectItem>
+                    {categoryCodes.map((code) => {
+                      return (
+                        <SelectItem value={code.commDetailCode}>
+                          {code.detailCodeName}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectGroup>
                 </SelectContent>
               </SelectBox>
@@ -60,36 +108,42 @@ const ChatbotRegistration = () => {
                 className="w-full"
                 itemClassName="text-body1-normal-medium"
                 size="large"
-                setSelected={setIsNoRecommend}
-                selected={isNoRecommend}
+                setSelected={setIsVisible}
+                selected={isVisible}
                 textList={["노출", "비노출"]}
               />
             </div>
           </div>
 
           <div className="w-full flex flex-col gap-[8px]">
-            내용
+            질문
             <TextBox
-              value={contentsField}
+              value={question}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                setContentsField(e.target.value);
+                setQuestion(e.target.value);
               }}
               placeholder="질문을 입력하세요"
             />
           </div>
           {/* 버튼 */}
           <div className="mt-[32px] flex justify-end space-x-4">
-            <Button
-              onClick={() => {
-                console.log("취소 버튼 클릭");
-              }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium "
+            <OutlinedButton
+              className="w-[180px] h-[48px]"
+              type="assistive"
+              size="large"
+              onClick={() => {}}
             >
               취소
-            </Button>
-            <Button className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium ">
+            </OutlinedButton>
+            <OutlinedButton
+              className="w-[180px] h-[48px]"
+              type="secondary"
+              size="large"
+              disable={isDisableSave()}
+              onClick={() => !isDisableSave() && CreateChatBot.mutate()}
+            >
               저장
-            </Button>
+            </OutlinedButton>
           </div>
         </div>
       </div>
