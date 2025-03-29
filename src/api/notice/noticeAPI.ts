@@ -42,7 +42,9 @@ export interface NoticeDataTypeRes {
   isVisible: boolean;
 }
 
-export const getNotice = (queryStringObj: TableQueryStringType) => {
+export const getNotice = (
+  queryStringObj: TableQueryStringType & { isVisible: boolean | null }
+) => {
   const { sortOrder, fromDt, toDt, isVisible, keyword, take, page } =
     queryStringObj;
 
@@ -58,7 +60,7 @@ export const getNotice = (queryStringObj: TableQueryStringType) => {
     qs += `toDt=${toDt}&`;
   }
   if (isVisible !== null) {
-    qs += `isVisible=${isVisible}`;
+    qs += `isVisible=${isVisible}&`;
   }
   if (keyword) {
     qs += `keyword=${keyword}&`;

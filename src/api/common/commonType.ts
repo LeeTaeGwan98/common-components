@@ -46,3 +46,12 @@ export type ActionType<T> = {
     value: T[K];
   };
 }[keyof T];
+
+export interface ServerResponse<T> {
+  status: number;
+  success: boolean;
+  message: string;
+  data: T;
+}
+
+export type APIResponse<T> = ServerResponse<T>;
