@@ -116,7 +116,7 @@ function App() {
             <Route path={INQUIRY} element={<Inquiry />} />
             <Route path={INQUIRY_DETAIL} element={<InquiryDetail />} />
             <Route path={NOTICE} element={<Notice />} />
-            <Route path={NOTICE_DETAIL} element={<NoticeDetail />} />
+            <Route path={`${NOTICE_DETAIL}/:id`} element={<NoticeDetail />} />
             <Route
               path={NOTICE_REGISTRATION}
               element={<NoticeRegistration />}

@@ -1,8 +1,9 @@
 import API from "@/api/API";
 import { type TableResSuccessType } from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
+import { APIResponse } from "@/api/common/commonType";
 
-export interface AddNoticePayload {
+export interface NoticeRes {
   title: string;
   content: string;
   isPinned: boolean;
@@ -23,7 +24,7 @@ export interface AddNoticeRes {
   updatedAt: string;
 }
 
-export const addNotice = (payload: AddNoticePayload) => {
+export const addNotice = (payload: NoticeRes) => {
   console.log(payload);
   const data = API.post<TableResSuccessType<AddNoticeRes>>(
     "/admin/notice",
@@ -33,7 +34,7 @@ export const addNotice = (payload: AddNoticePayload) => {
   return data;
 };
 
-export interface ResNoticeDataType {
+export interface NoticeDataTypeRes {
   id: number;
   createdAt: string;
   title: string;
@@ -42,27 +43,43 @@ export interface ResNoticeDataType {
 }
 
 export const getNotice = (queryStringObj: TableQueryStringType) => {
-  const {
-    sortOrder,
-    fromDt,
-    toDt,
-    isVisible = true,
-    keyword = "",
-    take,
-    page,
-  } = queryStringObj;
+  const { sortOrder, fromDt, toDt, isVisible, keyword, take, page } =
+    queryStringObj;
 
-  const getVisibleQueryParam = (isVisible: boolean | null): string => {
-    if (isVisible === true) return "&isVisible=true";
-    if (isVisible === false) return "&isVisible=false";
-    return "";
-  };
+  let qs = "/admin/notice?";
 
-  const queryString = `/admin/notice?sortOrder=${sortOrder}&fromDt=${fromDt}&toDt=${toDt}${getVisibleQueryParam(
-    isVisible
-  )}${keyword ? `&keyword=${keyword}` : ""}&take=${take}&page=${page}`;
+  if (sortOrder) {
+    qs += `sortOrder=${sortOrder}&`;
+  }
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (isVisible !== null) {
+    qs += `isVisible=${isVisible}`;
+  }
+  if (keyword) {
+    qs += `keyword=${keyword}&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
 
-  const data = API.get<TableResSuccessType<ResNoticeDataType>>(queryString);
+  const data = API.get<TableResSuccessType<NoticeDataTypeRes>>(qs);
+
+  return data;
+};
+
+export const getNoticeDetail = (id: number) => {
+  const data = API.get<APIResponse<NoticeRes>>(`/admin/notice/${id}`);
 
   return data;
 };

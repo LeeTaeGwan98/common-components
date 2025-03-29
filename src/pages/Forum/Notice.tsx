@@ -12,7 +12,9 @@ import { Link } from "react-router-dom";
 import { NOTICE_DETAIL, NOTICE_REGISTRATION } from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
-import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import SubTitleBar, {
+  boolToString,
+} from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import { getNotice } from "@/api/notice/noticeAPI";
@@ -20,22 +22,21 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { TableQueryStringType } from "@/api/common/commonType";
 import Label from "@/components/common/Atoms/Label/Label";
 import { cn } from "@/lib/utils";
-import { dateToString } from "@/lib/dateParse";
 import { useReducer, useState } from "react";
 import { ActionType } from "@/api/common/commonType";
 import CACHE_TIME from "@/Constants/CacheTime";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 
-const initState: TableQueryStringType = {
+const initState: TableQueryStringType & { isVisible: boolean | null } = {
   sortOrder: "DESC",
-  fromDt: dateToString(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-  ),
-  toDt: dateToString(new Date()),
+  fromDt: undefined,
+  toDt: undefined,
   isVisible: null,
   keyword: "",
-  take: 10,
-  page: 1,
+  take: null,
+  page: null,
 };
 
 const reducer = <T extends Record<string, any>>(
@@ -54,7 +55,7 @@ const reducer = <T extends Record<string, any>>(
 const Notice = () => {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
 
-  const { data, refetch } = useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["noticeList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getNotice(filterInfo),
     select: (data) => data.data.data,
@@ -69,8 +70,18 @@ const Notice = () => {
     });
   };
 
+  const handleisVisible = (visible: string) => {
+    dispatch({
+      type: "isVisible",
+      value: visible === "ALL" ? null : boolToString(visible),
+    });
+  };
+
   const renderEmptyRows = () => {
-    const emptyRowsCount = Math.max(0, filterInfo.take - data.list.length);
+    const emptyRowsCount = Math.max(
+      0,
+      filterInfo.take || 10 - data.list.length
+    );
     const emptyRows = [];
 
     for (let i = 0; i < emptyRowsCount; i++) {
@@ -90,7 +101,7 @@ const Notice = () => {
 
   // 입력 중인 keyword를 별도로 관리
   // onchange중에는 API를 호출하지 않기 위해
-  const [inputKeyword, setInputKeyword] = useState(initState.keyword);
+  const [inputKeyword, setInputKeyword] = useState(initState.keyword || "");
 
   return (
     <BreadcrumbContainer
@@ -107,9 +118,25 @@ const Notice = () => {
         filterInfo={{ ...filterInfo, keyword: inputKeyword }}
         title="등록일"
         dispatch={dispatch}
-        refetch={refetch}
         inputKeyword={inputKeyword}
         setInputKeyword={setInputKeyword}
+        CustomSelectComponent={
+          <SelectBox
+            placeholder="모든 상태"
+            className="min-w-[240px]"
+            size="large"
+            defaultValue="ALL"
+            onValueChange={handleisVisible}
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">모든상태</SelectItem>
+                <SelectItem value="true">노출</SelectItem>
+                <SelectItem value="false">비노출</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
+        }
       />
 
       <TableContainer>
@@ -137,7 +164,11 @@ const Notice = () => {
                   <TableCell>{createdAt}</TableCell>
                   <TableCell>{title}</TableCell>
                   <TableCell>
-                    <Checkbox checked={isPinned} />
+                    <Checkbox
+                      checked={isPinned}
+                      isInteraction={false}
+                      disabled
+                    />
                   </TableCell>
 
                   <TableCell>
@@ -157,7 +188,7 @@ const Notice = () => {
                   </TableCell>
 
                   <TableCell>
-                    <Link to={NOTICE_DETAIL}>
+                    <Link to={`${NOTICE_DETAIL}/${item.id}`}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
