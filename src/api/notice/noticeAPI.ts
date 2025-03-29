@@ -42,27 +42,37 @@ export interface ResNoticeDataType {
 }
 
 export const getNotice = (queryStringObj: TableQueryStringType) => {
-  const {
-    sortOrder,
-    fromDt,
-    toDt,
-    isVisible = true,
-    keyword = "",
-    take,
-    page,
-  } = queryStringObj;
+  const { sortOrder, fromDt, toDt, isVisible, keyword, take, page } =
+    queryStringObj;
 
-  const getVisibleQueryParam = (isVisible: boolean | null): string => {
-    if (isVisible === true) return "&isVisible=true";
-    if (isVisible === false) return "&isVisible=false";
-    return "";
-  };
+  let qs = "/admin/notice?";
 
-  const queryString = `/admin/notice?sortOrder=${sortOrder}&fromDt=${fromDt}&toDt=${toDt}${getVisibleQueryParam(
-    isVisible
-  )}${keyword ? `&keyword=${keyword}` : ""}&take=${take}&page=${page}`;
+  if (sortOrder) {
+    qs += `sortOrder=${sortOrder}&`;
+  }
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (isVisible !== null) {
+    qs += `isVisible=${isVisible}`;
+  }
+  if (keyword) {
+    qs += `keyword=${keyword}&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
 
-  const data = API.get<TableResSuccessType<ResNoticeDataType>>(queryString);
+  const data = API.get<TableResSuccessType<ResNoticeDataType>>(qs);
 
   return data;
 };

@@ -62,7 +62,7 @@ function DatePicker({
       <PopoverContent className="w-auto p-0">
         <Calendar
           mode="single"
-          selected={date}
+          selected={date === undefined ? new Date() : date} // Calendar최초 로드시 초기 값은 undefined이기 때문에 오늘날짜로 초기화
           autoFocus
           onSelect={setDate}
           required

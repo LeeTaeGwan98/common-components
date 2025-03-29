@@ -20,7 +20,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { TableQueryStringType } from "@/api/common/commonType";
 import Label from "@/components/common/Atoms/Label/Label";
 import { cn } from "@/lib/utils";
-import { dateToString } from "@/lib/dateParse";
 import { useReducer, useState } from "react";
 import { ActionType } from "@/api/common/commonType";
 import CACHE_TIME from "@/Constants/CacheTime";
@@ -28,14 +27,12 @@ import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/Ta
 
 const initState: TableQueryStringType = {
   sortOrder: "DESC",
-  fromDt: dateToString(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-  ),
-  toDt: dateToString(new Date()),
+  fromDt: undefined,
+  toDt: undefined,
   isVisible: null,
   keyword: "",
-  take: 10,
-  page: 1,
+  take: null,
+  page: null,
 };
 
 const reducer = <T extends Record<string, any>>(
@@ -70,10 +67,13 @@ const Notice = () => {
   };
 
   const renderEmptyRows = () => {
-    const emptyRowsCount = Math.max(0, filterInfo.take - data.list.length);
+    const emptyRowsCount = Math.max(
+      0,
+      filterInfo.take || 10 - data.list.length
+    );
     const emptyRows = [];
 
-    for (let i = 0; i < emptyRowsCount; i++) {
+    for (let i = 0; i < emptyRowsCount - data.list.length; i++) {
       emptyRows.push(
         <TableRow key={`empty-row-${i}`}>
           <TableCell>&nbsp;</TableCell>
