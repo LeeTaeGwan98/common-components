@@ -58,8 +58,6 @@ const Notice = () => {
     queryKey: ["noticeList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getNotice(filterInfo),
     select: (data) => data.data.data,
-    staleTime: CACHE_TIME,
-    gcTime: CACHE_TIME,
   });
 
   const handleSortOrder = () => {
