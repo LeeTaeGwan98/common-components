@@ -35,7 +35,7 @@ const initState: TableQueryStringType & { isVisible: boolean | null } = {
   toDt: undefined,
   isVisible: null,
   keyword: "",
-  take: null,
+  take: 10,
   page: null,
 };
 
@@ -78,10 +78,9 @@ const Notice = () => {
   };
 
   const renderEmptyRows = () => {
-    const emptyRowsCount = Math.max(
-      0,
-      filterInfo.take || 10 - data.list.length
-    );
+    const { take } = filterInfo;
+    if (!take) return;
+    const emptyRowsCount = take - data.list.length;
     const emptyRows = [];
 
     for (let i = 0; i < emptyRowsCount; i++) {
