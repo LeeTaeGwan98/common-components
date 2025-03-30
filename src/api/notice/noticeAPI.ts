@@ -25,7 +25,6 @@ export interface AddNoticeRes {
 }
 
 export const addNotice = (payload: NoticeRes) => {
-  console.log(payload);
   const data = API.post<TableResSuccessType<AddNoticeRes>>(
     "/admin/notice",
     payload
@@ -82,6 +81,36 @@ export const getNotice = (
 
 export const getNoticeDetail = (id: number) => {
   const data = API.get<APIResponse<NoticeRes>>(`/admin/notice/${id}`);
+
+  return data;
+};
+
+export interface UpdateNoticePayload {
+  title: string;
+  content: string;
+  isPinned: boolean;
+  isVisible: boolean;
+  updatedBy: number;
+}
+
+export interface UpdateNoticeRes {
+  id: number;
+  title: string;
+  content: string;
+  isPinned: boolean;
+  isVisible: boolean;
+  createdBy: number;
+  createdAt: string;
+  updatedBy: number;
+  updatedAt: string;
+}
+
+export const updateNotice = (payload: UpdateNoticePayload) => {
+  const { updatedBy: id } = payload;
+  const data = API.patch<APIResponse<UpdateNoticeRes>>(
+    `/admin/notice/${id}`,
+    payload
+  );
 
   return data;
 };
