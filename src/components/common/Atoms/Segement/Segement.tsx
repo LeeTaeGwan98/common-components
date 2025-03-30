@@ -1,13 +1,16 @@
+// 외부에서 state를 주입받는 컴포넌트
 import { Dispatch, SetStateAction } from "react";
 import { cn } from "@/lib/utils";
+
 interface SegmentProps {
   size?: "large" | "medium" | "small";
   selected?: boolean; // true면 왼쪽이 활성화 / false면 오른쪽이 활성화
-  setSelected: Dispatch<SetStateAction<boolean>>;
+  setSelected: Dispatch<SetStateAction<boolean>> | ((value: boolean) => void);
   textList: [string | number, string | number]; // 배열크기 2개로 제한
   className?: string;
   itemClassName?: string;
 }
+
 function Segement({
   size = "medium",
   selected = true,
@@ -21,6 +24,7 @@ function Segement({
     medium: "w-[158px]",
     small: "w-[124px]",
   };
+
   return (
     <div className={cn("flex", sizeStyle[size], className)}>
       {textList.map((item: string | number, idx) => {
@@ -41,6 +45,7 @@ function Segement({
     </div>
   );
 }
+
 type SegementItem = Pick<
   SegmentProps,
   "selected" | "itemClassName" | "size" | "setSelected"
@@ -48,6 +53,7 @@ type SegementItem = Pick<
   children: React.ReactNode;
   flag: 0 | 1;
 };
+
 Segement.SegementItem = (({
   selected,
   children,
@@ -57,6 +63,7 @@ Segement.SegementItem = (({
   size = "medium",
 }: SegementItem) => {
   const isSelected = !flag === selected;
+
   const sizeStyle = {
     large: "text-body1-normal-bold py-[12px]",
     medium: "text-body2-normal-bold py-[9px]",
@@ -69,10 +76,12 @@ Segement.SegementItem = (({
   const selectedStyle = isSelected
     ? "bg-primary-normal/[0.08] text-primary-normal border-[1px] border-transparent"
     : "border-[1px] border-line-normal-normal";
+
   const interactiveTypeStyle = {
     "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active":
       !isSelected,
   };
+
   return (
     <button
       className={cn(
@@ -83,10 +92,11 @@ Segement.SegementItem = (({
         sizeStyle[size],
         itemClassName
       )}
-      onClick={() => setSelected(!!flag)}
+      onClick={() => setSelected(!flag)}
     >
       {children}
     </button>
   );
 }) as React.FC<SegementItem>;
+
 export default Segement;
