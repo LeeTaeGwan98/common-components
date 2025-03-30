@@ -4,7 +4,7 @@ import AdminTitle from "@/components/common/Molecules/AdminTitle/AdminTitle";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ExcelImage from "@/assets/Image/Excel.png";
-import { ActionDispatch, Dispatch, ReactNode, SetStateAction } from "react";
+import { ActionDispatch, ReactNode, useState } from "react";
 import { TableQueryStringType } from "@/api/common/commonType";
 import { dateToString, stringToDate } from "@/lib/dateParse";
 import { ActionType } from "@/api/common/commonType";
@@ -18,8 +18,6 @@ interface SubtitleBarProps {
   title: string;
   filterInfo: TableQueryStringType;
   dispatch: ActionDispatch<[action: ActionType<TableQueryStringType>]>;
-  setInputKeyword: Dispatch<SetStateAction<string>>;
-  inputKeyword?: string;
   CustomSelectComponent: ReactNode;
 }
 
@@ -27,10 +25,11 @@ function SubTitleBar({
   filterInfo,
   title,
   dispatch,
-  setInputKeyword,
-  inputKeyword,
   CustomSelectComponent,
 }: SubtitleBarProps) {
+  // 입력 중인 keyword를 별도로 관리
+  // onchange중에는 API를 호출하지 않기 위해
+  const [inputKeyword, setInputKeyword] = useState("");
   const { fromDt, toDt } = filterInfo;
 
   const handletoFromDt = (date: Date) => {
@@ -95,6 +94,7 @@ function SubTitleBar({
           onKeyDown={handleKeywordEnter}
           searchIcon
           placeholder="검색어를 입력해주세요"
+          maxLength={100}
         />
 
         <SelectBox

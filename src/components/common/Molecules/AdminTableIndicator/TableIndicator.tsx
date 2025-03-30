@@ -16,6 +16,8 @@ interface TableIndicatorProps {
 
 function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
   const { hasNextPage, page, take, totalCount, totalPage } = PaginationMetaType;
+  // 입력 중인 page를 별도로 관리
+  // onchange중에는 API를 호출하지 않기 위해
   const [inputNumber, setInputNumber] = useState(1);
 
   const hiddenTextRef = useRef<HTMLDivElement | null>(null);

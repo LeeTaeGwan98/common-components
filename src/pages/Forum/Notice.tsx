@@ -22,9 +22,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { TableQueryStringType } from "@/api/common/commonType";
 import Label from "@/components/common/Atoms/Label/Label";
 import { cn } from "@/lib/utils";
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 import { ActionType } from "@/api/common/commonType";
-import CACHE_TIME from "@/Constants/CacheTime";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
@@ -98,10 +97,6 @@ const Notice = () => {
     return emptyRows;
   };
 
-  // 입력 중인 keyword를 별도로 관리
-  // onchange중에는 API를 호출하지 않기 위해
-  const [inputKeyword, setInputKeyword] = useState(initState.keyword || "");
-
   return (
     <BreadcrumbContainer
       breadcrumbNode={<>게시판 관리 / 공지사항</>}
@@ -114,11 +109,9 @@ const Notice = () => {
       }
     >
       <SubTitleBar
-        filterInfo={{ ...filterInfo, keyword: inputKeyword }}
+        filterInfo={filterInfo}
         title="등록일"
         dispatch={dispatch}
-        inputKeyword={inputKeyword}
-        setInputKeyword={setInputKeyword}
         CustomSelectComponent={
           <SelectBox
             placeholder="모든 상태"
