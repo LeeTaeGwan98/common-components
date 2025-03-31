@@ -18,10 +18,12 @@ import { ActionType, TableQueryStringType } from "@/api/common/commonType";
 import { useReducer, useState } from "react";
 import { dateToString } from "@/lib/dateParse";
 import CACHE_TIME from "@/Constants/CacheTime";
-import { getUserList } from "@/api/user/userAPI";
+import { getUserList, UserQueryStringType } from "@/api/user/userAPI";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 
-const initState: TableQueryStringType = {
+const initState: UserQueryStringType = {
   sortOrder: "DESC",
   fromDt: dateToString(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1)
@@ -30,7 +32,7 @@ const initState: TableQueryStringType = {
   keyword: "",
   take: 10,
   page: 1,
-  isVisible: null,
+  isActive: null,
 };
 
 const reducer = <T extends Record<string, any>>(
@@ -88,8 +90,6 @@ function UserList() {
     queryKey: ["userList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getUserList(filterInfo),
     select: (data) => data.data.data,
-    staleTime: CACHE_TIME,
-    gcTime: CACHE_TIME,
   });
 
   // 입력 중인 keyword를 별도로 관리
@@ -98,12 +98,26 @@ function UserList() {
   return (
     <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
       <SubTitleBar
-        filterInfo={{ ...filterInfo, isVisible: false, keyword: inputKeyword }}
+        filterInfo={filterInfo}
         title="가입일"
         dispatch={dispatch}
-        refetch={refetch}
-        inputKeyword={inputKeyword}
-        setInputKeyword={setInputKeyword}
+        CustomSelectComponent={
+          <SelectBox
+            placeholder="모든 상태"
+            className="min-w-[240px]"
+            size="large"
+            defaultValue="ALL"
+            //onValueChange={handleisVisible}
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">모든상태</SelectItem>
+                <SelectItem value="true">노출</SelectItem>
+                <SelectItem value="false">비노출</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
+        }
       />
 
       <TableContainer>

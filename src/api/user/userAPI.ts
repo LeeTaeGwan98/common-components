@@ -2,11 +2,10 @@ import API from "@/api/API";
 import { type TableResSuccessType } from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
 
-// export interface UserQueryStringType
-//   extends Omit<TableQueryStringType, "isVisible"> {
-//   // todo: isActive 서버에 보내명 500에러남
-//   isActive?: boolean;
-// }
+export interface UserQueryStringType
+  extends Omit<TableQueryStringType, "isVisible"> {
+  isActive: boolean | null;
+}
 
 export interface UserListData {
   id: number;
@@ -20,12 +19,12 @@ export interface UserListData {
 }
 
 //모든 회원 목록 가져오기
-export const getUserList = (queryStringObj: TableQueryStringType) => {
+export const getUserList = (queryStringObj: UserQueryStringType) => {
   const {
     sortOrder,
     fromDt,
     toDt,
-    isVisible,
+    isActive,
     keyword = "",
     take,
     page,
@@ -38,7 +37,7 @@ export const getUserList = (queryStringObj: TableQueryStringType) => {
   };
 
   const queryString = `/admin/user?sortOrder=${sortOrder}&fromDt=${fromDt}&toDt=${toDt}${getActiveQueryParam(
-    isVisible
+    isActive
   )}${keyword ? `&keyword=${keyword}` : ""}&take=${take}&page=${page}`;
 
   const data = API.get<TableResSuccessType<UserListData>>(queryString);
