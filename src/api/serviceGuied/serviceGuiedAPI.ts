@@ -1,5 +1,6 @@
 import API from "@/api/API";
 import {
+  ResSuccessType,
   TableQueryStringType,
   type TableResSuccessType,
 } from "@/api/common/commonType";
@@ -26,6 +27,7 @@ export interface AddGuiedPayload {
   serviceCode: string;
   categoryCode: string;
   title: string;
+  isVisible: boolean;
   content: string;
   createdBy: number;
   updatedBy: number;
@@ -43,6 +45,15 @@ export interface AddGuiedRes {
   createdAt: string;
   updatedBy: 1;
   updatedAt: string;
+}
+
+//서비스 가이드 상세 응답
+export interface ResGuideDetailType {
+  serviceCode: number;
+  categoryCode: string;
+  title: string;
+  isVisible: boolean;
+  content: string;
 }
 
 //서비스 가이드 목록
@@ -91,6 +102,15 @@ export const addGuide = (payload: AddGuiedPayload) => {
     "/admin/guide",
     payload
   );
+
+  return data;
+};
+
+//서비스가이드 상세 조회
+export const getGuideDetail = (id: number) => {
+  const queryString = `/admin/guide/${id}`;
+
+  const data = API.get<ResSuccessType<ResGuideDetailType>>(queryString);
 
   return data;
 };

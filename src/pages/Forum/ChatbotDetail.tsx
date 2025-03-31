@@ -49,9 +49,9 @@ const ChatbotDetail = () => {
   const categoryCodes = codeInfo[keys[0]]; // 카테고리 코드들
   const { openModal } = useModalStore();
 
-  //챗봇 목록 상세 조회 api
+  //챗봇 상세 조회 api
   const { data } = useSuspenseQuery({
-    queryKey: ["chatBotDetail", id], // filterInfo가 변경될 때마다 API 호출
+    queryKey: ["chatBotDetail", id],
     queryFn: () => getChatBotDetail(Number(id)),
     select: (data) => data.data.data,
   });

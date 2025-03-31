@@ -10,7 +10,6 @@ import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import { useModalStore } from "@/store/modalStore";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
-import NoticeDetailModal from "@/components/modal/forum/NoticeDetailModal";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import {
   SelectContent,
@@ -19,8 +18,21 @@ import {
   SelectLabel,
 } from "@/components/ui/select";
 import ServiceGuideModal from "@/components/modal/forum/ServiceGuideModal";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getGuideDetail } from "@/api/serviceGuied/serviceGuiedAPI";
+import { useParams } from "react-router-dom";
+
+// formState 타입 정의
+type FormState = {
+  title: string;
+  categoryCode: string;
+  isEbook: boolean;
+  isVisible: boolean;
+  content: string;
+};
 
 const ServiceGuideDetail = () => {
+  const { id } = useParams(); // id 값 추출
   const [titleContents, setTitleContents] =
     useState("[공지] 전자책 진행 일정 관련");
   const [isNoExposure, setIsNoExposure] = useState<boolean>(true);
@@ -29,6 +41,23 @@ const ServiceGuideDetail = () => {
     "안녕하세요 북카롱입니다 현재 작업량이 많아"
   );
 
+  // 폼 상태 관리
+  const [formState, setFormState] = useState({
+    title: "",
+    categoryCode: "",
+    isEbook: true,
+    isVisible: true,
+    content: "",
+  });
+
+  //서비스가이드 상세 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["serviceGuideDetail", id],
+    queryFn: () => getGuideDetail(Number(id)),
+    select: (data) => data.data.data,
+  });
+
+  //서비스 가이드 삭제 모달
   const { openModal } = useModalStore();
   const deleteModal = () => {
     openModal(<ServiceGuideModal />);
