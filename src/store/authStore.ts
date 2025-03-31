@@ -8,10 +8,12 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isLogin: boolean;
+  permissions: string[] | null;
   setUserInfo: (userResponse: UserInfoRes) => void;
   delUserInfo: () => void;
   updateUser: (userData: Partial<UserInfoRes>) => void;
   updateTokens: (accessToken: string, refreshToken: string) => void;
+  updatePermissions: (permissions: string[]) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -21,6 +23,7 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       refreshToken: null,
       isLogin: false,
+      permissions: null,
 
       // 로그인시 발동
       setUserInfo: (userResponse: UserInfoRes) => {
@@ -30,6 +33,7 @@ export const useAuthStore = create<AuthState>()(
           accessToken: userResponse.accessToken,
           refreshToken: userResponse.refreshToken,
           isLogin: true,
+          permissions: userResponse.permissions || null,
         });
       },
 
@@ -41,6 +45,7 @@ export const useAuthStore = create<AuthState>()(
           accessToken: null,
           refreshToken: null,
           isLogin: false,
+          permissions: null,
         });
       },
 
@@ -57,6 +62,11 @@ export const useAuthStore = create<AuthState>()(
           accessToken,
           refreshToken,
         });
+      },
+
+      // 메뉴권한 업데이트
+      updatePermissions: (permissions: string[]) => {
+        set({ permissions });
       },
     }),
 
