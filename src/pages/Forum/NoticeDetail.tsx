@@ -61,7 +61,8 @@ const NoticeDetail = () => {
 
   // 수정 API 호출
   const { mutate: updateNoticeFn } = useMutation({
-    mutationFn: (payload: UpdateNoticePayload) => updateNotice(payload),
+    mutationFn: (payloadWithId: { id: number; payload: UpdateNoticePayload }) =>
+      updateNotice(payloadWithId),
     onSuccess() {
       navigate(-1);
     },
@@ -77,17 +78,20 @@ const NoticeDetail = () => {
     if (!isFormValid) return;
 
     updateNoticeFn({
-      title: formState.title,
-      content: formState.content,
-      isPinned: formState.isPinned,
-      isVisible: formState.isVisible,
-      updatedBy: user!.id,
+      id: Number(id),
+      payload: {
+        title: formState.title,
+        content: formState.content,
+        isPinned: formState.isPinned,
+        isVisible: formState.isVisible,
+        updatedBy: user!.id,
+      },
     });
   };
 
   // 삭제 모달 오픈
   const openDeleteModal = () => {
-    openModal(<NoticeDetailModal />);
+    openModal(<NoticeDetailModal id={Number(id)} />);
   };
 
   return (

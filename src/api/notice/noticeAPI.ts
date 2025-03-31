@@ -105,8 +105,15 @@ export interface UpdateNoticeRes {
   updatedAt: string;
 }
 
-export const updateNotice = (payload: UpdateNoticePayload) => {
-  const { updatedBy: id } = payload;
+export const updateNotice = (payloadWidthId: {
+  payload: UpdateNoticePayload;
+  id: number;
+}) => {
+  const {
+    id,
+    payload: { ...payload },
+  } = payloadWidthId;
+
   const data = API.patch<APIResponse<UpdateNoticeRes>>(
     `/admin/notice/${id}`,
     payload
