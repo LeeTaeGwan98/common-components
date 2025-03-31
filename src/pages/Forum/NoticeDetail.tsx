@@ -8,7 +8,11 @@ import { useModalStore } from "@/store/modalStore";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
 import NoticeDelModal from "@/components/modal/forum/NoticeDelModal";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { getNoticeDetail } from "@/api/notice/noticeAPI";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
@@ -25,6 +29,7 @@ type FormState = {
 };
 
 const NoticeDetail = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuthStore();
@@ -64,6 +69,7 @@ const NoticeDetail = () => {
     mutationFn: (payloadWithId: { id: number; payload: UpdateNoticePayload }) =>
       updateNotice(payloadWithId),
     onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["noticeDetail", id] });
       navigate(-1);
     },
     onError() {
