@@ -1,5 +1,6 @@
 import API from "@/api/API";
 import {
+  ResSuccessType,
   TableQueryStringType,
   TableResSuccessType,
 } from "@/api/common/commonType";
@@ -66,7 +67,24 @@ export const getChatBotList = (queryStringObj: ChatBotQueryStringType) => {
 export const getChatBotDetail = (id: number) => {
   const queryString = `/admin/chatbot/${id}`;
 
-  const data = API.get<ResChatBotDataType>(queryString);
+  const data = API.get<ResSuccessType<ResChatBotDataType>>(queryString);
+
+  return data;
+};
+
+//챗봇 수정
+export const updateChatBot = (id: number, payload: CreateChatBotPayload) => {
+  console.log(payload);
+  const data = API.patch<CreateChatBotRes>(`/admin/chatbot/${id}`, payload);
+
+  return data;
+};
+
+//챗봇 삭제
+export const deleteChatBot = (id: number) => {
+  const queryString = `/admin/chatbot/${id}`;
+
+  const data = API.delete<ResSuccessType<{}>>(queryString);
 
   return data;
 };

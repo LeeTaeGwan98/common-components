@@ -131,7 +131,7 @@ function App() {
               element={<ServiceGuideRegistration />}
             />
             <Route path={CHATBOT} element={<Chatbot />} />
-            <Route path={CHATBOT_DETAIL} element={<ChatbotDetail />} />
+            <Route path={`${CHATBOT_DETAIL}/:id`} element={<ChatbotDetail />} />
             <Route
               path={CHATBOT_REGISTRATION}
               element={<ChatbotRegistration />}

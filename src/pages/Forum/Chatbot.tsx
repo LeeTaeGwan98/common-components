@@ -71,7 +71,7 @@ const Chatbot = () => {
 
   //챗봇 목록 조회 api
   const { data, refetch } = useSuspenseQuery({
-    queryKey: ["chatBotList"], // filterInfo가 변경될 때마다 API 호출
+    queryKey: ["chatBotList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getChatBotList(filterInfo),
     select: (data) => data.data.data,
     staleTime: CACHE_TIME,
@@ -218,7 +218,7 @@ const Chatbot = () => {
                     )}
                   </TableCell>
                   <TableCell>
-                    <Link to={CHATBOT_DETAIL}>
+                    <Link to={`${CHATBOT_DETAIL}/${item.id}`}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

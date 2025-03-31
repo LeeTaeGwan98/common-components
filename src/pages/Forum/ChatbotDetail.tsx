@@ -27,8 +27,10 @@ import {
 } from "@/Constants/CommonGroupCode";
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import CACHE_TIME from "@/Constants/CacheTime";
+import { useParams } from "react-router-dom";
 
 const ChatbotDetail = () => {
+  const { id } = useParams(); // id 값 추출
   const [categoryCode, setCategoryCode] = useState<string>(""); //카테고리
   const [isVisible, setIsVisible] = useState<boolean>(true); //노출 상태
   const [question, setQuestion] = useState<string>(""); //질문
@@ -46,17 +48,11 @@ const ChatbotDetail = () => {
   const { openModal } = useModalStore();
 
   //챗봇 목록 상세 조회 api
-  const { data, refetch } = useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["chatBotDetail"], // filterInfo가 변경될 때마다 API 호출
-    queryFn: () => getChatBotDetail(1),
-    select: (data) => data.data,
-    staleTime: CACHE_TIME,
-    gcTime: CACHE_TIME,
+    queryFn: () => getChatBotDetail(Number(id)),
+    select: (data) => data.data.data,
   });
-
-  useEffect(() => {
-    refetch();
-  }, []);
 
   //챗봇 생성 api
   const CreateChatBot = useMutation({
@@ -115,15 +111,20 @@ const ChatbotDetail = () => {
               <SelectBox
                 label="카테고리"
                 placeholder="카테고리를 선택해주세요"
+                value={
+                  categoryCodes.find(
+                    (code) => code.commDetailCode === data.categoryCode
+                  )?.detailCodeName
+                }
                 onValueChange={(value) => {
                   setCategoryCode(value);
                 }}
               >
                 <SelectContent>
                   <SelectGroup>
-                    {categoryCodes.map((code) => {
+                    {categoryCodes.map((code, index) => {
                       return (
-                        <SelectItem value={code.commDetailCode}>
+                        <SelectItem key={index} value={code.commDetailCode}>
                           {code.detailCodeName}
                         </SelectItem>
                       );
@@ -146,10 +147,10 @@ const ChatbotDetail = () => {
           </div>
 
           <div className="w-full flex flex-col gap-[8px]">
-            질문
             <TextBox
-              value={question}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              value={data.question}
+              label="질문"
+              onChange={(e) => {
                 setQuestion(e.target.value);
               }}
               placeholder="질문을 입력하세요"
@@ -159,7 +160,7 @@ const ChatbotDetail = () => {
           <div className="mt-[32px] flex justify-end space-x-4">
             <Button
               onClick={() => {
-                console.log("취소 버튼 클릭");
+                console.log("취소 버튼 클릭", data);
               }}
               className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium "
             >

@@ -16,6 +16,13 @@ export interface TableResSuccessType<T> {
   success: boolean;
 }
 
+export interface ResSuccessType<T> {
+  message: string;
+  statue: number;
+  success: boolean;
+  data: T;
+}
+
 export interface TableQueryStringType {
   sortOrder?: "DESC" | "ASC";
   fromDt?: string | undefined; // 날짜는 라이브러리에서 null을 허용안하기 때문에 undefined를 사용
