@@ -8,6 +8,8 @@ import Divider from "@/components/common/Atoms/Divider/Divider";
 import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 
 function TermsDetail() {
   const { id } = useParams();
@@ -49,6 +51,22 @@ function TermsDetail() {
     >
       <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
         <div className="w-[1004px]">
+          {/* 구분 */}
+          <SelectBox
+            placeholder="약관 구분을 선택해주세요"
+            className="min-w-[240px]"
+            size="large"
+            defaultValue="ALL"
+            label="구분"
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">모든상태</SelectItem>
+                <SelectItem value="true">노출</SelectItem>
+                <SelectItem value="false">비노출</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
           {/* 이용약관명 */}
           <div className="gap-gutter-horizon">
             이용약관명

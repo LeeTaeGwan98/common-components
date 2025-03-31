@@ -53,7 +53,7 @@ function InquiryDetail() {
   //공통 코드 가져오기
   const { data: codeInfo } = useSuspenseQuery({
     queryKey: [
-      "chatbotCategoryGroupCodes",
+      "inquiryCategoryGroupCodes",
       COMMON_GROUP_CODE_MAPPING.서비스코드,
       COMMON_GROUP_CODE_MAPPING.전자책서비스문의유형,
       COMMON_GROUP_CODE_MAPPING.비디오북서비스문의유형,

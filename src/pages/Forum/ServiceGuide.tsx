@@ -65,7 +65,7 @@ const ServiceGuide = () => {
   //서비스가이드 공통 카테고리 가져오기
   const { data: codeInfo } = useSuspenseQuery({
     queryKey: [
-      "chatbotCategoryGroupCodes",
+      "serviceGuideGroupCodes",
       COMMON_GROUP_CODE_MAPPING.서비스코드,
       COMMON_GROUP_CODE_MAPPING.전자책만들기서비스가이드카테고리,
       COMMON_GROUP_CODE_MAPPING.비디오북만들기서비스가이드카테고리,

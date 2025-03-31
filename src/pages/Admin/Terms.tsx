@@ -44,21 +44,21 @@ function Terms() {
               <TableCell isHeader>수정일</TableCell>
               <TableCell isHeader>적용일</TableCell>
               <TableCell isHeader>수정인</TableCell>
+              <TableCell isHeader>구분</TableCell>
               <TableCell isHeader>이용약관명</TableCell>
-              <TableCell isHeader>파일명</TableCell>
               <TableCell isHeader>상세정보</TableCell>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {data?.map((item: TermsType) => {
+            {data?.map((item: TermsType, index: number) => {
               return (
-                <TableRow>
+                <TableRow key={index}>
                   <TableCell>{item.updatedAt}</TableCell>
                   <TableCell>{item.effectiveDate}</TableCell>
                   <TableCell>{item.updatedBy}</TableCell>
+                  <TableCell>{item.type}</TableCell>
                   <TableCell>{item.title}</TableCell>
-                  <TableCell>terms_123456789.html</TableCell>
                   <TableCell>
                     <Link to={`${TERMS_DETAIL}/${item.id}`}>
                       <IconButton
