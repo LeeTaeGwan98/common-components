@@ -11,8 +11,12 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useReducer } from "react";
+import { ActionType, TableQueryStringType } from "@/api/common/commonType";
+import { getDashboard } from "@/api/main/dashboardApi";
 
-const data = [
+const datas = [
   { 군구: "광진구", 유동인구수: 32760 },
   { 군구: "동대문구", 유동인구수: 30480 },
   { 군구: "마포구", 유동인구수: 27250 },
@@ -20,7 +24,30 @@ const data = [
   { 군구: "강남구", 유동인구수: 51420 },
 ];
 
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
+
+type NoticleTableQueryStringType = TableQueryStringType & {
+  isVisible: boolean | null;
+};
+
 function Main() {
+  const { data } = useSuspenseQuery({
+    queryKey: ["dashboardList"],
+    queryFn: () => getDashboard(),
+    select: (data) => data.data.data,
+  });
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>메인</>}>
       {/* 메인 카드 부분 */}
@@ -38,7 +65,7 @@ function Main() {
           >
             <Content
               label="오늘"
-              summary="320명"
+              summary={`${data.userIncreaseCount}`}
               icon={<Up />}
               slot={{
                 summaryClassName:
@@ -46,7 +73,7 @@ function Main() {
                 labelClassName: "text-primary-normal text-caption1-bold",
               }}
             >
-              51,000명
+              {`${data.totalUserCount} 명`}
             </Content>
           </Card>
           <Card
@@ -67,7 +94,7 @@ function Main() {
                 labelClassName: "text-primary-normal text-caption1-bold",
               }}
             >
-              20권
+              {`${data.pendingEbookCount} 권`}
             </Content>
           </Card>
           <Card
@@ -133,7 +160,7 @@ function Main() {
                 labelClassName: "text-primary-normal text-caption1-bold",
               }}
             >
-              22건
+              {`${data.pendingEbookCount} 건`}
             </Content>
           </Card>
         </div>
@@ -149,7 +176,7 @@ function Main() {
           </div>
           <ResponsiveContainer className="h-[520px] border border-line-normal-normal py-[32px] pl-[12px] pr-[32px]">
             <LineChart
-              data={data}
+              data={datas}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
