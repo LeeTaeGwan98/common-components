@@ -7,6 +7,8 @@ export const codeToGetGroupCode = (code: string) => {
 
 //상세코드를 이름으로 변환
 export const codeToName = (codes: DetailCodeType[], detailCodeName: string) => {
-  return codes.find((code) => code.commDetailCode === detailCodeName)
-    ?.detailCodeName;
+  return (
+    codes.find((code) => code.commDetailCode === detailCodeName)
+      ?.detailCodeName ?? ""
+  );
 };

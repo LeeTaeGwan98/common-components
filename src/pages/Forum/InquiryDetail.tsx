@@ -25,6 +25,12 @@ import {
 } from "@/api/inquiry/inquiryAPI";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import { codeToGetGroupCode, codeToName } from "@/utils/uitls";
 
 // formState 타입 정의
 type FormState = {
@@ -43,6 +49,27 @@ function InquiryDetail() {
   const { user } = useAuthStore(); //현재 로그인한 유저 정보
   const { openModal } = useModalStore();
   const navigate = useNavigate(); //네비게이션
+
+  //공통 코드 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: [
+      "chatbotCategoryGroupCodes",
+      COMMON_GROUP_CODE_MAPPING.서비스코드,
+      COMMON_GROUP_CODE_MAPPING.전자책서비스문의유형,
+      COMMON_GROUP_CODE_MAPPING.비디오북서비스문의유형,
+    ],
+    queryFn: () =>
+      getGroupCodes([
+        COMMON_GROUP_CODE_MAPPING.서비스코드,
+        COMMON_GROUP_CODE_MAPPING.전자책서비스문의유형,
+        COMMON_GROUP_CODE_MAPPING.비디오북서비스문의유형,
+      ]),
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const serviceCodes = codeInfo[keys[0]]; // 서비스 코드들
+  const eBookInquiryCodes = codeInfo[keys[1]]; // 전자책 문의 유형 코드들
+  const videoInquiryCodes = codeInfo[keys[2]]; // 비디오북 문의 유형 코드들
 
   //서비스가이드 상세 조회 api
   const { data } = useSuspenseQuery({
@@ -162,7 +189,7 @@ function InquiryDetail() {
               서비스
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value={formState.serviceCode}
+                value={codeToName(serviceCodes, formState.serviceCode)}
                 isVisible={false}
                 disabled
               />
@@ -171,7 +198,13 @@ function InquiryDetail() {
               문의유형
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value={formState.type}
+                value={codeToName(
+                  codeToGetGroupCode(formState.type) ===
+                    COMMON_GROUP_CODE_MAPPING.전자책서비스문의유형
+                    ? eBookInquiryCodes
+                    : videoInquiryCodes,
+                  formState.type
+                )}
                 isVisible={false}
                 disabled
               />
