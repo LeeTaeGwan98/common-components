@@ -13,7 +13,7 @@ import {
   getChatBotDetail,
   updateChatBot,
   UpdateChatBotData,
-} from "@/api/common/chatbot/chatbotAPI";
+} from "@/api/chatbot/chatbotAPI";
 import {
   useMutation,
   useQueryClient,

@@ -120,7 +120,7 @@ function App() {
 
             {/* 게시판 관리 */}
             <Route path={INQUIRY} element={<Inquiry />} />
-            <Route path={INQUIRY_DETAIL} element={<InquiryDetail />} />
+            <Route path={`${INQUIRY_DETAIL}/:id`} element={<InquiryDetail />} />
             <Route path={NOTICE} element={<Notice />} />
             <Route path={`${NOTICE_DETAIL}/:id`} element={<NoticeDetail />} />
             <Route

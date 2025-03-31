@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { createChatBot } from "@/api/common/chatbot/chatbotAPI";
+import { createChatBot } from "@/api/chatbot/chatbotAPI";
 import {
   COMMON_GROUP_CODE_MAPPING,
   COMMON_GROUP_CODE_UNION_TYPE,

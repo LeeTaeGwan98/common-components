@@ -14,8 +14,8 @@ export interface ServiceGuideQueryStringType
 
 //서비스 가이드 목록 조회 응답
 interface ServiceGuideRes {
-  id: 1;
-  serviceCode: COMMON_GROUP_CODE_UNION_TYPE;
+  id: number;
+  serviceCode: string;
   categoryCode: string;
   isVisible: boolean;
   title: string;

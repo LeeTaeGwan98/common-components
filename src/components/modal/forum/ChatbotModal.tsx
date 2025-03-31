@@ -7,7 +7,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { useMutation } from "@tanstack/react-query";
-import { deleteChatBot } from "@/api/common/chatbot/chatbotAPI";
+import { deleteChatBot } from "@/api/chatbot/chatbotAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
 
 const ChatbotModal = ({ id }: { id: number }) => {

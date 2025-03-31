@@ -3,27 +3,123 @@ import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
+import AdminEdit, {
+  parseHTML,
+} from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import InquiryModal from "@/components/modal/forum/InquiryModal";
 import { useModalStore } from "@/store/modalStore";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuthStore } from "@/store/authStore";
+import {
+  getInquiryDetail,
+  inquiryResponse,
+  InquiryResponseType,
+  updateInquiryResponse,
+} from "@/api/inquiry/inquiryAPI";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
+
+// formState 타입 정의
+type FormState = {
+  inquiryAt: string;
+  name: string;
+  serviceCode: string;
+  type: string;
+  content: string;
+  isResponse: boolean;
+  responseContent: string;
+};
 
 function InquiryDetail() {
-  const [answerContents, setAnswerContents] = useState("");
-
+  const queryClient = useQueryClient();
+  const { id } = useParams(); // id 값 추출
+  const { user } = useAuthStore(); //현재 로그인한 유저 정보
   const { openModal } = useModalStore();
+  const navigate = useNavigate(); //네비게이션
 
+  //서비스가이드 상세 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["inquiryDetail", id],
+    queryFn: () => getInquiryDetail(Number(id)),
+    select: (data) => data.data.data,
+  });
+
+  useEffect(() => {}, [data]);
+
+  // 폼 상태 관리
+  const [formState, setFormState] = useState({
+    inquiryAt: data.inquiryAt,
+    name: data.name,
+    serviceCode: data.serviceCode,
+    type: data.type,
+    content: data.content,
+    isResponse: data.responseContent ? true : false,
+    responseContent: data.responseContent,
+  });
+  // 폼 개별 상태 업데이트 핸들러
+  const updateFormState = <K extends keyof FormState>(
+    field: K,
+    value: FormState[K]
+  ) => {
+    setFormState((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  //문의사항 답변
+  const { mutate: inquiryResponseFn } = useMutation({
+    mutationFn: (payload: { id: number; data: InquiryResponseType }) =>
+      formState.isResponse
+        ? updateInquiryResponse(payload)
+        : inquiryResponse(payload),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["inquiryDetail", id] });
+      navigate(-1);
+    },
+    onError() {
+      customToast({
+        title: "문의사항 답변중 에러가 발생했습니다.",
+      });
+    },
+  });
+
+  // 저장 버튼 활성화 여부
+  const isFormValid =
+    formState.responseContent &&
+    parseHTML(formState.responseContent).length >= 10;
+
+  // 저장 버튼 핸들러
+  const handleSave = () => {
+    if (!isFormValid) return;
+
+    //문의 답변
+    inquiryResponseFn({
+      id: Number(id),
+      data: {
+        responseContent: formState.responseContent,
+        responseAdminId: user!.id,
+      },
+    });
+  };
+  //문의사항 삭제 모달
   const deleteModal = () => {
-    openModal(<InquiryModal />);
+    openModal(<InquiryModal id={Number(id)} />);
   };
 
   return (
     <BreadcrumbContainer
       breadcrumbNode={
         <>
-          관리자 / 계정 관리 <Divider vertical className="h-[20px] mx-[12px]" />{" "}
-          상세
+          게시판 관리 / 1:1문의
+          <Divider vertical className="h-[20px] mx-[12px]" /> 상세
         </>
       }
       button={
@@ -45,7 +141,7 @@ function InquiryDetail() {
               닉네임
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value="닉네임테스트"
+                value={formState.name}
                 isVisible={false}
                 disabled
               />
@@ -54,7 +150,7 @@ function InquiryDetail() {
               문의일
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value="2024-07-09 15:23:35"
+                value={formState.inquiryAt}
                 isVisible={false}
                 disabled
               />
@@ -66,7 +162,7 @@ function InquiryDetail() {
               서비스
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value="전자책 만들기"
+                value={formState.serviceCode}
                 isVisible={false}
                 disabled
               />
@@ -75,7 +171,7 @@ function InquiryDetail() {
               문의유형
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value="표지문의"
+                value={formState.type}
                 isVisible={false}
                 disabled
               />
@@ -87,7 +183,7 @@ function InquiryDetail() {
               문의내용
               <TextBox
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] text-body1-normal-regular max-h-[156px]"
-                value="책표지 이미지는 직접 제작한 이미지라면 상관없이 사용이 가능한가요?"
+                value={formState.content}
                 disabled
               />
             </div>
@@ -95,21 +191,30 @@ function InquiryDetail() {
           {/* 네번째 줄 */}
           <div className="w-full flex flex-col gap-[8px]">
             답변내용
-            <AdminEdit value={answerContents} onChange={setAnswerContents} />
+            <AdminEdit
+              value={formState.responseContent}
+              onChange={(value) => updateFormState("responseContent", value)}
+            />
           </div>
           {/* 버튼 */}
           <div className="mt-[32px] flex justify-end space-x-4">
-            <Button
+            <OutlinedButton
+              type="assistive"
               onClick={() => {
-                console.log("취소 버튼 클릭");
+                navigate(-1);
               }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium "
+              className="w-[180px] h-[48px]"
             >
               취소
-            </Button>
-            <Button className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium ">
+            </OutlinedButton>
+            <OutlinedButton
+              type="secondary"
+              disable={!isFormValid}
+              onClick={handleSave}
+              className="w-[180px] h-[48px]"
+            >
               저장
-            </Button>
+            </OutlinedButton>
           </div>
         </div>
       </div>

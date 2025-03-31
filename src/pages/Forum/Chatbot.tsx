@@ -21,7 +21,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   ChatBotQueryStringType,
   getChatBotList,
-} from "@/api/common/chatbot/chatbotAPI";
+} from "@/api/chatbot/chatbotAPI";
 import { ActionType } from "@/api/common/commonType";
 import Label from "@/components/common/Atoms/Label/Label";
 import {
