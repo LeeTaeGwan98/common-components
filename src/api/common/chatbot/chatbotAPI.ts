@@ -14,6 +14,14 @@ export interface CreateChatBotPayload {
   updatedBy: number;
 }
 
+//챗봇 수정 페이로드
+export interface UpdateChatBotPayload {
+  categoryCode: string;
+  question: string;
+  isVisible: boolean;
+  updatedBy: number;
+}
+
 //챗봇 생성 응답
 export interface CreateChatBotRes {
   id: number;
@@ -73,9 +81,14 @@ export const getChatBotDetail = (id: number) => {
 };
 
 //챗봇 수정
-export const updateChatBot = (id: number, payload: CreateChatBotPayload) => {
-  console.log(payload);
-  const data = API.patch<CreateChatBotRes>(`/admin/chatbot/${id}`, payload);
+export const updateChatBot = (payload: {
+  id: number;
+  data: UpdateChatBotPayload;
+}) => {
+  const data = API.patch<CreateChatBotRes>(
+    `/admin/chatbot/${payload.id}`,
+    payload.data
+  );
 
   return data;
 };

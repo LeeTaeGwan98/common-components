@@ -6,29 +6,24 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { testPost } from "@/api/example";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { deleteChatBot } from "@/api/common/chatbot/chatbotAPI";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
 
-interface TestType {
-  title: string;
-  body: string;
-  userId: number;
-}
-
-const ChatbotModal = () => {
-  const [test, setTest] = useState("");
-  const PostAction = useMutation({
-    mutationFn: (obj: TestType) => testPost(obj),
-    onSuccess(res, obj) {
-      setTest(obj.title);
-      console.log("post 요청 성공");
-      console.log(res);
-      console.log(obj);
+const ChatbotModal = ({ id }: { id: number }) => {
+  //챗봇 삭제 api
+  const { mutate: deleteChatbotFn } = useMutation({
+    mutationFn: (id: number) => deleteChatBot(id),
+    onSuccess() {
+      useModalStore.getState().closeModal();
+      history.back();
+    },
+    onError() {
+      customToast({
+        title: "챗봇을 삭제중 에러가 발생했습니다.",
+      });
     },
   });
-
-  const obj = { title: "foo", body: "bar", userId: 1 };
 
   return (
     <DialogContent>
@@ -44,7 +39,6 @@ const ChatbotModal = () => {
           </div>
         </div>
       </DialogDescription>
-      <DialogDescription>{test}</DialogDescription>
       <DialogFooter>
         <div className="flex items-center gap-[8px]">
           <Button
@@ -53,7 +47,12 @@ const ChatbotModal = () => {
           >
             취소
           </Button>
-          <Button className="w-full py-[12px] rounded-[4px] text-body1-normal-medium">
+          <Button
+            className="w-full py-[12px] rounded-[4px] text-body1-normal-medium"
+            onClick={() => {
+              deleteChatbotFn(Number(id));
+            }}
+          >
             삭제
           </Button>
         </div>

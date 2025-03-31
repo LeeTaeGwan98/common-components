@@ -39,7 +39,7 @@ const data = [
 function Inquiry() {
   return (
     <BreadcrumbContainer breadcrumbNode={<>게시판 관리 / 1:1문의</>}>
-      <SubTitleBar title="문의일" />
+      {/* <SubTitleBar title="문의일" /> */}
 
       <TableContainer>
         <Table>

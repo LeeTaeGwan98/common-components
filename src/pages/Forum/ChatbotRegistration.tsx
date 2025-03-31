@@ -28,11 +28,13 @@ import {
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/authStore";
 const ChatbotRegistration = () => {
-  const naviate = useNavigate(); //네비게이션
+  const navigate = useNavigate(); //네비게이션
   const [categoryCode, setCategoryCode] = useState<string>(""); //카테고리
   const [isVisible, setIsVisible] = useState<boolean>(true); //노출 상태
   const [question, setQuestion] = useState<string>(""); //질문
+  const { user } = useAuthStore(); //현재 로그인한 유저 정보
   //챗봇 공통 카테고리 가져오기
   const { data: codeInfo } = useSuspenseQuery({
     queryKey: [
@@ -52,11 +54,11 @@ const ChatbotRegistration = () => {
         categoryCode: categoryCode,
         question: question,
         isVisible: isVisible,
-        createdBy: 0,
-        updatedBy: 0,
+        createdBy: user!.id,
+        updatedBy: user!.id,
       }),
     onSuccess(res, data) {
-      naviate(-1);
+      navigate(-1);
     },
   });
 
@@ -131,7 +133,7 @@ const ChatbotRegistration = () => {
               className="w-[180px] h-[48px]"
               type="assistive"
               size="large"
-              onClick={() => {}}
+              onClick={() => navigate(-1)}
             >
               취소
             </OutlinedButton>
