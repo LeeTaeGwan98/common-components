@@ -210,7 +210,7 @@ function PublishList() {
           </TableBody>
         </Table>
       </TableContainer>
-      <TableIndicator />
+      {/* <TableIndicator /> */}
     </BreadcrumbContainer>
   );
 }

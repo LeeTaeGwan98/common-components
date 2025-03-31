@@ -40,7 +40,7 @@ const ServiceGuide = () => {
         </Link>
       }
     >
-      <SubTitleBar title="등록일" />
+      {/* <SubTitleBar title="등록일" /> */}
 
       <TableContainer>
         <Table>
