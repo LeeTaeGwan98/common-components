@@ -32,7 +32,18 @@
  * CO016 - 파일업로드타입
  *
  * CO017 - 전자책출판상태
+ *
+ * CO018 - 전자책카테고리
+ *
+ * CO019 - 약관유형코드
+ *
+ * CO020 - 전자책제작방식
+ *
+ * CO021 - 회원상태
+ *
+ * CO022 - 결제주기
  */
+
 export type COMMON_GROUP_CODE_UNION_TYPE =
   | "CO001"
   | "CO002"
@@ -50,7 +61,12 @@ export type COMMON_GROUP_CODE_UNION_TYPE =
   | "CO014"
   | "CO015"
   | "CO016"
-  | "CO017";
+  | "CO017"
+  | "CO018"
+  | "CO019"
+  | "CO020"
+  | "CO021"
+  | "CO022";
 
 export enum COMMON_GROUP_CODE_MAPPING {
   사용자유형 = "CO001",
@@ -70,4 +86,9 @@ export enum COMMON_GROUP_CODE_MAPPING {
   탈퇴사유 = "CO015",
   파일업로드타입 = "CO016",
   전자책출판상태 = "CO017",
+  전자책카테고리 = "CO018",
+  약관유형코드 = "CO019",
+  전자책제작방식 = "CO020",
+  회원상태 = "CO021",
+  결제주기 = "CO022",
 }

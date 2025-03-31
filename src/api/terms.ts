@@ -2,6 +2,7 @@ import API from "@/api/API";
 
 export interface TermsType {
   id: number;
+  type: string;
   title: string;
   content: string;
   isRequired: boolean;
@@ -15,6 +16,7 @@ export interface TermsType {
 }
 
 export interface PatchTermsType {
+  type: string;
   title: string;
   content: string;
   isRequired: boolean;

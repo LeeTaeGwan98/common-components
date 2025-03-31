@@ -1,22 +1,12 @@
 import React from "react";
 
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Divider from "@/components/common/Atoms/Divider/Divider";
-import TextField from "@/components/common/Molecules/TextField/TextField";
 import { useState } from "react";
-
-import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
-import { useModalStore } from "@/store/modalStore";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
-import {
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-} from "@/components/ui/select";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { createChatBot } from "@/api/chatbot/chatbotAPI";
