@@ -28,14 +28,18 @@ import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/Ta
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 
-const initState: TableQueryStringType & { isVisible: boolean | null } = {
+type NoticleTableQueryStringType = TableQueryStringType & {
+  isVisible: boolean | null;
+};
+
+const initState: NoticleTableQueryStringType = {
   sortOrder: "DESC",
   fromDt: undefined,
   toDt: undefined,
   isVisible: null,
   keyword: "",
   take: 10,
-  page: null,
+  page: 1,
 };
 
 const reducer = <T extends Record<string, any>>(
@@ -60,18 +64,35 @@ const Notice = () => {
     select: (data) => data.data.data,
   });
 
-  const handleSortOrder = () => {
+  // 필터링 선택 후 page 1로 초기화
+  const dispatchWithPageReset = (
+    type: keyof NoticleTableQueryStringType,
+    value: any
+  ) => {
+    // 필터 값 변경
     dispatch({
-      type: "sortOrder",
-      value: filterInfo.sortOrder === "DESC" ? "ASC" : "DESC",
+      type,
+      value,
+    });
+    // 페이지 초기화
+    dispatch({
+      type: "page",
+      value: 1,
     });
   };
 
+  const handleSortOrder = () => {
+    dispatchWithPageReset(
+      "sortOrder",
+      filterInfo.sortOrder === "DESC" ? "ASC" : "DESC"
+    );
+  };
+
   const handleisVisible = (visible: string) => {
-    dispatch({
-      type: "isVisible",
-      value: visible === "ALL" ? null : boolToString(visible),
-    });
+    dispatchWithPageReset(
+      "isVisible",
+      visible === "ALL" ? null : boolToString(visible)
+    );
   };
 
   const renderEmptyRows = () => {
