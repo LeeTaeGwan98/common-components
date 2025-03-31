@@ -83,7 +83,13 @@ import ChatbotDetail from "@/pages/Forum/ChatbotDetail";
 import ChatbotRegistration from "@/pages/Forum/ChatbotRegistration";
 import { Toaster } from "@/components/ui/sonner";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: true,
+    },
+  },
+});
 
 function App() {
   return (
