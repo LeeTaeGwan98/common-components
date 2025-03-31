@@ -8,7 +8,7 @@ export interface DetailCodeType {
   createdBy: number;
   createdDt: string;
   detailCodeDesc: string;
-  detailCodeName: boolean;
+  detailCodeName: string;
   isUsed: boolean;
   sortOrd: number;
   updatedBy: number;

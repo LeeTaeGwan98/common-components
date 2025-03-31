@@ -69,9 +69,30 @@ const Chatbot = () => {
   const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
   const categoryCodes = codeInfo[keys[0]]; // 카테고리 코드들
 
+  //테이블 빈 row 처리
+  const renderEmptyRows = () => {
+    const { take } = filterInfo;
+    if (!take) return;
+    const emptyRowsCount = take - data.list.length;
+    const emptyRows = [];
+
+    for (let i = 0; i < emptyRowsCount; i++) {
+      emptyRows.push(
+        <TableRow key={`empty-row-${i}`}>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+        </TableRow>
+      );
+    }
+
+    return emptyRows;
+  };
+
   //챗봇 목록 조회 api
   const { data, refetch } = useSuspenseQuery({
-    queryKey: ["chatBotList"], // filterInfo가 변경될 때마다 API 호출
+    queryKey: ["chatBotList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getChatBotList(filterInfo),
     select: (data) => data.data.data,
     staleTime: CACHE_TIME,
@@ -218,7 +239,7 @@ const Chatbot = () => {
                     )}
                   </TableCell>
                   <TableCell>
-                    <Link to={CHATBOT_DETAIL}>
+                    <Link to={`${CHATBOT_DETAIL}/${item.id}`}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
@@ -229,10 +250,11 @@ const Chatbot = () => {
                 </TableRow>
               );
             })}
+            {renderEmptyRows()}
           </TableBody>
         </Table>
       </TableContainer>
-      {(data.list.length >= 10 || data.meta.page !== 1) && (
+      {data.meta.totalPage > 1 && (
         <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
       )}
     </BreadcrumbContainer>
