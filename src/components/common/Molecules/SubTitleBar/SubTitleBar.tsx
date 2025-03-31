@@ -19,6 +19,7 @@ interface SubtitleBarProps {
   filterInfo: TableQueryStringType;
   dispatch: ActionDispatch<[action: ActionType<TableQueryStringType>]>;
   CustomSelectComponent: ReactNode;
+  excel: boolean;
 }
 
 function SubTitleBar({
@@ -26,6 +27,7 @@ function SubTitleBar({
   title,
   dispatch,
   CustomSelectComponent,
+  excel,
 }: SubtitleBarProps) {
   // 입력 중인 keyword를 별도로 관리
   // onchange중에는 API를 호출하지 않기 위해
@@ -117,10 +119,11 @@ function SubTitleBar({
             </SelectGroup>
           </SelectContent>
         </SelectBox>
-
-        <button>
-          <img src={ExcelImage} className="size-[48px]" />
-        </button>
+        {excel && (
+          <button>
+            <img src={ExcelImage} className="size-[48px]" />
+          </button>
+        )}
       </div>
     </div>
   );
