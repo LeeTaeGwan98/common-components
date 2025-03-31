@@ -49,11 +49,21 @@ export interface AddGuiedRes {
 
 //서비스 가이드 상세 응답
 export interface ResGuideDetailType {
-  serviceCode: number;
+  serviceCode: string;
   categoryCode: string;
   title: string;
   isVisible: boolean;
   content: string;
+}
+
+//서비스 가이드 수정
+export interface UpdateGuiedData {
+  serviceCode: string;
+  categoryCode: string;
+  title: string;
+  isVisible: boolean;
+  content: string;
+  updatedBy: number;
 }
 
 //서비스 가이드 목록
@@ -111,6 +121,25 @@ export const getGuideDetail = (id: number) => {
   const queryString = `/admin/guide/${id}`;
 
   const data = API.get<ResSuccessType<ResGuideDetailType>>(queryString);
+
+  return data;
+};
+
+//서비스가이드 수정
+export const updateGuide = (payload: { id: number; data: UpdateGuiedData }) => {
+  const data = API.patch<ResGuideDetailType>(
+    `/admin/guide/${payload.id}`,
+    payload.data
+  );
+
+  return data;
+};
+
+//서비스가이드 삭제
+export const deleteGuide = (id: number) => {
+  const queryString = `/admin/guide/${id}`;
+
+  const data = API.delete<ResSuccessType<{}>>(queryString);
 
   return data;
 };

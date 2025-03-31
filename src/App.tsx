@@ -129,7 +129,7 @@ function App() {
             />
             <Route path={SERVICE_GUIDE} element={<ServiceGuide />} />
             <Route
-              path={SERVICE_GUIDE_DETAIL}
+              path={`${SERVICE_GUIDE_DETAIL}/:id`}
               element={<ServiceGuideDetail />}
             />
             <Route

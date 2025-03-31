@@ -60,7 +60,7 @@ const ServiceGuideRegistration = () => {
   });
   const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
   const serviceCodes = codeInfo[keys[0]]; // 서비스 코드들
-  const categoryItems = codeInfo[keys[formState.isEbook ? 1 : 2]];
+  const categoryItems = codeInfo[keys[formState.isEbook ? 1 : 2]]; //카테고리 코드들
 
   // 폼 개별 상태 업데이트 핸들러
   const updateFormState = <K extends keyof FormState>(
@@ -72,11 +72,6 @@ const ServiceGuideRegistration = () => {
       [field]: value,
     }));
   };
-
-  //서비스 변경시 카테고리 내용 초기화
-  useEffect(() => {
-    updateFormState("categoryCode", "");
-  }, [formState.isEbook]);
 
   //서비스 가이드 생성 api
   const { mutate: addServiceGuideFn } = useMutation({
@@ -171,9 +166,10 @@ const ServiceGuideRegistration = () => {
                 className="w-full"
                 itemClassName="text-body1-normal-medium"
                 size="large"
-                setSelected={(value: boolean) =>
-                  updateFormState("isEbook", value)
-                }
+                setSelected={(value: boolean) => {
+                  updateFormState("isEbook", value);
+                  updateFormState("categoryCode", "");
+                }}
                 selected={formState.isEbook}
                 textList={["전자책 만들기", "비디오북 만들기"]}
               />

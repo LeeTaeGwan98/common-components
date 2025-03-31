@@ -239,7 +239,7 @@ const ServiceGuide = () => {
                   </TableCell>
 
                   <TableCell>
-                    <Link to={SERVICE_GUIDE_DETAIL}>
+                    <Link to={`${SERVICE_GUIDE_DETAIL}/${item.id}`}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
