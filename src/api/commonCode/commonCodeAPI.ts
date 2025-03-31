@@ -1,4 +1,5 @@
 import API from "@/api/API";
+import { APIResponse } from "@/api/common/commonType";
 import { COMMON_GROUP_CODE_UNION_TYPE } from "@/Constants/CommonGroupCode";
 
 export interface DetailCodeType {
@@ -11,6 +12,20 @@ export interface DetailCodeType {
   detailCodeName: string;
   isUsed: boolean;
   sortOrd: number;
+  updatedBy: number;
+  updatedDt: string;
+}
+
+export interface GetDetailGroupCodeRes {
+  commDetailCode: string;
+  commGroupCode: string;
+  detailCodeName: boolean;
+  detailCodeDesc: boolean;
+  addInfo: null;
+  sortOrd: number;
+  isUsed: boolean;
+  createdBy: number;
+  createdDt: string;
   updatedBy: number;
   updatedDt: string;
 }
@@ -35,6 +50,20 @@ export const getGroupCodes = (groupCodes: COMMON_GROUP_CODE_UNION_TYPE[]) => {
 
   const data = API.get<GetGroupCodesReq>(
     `/common/group-codes/detail-codes?${qs}`
+  );
+
+  return data;
+};
+
+export const getDetailGroupCodes = (
+  groupCodes: COMMON_GROUP_CODE_UNION_TYPE[]
+) => {
+  const qs = groupCodes
+    .map((code, index) => `${index === 0 ? "" : "&"}${code}`)
+    .join("");
+
+  const data = API.get<APIResponse<GetDetailGroupCodeRes>>(
+    `/common/group-code/${qs}/detail-code`
   );
 
   return data;

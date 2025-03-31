@@ -13,9 +13,7 @@ export interface UserInfoRes {
   phoneNumber: string;
   role: string;
   providerCode: string;
-  permissions: {
-    permissions: string[];
-  };
+  permissions: string[];
   accessToken: string;
   refreshToken: string;
 }
