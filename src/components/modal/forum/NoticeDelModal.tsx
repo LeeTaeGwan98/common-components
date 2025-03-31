@@ -2,13 +2,16 @@ import { useModalStore } from "@/store/modalStore";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import {
   DialogContent,
-  DialogHeader,
   DialogDescription,
-  DialogFooter,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { useMutation } from "@tanstack/react-query";
 import { deleteNotice } from "@/api/notice/noticeAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
+import Actions from "@/components/common/Molecules/Actions/Actions";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
+import X from "@/assets/svg/common/X.svg";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 
 interface NoticeDetailModalProps {
   // 모달에서는 상세페이지 id를 props로 넘겨와야함
@@ -33,35 +36,33 @@ const NoticeDetailModal = ({ id }: NoticeDetailModalProps) => {
   const { closeModal } = useModalStore();
 
   return (
-    <DialogContent>
-      <DialogHeader>
-        <div className="flex justify-start text-heading5-bold text-label-normal ">
-          이 공지를 삭제하시겠어요?
-        </div>
-      </DialogHeader>
-      <DialogDescription>
-        <div className="flex flex-col justify-start text-body1-reading-regular text-label-normal">
-          <div className="flex justify-start">
-            삭제된 공지는 복구할 수 없습니다.
-          </div>
-        </div>
+    <DialogContent className="[&>button]:hidden py-content-vertical-margin px-content-horizon-margin rounded-[12px]">
+      <DialogTitle className="text-heading5-bold flex items-center gap-[12px] justify-between mb-[12px]">
+        이 공지사항을 삭제하시겠어요?{" "}
+        <IconButton
+          onClick={() => useModalStore.getState().closeModal()}
+          icon={<X className="w-[20px] h-[20px] text-label-neutral" />}
+        />
+      </DialogTitle>
+
+      <DialogDescription className="text-body1-reading-regular text-label-normal mb-[32px]">
+        삭제된 공지는 복구할 수 없습니다.
       </DialogDescription>
-      <DialogFooter>
-        <div className="flex items-center gap-[8px]">
-          <Button
-            onClick={() => closeModal()}
-            className="border border-line-normal-normal bg-static-white px-[28px] py-[12px] rounded-[4px] text-body1-normal-medium text-label-normal"
-          >
-            취소
-          </Button>
-          <Button
-            onClick={() => delNotice(id)}
-            className="w-full py-[12px] rounded-[4px] text-body1-normal-medium"
-          >
-            삭제
-          </Button>
-        </div>
-      </DialogFooter>
+
+      <Actions priority="neutral">
+        <OutlinedButton
+          onClick={() => closeModal()}
+          className="border-line-normal-normal min-w-[84px] !flex-initial"
+        >
+          취소
+        </OutlinedButton>
+        <Button
+          onClick={() => delNotice(id)}
+          className="w-full py-[12px] rounded-[4px] text-body1-normal-medium flex-1"
+        >
+          삭제
+        </Button>
+      </Actions>
     </DialogContent>
   );
 };
