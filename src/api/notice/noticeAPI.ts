@@ -3,6 +3,8 @@ import { type TableResSuccessType } from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
 import { APIResponse } from "@/api/common/commonType";
 
+const NOTICE_BASE_URL = "/admin/notice";
+
 export interface NoticeRes {
   title: string;
   content: string;
@@ -26,7 +28,7 @@ export interface AddNoticeRes {
 
 export const addNotice = (payload: NoticeRes) => {
   const data = API.post<TableResSuccessType<AddNoticeRes>>(
-    "/admin/notice",
+    NOTICE_BASE_URL,
     payload
   );
 
@@ -80,7 +82,7 @@ export const getNotice = (
 };
 
 export const getNoticeDetail = (id: number) => {
-  const data = API.get<APIResponse<NoticeRes>>(`/admin/notice/${id}`);
+  const data = API.get<APIResponse<NoticeRes>>(`${NOTICE_BASE_URL}/${id}`);
 
   return data;
 };
@@ -115,7 +117,7 @@ export const updateNotice = (payloadWidthId: {
   } = payloadWidthId;
 
   const data = API.patch<APIResponse<UpdateNoticeRes>>(
-    `/admin/notice/${id}`,
+    `${NOTICE_BASE_URL}/${id}`,
     payload
   );
 
@@ -123,7 +125,7 @@ export const updateNotice = (payloadWidthId: {
 };
 
 export const deleteNotice = (id: number) => {
-  const data = API.delete(`/admin/notice/${id}`);
+  const data = API.delete(`${NOTICE_BASE_URL}/${id}`);
 
   return data;
 };
