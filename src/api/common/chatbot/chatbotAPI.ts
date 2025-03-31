@@ -15,7 +15,7 @@ export interface CreateChatBotPayload {
 }
 
 //챗봇 수정 페이로드
-export interface UpdateChatBotPayload {
+export interface UpdateChatBotData {
   categoryCode: string;
   question: string;
   isVisible: boolean;
@@ -83,7 +83,7 @@ export const getChatBotDetail = (id: number) => {
 //챗봇 수정
 export const updateChatBot = (payload: {
   id: number;
-  data: UpdateChatBotPayload;
+  data: UpdateChatBotData;
 }) => {
   const data = API.patch<CreateChatBotRes>(
     `/admin/chatbot/${payload.id}`,
