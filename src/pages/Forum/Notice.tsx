@@ -215,7 +215,7 @@ const Notice = () => {
         </Table>
       </TableContainer>
 
-      {(data.list.length >= 10 || data.meta.page !== 1) && (
+      {data.meta.totalPage > 1 && (
         <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
       )}
     </BreadcrumbContainer>

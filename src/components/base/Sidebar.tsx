@@ -45,8 +45,8 @@ function Sidebar({}: SideBarProps) {
       <div className="flex flex-col px-[16px]">
         {SIDEBAR_MENU_ITEM.map((item, idx) => {
           const isActive =
-            currentPathname === item.path ||
-            item.child.some((child) => currentPathname === child.path);
+            currentPathname.startsWith(item.path) ||
+            item.child.some((child) => currentPathname.startsWith(child.path));
           const hasChildItem = !!item.child.length;
 
           return (
@@ -82,7 +82,7 @@ function Sidebar({}: SideBarProps) {
               </Link>
 
               {item.child.map((child) => {
-                const isChildActive = currentPathname === child.path;
+                const isChildActive = currentPathname.startsWith(child.path);
                 return (
                   isActive && (
                     <Link to={child.path} key={child.path}>

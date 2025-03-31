@@ -14,7 +14,11 @@ import {
   updateChatBot,
   UpdateChatBotData,
 } from "@/api/common/chatbot/chatbotAPI";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import {
   COMMON_GROUP_CODE_MAPPING,
   COMMON_GROUP_CODE_UNION_TYPE,
@@ -33,6 +37,7 @@ type FormState = {
 };
 
 const ChatbotDetail = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate(); //네비게이션
   const { id } = useParams(); // id 값 추출
   const { user } = useAuthStore(); //현재 로그인한 유저 정보
@@ -79,6 +84,7 @@ const ChatbotDetail = () => {
     mutationFn: (payload: { id: number; data: UpdateChatBotData }) =>
       updateChatBot(payload),
     onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["chatBotDetail", id] });
       navigate(-1);
     },
     onError() {
@@ -120,14 +126,12 @@ const ChatbotDetail = () => {
         </>
       }
       button={
-        <>
-          <Button
-            className="rounded-radius-admin w-[180px] h-[48px]"
-            onClick={deleteModal}
-          >
-            삭제
-          </Button>
-        </>
+        <Button
+          className="rounded-radius-admin w-[180px] h-[48px]"
+          onClick={deleteModal}
+        >
+          삭제
+        </Button>
       }
     >
       <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">

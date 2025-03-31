@@ -7,8 +7,12 @@ import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import { useModalStore } from "@/store/modalStore";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
-import NoticeDetailModal from "@/components/modal/forum/NoticeDetailModal";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import NoticeDelModal from "@/components/modal/forum/NoticeDelModal";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { getNoticeDetail } from "@/api/notice/noticeAPI";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
@@ -25,6 +29,7 @@ type FormState = {
 };
 
 const NoticeDetail = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useAuthStore();
@@ -61,8 +66,10 @@ const NoticeDetail = () => {
 
   // 수정 API 호출
   const { mutate: updateNoticeFn } = useMutation({
-    mutationFn: (payload: UpdateNoticePayload) => updateNotice(payload),
+    mutationFn: (payloadWithId: { id: number; payload: UpdateNoticePayload }) =>
+      updateNotice(payloadWithId),
     onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["noticeDetail", id] });
       navigate(-1);
     },
     onError() {
@@ -77,17 +84,20 @@ const NoticeDetail = () => {
     if (!isFormValid) return;
 
     updateNoticeFn({
-      title: formState.title,
-      content: formState.content,
-      isPinned: formState.isPinned,
-      isVisible: formState.isVisible,
-      updatedBy: user!.id,
+      id: Number(id),
+      payload: {
+        title: formState.title,
+        content: formState.content,
+        isPinned: formState.isPinned,
+        isVisible: formState.isVisible,
+        updatedBy: user!.id,
+      },
     });
   };
 
   // 삭제 모달 오픈
   const openDeleteModal = () => {
-    openModal(<NoticeDetailModal />);
+    openModal(<NoticeDelModal id={Number(id)} />);
   };
 
   return (
