@@ -16,14 +16,13 @@ import Button from "@/components/common/Atoms/Button/Solid/Button";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   ChatBotQueryStringType,
   getChatBotList,
 } from "@/api/common/chatbot/chatbotAPI";
-import CACHE_TIME from "@/Constants/CacheTime";
-import { ActionType, TableQueryStringType } from "@/api/common/commonType";
+import { ActionType } from "@/api/common/commonType";
 import Label from "@/components/common/Atoms/Label/Label";
 import {
   COMMON_GROUP_CODE_MAPPING,
@@ -32,7 +31,7 @@ import {
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { boolToString } from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
-import ReactDOM from "react-dom";
+import { cn } from "@/lib/utils";
 
 const initState: ChatBotQueryStringType & { isVisible: boolean | null } = {
   isVisible: null,
@@ -90,59 +89,49 @@ const Chatbot = () => {
     return emptyRows;
   };
 
-  //챗봇 목록 조회 api
-  const { data, refetch } = useSuspenseQuery({
-    queryKey: ["chatBotList", filterInfo], // filterInfo가 변경될 때마다 API 호출
-    queryFn: () => getChatBotList(filterInfo),
-    select: (data) => data.data.data,
-    staleTime: CACHE_TIME,
-    gcTime: CACHE_TIME,
-  });
-
-  useEffect(() => {
-    //챗봇 목록 조회
-    refetch();
-  }, [
-    filterInfo.isVisible,
-    filterInfo.keyword,
-    filterInfo.take,
-    filterInfo.page,
-  ]);
-
-  //카테고리 변경시 핸들
-  const handleisVisible = (visible: string | null) => {
-    if (!visible) return;
+  const dispatchWithPageReset = (
+    type: keyof ChatBotQueryStringType,
+    value: any
+  ) => {
+    // 필터 값 변경
     dispatch({
-      type: "isVisible",
-      value: visible === "ALL" ? null : boolToString(visible),
+      type,
+      value,
     });
+    // 페이지 초기화
     dispatch({
       type: "page",
       value: 1,
     });
   };
 
+  //챗봇 목록 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["chatBotList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getChatBotList(filterInfo),
+    select: (data) => data.data.data,
+  });
+
+  //카테고리 변경시 핸들
+  const handleisVisible = (visible: string | null) => {
+    if (!visible) return;
+    dispatchWithPageReset(
+      "isVisible",
+      visible === "ALL" ? null : boolToString(visible)
+    );
+  };
+
   //키워드 검색시 핸들
   const handleKeywordEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // Enter를 눌렀을때만 API호출
     if (e.key === "Enter") {
-      dispatch({
-        type: "keyword",
-        value: searchWord,
-      });
-      dispatch({
-        type: "page",
-        value: 1,
-      });
+      dispatchWithPageReset("keyword", searchWord);
     }
   };
 
   //목록 가져오는 개수 변경시 핸들
   const handleTake = (take: number) => {
-    dispatch({
-      type: "take",
-      value: take,
-    });
+    dispatchWithPageReset("take", take);
   };
 
   return (
@@ -218,25 +207,32 @@ const Chatbot = () => {
           </TableHeader>
 
           <TableBody>
-            {data.list.map((item, index) => {
+            {data.list.map((item) => {
+              const { id, categoryCode, question, isVisible } = item;
               return (
-                <TableRow key={index}>
+                <TableRow key={id}>
                   <TableCell>
                     {
                       categoryCodes.find(
-                        (code) => code.commDetailCode === item.categoryCode
+                        (code) => code.commDetailCode === categoryCode
                       )?.detailCodeName
                     }
                   </TableCell>
-                  <TableCell>{item.question}</TableCell>
-                  <TableCell className="flex items-center h-[inherit] justify-center">
-                    {item.isVisible ? (
-                      <Label className="bg-primary-normal/[0.08] text-primary-normal">
-                        노출
-                      </Label>
-                    ) : (
-                      <Label>비노출</Label>
-                    )}
+                  <TableCell>{question}</TableCell>
+                  <TableCell>
+                    {
+                      <div className="w-full flex justify-center items-center">
+                        <Label
+                          size="medium"
+                          className={cn(
+                            isVisible &&
+                              "bg-primary-normal/normal-focus text-primary-normal"
+                          )}
+                        >
+                          {isVisible ? "노출" : "비노출"}
+                        </Label>
+                      </div>
+                    }
                   </TableCell>
                   <TableCell>
                     <Link to={`${CHATBOT_DETAIL}/${item.id}`}>
