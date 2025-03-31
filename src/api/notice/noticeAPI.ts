@@ -121,3 +121,9 @@ export const updateNotice = (payloadWidthId: {
 
   return data;
 };
+
+export const deleteNotice = (id: number) => {
+  const data = API.delete(`/admin/notice/${id}`);
+
+  return data;
+};

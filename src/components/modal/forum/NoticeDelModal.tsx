@@ -3,33 +3,34 @@ import Button from "@/components/common/Atoms/Button/Solid/Button";
 import {
   DialogContent,
   DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { testGet, testPost } from "@/api/example";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { deleteNotice } from "@/api/notice/noticeAPI";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
 
-interface TestType {
-  title: string;
-  body: string;
-  userId: number;
+interface NoticeDetailModalProps {
+  // 모달에서는 상세페이지 id를 props로 넘겨와야함
+  id: number;
 }
 
-const NoticeDetailModal = () => {
-  const [test, setTest] = useState("");
-  const PostAction = useMutation({
-    mutationFn: (obj: TestType) => testPost(obj),
-    onSuccess(res, obj) {
-      setTest(obj.title);
-      console.log("post 요청 성공");
-      console.log(res);
-      console.log(obj);
+const NoticeDetailModal = ({ id }: NoticeDetailModalProps) => {
+  const { mutate: delNotice } = useMutation({
+    mutationFn: (id: number) => deleteNotice(id),
+    onSuccess() {
+      history.back();
+      closeModal();
+    },
+    onError(error) {
+      customToast({
+        title: error.message,
+      });
+      closeModal();
     },
   });
 
-  const obj = { title: "foo", body: "bar", userId: 1 };
+  const { closeModal } = useModalStore();
 
   return (
     <DialogContent>
@@ -45,16 +46,18 @@ const NoticeDetailModal = () => {
           </div>
         </div>
       </DialogDescription>
-      <DialogDescription>{test}</DialogDescription>
       <DialogFooter>
         <div className="flex items-center gap-[8px]">
           <Button
-            onClick={() => useModalStore.getState().closeModal()}
+            onClick={() => closeModal()}
             className="border border-line-normal-normal bg-static-white px-[28px] py-[12px] rounded-[4px] text-body1-normal-medium text-label-normal"
           >
             취소
           </Button>
-          <Button className="w-full py-[12px] rounded-[4px] text-body1-normal-medium">
+          <Button
+            onClick={() => delNotice(id)}
+            className="w-full py-[12px] rounded-[4px] text-body1-normal-medium"
+          >
             삭제
           </Button>
         </div>

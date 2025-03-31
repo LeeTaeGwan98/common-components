@@ -10,7 +10,6 @@ import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import { useModalStore } from "@/store/modalStore";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
-import NoticeDetailModal from "@/components/modal/forum/NoticeDetailModal";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import {
   SelectContent,

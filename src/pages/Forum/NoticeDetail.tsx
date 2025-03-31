@@ -7,7 +7,7 @@ import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import { useModalStore } from "@/store/modalStore";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
-import NoticeDetailModal from "@/components/modal/forum/NoticeDetailModal";
+import NoticeDelModal from "@/components/modal/forum/NoticeDelModal";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { getNoticeDetail } from "@/api/notice/noticeAPI";
@@ -91,7 +91,7 @@ const NoticeDetail = () => {
 
   // 삭제 모달 오픈
   const openDeleteModal = () => {
-    openModal(<NoticeDetailModal id={Number(id)} />);
+    openModal(<NoticeDelModal id={Number(id)} />);
   };
 
   return (
