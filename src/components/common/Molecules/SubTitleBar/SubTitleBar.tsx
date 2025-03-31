@@ -32,18 +32,29 @@ function SubTitleBar({
   const [inputKeyword, setInputKeyword] = useState("");
   const { fromDt, toDt } = filterInfo;
 
-  const handletoFromDt = (date: Date) => {
+  const dispatchWithPageReset = (
+    type: keyof TableQueryStringType,
+    value: any
+  ) => {
+    // 필터 값 변경
     dispatch({
-      type: "fromDt",
-      value: dateToString(date),
+      type,
+      value,
+    });
+
+    // 페이지 초기화
+    dispatch({
+      type: "page",
+      value: 1,
     });
   };
 
+  const handletoFromDt = (date: Date) => {
+    dispatchWithPageReset("fromDt", dateToString(date));
+  };
+
   const handletotoDt = (date: Date) => {
-    dispatch({
-      type: "toDt",
-      value: dateToString(date),
-    });
+    dispatchWithPageReset("toDt", dateToString(date));
   };
 
   const handleKeywordOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,18 +65,12 @@ function SubTitleBar({
   const handleKeywordEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // Enter를 눌렀을때만 API호출
     if (e.key === "Enter") {
-      dispatch({
-        type: "keyword",
-        value: inputKeyword!,
-      });
+      dispatchWithPageReset("keyword", inputKeyword);
     }
   };
 
   const handleTake = (take: number) => {
-    dispatch({
-      type: "take",
-      value: take,
-    });
+    dispatchWithPageReset("take", take);
   };
 
   return (
