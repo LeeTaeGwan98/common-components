@@ -11,19 +11,36 @@ import {
 } from "@/components/common/Tables";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
-import { TERMS_DETAIL, TERMS_REGISTRATION } from "@/Constants/ServiceUrl";
-import { useQuery } from "@tanstack/react-query";
+import {
+  ACCOUNT,
+  TERMS_DETAIL,
+  TERMS_REGISTRATION,
+} from "@/Constants/ServiceUrl";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getTermsList, TermsType } from "@/api/terms";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import { codeToName } from "@/utils/uitls";
+import { isoStringToDateString } from "@/lib/dateParse";
 
 function Terms() {
-  const { data, error, isLoading, refetch } = useQuery({
+  //공통 코드 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: ["termsSortGroupCodes", COMMON_GROUP_CODE_MAPPING.약관유형코드],
+    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.약관유형코드]),
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const typeCodes = codeInfo[keys[0]]; // 구분 코드들
+
+  //약관 목록 조회
+  const { data } = useSuspenseQuery({
     queryKey: ["termsGet"],
     queryFn: () => getTermsList(),
-    staleTime: 1000000000,
-    gcTime: 1000000000,
-
     select: (data) => data.data.data,
-    //enabled: false,
   });
 
   return (
@@ -54,10 +71,19 @@ function Terms() {
             {data?.map((item: TermsType, index: number) => {
               return (
                 <TableRow key={index}>
-                  <TableCell>{item.updatedAt}</TableCell>
-                  <TableCell>{item.effectiveDate}</TableCell>
-                  <TableCell>{item.updatedBy}</TableCell>
-                  <TableCell>{item.type}</TableCell>
+                  <TableCell>
+                    {isoStringToDateString(
+                      item.updatedAt,
+                      "yyyy-MM-dd HH:mm:ss"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {isoStringToDateString(item.effectiveDate)}
+                  </TableCell>
+                  <TableCell className="underline cursor-pointer">
+                    <Link to={ACCOUNT}>{item.name}</Link>
+                  </TableCell>
+                  <TableCell>{codeToName(typeCodes, item.type)}</TableCell>
                   <TableCell>{item.title}</TableCell>
                   <TableCell>
                     <Link to={`${TERMS_DETAIL}/${item.id}`}>

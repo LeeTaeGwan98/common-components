@@ -1,28 +1,36 @@
 import API from "@/api/API";
 
+//약관 정보
 export interface TermsType {
   id: number;
   type: string;
   title: string;
   content: string;
-  isRequired: boolean;
+  name: string;
   effectiveDate: string;
-  isActive: boolean;
-  sortOrd: number;
-  createdBy: number;
-  createdAt: string;
-  updatedBy: number;
   updatedAt: string;
 }
 
+//약관 생성
+export interface CreateTermsType {
+  type: string;
+  title: string;
+  content: string;
+  isRequired: boolean;
+  isMarketing: boolean;
+  effectiveDate: string;
+  createdBy: number;
+  updatedBy: number;
+}
+
+//약관 수정
 export interface PatchTermsType {
   type: string;
   title: string;
   content: string;
   isRequired: boolean;
+  isMarketing: boolean;
   effectiveDate: string;
-  sortOrd: number;
-  createdBy: number;
   updatedBy: number;
 }
 
@@ -33,19 +41,22 @@ export const getTermsList = () => {
 };
 
 // 약관 상세 조회
-export const getDetailTermsList = (id: string | undefined) => {
+export const getDetailTermsList = (id: number) => {
   const data = API.get<{ data: TermsType }>(`/admin/term/${id}`);
   return data;
 };
 
 // 약관 생성
-export const postTermsList = (body: any) => {
+export const postTermsList = (body: CreateTermsType) => {
   const data = API.post("/admin/term", body);
   return data;
 };
 
 // 약관 수정
-export const patchTermsList = (body: any, id: string | undefined) => {
-  const data = API.patch<{ data: PatchTermsType }>(`/admin/term/${id}`, body);
+export const patchTermsList = (payload: {
+  id: number;
+  data: PatchTermsType;
+}) => {
+  const data = API.patch<TermsType>(`/admin/term/${payload.id}`, payload.data);
   return data;
 };

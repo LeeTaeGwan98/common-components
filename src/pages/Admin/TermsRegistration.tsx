@@ -1,7 +1,7 @@
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { postTermsList } from "@/api/terms";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import Button from "@/components/common/Atoms/Button/Solid/Button";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
@@ -13,6 +13,7 @@ import {
   COMMON_GROUP_CODE_UNION_TYPE,
 } from "@/Constants/CommonGroupCode";
 import { dateToString, stringToDate } from "@/lib/dateParse";
+import { useAuthStore } from "@/store/authStore";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +26,7 @@ type FormState = {
 };
 
 function TermsRegistration() {
+  const { user } = useAuthStore();
   const navigate = useNavigate(); //네비게이션
   // 폼 상태 관리
   const [formState, setFormState] = useState({
@@ -56,7 +58,17 @@ function TermsRegistration() {
 
   //약관 생성 api
   const CreateTerms = useMutation({
-    mutationFn: () => postTermsList({}),
+    mutationFn: () =>
+      postTermsList({
+        type: formState.type,
+        title: formState.title,
+        content: formState.content,
+        isRequired: false,
+        isMarketing: false,
+        effectiveDate: formState.effectiveDate,
+        createdBy: user!.id,
+        updatedBy: user!.id,
+      }),
     onSuccess(res, data) {
       navigate(-1);
     },
@@ -77,6 +89,17 @@ function TermsRegistration() {
     );
   }, []);
 
+  // 저장 버튼 활성화 여부
+  const isFormValid = formState.type && formState.title && formState.content;
+
+  // 저장 버튼 핸들러
+  const handleSave = () => {
+    if (!isFormValid) return;
+
+    //약관 생성
+    CreateTerms.mutate();
+  };
+
   return (
     <BreadcrumbContainer
       breadcrumbNode={
@@ -94,6 +117,10 @@ function TermsRegistration() {
             className="min-w-[240px]"
             size="large"
             label="구분"
+            value={formState.type}
+            onValueChange={(value) => {
+              updateFormState("type", value);
+            }}
           >
             <SelectContent>
               <SelectGroup>
@@ -142,21 +169,24 @@ function TermsRegistration() {
             }}
           />
           {/* 버튼 */}
-          <div className="flex justify-end space-x-4">
-            <Button
-              onClick={() => {
-                console.log("취소 버튼 클릭");
-              }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium "
+          <div className="mt-[32px] flex justify-end space-x-4">
+            <OutlinedButton
+              className="w-[180px] h-[48px]"
+              type="assistive"
+              size="large"
+              onClick={() => navigate(-1)}
             >
               취소
-            </Button>
-            <Button
-              onClick={() => {}}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium "
+            </OutlinedButton>
+            <OutlinedButton
+              className="w-[180px] h-[48px]"
+              type="secondary"
+              size="large"
+              disable={!isFormValid}
+              onClick={handleSave}
             >
               저장
-            </Button>
+            </OutlinedButton>
           </div>
         </div>
       </div>
