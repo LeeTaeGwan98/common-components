@@ -9,7 +9,7 @@ function AdminTableDescription({ text, className }: AdminTableDescriptionPops) {
   return (
     <div
       className={cn(
-        "max-w-[300px] text-label1-normal-regular text-label-normal whitespace-normal overflow-ellipsis line-clamp-2",
+        "max-w-[300px] text-label1-normal-regular text-label-normal whitespace-normal overflow-ellipsis line-clamp-2 break-all",
         className
       )}
     >

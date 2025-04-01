@@ -13,17 +13,41 @@ import { Link } from "react-router-dom";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import { ACCOUNT_DETAIL, ACCOUNT_REGISTRATION } from "@/Constants/ServiceUrl";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
-import SubTitleBar from "@/components/SubTitleBar";
-import { useQuery } from "@tanstack/react-query";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getAccountList, GetAccountType } from "@/api/account";
+import { useReducer } from "react";
+import { ActionType, TableQueryStringType } from "@/api/common/commonType";
+import { dateToString } from "@/lib/dateParse";
+
+const initState: TableQueryStringType = {
+  fromDt: undefined,
+  toDt: dateToString(new Date()),
+  keyword: "",
+  take: 10,
+  page: 1,
+};
+
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
 
 function Account() {
-  const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ["accountGet"],
-    queryFn: () => getAccountList(),
-    staleTime: 1000000000,
-    gcTime: 1000000000,
-    //enabled: false,
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
+
+  //서비스 가이드 목록 조회
+  const { data } = useSuspenseQuery({
+    queryKey: ["accountGet", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getAccountList(filterInfo),
     select: (data) => data.data.data,
   });
 
@@ -40,7 +64,13 @@ function Account() {
       }
       breadcrumbNode={<>관리자 / 계정 관리</>}
     >
-      <SubTitleBar title="접속일" />
+      <SubTitleBar
+        filterInfo={filterInfo}
+        title="접속일"
+        dispatch={dispatch}
+        excel={true}
+        CustomSelectComponent={<></>}
+      />
 
       <TableContainer>
         <Table>
@@ -55,10 +85,10 @@ function Account() {
           </TableHeader>
 
           <TableBody>
-            {data?.list.map((item: GetAccountType) => {
+            {data?.list.map((item: GetAccountType, index) => {
               return (
-                <TableRow>
-                  <TableCell>{item.id}</TableCell>
+                <TableRow key={index}>
+                  <TableCell>{item.email}</TableCell>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.lastLoginAt}</TableCell>
 

@@ -72,113 +72,104 @@ import PaymentManagement from "@/pages/User/PaymentManagement";
 import Withdrawalmanagement from "@/pages/User/Withdrawalmanagement";
 import Inquiry from "@/pages/Forum/Inquiry";
 import InquiryDetail from "@/pages/Forum/InquiryDetail";
-import { CookiesProvider } from "react-cookie";
-import ProtectedRoute from "@/components/base/ProtectedRoute";
 import Notice from "@/pages/Forum/Notice";
 import NoticeDetail from "@/pages/Forum/NoticeDetail";
-import NoticeRegistration from "@/pages/Forum/NoticeRegistration";
+import NoticeRegistration from "@/pages/Forum/NoticeAdd";
 import ServiceGuide from "@/pages/Forum/ServiceGuide";
 import ServiceGuideDetail from "@/pages/Forum/ServiceGuideDetail";
-import ServiceGuideRegistration from "@/pages/Forum/ServiceGuideRegistration";
+import ServiceGuideRegistration from "@/pages/Forum/ServiceGuideAdd";
 import Chatbot from "@/pages/Forum/Chatbot";
 import ChatbotDetail from "@/pages/Forum/ChatbotDetail";
 import ChatbotRegistration from "@/pages/Forum/ChatbotRegistration";
+import { Toaster } from "@/components/ui/sonner";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: true,
+    },
+  },
+});
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster />
       <Modal />
       <BrowserRouter>
-        <CookiesProvider>
-          <Layout>
-            <Routes>
-              <Route path={LOGIN} element={<Login />} />
+        <Layout>
+          <Routes>
+            <Route path={LOGIN} element={<Login />} />
 
-              {/* 회원관리 */}
-              <Route path={USER_LIST} element={<UserList />} />
-              <Route path={PAY} element={<PaymentManagement />} />
-              <Route
-                path={WITHDRAWL_REASON}
-                element={<Withdrawalmanagement />}
-              />
-              <Route path={USER_DETAIL} element={<UserDetail />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path={MAIN} element={<Main />} />
+            {/* 회원관리 */}
+            <Route path={USER_LIST} element={<UserList />} />
+            <Route path={PAY} element={<PaymentManagement />} />
+            <Route path={WITHDRAWL_REASON} element={<Withdrawalmanagement />} />
+            <Route path={USER_DETAIL} element={<UserDetail />} />
 
-                {/* 전자책 관리 */}
-                <Route path={PUBLISH_LIST} element={<PublishList />} />
-                <Route
-                  path={PUBLISH_LIST_DETAIL}
-                  element={<PublishListDetail />}
-                />
-                <Route path={COVER} element={<Cover />} />
-                <Route path={COVER_DETAIL} element={<CoverDetail />} />
-                <Route path={COVER_CREATE} element={<CoverCreate />} />
-                <Route path={CHARGING} element={<Charging />} />
+            <Route path={MAIN} element={<Main />} />
 
-                {/* 게시판 관리 */}
-                <Route path={INQUIRY} element={<Inquiry />} />
-                <Route path={INQUIRY_DETAIL} element={<InquiryDetail />} />
-                <Route path={NOTICE} element={<Notice />} />
-                <Route path={NOTICE_DETAIL} element={<NoticeDetail />} />
-                <Route
-                  path={NOTICE_REGISTRATION}
-                  element={<NoticeRegistration />}
-                />
-                <Route path={SERVICE_GUIDE} element={<ServiceGuide />} />
-                <Route
-                  path={SERVICE_GUIDE_DETAIL}
-                  element={<ServiceGuideDetail />}
-                />
-                <Route
-                  path={SERVICE_GUIDE_REGISTRATION}
-                  element={<ServiceGuideRegistration />}
-                />
-                <Route path={CHATBOT} element={<Chatbot />} />
-                <Route path={CHATBOT_DETAIL} element={<ChatbotDetail />} />
-                <Route
-                  path={CHATBOT_REGISTRATION}
-                  element={<ChatbotRegistration />}
-                />
-                {/* 비디오북 관리 */}
-                <Route path={PLAN} element={<Plan />} />
-                <Route path={PLAN_DETAIL} element={<PlanDetail />} />
-                <Route path={TUTORIAL} element={<Tutorial />} />
-                <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
-                <Route path={TUTORIAL_DETAIL} element={<TutorialDetail />} />
-                <Route path={TEMPLATE} element={<Template />} />
-                <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
+            {/* 전자책 관리 */}
+            <Route path={PUBLISH_LIST} element={<PublishList />} />
+            <Route path={PUBLISH_LIST_DETAIL} element={<PublishListDetail />} />
+            <Route path={COVER} element={<Cover />} />
+            <Route path={COVER_DETAIL} element={<CoverDetail />} />
+            <Route path={COVER_CREATE} element={<CoverCreate />} />
+            <Route path={CHARGING} element={<Charging />} />
 
-                {/* 관리자 */}
-                <Route path={TERMS} element={<Terms />} />
-                <Route path={`${TERMS_DETAIL}/:id`} element={<TermsDetail />} />
-                <Route
-                  path={TERMS_REGISTRATION}
-                  element={<TermsRegistration />}
-                />
-                <Route path={ACCOUNT} element={<Account />} />
-                <Route path={COMMON_CODE} element={<CommonCode />} />
-                <Route
-                  path={ACCOUNT_REGISTRATION}
-                  element={<AccountRegistration />}
-                />
-                <Route
-                  path={`${ACCOUNT_DETAIL}/:id`}
-                  element={<AccountDetail />}
-                />
-                <Route path={USER_DETAIL} element={<UserDetail />} />
+            {/* 게시판 관리 */}
+            <Route path={INQUIRY} element={<Inquiry />} />
+            <Route path={`${INQUIRY_DETAIL}/:id`} element={<InquiryDetail />} />
+            <Route path={NOTICE} element={<Notice />} />
+            <Route path={`${NOTICE_DETAIL}/:id`} element={<NoticeDetail />} />
+            <Route
+              path={NOTICE_REGISTRATION}
+              element={<NoticeRegistration />}
+            />
+            <Route path={SERVICE_GUIDE} element={<ServiceGuide />} />
+            <Route
+              path={`${SERVICE_GUIDE_DETAIL}/:id`}
+              element={<ServiceGuideDetail />}
+            />
+            <Route
+              path={SERVICE_GUIDE_REGISTRATION}
+              element={<ServiceGuideRegistration />}
+            />
+            <Route path={CHATBOT} element={<Chatbot />} />
+            <Route path={`${CHATBOT_DETAIL}/:id`} element={<ChatbotDetail />} />
+            <Route
+              path={CHATBOT_REGISTRATION}
+              element={<ChatbotRegistration />}
+            />
+            {/* 비디오북 관리 */}
+            <Route path={PLAN} element={<Plan />} />
+            <Route path={PLAN_DETAIL} element={<PlanDetail />} />
+            <Route path={TUTORIAL} element={<Tutorial />} />
+            <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
+            <Route path={TUTORIAL_DETAIL} element={<TutorialDetail />} />
+            <Route path={TEMPLATE} element={<Template />} />
+            <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
 
-                <Route path="/fetchTest" element={<FetchTest />} />
-                <Route path="/modalTest" element={<ModalTest />} />
-              </Route>
+            {/* 관리자 */}
+            <Route path={TERMS} element={<Terms />} />
+            <Route path={`${TERMS_DETAIL}/:id`} element={<TermsDetail />} />
+            <Route path={TERMS_REGISTRATION} element={<TermsRegistration />} />
+            <Route path={ACCOUNT} element={<Account />} />
+            <Route path={COMMON_CODE} element={<CommonCode />} />
+            <Route
+              path={ACCOUNT_REGISTRATION}
+              element={<AccountRegistration />}
+            />
+            <Route path={`${ACCOUNT_DETAIL}/:id`} element={<AccountDetail />} />
+            <Route path={USER_DETAIL} element={<UserDetail />} />
 
-              <Route path="*" element={<div>404</div>} />
-            </Routes>
-          </Layout>
-        </CookiesProvider>
+            <Route path="/fetchTest" element={<FetchTest />} />
+            <Route path="/modalTest" element={<ModalTest />} />
+
+            <Route path="*" element={<div>404</div>} />
+          </Routes>
+        </Layout>
       </BrowserRouter>
     </QueryClientProvider>
   );

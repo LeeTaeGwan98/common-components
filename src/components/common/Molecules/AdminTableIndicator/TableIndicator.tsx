@@ -1,21 +1,29 @@
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import Search from "@/assets/svg/common/search.svg";
-import { useEffect, useRef, useState } from "react";
+import { ActionDispatch, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import LeftArrow from "@/assets/svg/common/leftArrow.svg";
 import RightArrow from "@/assets/svg/common/rightThinArrow.svg";
+import {
+  type ActionType,
+  type PaginationMetaType,
+} from "@/api/common/commonType";
 
 interface TableIndicatorProps {
-  totalPage?: string;
+  PaginationMetaType: PaginationMetaType;
+  dispatch: ActionDispatch<[action: ActionType<{ page: number }>]>;
 }
 
-function TableIndicator({ totalPage = "1" }: TableIndicatorProps) {
+function TableIndicator({ PaginationMetaType, dispatch }: TableIndicatorProps) {
+  const { hasNextPage, page, take, totalCount, totalPage } = PaginationMetaType;
+  // 입력 중인 page를 별도로 관리
+  // onchange중에는 API를 호출하지 않기 위해
+  const [inputNumber, setInputNumber] = useState(1);
+
   const hiddenTextRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [inputPage, setInputPage] = useState<string>(""); //입력한 페이지
   const inputClassName: string =
     "focus:outline-none text-body2-normal-medium text-label-neutral h-full text-center";
-
   // 텍스트 너비 계산 및 컨테이너 너비 업데이트
   useEffect(() => {
     if (hiddenTextRef.current) {
@@ -26,56 +34,103 @@ function TableIndicator({ totalPage = "1" }: TableIndicatorProps) {
         inputRef.current.style.width = `${newWidth}px`;
       }
     }
-  }, [inputPage]);
+  }, [inputNumber]);
+
+  useEffect(() => {
+    setInputNumber(page);
+  }, [page]);
+
+  //페이지 이동버튼 핸들
+  const handlePage = (pageType: "increase" | "decrease") => {
+    if (pageType === "increase" && page < totalPage) {
+      setInputNumber(page + 1);
+      dispatch({
+        type: "page",
+        value: Number(page) + 1,
+      });
+    } else if (pageType === "decrease" && page > 1) {
+      setInputNumber(page - 1);
+      dispatch({
+        type: "page",
+        value: Number(page) - 1,
+      });
+    } else {
+    }
+  };
+
+  const handlePageSearchOnKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Enter" && Number(e.currentTarget.value) > 0) {
+      dispatch({
+        type: "page",
+        value: Number(e.currentTarget.value),
+      });
+    }
+  };
+
+  const handlePageSearchOnClick = () => {
+    dispatch({
+      type: "page",
+      value: Number(inputNumber),
+    });
+  };
 
   return (
     <div className="flex justify-end w-full">
       <div className="flex items-center gap-space-button-vertical mt-[12px]">
-        <div className="flex items-center gap-[8px] h-[40px] px-[10px] border-[1px] border-solid border-line-normal-normal rounded-radius-admin">
+        <div className="flex items-center gap-[8px] h-[40px] px-[10px] border-[1px] border-solid border-line-normal-normal rounded-radius-admin relative">
           {/* 페이지 입력 */}
           <input
             ref={inputRef}
             className={inputClassName}
-            value={inputPage}
+            value={inputNumber || ""}
+            onKeyDown={handlePageSearchOnKeyDown}
             onChange={(e) => {
-              // 숫자만 필터링
-              const numericValue = e.target.value.replace(/\D/g, "");
-              setInputPage(numericValue);
+              console.log(e.target.value);
+              setInputNumber(Number(e.target.value));
             }}
           />
           {/* 입력된 너비를 측정하기 위한 숨겨진 요소 */}
           <div
             ref={hiddenTextRef}
             className={cn(
-              "pointer-events-none absolute text-transparent whitespace-nowrap h-fit",
+              "pointer-events-none absolute !text-transparent whitespace-nowrap",
               inputClassName
             )}
           >
-            {inputPage}
+            {inputNumber}
           </div>
           {/* 검색 버튼 */}
           <IconButton
             className="flex justify-center items-center rounded-radius-admin p-0 w-[32px] h-[32px]"
             type="outlined"
             icon={<Search className="w-[18px] h-[18px]" />}
+            onClick={handlePageSearchOnClick}
           />
         </div>
+
         {/* 총 페이지 수 */}
         <div className="text-body2-normal-regular text-label-alternative">
           {"/" + totalPage}
         </div>
+
         <div className="flex gap-[4px]">
           {/* 이전 페이지 이동 버튼 */}
           <IconButton
             className="flex justify-center items-center rounded-radius-admin p-0 w-[40px] h-[40px]"
             type="outlined"
             icon={<LeftArrow className="w-[20px] h-[20px]" />}
+            disable={page == 1}
+            onClick={() => handlePage("decrease")}
           />
           {/* 다음 페이지 이동 버튼 */}
           <IconButton
             className="flex justify-center items-center rounded-radius-admin p-0 w-[40px] h-[40px]"
             type="outlined"
             icon={<RightArrow className="w-[20px] h-[20px]" />}
+            disable={page == totalPage}
+            onClick={() => handlePage("increase")}
           />
         </div>
       </div>

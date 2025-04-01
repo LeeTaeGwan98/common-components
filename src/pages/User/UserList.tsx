@@ -13,9 +13,42 @@ import { USER_DETAIL } from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import Divider from "@/components/common/Atoms/Divider/Divider";
-import SubTitleBar from "@/components/SubTitleBar";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import { ActionType, TableQueryStringType } from "@/api/common/commonType";
+import { useReducer, useState } from "react";
+import { dateToString } from "@/lib/dateParse";
+import CACHE_TIME from "@/Constants/CacheTime";
+import { getUserList, UserQueryStringType } from "@/api/user/userAPI";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 
-const data = [
+const initState: UserQueryStringType = {
+  sortOrder: "DESC",
+  fromDt: dateToString(
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+  ),
+  toDt: dateToString(new Date()),
+  keyword: "",
+  take: 10,
+  page: 1,
+  isActive: null,
+};
+
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
+
+const falseData = [
   {
     no: 0,
     createAt: "9999-12-31 24:59:00",
@@ -52,9 +85,40 @@ const data = [
 ];
 
 function UserList() {
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
+  const { data, refetch } = useSuspenseQuery({
+    queryKey: ["userList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getUserList(filterInfo),
+    select: (data) => data.data.data,
+  });
+
+  // 입력 중인 keyword를 별도로 관리
+  // onchange중에는 API를 호출하지 않기 위해
+  const [inputKeyword, setInputKeyword] = useState(initState.keyword);
   return (
     <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
-      <SubTitleBar title="가입일" />
+      <SubTitleBar
+        filterInfo={filterInfo}
+        title="가입일"
+        dispatch={dispatch}
+        CustomSelectComponent={
+          <SelectBox
+            placeholder="모든 상태"
+            className="min-w-[240px]"
+            size="large"
+            defaultValue="ALL"
+            //onValueChange={handleisVisible}
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">모든상태</SelectItem>
+                <SelectItem value="true">노출</SelectItem>
+                <SelectItem value="false">비노출</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
+        }
+      />
 
       <TableContainer>
         <Table>
@@ -77,21 +141,21 @@ function UserList() {
           </TableHeader>
 
           <TableBody>
-            {data.map((item) => {
+            {data.list.map((item) => {
               return (
                 <TableRow>
-                  <TableCell>{item.no}</TableCell>
-                  <TableCell>{item.createAt}</TableCell>
-                  <TableCell>{item.nickName}</TableCell>
+                  <TableCell>{item.id}</TableCell>
+                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{item.name}</TableCell>
                   <TableCell>{item.email}</TableCell>
-                  <TableCell>{item.plan}</TableCell>
+                  <TableCell>{item.planName}</TableCell>
                   <TableCell>
-                    {Number(item.ebook) === 0 ? (
+                    {Number(item.publishedEbookCount) === 0 ? (
                       <div className="flex items-center justify-center h-[20px]">
                         <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
                       </div>
                     ) : (
-                      item.ebook
+                      item.publishedEbookCount
                     )}
                   </TableCell>
                   <TableCell>
@@ -105,8 +169,8 @@ function UserList() {
                   </TableCell>
                   <TableCell>
                     {(() => {
-                      switch (item.state) {
-                        case "active":
+                      switch (item.isActive) {
+                        case true:
                           return (
                             <div className="w-full flex justify-center items-center">
                               <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-positive/10 text-label1-normal-bold text-status-positive">
@@ -114,7 +178,7 @@ function UserList() {
                               </div>
                             </div>
                           );
-                        case "inactive":
+                        case false:
                           return (
                             <div className="w-full flex justify-center items-center">
                               <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
@@ -122,7 +186,7 @@ function UserList() {
                               </div>
                             </div>
                           );
-                        case "withdrawl":
+                        case null:
                           return (
                             <div className="w-full flex justify-center items-center">
                               <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-negative/10 text-label1-normal-bold text-status-negative">

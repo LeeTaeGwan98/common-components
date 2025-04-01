@@ -37,6 +37,8 @@ interface CheckboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isRound?: boolean;
   /** 추가 CSS 클래스 */
   className?: string;
+  /** hover, active, focus 설정 여부 */
+  isInteraction?: boolean;
 }
 
 /**
@@ -53,6 +55,7 @@ function Checkbox({
   disable = false,
   checkIconType = "check",
   isRound = false,
+  isInteraction = true,
   className,
   ...props
 }: CheckboxProps) {
@@ -75,7 +78,8 @@ function Checkbox({
     <button
       className={cn(
         "inline-flex items-center justify-center p-[7px] rounded-full",
-        "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",
+        isInteraction &&
+          "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",
         disable && "cursor-not-allowed"
       )}
       disabled={disable}

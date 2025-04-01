@@ -1,0 +1,40 @@
+name: 북카롱 통합관리자 프로젝트 배포
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: 빌드 후 도커 이미지 저장
+        run: |
+          docker build -t bookaroon-admin:latest .
+          docker save -o bookaroon-admin.tar bookaroon-admin:latest
+
+      - name: 도커 이미지 개발서버로 전송
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.DEV_SERVER_USER }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          source: "bookaroon-admin.tar"
+          target: "/home/${{ secrets.DEV_SERVER_USER }}/"
+
+      - name: 개발 서버 접속해 컨테이너 실행
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.DEV_SERVER_USER }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          script: |
+            docker load -i /home/${{ secrets.DEV_SERVER_USER }}/bookaroon-admin.tar
+            docker stop bookaroon-admin || true
+            docker rm bookaroon-admin || true
+            docker run -d --name bookaroon-admin -p 5174:80 bookaroon-admin:latest

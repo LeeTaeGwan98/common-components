@@ -58,7 +58,7 @@ const Table: React.FC<TableProps> = ({ children, className }) => {
   return (
     <table
       className={cn(
-        "min-w-full rounded-radius-admin overflow-hidden whitespace-nowrap table-fixed",
+        "min-w-full overflow-hidden whitespace-nowrap table-fixed",
         className
       )}
     >

@@ -42,6 +42,13 @@ interface AdminEditProps {
   placeholder?: string;
 }
 
+//html 제거
+export function parseHTML(html: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+}
+
 const AdminEdit: React.FC<AdminEditProps> = ({
   value = "",
   onChange,

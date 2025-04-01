@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
@@ -10,28 +10,133 @@ import AdminEdit from "@/components/common/Molecules/AdminEdit/AdminEdit";
 import { useModalStore } from "@/store/modalStore";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import Title from "@/components/common/BookaroongAdmin/Title";
-import NoticeDetailModal from "@/components/modal/forum/NoticeDetailModal";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
-import {
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-} from "@/components/ui/select";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import ServiceGuideModal from "@/components/modal/forum/ServiceGuideModal";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import {
+  getGuideDetail,
+  updateGuide,
+  UpdateGuiedData,
+} from "@/api/serviceGuied/serviceGuiedAPI";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
+import { useAuthStore } from "@/store/authStore";
+
+// formState 타입 정의
+type FormState = {
+  title: string;
+  categoryCode: string;
+  isEbook: boolean;
+  isVisible: boolean;
+  content: string;
+};
 
 const ServiceGuideDetail = () => {
-  const [titleContents, setTitleContents] =
-    useState("[공지] 전자책 진행 일정 관련");
-  const [isNoExposure, setIsNoExposure] = useState<boolean>(true);
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true);
-  const [answerContents, setAnswerContents] = useState(
-    "안녕하세요 북카롱입니다 현재 작업량이 많아"
-  );
+  const queryClient = useQueryClient();
+  const { id } = useParams(); // id 값 추출
+  const { user } = useAuthStore(); //현재 로그인한 유저 정보
+  const navigate = useNavigate(); //네비게이션
 
+  //공통 코드 목록 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: [
+      "serviceGuideGroupCodes",
+      COMMON_GROUP_CODE_MAPPING.서비스코드,
+      COMMON_GROUP_CODE_MAPPING.전자책만들기서비스가이드카테고리,
+      COMMON_GROUP_CODE_MAPPING.비디오북만들기서비스가이드카테고리,
+    ],
+    queryFn: () =>
+      getGroupCodes([
+        COMMON_GROUP_CODE_MAPPING.서비스코드,
+        COMMON_GROUP_CODE_MAPPING.전자책만들기서비스가이드카테고리,
+        COMMON_GROUP_CODE_MAPPING.비디오북만들기서비스가이드카테고리,
+      ]),
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const serviceCodes = codeInfo[keys[0]]; // 서비스 코드들
+
+  //서비스가이드 상세 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["serviceGuideDetail", id],
+    queryFn: () => getGuideDetail(Number(id)),
+    select: (data) => data.data.data,
+  });
+
+  // 폼 상태 관리
+  const [formState, setFormState] = useState({
+    title: data.title,
+    categoryCode: data.categoryCode,
+    isEbook: data.serviceCode === serviceCodes[0].commDetailCode ? true : false,
+    isVisible: data.isVisible,
+    content: data.content,
+  });
+  // 폼 개별 상태 업데이트 핸들러
+  const updateFormState = <K extends keyof FormState>(
+    field: K,
+    value: FormState[K]
+  ) => {
+    setFormState((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  //카테고리 코드들
+  const categoryItems = codeInfo[keys[formState.isEbook ? 1 : 2]];
+
+  //서비스가이드 수정 api
+  const { mutate: updateGuideFn } = useMutation({
+    mutationFn: (payload: { id: number; data: UpdateGuiedData }) =>
+      updateGuide(payload),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["serviceGuideDetail", id] });
+      navigate(-1);
+    },
+    onError() {
+      customToast({
+        title: "서비스가이드 수정중 에러가 발생했습니다.",
+      });
+    },
+  });
+
+  // 저장 버튼 활성화 여부
+  const isFormValid =
+    formState.title && formState.categoryCode && formState.content.length >= 10;
+
+  // 저장 버튼 핸들러
+  const handleSave = () => {
+    if (!isFormValid) return;
+
+    //서비스 가이드 수정
+    updateGuideFn({
+      id: Number(id),
+      data: {
+        serviceCode: serviceCodes[formState.isEbook ? 0 : 1].commDetailCode,
+        categoryCode: formState.categoryCode,
+        title: formState.title,
+        isVisible: formState.isVisible,
+        content: formState.content,
+        updatedBy: user!.id,
+      },
+    });
+  };
+
+  //서비스 가이드 삭제 모달
   const { openModal } = useModalStore();
   const deleteModal = () => {
-    openModal(<ServiceGuideModal />);
+    openModal(<ServiceGuideModal id={Number(id)} />);
   };
 
   return (
@@ -61,10 +166,11 @@ const ServiceGuideDetail = () => {
               서비스 가이드 제목
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular text-label-normal"
-                value={titleContents}
+                value={formState.title}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setTitleContents(e.target.value);
+                  updateFormState("title", e.target.value);
                 }}
+                maxLength={30}
                 placeholder="서비스 가이드 제목을 입력해주세요"
                 isVisible={false}
               />
@@ -72,15 +178,24 @@ const ServiceGuideDetail = () => {
           </div>
           <div className="flex  w-full">
             <div className="w-full">
-              <SelectBox label="카테고리" placeholder="카테고리를 선택해주세요">
+              <SelectBox
+                label="카테고리"
+                placeholder="카테고리를 선택해주세요"
+                value={formState.categoryCode}
+                onValueChange={(value) =>
+                  updateFormState("categoryCode", value)
+                }
+              >
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>asdf</SelectLabel>
-                    <SelectItem value="asdf">asdf</SelectItem>
-                    <SelectItem value="asdf1">asdf1</SelectItem>
-                    <SelectItem value="asdf2">asdf2</SelectItem>
-                    <SelectItem value="asdf3">asdf3</SelectItem>
-                    <SelectItem value="asdf4">asdf4</SelectItem>
+                    {categoryItems.map((item, idx) => {
+                      const { commDetailCode, detailCodeName } = item;
+                      return (
+                        <SelectItem key={idx} value={commDetailCode}>
+                          {detailCodeName}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectGroup>
                 </SelectContent>
               </SelectBox>
@@ -94,8 +209,11 @@ const ServiceGuideDetail = () => {
                 className="w-full"
                 itemClassName="text-body1-normal-medium"
                 size="large"
-                setSelected={setIsNoRecommend}
-                selected={isNoRecommend}
+                setSelected={(value: boolean) => {
+                  updateFormState("isEbook", value);
+                  updateFormState("categoryCode", "");
+                }}
+                selected={formState.isEbook}
                 textList={["전자책 만들기", "비디오북 만들기"]}
               />
             </div>
@@ -105,8 +223,10 @@ const ServiceGuideDetail = () => {
                 className="w-full"
                 itemClassName="text-body1-normal-medium"
                 size="large"
-                setSelected={setIsNoExposure}
-                selected={isNoExposure}
+                setSelected={(value: boolean) =>
+                  updateFormState("isVisible", value)
+                }
+                selected={formState.isVisible}
                 textList={["노출", "비노출"]}
               />
             </div>
@@ -115,21 +235,30 @@ const ServiceGuideDetail = () => {
           {/* 세번째 줄 */}
           <div className="w-full flex flex-col gap-[8px]">
             내용
-            <AdminEdit value={answerContents} onChange={setAnswerContents} />
+            <AdminEdit
+              value={formState.content}
+              onChange={(value) => updateFormState("content", value)}
+            />
           </div>
           {/* 버튼 */}
           <div className="mt-[32px] flex justify-end space-x-4">
-            <Button
+            <OutlinedButton
+              type="assistive"
               onClick={() => {
-                console.log("취소 버튼 클릭");
+                navigate(-1);
               }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium "
+              className="w-[180px] h-[48px]"
             >
               취소
-            </Button>
-            <Button className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium ">
+            </OutlinedButton>
+            <OutlinedButton
+              type="secondary"
+              disable={!isFormValid}
+              onClick={handleSave}
+              className="w-[180px] h-[48px]"
+            >
               저장
-            </Button>
+            </OutlinedButton>
           </div>
         </div>
       </div>

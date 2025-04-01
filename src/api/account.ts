@@ -1,4 +1,8 @@
 import API from "@/api/API";
+import {
+  TableQueryStringType,
+  TableResSuccessType,
+} from "@/api/common/commonType";
 
 export interface AccountType {
   id: number;
@@ -26,17 +30,6 @@ export interface GetAccountType {
   createdAt: string;
   lastLoginAt: string;
   isActive: boolean;
-}
-
-export interface GetAccountList {
-  list: GetAccountType[];
-  meta: {
-    page: number;
-    take: number;
-    totalCount: number;
-    totalPage: number;
-    hasNextPage: boolean;
-  };
 }
 
 export interface PostAccountType {
@@ -87,9 +80,33 @@ export interface PatchAccountType {
   updatedBy: number;
 }
 
-// 계정 조회
-export const getAccountList = () => {
-  const data = API.get<{ data: GetAccountList }>("/admin/account");
+//계정 목록
+export const getAccountList = (queryStringObj: TableQueryStringType) => {
+  const { fromDt, toDt, keyword, take, page } = queryStringObj;
+
+  let qs = "/admin/account?";
+
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (keyword) {
+    qs += `keyword=${keyword}&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
+
+  const data = API.get<TableResSuccessType<GetAccountType>>(qs);
+
   return data;
 };
 

@@ -3,7 +3,6 @@ import TextField from "@/components/common/Molecules/TextField/TextField";
 import { useState, KeyboardEvent } from "react";
 import { login } from "@/api/auth/auth";
 import { useMutation } from "@tanstack/react-query";
-import { getCookie, setCookie } from "@/lib/cookie";
 import { useNavigate } from "react-router-dom";
 import { MAIN } from "@/Constants/ServiceUrl";
 import { useAuthStore } from "@/store/authStore";
@@ -12,16 +11,14 @@ function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const setIsLogin = useAuthStore((state) => state.setIsLogin);
+  const setUserInfo = useAuthStore((state) => state.setUserInfo);
 
   const isFieldCheck = email !== "" && password !== "";
 
   const { mutate: handleLoginMutation } = useMutation({
     mutationFn: () => login({ email, password }),
     onSuccess(res) {
-      const { accessToken } = res.data.data;
-      setCookie("accessToken", accessToken);
-      setIsLogin(true);
+      setUserInfo(res.data.data);
       navigate(MAIN);
     },
   });
