@@ -27,6 +27,11 @@ import { codeToName } from "@/utils/uitls";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
 import { useAuthStore } from "@/store/authStore";
+import { useModalStore } from "@/store/modalStore";
+import { AdminDeleteModal } from "@/components/modal/admin/AdminDeleteModal";
+import Button from "@/components/common/Atoms/Button/Solid/Button";
+import { AdminActiveModal } from "@/components/modal/admin/AdminActiveModal";
+import { AdminNonActiveModal } from "@/components/modal/admin/AdminNonActiveModal";
 
 // formState 타입 정의
 type FormState = {
@@ -35,7 +40,7 @@ type FormState = {
   nameField: string;
   contactField: string;
   positionField: string;
-  situationSelected: boolean;
+  isActive: boolean;
   permissionCodes: string[];
   isIdError: boolean;
   isPasswordError: boolean;
@@ -43,6 +48,7 @@ type FormState = {
 
 function AccountDetail() {
   const navigate = useNavigate();
+  const { openModal } = useModalStore();
   const { user } = useAuthStore(); //현재 로그인한 유저 정보
   const queryClient = useQueryClient();
   const { id } = useParams(); // id 값 추출
@@ -76,7 +82,7 @@ function AccountDetail() {
     nameField: data.name,
     contactField: data.phoneNumber ?? "",
     positionField: data.position,
-    situationSelected: data.isActive,
+    isActive: data.isActive,
     permissionCodes: data.permissions.map((item) => item.menuCode),
     isIdError: false,
     isPasswordError: false,
@@ -165,20 +171,48 @@ function AccountDetail() {
 
     //관리자 계정 등록
     if (isFormAllValid) {
-      updateAccountFn({
-        id: Number(id),
-        data: {
-          email: formState.idField,
-          name: formState.nameField,
-          password: formState.passwordField,
-          phoneNumber: formState.contactField,
-          position: formState.positionField,
-          isActive: formState.situationSelected,
-          permissions: formState.permissionCodes,
-          updatedBy: user!.id,
-        },
-      });
+      if (data.isActive != formState.isActive) {
+        if (formState.isActive) {
+          handleActiveModal();
+        } else {
+          handleNonActiveModal();
+        }
+      } else {
+        handleAdminUpdate();
+      }
     }
+  };
+
+  //관리자 계정 업데이트
+  const handleAdminUpdate = () => {
+    updateAccountFn({
+      id: Number(id),
+      data: {
+        email: formState.idField,
+        name: formState.nameField,
+        password: formState.passwordField,
+        phoneNumber: formState.contactField,
+        position: formState.positionField,
+        isActive: formState.isActive,
+        permissions: formState.permissionCodes,
+        updatedBy: user!.id,
+      },
+    });
+  };
+
+  //관리자 계정 삭제 모달 띄우기
+  const handleDeleteModal = () => {
+    openModal(<AdminDeleteModal id={Number(id)} />);
+  };
+
+  //관리자 활성화 모달 띄우기
+  const handleActiveModal = () => {
+    openModal(<AdminActiveModal onOkClick={handleAdminUpdate} />);
+  };
+
+  //관리자 비활성화 모달 띄우기
+  const handleNonActiveModal = () => {
+    openModal(<AdminNonActiveModal onOkClick={handleAdminUpdate} />);
   };
 
   return (
@@ -186,8 +220,16 @@ function AccountDetail() {
       breadcrumbNode={
         <>
           관리자 / 계정 관리 <Divider vertical className="h-[20px] mx-[12px]" />
-          등록
+          상세
         </>
+      }
+      button={
+        <Button
+          className="rounded-radius-admin w-[180px] h-[48px]"
+          onClick={handleDeleteModal}
+        >
+          삭제
+        </Button>
       }
     >
       <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
@@ -277,9 +319,9 @@ function AccountDetail() {
               상태
               <Segement
                 size="large"
-                selected={formState.situationSelected}
+                selected={formState.isActive}
                 setSelected={(value: boolean) =>
-                  updateFormState("situationSelected", value)
+                  updateFormState("isActive", value)
                 }
                 textList={["활성", "비활성"]}
                 className="ml-auto w-full mt-[12px]"

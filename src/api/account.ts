@@ -135,7 +135,7 @@ export const patchAccountList = (payload: {
 };
 
 // 계정 삭제
-export const deleteAccountList = (id: string | undefined) => {
+export const deleteAccountList = (id: number) => {
   const data = API.delete(`/admin/account/${id}`);
   return data;
 };

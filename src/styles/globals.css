@@ -13,6 +13,24 @@
 
 :root {
   @media screen and (min-width: 1200px) {
+    --detail-top: 64px;
+    --detail-bottom: 48px;
+    --detail-margin: 48px;
+    --detail-content-horizon-margin: 32px;
+    --detail-content-vertical-margin: 32px;
+    --detail-gutter-horizontal: 20px;
+    --detail-gutter-vertical: 32px;
+    --detail-gutter-large: 80px;
+    --detail-gutter-medium: 48px;
+    --detail-gutter-vertical-heading: 60px;
+    --detail-gutter-vertical-section-large: 140px;
+    --detail-gutter-vertical-section-small: 100px;
+    --detail-dialog-max-width: 560px;
+    --detail-dialog-height: 720px;
+    --detail-table-min-width: 1504px;
+    --detail-detailTable-min-width: 1044px;
+    --detail-tableText-min-width: 300px;
+
     --top: 64px;
     --bottom: 48px;
     --margin: 48px;
@@ -32,6 +50,24 @@
     --tableText-min-width: 300px;
   }
   @media screen and (min-width: 992px) and (max-width: 1199px) {
+    --detail-top: 48px;
+    --detail-bottom: 32px;
+    --detail-margin: 24px;
+    --detail-content-horizon-margin: 24px;
+    --detail-content-vertical-margin: 24px;
+    --detail-gutter-horizontal: 20px;
+    --detail-gutter-vertical: 32px;
+    --detail-gutter-large: 64px;
+    --detail-gutter-medium: 32px;
+    --detail-gutter-vertical-heading: 60px;
+    --detail-gutter-vertical-section-large: 100px;
+    --detail-gutter-vertical-section-small: 80px;
+    --detail-dialog-max-width: 480px;
+    --detail-dialog-height: 640px;
+    --detail-table-min-width: 1151px;
+    --detail-detailTable-min-width: 691px;
+    --detail-tableText-min-width: 200px;
+
     --top: 48px;
     --bottom: 32px;
     --margin: 24px;
@@ -51,6 +87,24 @@
     --tableText-min-width: 200px;
   }
   @media screen and (min-width: 600px) and (max-width: 991px) {
+    --detail-top: 32px;
+    --detail-bottom: 32px;
+    --detail-margin: 24px;
+    --detail-content-horizon-margin: 20px;
+    --detail-content-vertical-margin: 20px;
+    --detail-gutter-horizontal: 16px;
+    --detail-gutter-vertical: 28px;
+    --detail-gutter-large: 48px;
+    --detail-gutter-medium: 28px;
+    --detail-gutter-vertical-heading: 48px;
+    --detail-gutter-vertical-section-large: 80px;
+    --detail-gutter-vertical-section-small: 64px;
+    --detail-dialog-max-width: 400px;
+    --detail-dialog-height: 560px;
+    --detail-table-min-width: 1151px;
+    --detail-detailTable-min-width: 691px;
+    --detail-tableText-min-width: 200px;
+
     --top: 32px;
     --bottom: 32px;
     --margin: 24px;
@@ -70,6 +124,24 @@
     --tableText-min-width: 200px;
   }
   @media screen and (min-width: 0px) and (max-width: 599px) {
+    --detail-top: 20px;
+    --detail-bottom: 32px;
+    --detail-margin: 16px;
+    --detail-content-horizon-margin: 16px;
+    --detail-content-vertical-margin: 20px;
+    --detail-gutter-horizontal: 8px;
+    --detail-gutter-vertical: 20px;
+    --detail-gutter-large: 32px;
+    --detail-gutter-medium: 20px;
+    --detail-gutter-vertical-heading: 32px;
+    --detail-gutter-vertical-section-large: 60px;
+    --detail-gutter-vertical-section-small: 48px;
+    --detail-dialog-max-width: 360px;
+    --detail-dialog-height: 480px;
+    --detail-table-min-width: 0px;
+    --detail-detailTable-min-width: 0px;
+    --detail-tableText-min-width: 0px;
+
     --top: 20px;
     --bottom: 32px;
     --margin: 16px;

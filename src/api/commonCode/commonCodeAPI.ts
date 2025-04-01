@@ -30,6 +30,13 @@ export interface GetDetailGroupCodeRes {
   updatedDt: string;
 }
 
+export interface GetAllGroupCodeRes {
+  commGroupCode: string;
+  groupCodeName: string;
+  groupCodeDesc: string;
+  isUsed: boolean;
+}
+
 export const getGroupCode = (groupCode: COMMON_GROUP_CODE_UNION_TYPE) => {
   const data = API.get(`/common/group-code/${groupCode}`);
 
@@ -43,7 +50,14 @@ export interface GetGroupCodesReq {
   data: { [key in COMMON_GROUP_CODE_UNION_TYPE]: DetailCodeType[] };
 }
 
-export const getGroupCodes = (groupCodes: COMMON_GROUP_CODE_UNION_TYPE[]) => {
+export interface GetAllGroupCodesReq {
+  status: number;
+  success: boolean;
+  message: string;
+  data: GetAllGroupCodeRes[];
+}
+
+export const getGroupCodes = (groupCodes: string[]) => {
   const qs = groupCodes
     .map((code, index) => `${index === 0 ? "" : "&"}groupCodes=${code}`)
     .join("");
@@ -65,6 +79,13 @@ export const getDetailGroupCodes = (
   const data = API.get<APIResponse<GetDetailGroupCodeRes>>(
     `/common/group-code/${qs}/detail-code`
   );
+
+  return data;
+};
+
+//모든 그룹코드 조회
+export const getAllGroupCodes = () => {
+  const data = API.get<GetAllGroupCodesReq>(`/common/group-code`);
 
   return data;
 };
