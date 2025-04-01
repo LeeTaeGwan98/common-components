@@ -1,4 +1,5 @@
 import { format, parse, parseISO } from "date-fns";
+import React from "react";
 
 export const dateToString = (date: Date | undefined) => {
   return !date ? format(new Date(), "yyyy-MM-dd") : format(date, "yyyy-MM-dd");
@@ -40,4 +41,16 @@ export const isoStringToDateString = (
   const formattedDate = format(date, type ?? "yyyy-MM-dd");
 
   return formattedDate;
+};
+
+export const formatDateTimeToJSX = (dateString: string) => {
+  const [date, time] = dateString.split(" ");
+
+  return (
+    <>
+      <span>{date}</span>
+      <br />
+      <span>{time}</span>
+    </>
+  );
 };

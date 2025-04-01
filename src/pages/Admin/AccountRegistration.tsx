@@ -1,65 +1,168 @@
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Chip from "@/components/common/Atoms/Chip/Chip";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Check from "@/assets/svg/admin/CheckIcons.svg";
 import Plus from "@/assets/svg/admin/PlusIcons.svg";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { postAccountList, PostAccountType } from "@/api/account";
 import { useNavigate } from "react-router-dom";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import { codeToName } from "@/utils/uitls";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
+import { useAuthStore } from "@/store/authStore";
 
-const buttonList = [
-  "회원 관리",
-  "전자책 관리",
-  "비디오북 관리",
-  "게시판 관리",
-  "약관 관리",
-  "공통코드 관리",
-  "관리자 계정",
-];
+// formState 타입 정의
+type FormState = {
+  idField: string;
+  passwordField: string;
+  nameField: string;
+  contactField: string;
+  positionField: string;
+  situationSelected: boolean;
+  permissionCodes: string[];
+  isPasswordError: boolean;
+};
 
 function AccountRegistration() {
-  const [idField, setIdField] = useState("");
-  const [passwordField, setPasswordField] = useState("");
-  const [nameField, setNameField] = useState("");
-  const [contactField, setContactField] = useState("");
-  const [positionField, setPositionField] = useState("");
-  const [situationSelected, setSituationSelected] = useState<boolean>(true);
-  const [selectedTemplates, setSelectedTemplates] = useState<boolean[]>(
-    new Array(buttonList.length).fill(false)
-  );
-
   const navigate = useNavigate();
-
-  const handleChipClick = (index: number) => {
-    setSelectedTemplates((prevState) => {
-      const newState = [...prevState];
-      newState[index] = !newState[index];
-      return newState;
-    });
+  const { user } = useAuthStore(); //현재 로그인한 유저 정보
+  const passwrodErrorMsg = "비밀번호를 6자 이상 입력해주세요"; //비밀번호 오류 메세지
+  const idErrorMsg = "이메일 형식으로 입력해주세요"; //아이디 오류 메세지
+  // 폼 상태 관리
+  const [formState, setFormState] = useState({
+    idField: "",
+    passwordField: "",
+    nameField: "",
+    contactField: "",
+    positionField: "",
+    situationSelected: true,
+    permissionCodes: [] as string[],
+    isPasswordError: false,
+  });
+  // 폼 개별 상태 업데이트 핸들러
+  const updateFormState = <K extends keyof FormState>(
+    field: K,
+    value: FormState[K]
+  ) => {
+    setFormState((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  const PostAccount = useMutation({
-    mutationFn: (obj: PostAccountType) => postAccountList(obj),
-    onSuccess(res, obj) {
-      console.log("post 요청 성공");
-      console.log(res);
-      console.log(obj);
+  //공통 코드 목록 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: ["permissionGroupCodes", COMMON_GROUP_CODE_MAPPING.메뉴코드],
+    queryFn: () => {
+      const data = getGroupCodes([COMMON_GROUP_CODE_MAPPING.메뉴코드]);
 
-      navigate("/account", { replace: true }); // 이전 페이지로 이동 (replace는 history에 기록 남지 않음)
-      window.location.reload();
+      return data;
+    },
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const permissionCodes = codeInfo[keys[0]]; // 권한 코드들
+
+  //관리자 계정 생성 api
+  const { mutate: addAccountFn } = useMutation({
+    mutationFn: (payload: PostAccountType) => postAccountList(payload),
+    onSuccess() {
+      navigate(-1);
+    },
+    onError() {
+      customToast({
+        title: "관리자 계정 생성 중 에러가 발생했습니다.",
+      });
     },
   });
+
+  //초기 권한 선택 설정
+  useEffect(() => {
+    formState.permissionCodes = [];
+    //관리자 계정 제외한 권한 모두 선택
+    permissionCodes.forEach((code) => {
+      if (code.commDetailCode !== "CO003007")
+        formState.permissionCodes.push(code.commDetailCode);
+    });
+    updateFormState("permissionCodes", formState.permissionCodes);
+  }, [codeInfo]);
+
+  //권한 선택 버튼
+  const handleChipClick = (code: string) => {
+    if (
+      formState.permissionCodes.find((selectedCode) => code === selectedCode)
+    ) {
+      //선택한 권한이면 해제
+      const fileterCodes = formState.permissionCodes.filter(
+        (selectedCode) => code !== selectedCode
+      );
+      updateFormState("permissionCodes", fileterCodes);
+    } else {
+      //미선택한 권한이면 선택
+      formState.permissionCodes.push(code);
+      updateFormState("permissionCodes", formState.permissionCodes);
+    }
+
+    console.log(formState.permissionCodes);
+  };
+
+  //이메일 유효성 검사
+  const validateEmail = (email: string) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
+
+  // 저장 버튼 활성화 여부
+  const isFormValid =
+    formState.idField &&
+    formState.passwordField &&
+    formState.nameField &&
+    formState.contactField &&
+    formState.positionField &&
+    formState.permissionCodes.length > 0;
+
+  // 저장 버튼 핸들러
+  const handleSave = () => {
+    if (!isFormValid) return;
+
+    //아이디가 이메일형식인 체크
+    if (validateEmail(formState.idField)) {
+    }
+    if (formState.passwordField.length < 6) {
+      //비밀번호 6자 이상인지 체크
+      updateFormState("isPasswordError", true);
+      //작으면 에러 메세지
+      return;
+    }
+
+    //관리자 계정 등록
+    addAccountFn({
+      email: formState.idField,
+      name: formState.nameField,
+      password: formState.passwordField,
+      phoneNumber: formState.contactField,
+      position: formState.positionField,
+      isActive: formState.situationSelected,
+      permissions: formState.permissionCodes,
+      createdBy: user!.id,
+      updatedBy: user!.id,
+    });
+  };
 
   return (
     <BreadcrumbContainer
       breadcrumbNode={
         <>
-          관리자 / 계정 관리 <Divider vertical className="h-[20px] mx-[12px]" />{" "}
+          관리자 / 계정 관리 <Divider vertical className="h-[20px] mx-[12px]" />
           등록
         </>
       }
@@ -69,23 +172,31 @@ function AccountRegistration() {
           {/* 첫번째 줄 */}
           <div className="flex gap-[20px] w-full">
             <div className="w-full">
-              아이디
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
-                value={idField}
+                label="아이디"
+                value={formState.idField}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setIdField(e.target.value);
+                  updateFormState("idField", e.target.value);
                 }}
                 isVisible={false}
               />
             </div>
             <div className="w-full">
-              비밀번호
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive"
-                value={passwordField}
+                label="비밀번호"
+                value={formState.passwordField}
+                maxLength={20}
+                helperText={formState.isPasswordError ? " " : ""}
+                errorInfo={{
+                  isError: formState.isPasswordError ? true : undefined,
+                  text: passwrodErrorMsg,
+                }}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setPasswordField(e.target.value);
+                  updateFormState("isPasswordError", false);
+                  const regex = /^[A-Za-z0-9]*$/; //입력시 영어, 숫자만 허용
+                  if (regex.test(e.target.value)) {
+                    updateFormState("passwordField", e.target.value);
+                  }
                 }}
                 isVisible={false}
                 type="password"
@@ -95,23 +206,26 @@ function AccountRegistration() {
           {/* 두번째 줄  */}
           <div className="flex gap-[20px] w-full">
             <div className="w-full">
-              이름
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive"
-                value={nameField}
+                label="이름"
+                value={formState.nameField}
+                maxLength={20}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setNameField(e.target.value);
+                  updateFormState("nameField", e.target.value);
                 }}
                 isVisible={false}
               />
             </div>
             <div className="w-full">
-              연락처
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive"
-                value={contactField}
+                label="연락처"
+                value={formState.contactField}
+                maxLength={11}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setContactField(e.target.value);
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState("contactField", numericValue);
                 }}
                 isVisible={false}
               />
@@ -120,12 +234,12 @@ function AccountRegistration() {
           {/* 세번째 줄  */}
           <div className="flex gap-[20px] w-full">
             <div className="w-full">
-              직책
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive"
-                value={positionField}
+                label="직책"
+                value={formState.positionField}
+                maxLength={20}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setPositionField(e.target.value);
+                  updateFormState("positionField", e.target.value);
                 }}
                 isVisible={false}
               />
@@ -134,8 +248,10 @@ function AccountRegistration() {
               상태
               <Segement
                 size="large"
-                selected={situationSelected}
-                setSelected={setSituationSelected}
+                selected={formState.situationSelected}
+                setSelected={(value: boolean) =>
+                  updateFormState("situationSelected", value)
+                }
                 textList={["활성", "비활성"]}
                 className="ml-auto w-full mt-[12px]"
               />
@@ -145,26 +261,30 @@ function AccountRegistration() {
           <div className="w-full">
             권한
             <div className="flex gap-[8px] mt-[8px]">
-              {buttonList.map((text, index) => {
-                const isSelected = selectedTemplates[index];
-
+              {permissionCodes.map((code, index) => {
                 return (
                   <Chip
                     key={index}
-                    onClick={() => handleChipClick(index)}
+                    onClick={() => handleChipClick(code.commDetailCode)}
                     className={`transition-colors whitespace-nowrap ${
-                      isSelected
+                      formState.permissionCodes.find(
+                        (selectedCode) => code.commDetailCode === selectedCode
+                      )
                         ? "bg-primary-normal/10 text-primary-normal text-body2-normal-medium border border-line-normal-normal rounded-[100px] px-[16px] cursor-pointer "
                         : "bg-white text-label-normal border text-body2-normal-medium rounded-[100px] px-[16px] cursor-pointer"
                     }`}
                   >
-                    {isSelected ? (
+                    {formState.permissionCodes.find(
+                      (selectedCode) => code.commDetailCode === selectedCode
+                    ) ? (
                       <>
-                        {text} <Check />
+                        {codeToName(permissionCodes, code.commDetailCode)}
+                        <Check />
                       </>
                     ) : (
                       <>
-                        {text} <Plus />
+                        {codeToName(permissionCodes, code.commDetailCode)}
+                        <Plus />
                       </>
                     )}
                   </Chip>
@@ -174,52 +294,23 @@ function AccountRegistration() {
           </div>
           {/* 버튼 */}
           <div className="mt-[32px] flex justify-end space-x-4">
-            <Button
+            <OutlinedButton
+              type="assistive"
               onClick={() => {
-                console.log("취소 버튼 클릭");
+                navigate(-1);
               }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium "
+              className="w-[180px] h-[48px]"
             >
               취소
-            </Button>
-            <Button
-              onClick={() => {
-                // 선택된 권한 목록 추출
-                const selectedPermissions = buttonList.filter(
-                  (_, index) => selectedTemplates[index]
-                );
-
-                // 필수 필드 체크
-                if (!idField) {
-                  console.log("아이디를 입력해주세요");
-                  return;
-                }
-                if (!nameField) {
-                  console.log("이름을 입력해주세요");
-                  return;
-                }
-
-                // API 요청 데이터 생성
-                const accountData: PostAccountType = {
-                  email: idField,
-                  name: nameField,
-                  password: passwordField,
-                  phoneNumber: contactField,
-                  position: positionField,
-                  isActive: situationSelected,
-                  permissions: selectedPermissions,
-                  createdBy: 1,
-                  updatedBy: 1,
-                };
-
-                console.log(accountData);
-                // API 호출
-                PostAccount.mutate(accountData);
-              }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium "
+            </OutlinedButton>
+            <OutlinedButton
+              type="secondary"
+              disable={!isFormValid}
+              onClick={handleSave}
+              className="w-[180px] h-[48px]"
             >
               저장
-            </Button>
+            </OutlinedButton>
           </div>
         </div>
       </div>
