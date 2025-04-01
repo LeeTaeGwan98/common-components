@@ -12,8 +12,7 @@ interface AuthState {
   setUserInfo: (userResponse: UserInfoRes) => void;
   delUserInfo: () => void;
   updateUser: (userData: Partial<UserInfoRes>) => void;
-  updateTokens: (accessToken: string, refreshToken: string) => void;
-  updatePermissions: (permissions: string[]) => void;
+  updateAccessToken: (accessToken: string) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -57,10 +56,9 @@ export const useAuthStore = create<AuthState>()(
       },
 
       // 토큰 업데이트 액션
-      updateTokens: (accessToken: string, refreshToken: string) => {
+      updateAccessToken: (accessToken: string) => {
         set({
           accessToken,
-          refreshToken,
         });
       },
 
