@@ -11,17 +11,20 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import CustomTooltip from "@/components/common/Atoms/Tooltip/Tooltip";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useReducer } from "react";
 import { ActionType, TableQueryStringType } from "@/api/common/commonType";
 import { getDashboard } from "@/api/main/dashboardApi";
+import colors from "@/styles/colors";
 
 const datas = [
-  { 군구: "광진구", 유동인구수: 32760 },
-  { 군구: "동대문구", 유동인구수: 30480 },
-  { 군구: "마포구", 유동인구수: 27250 },
-  { 군구: "구로구", 유동인구수: 49870 },
-  { 군구: "강남구", 유동인구수: 51420 },
+  { 날짜: "02.27", 유동인구수: 7276000 },
+  { 날짜: "02.28", 유동인구수: 4327000 },
+  { 날짜: "03.01", 유동인구수: 1585000 },
+  { 날짜: "03.02", 유동인구수: 2000000 },
+  { 날짜: "03.03", 유동인구수: 1685000 },
+  { 날짜: "03.04", 유동인구수: 3812600 },
 ];
 
 const reducer = <T extends Record<string, any>>(
@@ -39,6 +42,31 @@ const reducer = <T extends Record<string, any>>(
 
 type NoticleTableQueryStringType = TableQueryStringType & {
   isVisible: boolean | null;
+};
+
+const renderActiveDot = (props: any) => {
+  const { cx, cy, value } = props;
+
+  return (
+    <svg
+      x={cx - 112}
+      y={cy - 56}
+      width="200"
+      height="68"
+      viewBox="0 0 110 68"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10 5 H130 V40 H78 L68 50 L58 40 H10 Z"
+        fill="#171719BD"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <text textAnchor="middle" dy={28} dx={70} fontSize={15} fill="white">
+        {value.toLocaleString()} 원
+      </text>
+    </svg>
+  );
 };
 
 function Main() {
@@ -174,22 +202,42 @@ function Main() {
               단위: 원
             </span>
           </div>
-          <ResponsiveContainer className="h-[520px] border border-line-normal-normal py-[32px] pl-[12px] pr-[32px]">
+          <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
             <LineChart
               data={datas}
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="군구" />
-              <YAxis />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="유동인구수"
-                stroke="#8884d8"
-                activeDot={{ r: 8 }}
+              <CartesianGrid strokeDasharray="" />
+              <XAxis dataKey="날짜" tickLine={false} />
+              <YAxis
+                domain={[0, 10000000]}
+                ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
+                tickFormatter={(value) => value.toLocaleString()}
+                width={90}
+                tickLine={false}
               />
-              <Line type="monotone" dataKey="비유동인구수" stroke="#82ca9d" />
+              {/* <Tooltip
+                formatter={(value) => [`${value.toLocaleString()}원`]}
+                labelFormatter={() => ""}
+                contentStyle={{
+                  backgroundColor: "#171719BD",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                }}
+                itemStyle={{ color: "white" }}
+              /> */}
+              <Tooltip content={() => null} />
+
+              <Line
+                type="linear"
+                dataKey="유동인구수"
+                stroke="#28A8FB"
+                activeDot={renderActiveDot}
+                strokeWidth={2}
+                dot={{ r: 5 }}
+              />
+              <Line type="linear" dataKey="비유동인구수" stroke="#82ca9d" />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -203,7 +251,44 @@ function Main() {
             </span>
           </div>
 
-          <div className="h-[520px] border border-line-normal-normal">차트</div>
+          <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
+            <LineChart
+              data={datas}
+              margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="" />
+              <XAxis dataKey="날짜" tickLine={false} />
+              <YAxis
+                domain={[0, 10000000]}
+                ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
+                tickFormatter={(value) => value.toLocaleString()}
+                width={90}
+                tickLine={false}
+              />
+              {/* <Tooltip
+                formatter={(value) => [`${value.toLocaleString()}원`]}
+                labelFormatter={() => ""}
+                contentStyle={{
+                  backgroundColor: "#171719BD",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                }}
+                itemStyle={{ color: "white" }}
+              /> */}
+              <Tooltip content={() => null} />
+
+              <Line
+                type="linear"
+                dataKey="유동인구수"
+                stroke="#28A8FB"
+                activeDot={renderActiveDot}
+                strokeWidth={2}
+                dot={{ r: 5 }}
+              />
+              <Line type="linear" dataKey="비유동인구수" stroke="#82ca9d" />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </BreadcrumbContainer>
