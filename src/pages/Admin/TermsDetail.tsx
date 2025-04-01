@@ -1,128 +1,221 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getDetailTermsList, patchTermsList } from "@/api/terms";
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import {
+  getDetailTermsList,
+  patchTermsList,
+  PatchTermsType,
+} from "@/api/terms";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import Button from "@/components/common/Atoms/Button/Solid/Button";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import Divider from "@/components/common/Atoms/Divider/Divider";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
 import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { dateToString, isoStringToDate, stringToDate } from "@/lib/dateParse";
+import { useAuthStore } from "@/store/authStore";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+type FormState = {
+  type: string;
+  title: string;
+  effectiveDate: string;
+  content: string;
+};
 
 function TermsDetail() {
-  const { id } = useParams();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate(); //네비게이션
+  const { id } = useParams(); // id 값 추출
+  const { user } = useAuthStore(); //현재 로그인한 유저 정보
 
-  const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ["termsDetailGet", id],
-    queryFn: () => getDetailTermsList(id),
-    staleTime: 1000000000,
-    gcTime: 1000000000,
+  //챗봇 상세 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["termsDetail", id],
+    queryFn: () => getDetailTermsList(Number(id)),
+    select: (data) => data.data.data,
   });
 
-  const termInfo = data?.data.data;
+  // 폼 상태 관리
+  const [formState, setFormState] = useState({
+    type: data.type,
+    title: data.title,
+    effectiveDate: data.effectiveDate,
+    content: data.content,
+  });
 
-  const [termsField, setTermsField] = useState("");
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [contentsField, setContentsField] = useState("");
+  // 폼 개별 상태 업데이트 핸들러
+  const updateFormState = <K extends keyof FormState>(
+    field: K,
+    value: FormState[K]
+  ) => {
+    setFormState((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
-  const PatchTerms = useMutation({
-    mutationFn: (obj: { title: string; content: string }) =>
-      patchTermsList(obj, id),
-    onSuccess(res, obj) {
-      console.log("patch 요청 성공", res);
-      alert("저장이 완료되었습니다.");
+  //공통 코드 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: ["termsSortGroupCodes", COMMON_GROUP_CODE_MAPPING.약관유형코드],
+    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.약관유형코드]),
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const typeCodes = codeInfo[keys[0]]; // 구분 코드들
+
+  //약관 수정 api
+  const { mutate: updateTermsFn } = useMutation({
+    mutationFn: (payload: { id: number; data: PatchTermsType }) =>
+      patchTermsList(payload),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["termsDetail", id] });
+      navigate(-1);
     },
-    onError(error) {
-      console.error("patch 요청 실패", error);
-      alert("저장에 실패했습니다.");
+    onError() {
+      customToast({
+        title: "약관 수정중 에러가 발생했습니다.",
+      });
     },
   });
+
+  //날짜 30일 후로 변환
+  const handleEffectDate = (date: Date) => {
+    const changeDate: Date = date;
+    changeDate.setDate(changeDate.getDate() + 30);
+    return changeDate;
+  };
+
+  //적용일 30일 후로 변환
+  useEffect(() => {
+    updateFormState(
+      "effectiveDate",
+      dateToString(
+        handleEffectDate(isoStringToDate(data.updatedAt) ?? new Date())
+      )
+    );
+  }, [data]);
+
+  // 저장 버튼 활성화 여부
+  const isFormValid = formState.type && formState.title && formState.content;
+
+  // 저장 버튼 핸들러
+  const handleSave = () => {
+    if (!isFormValid) return;
+
+    //약관 수정
+    updateTermsFn({
+      id: Number(id),
+      data: {
+        type: formState.type,
+        title: formState.title,
+        content: formState.content,
+        isRequired: false,
+        effectiveDate: formState.effectiveDate,
+        updatedBy: user!.id,
+        isMarketing: false,
+      },
+    });
+  };
 
   return (
     <BreadcrumbContainer
       breadcrumbNode={
         <>
-          관리자 / 약관 관리 <Divider vertical className="h-[20px] mx-[12px]" />{" "}
-          상세
+          관리자 / 약관 관리 <Divider vertical className="h-[20px] mx-[12px]" />
+          등록
         </>
       }
     >
       <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
-        <div className="w-[1004px]">
+        <div className="flex flex-col w-[1004px] gap-gutter-vertical">
           {/* 구분 */}
           <SelectBox
             placeholder="약관 구분을 선택해주세요"
             className="min-w-[240px]"
             size="large"
-            defaultValue="ALL"
             label="구분"
+            value={formState.type}
+            onValueChange={(value) => {
+              updateFormState("type", value);
+            }}
           >
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="ALL">모든상태</SelectItem>
-                <SelectItem value="true">노출</SelectItem>
-                <SelectItem value="false">비노출</SelectItem>
+                {typeCodes.map((item, idx) => {
+                  const { commDetailCode, detailCodeName } = item;
+                  return (
+                    <SelectItem key={idx} value={commDetailCode}>
+                      {detailCodeName}
+                    </SelectItem>
+                  );
+                })}
               </SelectGroup>
             </SelectContent>
           </SelectBox>
           {/* 이용약관명 */}
-          <div className="gap-gutter-horizon">
-            이용약관명
+          <div className=" gap-gutter-horizon ">
             <TextField
-              className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal"
               placeholder="이용약관명을 입력해주세요"
-              value={isLoading ? "" : termInfo?.title ?? ""}
-              onChange={(e) => setTermsField(e.target.value)}
+              label="이용약관명"
+              value={formState.title}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                updateFormState("title", e.target.value);
+              }}
+              maxLength={50}
               isVisible={false}
             />
           </div>
-
           {/* 적용일 */}
-          <div className="mt-[32px]">
+          <div>
             <div className="mb-[8px]">적용일</div>
-            <DatePicker date={selectedDate} setDate={setSelectedDate} />
-          </div>
-
-          {/* 내용 */}
-          <div className="mt-[32px]">
-            <div className="mb-[8px]">내용</div>
-            <TextBox
-              className="h-[424px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal overflow-y-auto"
-              placeholder="내용을 입력해주세요"
-              value={isLoading ? "" : termInfo?.content ?? ""}
-              onChange={(e) => setContentsField(e.target.value)}
+            <DatePicker
+              date={stringToDate(formState.effectiveDate)}
+              setDate={(date: Date) => {
+                updateFormState("effectiveDate", dateToString(date));
+              }}
             />
           </div>
 
+          {/* 내용 */}
+          <TextBox
+            placeholder="내용을 입력해주세요"
+            value={formState.content}
+            label="내용"
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              updateFormState("content", e.target.value);
+            }}
+          />
           {/* 버튼 */}
           <div className="mt-[32px] flex justify-end space-x-4">
-            <Button
-              onClick={() => {
-                console.log("취소 버튼 클릭");
-              }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium"
+            <OutlinedButton
+              className="w-[180px] h-[48px]"
+              type="assistive"
+              size="large"
+              onClick={() => navigate(-1)}
             >
               취소
-            </Button>
-
-            <Button
-              onClick={() => {
-                if (!termsField?.trim() || !contentsField.trim()) {
-                  alert("이용약관명과 내용을 입력해주세요.");
-                  return;
-                }
-
-                PatchTerms.mutate({
-                  title: termsField,
-                  content: contentsField,
-                });
-              }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium"
+            </OutlinedButton>
+            <OutlinedButton
+              className="w-[180px] h-[48px]"
+              type="secondary"
+              size="large"
+              disable={!isFormValid}
+              onClick={handleSave}
             >
               저장
-            </Button>
+            </OutlinedButton>
           </div>
         </div>
       </div>
