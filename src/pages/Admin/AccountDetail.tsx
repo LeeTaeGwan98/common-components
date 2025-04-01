@@ -3,7 +3,7 @@ import Chip from "@/components/common/Atoms/Chip/Chip";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Check from "@/assets/svg/admin/CheckIcons.svg";
 import Plus from "@/assets/svg/admin/PlusIcons.svg";
@@ -16,8 +16,6 @@ import {
   getDetailAccountList,
   patchAccountList,
   PatchAccountType,
-  postAccountList,
-  PostAccountType,
 } from "@/api/account";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -39,6 +37,7 @@ type FormState = {
   positionField: string;
   situationSelected: boolean;
   permissionCodes: string[];
+  isIdError: boolean;
   isPasswordError: boolean;
 };
 
@@ -48,6 +47,7 @@ function AccountDetail() {
   const queryClient = useQueryClient();
   const { id } = useParams(); // id 값 추출
   const passwrodErrorMsg = "비밀번호를 6자 이상 입력해주세요"; //비밀번호 오류 메세지
+  const idErrorMsg = "이메일 형식으로 입력해주세요"; //아이디 오류 메세지
 
   //공통 코드 목록 가져오기
   const { data: codeInfo } = useSuspenseQuery({
@@ -78,6 +78,7 @@ function AccountDetail() {
     positionField: data.position,
     situationSelected: data.isActive,
     permissionCodes: data.permissions.map((item) => item.menuCode),
+    isIdError: false,
     isPasswordError: false,
   });
   // 폼 개별 상태 업데이트 핸들러
@@ -133,7 +134,7 @@ function AccountDetail() {
 
   // 저장 버튼 활성화 여부
   const isFormValid =
-    validateEmail(formState.idField) &&
+    formState.idField &&
     formState.passwordField &&
     formState.nameField &&
     formState.contactField &&
@@ -142,29 +143,42 @@ function AccountDetail() {
 
   // 저장 버튼 핸들러
   const handleSave = () => {
-    if (!isFormValid) return;
+    let isFormAllValid = true;
 
-    //비밀번호 6자 이상인지 체크
-    if (formState.passwordField.length < 6) {
-      updateFormState("isPasswordError", true);
-      //작으면 에러 메세지
+    //저장버튼 활성화 여부 체크
+    if (!isFormValid) {
+      isFormAllValid = false;
       return;
     }
 
+    //아이디가 이메일형식인 체크
+    if (!validateEmail(formState.idField)) {
+      isFormAllValid = false;
+      updateFormState("isIdError", true);
+    }
+
+    //비밀번호 6자 이상인지 체크
+    if (formState.passwordField.length < 6) {
+      isFormAllValid = false;
+      updateFormState("isPasswordError", true);
+    }
+
     //관리자 계정 등록
-    updateAccountFn({
-      id: Number(id),
-      data: {
-        email: formState.idField,
-        name: formState.nameField,
-        password: formState.passwordField,
-        phoneNumber: formState.contactField,
-        position: formState.positionField,
-        isActive: formState.situationSelected,
-        permissions: formState.permissionCodes,
-        updatedBy: user!.id,
-      },
-    });
+    if (isFormAllValid) {
+      updateAccountFn({
+        id: Number(id),
+        data: {
+          email: formState.idField,
+          name: formState.nameField,
+          password: formState.passwordField,
+          phoneNumber: formState.contactField,
+          position: formState.positionField,
+          isActive: formState.situationSelected,
+          permissions: formState.permissionCodes,
+          updatedBy: user!.id,
+        },
+      });
+    }
   };
 
   return (
@@ -183,11 +197,17 @@ function AccountDetail() {
             <div className="w-full">
               <TextField
                 label="아이디"
-                value={formState.idField}
+                helperText={formState.isIdError ? " " : ""}
+                errorInfo={{
+                  isError: formState.isIdError ? true : undefined,
+                  text: idErrorMsg,
+                }}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  updateFormState("isIdError", false);
                   updateFormState("idField", e.target.value);
                 }}
                 isVisible={false}
+                value={formState.idField}
               />
             </div>
             <div className="w-full">
