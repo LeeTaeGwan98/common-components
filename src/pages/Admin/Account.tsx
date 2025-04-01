@@ -19,6 +19,7 @@ import { getAccountList, GetAccountType } from "@/api/account";
 import { useReducer } from "react";
 import { ActionType, TableQueryStringType } from "@/api/common/commonType";
 import { dateToString } from "@/lib/dateParse";
+import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 
 const initState: TableQueryStringType = {
   fromDt: undefined,
@@ -123,6 +124,9 @@ function Account() {
           </TableBody>
         </Table>
       </TableContainer>
+      {data.meta.totalPage > 1 && (
+        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+      )}
     </BreadcrumbContainer>
   );
 }

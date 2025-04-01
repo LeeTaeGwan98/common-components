@@ -29,6 +29,7 @@ type FormState = {
   positionField: string;
   situationSelected: boolean;
   permissionCodes: string[];
+  isIdError: boolean;
   isPasswordError: boolean;
 };
 
@@ -46,6 +47,7 @@ function AccountRegistration() {
     positionField: "",
     situationSelected: true,
     permissionCodes: [] as string[],
+    isIdError: false,
     isPasswordError: false,
   });
   // 폼 개별 상태 업데이트 핸들러
@@ -132,30 +134,40 @@ function AccountRegistration() {
 
   // 저장 버튼 핸들러
   const handleSave = () => {
-    if (!isFormValid) return;
+    let isFormAllValid = true;
 
-    //아이디가 이메일형식인 체크
-    if (validateEmail(formState.idField)) {
-    }
-    if (formState.passwordField.length < 6) {
-      //비밀번호 6자 이상인지 체크
-      updateFormState("isPasswordError", true);
-      //작으면 에러 메세지
+    //저장버튼 활성화 여부 체크
+    if (!isFormValid) {
+      isFormAllValid = false;
       return;
     }
 
+    //아이디가 이메일형식인 체크
+    if (!validateEmail(formState.idField)) {
+      isFormAllValid = false;
+      updateFormState("isIdError", true);
+    }
+
+    //비밀번호 6자 이상인지 체크
+    if (formState.passwordField.length < 6) {
+      isFormAllValid = false;
+      updateFormState("isPasswordError", true);
+    }
+
     //관리자 계정 등록
-    addAccountFn({
-      email: formState.idField,
-      name: formState.nameField,
-      password: formState.passwordField,
-      phoneNumber: formState.contactField,
-      position: formState.positionField,
-      isActive: formState.situationSelected,
-      permissions: formState.permissionCodes,
-      createdBy: user!.id,
-      updatedBy: user!.id,
-    });
+    if (isFormAllValid) {
+      addAccountFn({
+        email: formState.idField,
+        name: formState.nameField,
+        password: formState.passwordField,
+        phoneNumber: formState.contactField,
+        position: formState.positionField,
+        isActive: formState.situationSelected,
+        permissions: formState.permissionCodes,
+        createdBy: user!.id,
+        updatedBy: user!.id,
+      });
+    }
   };
 
   return (
@@ -174,11 +186,17 @@ function AccountRegistration() {
             <div className="w-full">
               <TextField
                 label="아이디"
-                value={formState.idField}
+                helperText={formState.isIdError ? " " : ""}
+                errorInfo={{
+                  isError: formState.isIdError ? true : undefined,
+                  text: idErrorMsg,
+                }}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  updateFormState("isIdError", false);
                   updateFormState("idField", e.target.value);
                 }}
                 isVisible={false}
+                value={formState.idField}
               />
             </div>
             <div className="w-full">

@@ -3,7 +3,7 @@ import Chip from "@/components/common/Atoms/Chip/Chip";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import Segement from "@/components/common/Atoms/Segement/Segement";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Check from "@/assets/svg/admin/CheckIcons.svg";
 import Plus from "@/assets/svg/admin/PlusIcons.svg";
@@ -16,8 +16,6 @@ import {
   getDetailAccountList,
   patchAccountList,
   PatchAccountType,
-  postAccountList,
-  PostAccountType,
 } from "@/api/account";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -29,6 +27,11 @@ import { codeToName } from "@/utils/uitls";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
 import { useAuthStore } from "@/store/authStore";
+import { useModalStore } from "@/store/modalStore";
+import { AdminDeleteModal } from "@/components/modal/admin/AdminDeleteModal";
+import Button from "@/components/common/Atoms/Button/Solid/Button";
+import { AdminActiveModal } from "@/components/modal/admin/AdminActiveModal";
+import { AdminNonActiveModal } from "@/components/modal/admin/AdminNonActiveModal";
 
 // formState 타입 정의
 type FormState = {
@@ -37,17 +40,20 @@ type FormState = {
   nameField: string;
   contactField: string;
   positionField: string;
-  situationSelected: boolean;
+  isActive: boolean;
   permissionCodes: string[];
+  isIdError: boolean;
   isPasswordError: boolean;
 };
 
 function AccountDetail() {
   const navigate = useNavigate();
+  const { openModal } = useModalStore();
   const { user } = useAuthStore(); //현재 로그인한 유저 정보
   const queryClient = useQueryClient();
   const { id } = useParams(); // id 값 추출
   const passwrodErrorMsg = "비밀번호를 6자 이상 입력해주세요"; //비밀번호 오류 메세지
+  const idErrorMsg = "이메일 형식으로 입력해주세요"; //아이디 오류 메세지
 
   //공통 코드 목록 가져오기
   const { data: codeInfo } = useSuspenseQuery({
@@ -76,8 +82,9 @@ function AccountDetail() {
     nameField: data.name,
     contactField: data.phoneNumber ?? "",
     positionField: data.position,
-    situationSelected: data.isActive,
+    isActive: data.isActive,
     permissionCodes: data.permissions.map((item) => item.menuCode),
+    isIdError: false,
     isPasswordError: false,
   });
   // 폼 개별 상태 업데이트 핸들러
@@ -133,7 +140,7 @@ function AccountDetail() {
 
   // 저장 버튼 활성화 여부
   const isFormValid =
-    validateEmail(formState.idField) &&
+    formState.idField &&
     formState.passwordField &&
     formState.nameField &&
     formState.contactField &&
@@ -142,16 +149,42 @@ function AccountDetail() {
 
   // 저장 버튼 핸들러
   const handleSave = () => {
-    if (!isFormValid) return;
+    let isFormAllValid = true;
 
-    //비밀번호 6자 이상인지 체크
-    if (formState.passwordField.length < 6) {
-      updateFormState("isPasswordError", true);
-      //작으면 에러 메세지
+    //저장버튼 활성화 여부 체크
+    if (!isFormValid) {
+      isFormAllValid = false;
       return;
     }
 
+    //아이디가 이메일형식인 체크
+    if (!validateEmail(formState.idField)) {
+      isFormAllValid = false;
+      updateFormState("isIdError", true);
+    }
+
+    //비밀번호 6자 이상인지 체크
+    if (formState.passwordField.length < 6) {
+      isFormAllValid = false;
+      updateFormState("isPasswordError", true);
+    }
+
     //관리자 계정 등록
+    if (isFormAllValid) {
+      if (data.isActive != formState.isActive) {
+        if (formState.isActive) {
+          handleActiveModal();
+        } else {
+          handleNonActiveModal();
+        }
+      } else {
+        handleAdminUpdate();
+      }
+    }
+  };
+
+  //관리자 계정 업데이트
+  const handleAdminUpdate = () => {
     updateAccountFn({
       id: Number(id),
       data: {
@@ -160,11 +193,26 @@ function AccountDetail() {
         password: formState.passwordField,
         phoneNumber: formState.contactField,
         position: formState.positionField,
-        isActive: formState.situationSelected,
+        isActive: formState.isActive,
         permissions: formState.permissionCodes,
         updatedBy: user!.id,
       },
     });
+  };
+
+  //관리자 계정 삭제 모달 띄우기
+  const handleDeleteModal = () => {
+    openModal(<AdminDeleteModal id={Number(id)} />);
+  };
+
+  //관리자 활성화 모달 띄우기
+  const handleActiveModal = () => {
+    openModal(<AdminActiveModal onOkClick={handleAdminUpdate} />);
+  };
+
+  //관리자 비활성화 모달 띄우기
+  const handleNonActiveModal = () => {
+    openModal(<AdminNonActiveModal onOkClick={handleAdminUpdate} />);
   };
 
   return (
@@ -172,8 +220,16 @@ function AccountDetail() {
       breadcrumbNode={
         <>
           관리자 / 계정 관리 <Divider vertical className="h-[20px] mx-[12px]" />
-          등록
+          상세
         </>
+      }
+      button={
+        <Button
+          className="rounded-radius-admin w-[180px] h-[48px]"
+          onClick={handleDeleteModal}
+        >
+          삭제
+        </Button>
       }
     >
       <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
@@ -183,11 +239,17 @@ function AccountDetail() {
             <div className="w-full">
               <TextField
                 label="아이디"
-                value={formState.idField}
+                helperText={formState.isIdError ? " " : ""}
+                errorInfo={{
+                  isError: formState.isIdError ? true : undefined,
+                  text: idErrorMsg,
+                }}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  updateFormState("isIdError", false);
                   updateFormState("idField", e.target.value);
                 }}
                 isVisible={false}
+                value={formState.idField}
               />
             </div>
             <div className="w-full">
@@ -257,9 +319,9 @@ function AccountDetail() {
               상태
               <Segement
                 size="large"
-                selected={formState.situationSelected}
+                selected={formState.isActive}
                 setSelected={(value: boolean) =>
-                  updateFormState("situationSelected", value)
+                  updateFormState("isActive", value)
                 }
                 textList={["활성", "비활성"]}
                 className="ml-auto w-full mt-[12px]"
