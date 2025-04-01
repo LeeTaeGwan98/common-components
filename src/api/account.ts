@@ -117,16 +117,19 @@ export const postAccountList = (body: any) => {
 };
 
 // 계정 상세 조회
-export const getDetailAccountList = (id: string | undefined) => {
+export const getDetailAccountList = (id: number) => {
   const data = API.get<{ data: GetDetailAccountType }>(`/admin/account/${id}`);
   return data;
 };
 
 // 계정 수정
-export const patchAccountList = (body: any, id: string | undefined) => {
-  const data = API.patch<{ data: PatchAccountType }>(
-    `/admin/account/${id}`,
-    body
+export const patchAccountList = (payload: {
+  id: number;
+  data: PatchAccountType;
+}) => {
+  const data = API.patch<{ data: {} }>(
+    `/admin/account/${payload.id}`,
+    payload.data
   );
   return data;
 };

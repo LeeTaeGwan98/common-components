@@ -215,9 +215,9 @@ TextField.HelperTextArea = (({
           <div className="flex gap-[2px] text-status-positive">
             <span>
               {errorInfo?.isError ? (
-                <ErrorIcon className="size-[16px] fill-status-negative" />
+                <ErrorIcon className="size-[16px] text-status-negative" />
               ) : (
-                <SuccessIcon className="size-[16px] fill-status-positive" />
+                <SuccessIcon className="size-[16px] text-status-positive" />
               )}
             </span>
             <span
