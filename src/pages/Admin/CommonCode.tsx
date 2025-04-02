@@ -294,19 +294,18 @@ function CommonCode() {
                         <TableCell>{groupCode.commGroupCode}</TableCell>
                         <TableCell>{groupCode.groupCodeName}</TableCell>
                         <TableCell>
-                          <div
-                            onClick={() =>
-                              //상세코드 조회할 그룹코드 선택
-                              updateFormState(
-                                "selectGroupCode",
-                                groupCode.commGroupCode
-                              )
-                            }
-                          >
+                          <div>
                             <Radio
                               checked={
                                 formState.selectGroupCode ===
                                 groupCode.commGroupCode
+                              }
+                              onChecked={() =>
+                                //상세코드 조회할 그룹코드 선택
+                                updateFormState(
+                                  "selectGroupCode",
+                                  groupCode.commGroupCode
+                                )
                               }
                             />
                           </div>
