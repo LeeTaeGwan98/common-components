@@ -1,6 +1,6 @@
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent, useEffect } from "react";
 import { login } from "@/api/auth/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +12,25 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const setUserInfo = useAuthStore((state) => state.setUserInfo);
-
   const isFieldCheck = email !== "" && password !== "";
+
+  const { accessToken, isLogin } = useAuthStore();
+  const [hasCheckedInitialAuth, setHasCheckedInitialAuth] = useState(
+    localStorage.getItem("initialAuthChecked") === "true"
+  );
+
+  useEffect(() => {
+    // 최초 진입 시 딱 한 번만 로그인 여부를 체크
+    if (!hasCheckedInitialAuth) {
+      if (accessToken && isLogin) {
+        navigate(MAIN);
+
+        // 최초 진입 여부를 표시
+        localStorage.setItem("initialAuthChecked", "true");
+        setHasCheckedInitialAuth(true);
+      }
+    }
+  }, [accessToken, isLogin, hasCheckedInitialAuth, navigate]);
 
   const { mutate: handleLoginMutation } = useMutation({
     mutationFn: () => login({ email, password }),
@@ -43,7 +60,7 @@ function Login() {
 
   return (
     <div className="flex h-screen">
-      <div className="flex flex-1 bg-primary-normal/[0.08] p-8 items-center justify-center sm:hidden">
+      <div className="flex flex-1 bg-primary-normal/[0.08] p-8 items-center justify-center sm:hidden xs:hidden">
         <div className="flex flex-col justify-between items-center h-full">
           {/* 중앙 정렬된 콘텐츠 */}
           <div className="flex flex-col items-center flex-grow justify-center">
