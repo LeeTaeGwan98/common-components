@@ -14,24 +14,6 @@ function Login() {
   const setUserInfo = useAuthStore((state) => state.setUserInfo);
   const isFieldCheck = email !== "" && password !== "";
 
-  const { accessToken, isLogin } = useAuthStore();
-  const [hasCheckedInitialAuth, setHasCheckedInitialAuth] = useState(
-    localStorage.getItem("initialAuthChecked") === "true"
-  );
-
-  useEffect(() => {
-    // 최초 진입 시 딱 한 번만 로그인 여부를 체크
-    if (!hasCheckedInitialAuth) {
-      if (accessToken && isLogin) {
-        navigate(MAIN);
-
-        // 최초 진입 여부를 표시
-        localStorage.setItem("initialAuthChecked", "true");
-        setHasCheckedInitialAuth(true);
-      }
-    }
-  }, [accessToken, isLogin, hasCheckedInitialAuth, navigate]);
-
   const { mutate: handleLoginMutation } = useMutation({
     mutationFn: () => login({ email, password }),
     onSuccess(res) {
