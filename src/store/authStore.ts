@@ -6,7 +6,6 @@ import { UserInfoRes } from "@/api/auth/auth";
 interface AuthState {
   user: UserInfoRes | null;
   accessToken: string | null;
-  refreshToken: string | null;
   isLogin: boolean;
   permissions: string[] | null;
   setUserInfo: (userResponse: UserInfoRes) => void;
@@ -20,17 +19,14 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       accessToken: null,
-      refreshToken: null,
       isLogin: false,
       permissions: null,
 
       // 로그인시 발동
       setUserInfo: (userResponse: UserInfoRes) => {
-        console.log(userResponse);
         set({
           user: userResponse,
           accessToken: userResponse.accessToken,
-          refreshToken: userResponse.refreshToken,
           isLogin: true,
           permissions: userResponse.permissions || null,
         });
@@ -42,7 +38,6 @@ export const useAuthStore = create<AuthState>()(
         set({
           user: null,
           accessToken: null,
-          refreshToken: null,
           isLogin: false,
           permissions: null,
         });
@@ -57,7 +52,12 @@ export const useAuthStore = create<AuthState>()(
 
       // 토큰 업데이트 액션
       updateAccessToken: (accessToken: string) => {
+        const user = useAuthStore.getState().user;
         set({
+          accessToken,
+        });
+        set({
+          ...user,
           accessToken,
         });
       },
