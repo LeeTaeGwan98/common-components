@@ -1,18 +1,17 @@
 import { cn } from "@/lib/utils";
 import KakaoLogo from "@/assets/svg/common/logoKakaoBlack.svg";
 import {
-  CommonLoginButtonPrsop,
+  type CommonLoginButtonPrsop,
   LoginButtonInteractiveTypeStyle2,
-} from "../LoginButton";
+} from "@/components/common/Molecules/LoginButton/LoginButton";
 
 function KakaoLoginButton({
-  onClick,
+  // onClick,
   className,
   ...props
 }: CommonLoginButtonPrsop) {
   return (
     <button
-      onClick={() => onClick()}
       className={cn(
         "w-full h-[48px] relative bg-[#FEE500] rounded-large-button py-[10px] text-body1-normal-medium",
         LoginButtonInteractiveTypeStyle2,
@@ -21,7 +20,7 @@ function KakaoLoginButton({
       onMouseUp={(e) => e.currentTarget.blur()}
       {...props}
     >
-      <KakaoLogo className="absolute left-[24px]" />
+      <KakaoLogo className="absolute left-[24px] size-[24px]" />
       카카오 계정으로 로그인
     </button>
   );

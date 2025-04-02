@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import AppleLogo from "@/assets/svg/common/logoAppleWhite.svg";
 import {
-  CommonLoginButtonPrsop,
-  LoginButtonInteractiveTypeStyle2,
-} from "../LoginButton";
+  type CommonLoginButtonPrsop,
+  LoginButtonInteractiveTypeStyle1,
+} from "@/components/common/Molecules/LoginButton/LoginButton";
 
 function AppleLoginButton({
   onClick,
@@ -12,10 +12,9 @@ function AppleLoginButton({
 }: CommonLoginButtonPrsop) {
   return (
     <button
-      onClick={() => onClick()}
       className={cn(
         "w-full h-[48px] relative bg-black rounded-large-button py-[10px] text-body-1-normal text-[white]",
-        LoginButtonInteractiveTypeStyle2,
+        LoginButtonInteractiveTypeStyle1,
         className
       )}
       onMouseUp={(e) => e.currentTarget.blur()}

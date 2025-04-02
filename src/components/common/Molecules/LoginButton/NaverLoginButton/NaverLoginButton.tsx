@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import NaverLogo from "@/assets/svg/common/logoNaver.svg";
 import {
-  CommonLoginButtonPrsop,
+  type CommonLoginButtonPrsop,
   LoginButtonInteractiveTypeStyle2,
-} from "../LoginButton";
+} from "@/components/common/Molecules/LoginButton/LoginButton";
 
 function NaverLoginButton({
   onClick,
@@ -12,7 +12,6 @@ function NaverLoginButton({
 }: CommonLoginButtonPrsop) {
   return (
     <button
-      onClick={() => onClick()}
       className={cn(
         "w-full h-[48px] relative bg-[#03CF5D] rounded-large-button py-[10px] text-body-1-normal text-[white]",
         LoginButtonInteractiveTypeStyle2,

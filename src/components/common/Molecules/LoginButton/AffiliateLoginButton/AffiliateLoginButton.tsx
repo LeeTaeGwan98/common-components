@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import PersonIcon from "@/assets/svg/common/persons.svg";
 import {
-  CommonLoginButtonPrsop,
-  LoginButtinInteractiveTypeStyle1,
-} from "../LoginButton";
+  type CommonLoginButtonPrsop,
+  LoginButtonInteractiveTypeStyle1,
+} from "@/components/common/Molecules/LoginButton/LoginButton";
 
 function AffiliateLoginButton({
   onClick,
@@ -14,10 +14,9 @@ function AffiliateLoginButton({
     <button
       className={cn(
         "w-full relative border-[1px] rounded-large-button py-[10px] border-label-disable text-body1-normal-medium",
-        LoginButtinInteractiveTypeStyle1,
+        LoginButtonInteractiveTypeStyle1,
         className
       )}
-      onClick={() => onClick()}
       onMouseUp={(e) => e.currentTarget.blur()}
       {...props}
     >
