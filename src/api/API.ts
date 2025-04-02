@@ -1,10 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 import { useAuthStore } from "@/store/authStore";
-import { refreshAccessToken } from "@/api/auth/auth";
+import { ResSuccessType } from "@/api/common/commonType";
 
 export const APIInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  // baseURL: "http://localhost:5173",  테스트용
   withCredentials: true,
 });
 
@@ -15,43 +14,46 @@ APIInstance.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
 
-  document.cookie = // 테스트용
-    "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWRtaW5AbmF2ZXIuY29tIiwibmFtZSI6Iuq0gOumrOyekDIiLCJwcm92aWRlckNvZGUiOm51bGwsImlhdCI6MTc0MzQ4MjY0MywiZXhwIjoxNzQ0MDg3NDQzfQ.NDVLl8ZOaTOEGYFatZ8QjGidb31Jwu7jY0KlrS4wv_Y";
-
   return config;
 });
 
-// APIInstance.interceptors.response.use(
-//   (res) => res,
-//   async (error) => {
-//     const { request, response, config: originalReq } = error;
+APIInstance.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const { request, response, config: originalReq } = error;
 
-//     // 401에러 발생
-//     if (response && response.status === 401) {
-//       console.log("🔴 액세스 토큰 만료됨, 재발급 시도...");
+    // 401에러 발생
+    if (response && response.status === 401) {
+      console.log("🔴 액세스 토큰 만료됨, 재발급 시도...");
 
-//       try {
-//         // 전역상태에 저장된 refreshToken을 가져옴
-//         const refreshToken = useAuthStore.getState().refreshToken;
+      try {
+        const data = await APIInstance.post<
+          ResSuccessType<{ accessToken: string }>
+        >("/auth/refresh");
+        const { accessToken: newAccessToken } = data.data.data;
 
-//         document.cookie = `refreshToken=${refreshToken}`;
-//         const a = document.cookie;
-//         console.log(a);
+        if (newAccessToken) {
+          // 기존 요청에 새로 발급한 accessToken으로 교체
+          originalReq.headers.Authorization = `Bearer ${newAccessToken}`;
 
-//         if (refreshToken) {
-//           // 새 토큰 발급 요청
+          // localStorage와 전역상태로 관리되는 accessToken을 새로운것으로 교체
+          useAuthStore.getState().updateAccessToken(newAccessToken);
 
-//           return axios(originalReq); // 요청 재시도
-//         }
-//       } catch (refreshError) {
-//         console.log("🔴 리프레시 토큰도 만료됨, 로그아웃 처리");
-//         return Promise.reject(refreshError);
-//       }
-//     }
+          return APIInstance(originalReq); // 요청 재시도
+        }
+      } catch (refreshError) {
+        console.log("🔴 리프레시 토큰도 만료됨, 로그아웃 처리");
+        // 로그아웃 API 호출
+        APIInstance.post("/auth/logout");
+        // 로그인 페이지로 이동
+        window.location.href = "/";
+        return Promise.reject(refreshError);
+      }
+    }
 
-//     return Promise.reject(error);
-//   }
-// );
+    return Promise.reject(error);
+  }
+);
 
 export default class API {
   static instance = axios.create({
