@@ -32,7 +32,7 @@ import { USER_DETAIL } from "@/Constants/ServiceUrl";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getUserDetailSide } from "@/api/user/userAPI";
 
-const data = [
+const defaultData = [
   {
     no: 0,
     paymentDay: "9999-12-31 24:59:00",
@@ -385,7 +385,7 @@ function UserDetail() {
                   </TableHeader>
 
                   <TableBody>
-                    {data.map((item) => {
+                    {defaultData.map((item) => {
                       return (
                         <TableRow>
                           <TableCell>{item.no}</TableCell>
