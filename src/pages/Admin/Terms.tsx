@@ -80,7 +80,7 @@ function Terms() {
                   <TableCell>
                     {isoStringToDateString(item.effectiveDate)}
                   </TableCell>
-                  <TableCell className="underline cursor-pointer">
+                  <TableCell className="underline">
                     <Link to={ACCOUNT}>{item.name}</Link>
                   </TableCell>
                   <TableCell>{codeToName(typeCodes, item.type)}</TableCell>
