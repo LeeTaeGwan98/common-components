@@ -5,11 +5,7 @@ import {
   LoginButtonInteractiveTypeStyle2,
 } from "@/components/common/Molecules/LoginButton/LoginButton";
 
-function NaverLoginButton({
-  onClick,
-  className,
-  ...props
-}: CommonLoginButtonPrsop) {
+function NaverLoginButton({ className, ...props }: CommonLoginButtonPrsop) {
   return (
     <button
       className={cn(
