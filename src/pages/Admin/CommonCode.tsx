@@ -9,59 +9,38 @@ import {
   TableRow,
 } from "@/components/common/Tables";
 
-import {
-  Dialog as DefaultDialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import Radio from "@/components/common/Atoms/Radio/Radio/Radio";
-import TextField from "@/components/common/Molecules/TextField/TextField";
-import Button from "@/components/common/Atoms/Button/Solid/Button";
-import { useState } from "react";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { COMMON_GROUP_CODE_MAPPING } from "@/Constants/CommonGroupCode";
 import {
-  COMMON_GROUP_CODE_MAPPING,
-  COMMON_GROUP_CODE_UNION_TYPE,
-} from "@/Constants/CommonGroupCode";
-import {
+  DetailCodeUpdateReq,
   getAllGroupCodes,
-  getGroupCodes,
+  GetDetailGroupCodeRes,
+  getDetailGroupCodes,
+  updateDetailCodes,
 } from "@/api/commonCode/commonCodeAPI";
+import { useModalStore } from "@/store/modalStore";
+import { CommonCodeUpdateModal } from "@/components/modal/commonCode/CommonCodeUpdateModal";
+import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
+import TextField from "@/components/common/Molecules/TextField/TextField";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
+import Button from "@/components/common/Atoms/Button/Solid/Button";
+import { useAuthStore } from "@/store/authStore";
 
-const data = [
-  {
-    No: "999999999",
-    codeId: "2024-09-06",
-    codeName: "admin_h",
-    detailDescription: "템플릿 카테고리템플릿 카테고리 카테고리템플릿",
-    exposure: "html",
-    details: "ds",
-  },
-  {
-    No: "999999999",
-    codeId: "2024-09-06",
-    codeName: "admin_h",
-    detailDescription: "템플릿 카테고리템플릿 카테고리 카테고리템플릿",
-    exposure: "html",
-    details: "ds",
-  },
-];
-
-{
-  /* 전체 width 값 수정 필요 */
-}
+type FormState = {
+  detailCodes: GetDetailGroupCodeRes[]; //현재 목록에 나타나는 상세코드들
+  updatedDetailCodes: GetDetailGroupCodeRes[]; //업데이트된 상태코드 목록
+  selectGroupCode: string; //선택한 그룹코드
+};
 
 function CommonCode() {
-  const [codeNameField, setCodeNameField] = useState("");
-  const [detailDescriptionField, setDetailDescriptionField] = useState("");
-  const [colorField, setColorField] = useState("");
+  const { openModal } = useModalStore();
+  const { user } = useAuthStore(); //현재 로그인한 유저 정보
+  const [isReverse, setIsReverse] = useState(false); //공통 상세코드 역순 처리
 
   //그룹 코드 목록
   const groupCodes = [
@@ -73,25 +52,215 @@ function CommonCode() {
     COMMON_GROUP_CODE_MAPPING.프로젝트저장기간,
   ] as string[];
 
-  //모든 그룹코드 목록 가져오기
+  //모든 그룹코드 목록 가져오기 api
   const { data: allGroupCodes } = useSuspenseQuery({
     queryKey: ["allGrooupCodes"],
     queryFn: () => getAllGroupCodes(),
     select: (data) => data.data.data,
   });
 
-  //공통 코드 목록 가져오기
-  const queryKey: string[] = ["commonCodePageCodes", ...groupCodes];
-  const { data: detailCodes } = useSuspenseQuery({
-    queryKey: queryKey,
-    queryFn: () => getGroupCodes(groupCodes),
+  // 폼 상태 관리
+  const [formState, setFormState] = useState({
+    detailCodes: [] as GetDetailGroupCodeRes[],
+    updatedDetailCodes: [] as GetDetailGroupCodeRes[],
+    selectGroupCode: groupCodes[0] ?? "",
+  });
+
+  // 폼 개별 상태 업데이트 핸들러
+  const updateFormState = <K extends keyof FormState>(
+    field: K,
+    value: FormState[K]
+  ) => {
+    setFormState((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  //그룹코드의 상세 코드 목록 가져오기 api
+  const { data: apiDetailCodes, refetch } = useSuspenseQuery({
+    queryKey: ["commonCodePageCodes"],
+    queryFn: () => getDetailGroupCodes(formState.selectGroupCode),
     select: (data) => data.data.data,
   });
 
-  const [selectGroupCode, setSelectGroupCode] = useState<string>(groupCodes[0]); //선택한 그룹코드
+  //상세 코드 상태 업데이트
+  const handleUpdateDetailCode = (updateDetailCode: GetDetailGroupCodeRes) => {
+    const detailCodes = formState.detailCodes.map((detail) =>
+      detail.commDetailCode === updateDetailCode.commDetailCode
+        ? updateDetailCode
+        : detail
+    );
+
+    updateFormState("detailCodes", detailCodes);
+
+    // 업데이트된 상세 코드 목록에 추가
+    handleUpdatedCode(updateDetailCode);
+  };
+
+  //업데이트된 상세 코드 목록에 반영
+  const handleUpdatedCode = (updatedDetailCode: GetDetailGroupCodeRes) => {
+    //상세 코드 목록에 반영
+    if (updatedDetailCode) {
+      const updatedDetailCodes = formState.updatedDetailCodes.some(
+        (item) => item.commDetailCode === updatedDetailCode.commDetailCode
+      )
+        ? formState.updatedDetailCodes.map((item) =>
+            item.commDetailCode === updatedDetailCode.commDetailCode
+              ? updatedDetailCode
+              : item
+          )
+        : [...formState.updatedDetailCodes, updatedDetailCode];
+
+      // 기존 값과 완전히 똑같은 상세코드는 목록에서 제거
+      const filteredUpdatedDetailCodes = updatedDetailCodes.filter(
+        (item) =>
+          !apiDetailCodes.some(
+            (apiItem) => JSON.stringify(apiItem) === JSON.stringify(item)
+          )
+      );
+
+      // 업데이트된 상세코드 목록에 저장
+      updateFormState("updatedDetailCodes", filteredUpdatedDetailCodes);
+    }
+  };
+
+  //업데이트된 상세 코드들 수정 api
+  const { mutate: updateDetailCodeFn } = useMutation({
+    mutationFn: (payload: DetailCodeUpdateReq[]) => updateDetailCodes(payload),
+    onSuccess() {},
+    onError() {
+      customToast({
+        title: "상세코드 수정중 에러가 발생했습니다.",
+      });
+    },
+  });
+
+  //저장 버튼
+  const handleSaveBtn = () => {
+    //중복된 순서 있는지 체크
+    if (handleIsSortOrdDupl()) {
+      customToast({
+        title: "중복된 순서가 있습니다.",
+      });
+      return;
+    }
+
+    //상세 코드 업데이트 api 실행
+    const updatedDetailCodes: DetailCodeUpdateReq[] = [];
+    formState.updatedDetailCodes.forEach((code) => {
+      updatedDetailCodes.push({
+        commGroupCode: code.commGroupCode,
+        commDetailCode: code.commDetailCode,
+        detailCodeName: code.detailCodeName,
+        detailCodeDesc: code.detailCodeDesc,
+        addInfo: code.addInfo ?? "",
+        sortOrd: code.sortOrd,
+        isUsed: code.isUsed,
+        createdBy: user!.id,
+        updatedBy: user!.id,
+      });
+    });
+    updateDetailCodeFn(updatedDetailCodes);
+  };
+
+  //상세 코드 노출 상태 설정
+  const handleExposure = (detailCode: GetDetailGroupCodeRes) => {
+    // 변경된 상세 코드 생성
+    const updateDetailCode = {
+      ...detailCode,
+      isUsed: !detailCode.isUsed,
+    };
+
+    //변경된 노출 상태 업데이트
+    handleUpdateDetailCode(updateDetailCode);
+  };
+
+  //상세 코드 순서 변경
+  const handleSortOrd = (
+    detailCode: GetDetailGroupCodeRes,
+    sortOrd: number
+  ) => {
+    // 변경된 상세 코드 생성
+    const updateDetailCode = {
+      ...detailCode,
+      sortOrd: sortOrd,
+    };
+
+    //변경된 노출 상태 업데이트
+    handleUpdateDetailCode(updateDetailCode);
+  };
+
+  //공통 코드 수정/추가 모달
+  const handleUpdateModal = (
+    type: "create" | "update",
+    code?: GetDetailGroupCodeRes
+  ) => {
+    const groupCode = allGroupCodes.find(
+      (groupCode) => groupCode.commGroupCode === formState.selectGroupCode
+    );
+    if (groupCode) {
+      openModal(
+        <CommonCodeUpdateModal
+          groupCode={groupCode}
+          code={code}
+          type={type}
+          onUpdateSuccess={() => {
+            refetch();
+          }}
+        />
+      );
+    }
+  };
+
+  //각 상세코드들 순서 중복 확인
+  const handleIsSortOrdDupl = () => {
+    //배열을 sortOrd 기준으로 정렬
+    const sortedCodes = [...formState.detailCodes].sort(
+      (a, b) => a.sortOrd - b.sortOrd
+    );
+
+    //정렬된 배열에서 연속된 값들만 비교
+    for (let i = 1; i < sortedCodes.length; i++) {
+      if (sortedCodes[i].sortOrd === sortedCodes[i - 1].sortOrd) {
+        return true; //중복
+      }
+    }
+
+    return false; //중복이 없으면 false 반환
+  };
+
+  //상세코드 목록 재호출 되면 폼 상태 업데이트
+  useEffect(() => {
+    updateFormState("detailCodes", apiDetailCodes);
+  }, [apiDetailCodes]);
+
+  //선택한 그룹코드 변경시 상세코드 목록 재호출
+  useEffect(() => {
+    refetch();
+  }, [formState.selectGroupCode]);
 
   return (
-    <BreadcrumbContainer breadcrumbNode={<>관리자 / 공통 코드 관리</>}>
+    <BreadcrumbContainer
+      breadcrumbNode={<>관리자 / 공통 코드 관리</>}
+      button={
+        <div className="flex gap-[8px]">
+          <OutlinedButton
+            className="w-[180px] h-[48px] p-0"
+            type="assistive"
+            onClick={handleSaveBtn}
+          >
+            저장
+          </OutlinedButton>
+          <Button
+            className="w-[180px] h-[48px] p-0"
+            onClick={() => handleUpdateModal("create")}
+          >
+            추가
+          </Button>
+        </div>
+      }
+    >
       <div className="flex gap-[20px] justify-between">
         <div className="w-full">
           <TableContainer>
@@ -105,11 +274,13 @@ function CommonCode() {
               </TableHeader>
 
               <TableBody>
+                {/* 그룹코드 목록 */}
                 {allGroupCodes
                   .filter((groupCode) =>
                     groupCodes.includes(groupCode.commGroupCode)
                   )
                   .sort(
+                    //그룹 코드 순서 정렬
                     (a, b) =>
                       groupCodes.indexOf(a.commGroupCode) -
                       groupCodes.indexOf(b.commGroupCode)
@@ -122,12 +293,17 @@ function CommonCode() {
                         <TableCell>
                           <div
                             onClick={() =>
-                              setSelectGroupCode(groupCode.commGroupCode)
+                              //상세코드 조회할 그룹코드 선택
+                              updateFormState(
+                                "selectGroupCode",
+                                groupCode.commGroupCode
+                              )
                             }
                           >
                             <Radio
                               checked={
-                                selectGroupCode === groupCode.commGroupCode
+                                formState.selectGroupCode ===
+                                groupCode.commGroupCode
                               }
                             />
                           </div>
@@ -146,7 +322,11 @@ function CommonCode() {
                 <TableRow>
                   <TableCell isHeader>
                     <div className="flex items-center justify-center gap-[2px]">
-                      No <IconButton icon={<Updown />} />
+                      No{" "}
+                      <IconButton
+                        icon={<Updown />}
+                        onClick={() => setIsReverse(!isReverse)}
+                      />
                     </div>
                   </TableCell>
                   <TableCell isHeader>코드 ID</TableCell>
@@ -159,136 +339,49 @@ function CommonCode() {
               </TableHeader>
 
               <TableBody>
-                {Object.values(
-                  detailCodes[selectGroupCode as keyof typeof detailCodes] ?? []
-                )
-                  .flat()
-                  .map((item, index) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>{item.commDetailCode}</TableCell>
-                        <TableCell>{item.detailCodeName}</TableCell>
-                        <TableCell>{item.detailCodeDesc}</TableCell>
-                        <TableCell>{item.isUsed}</TableCell>
-                        <TableCell>{item.sortOrd}</TableCell>
-                        <TableCell>
-                          <>
-                            <DefaultDialog>
-                              <DialogTrigger asChild>
-                                <IconButton
-                                  icon={
-                                    <ThreeDot className="size-[24px] fill-label-alternative" />
-                                  }
-                                />
-                              </DialogTrigger>
-                              <>
-                                <DialogContent className="p-content-vertical-margin  max-w-fit rounded-[30px] ">
-                                  <DialogHeader className=" flex justify-start items-start w-full ">
-                                    <div className="flex justify-start items-start text-heading5-bold mb-content-vertical-margin ">
-                                      코드 관리
-                                    </div>
-
-                                    <DialogDescription className="py-content-vertical-margin px-content-horizon-margin  border border-line-normal-normal rounded-[4px] w-full">
-                                      <div className="w-full flex flex-col justify-start items-start gap-[12px]">
-                                        <div className="w-full flex flex-col items-start justify-start mb-[6px]">
-                                          그룹코드명
-                                          <div className="w-full">
-                                            <TextField
-                                              value="템플릿"
-                                              slot={{
-                                                inputClassName:
-                                                  "px-[12px] py-[9px] w-full border rounded-[4px]",
-                                              }}
-                                              readOnly
-                                            />
-                                          </div>
-                                        </div>
-                                        <div className="w-full flex flex-col items-start justify-start mb-[6px]">
-                                          코드명
-                                          <div className="w-full">
-                                            <TextField
-                                              value={codeNameField}
-                                              onChange={(
-                                                e: React.ChangeEvent<HTMLInputElement>
-                                              ) => {
-                                                setCodeNameField(
-                                                  e.target.value
-                                                );
-                                              }}
-                                              slot={{
-                                                inputClassName:
-                                                  "px-[12px] py-[9px] w-full border  rounded-[4px] placeholder:text-body2-normal-regular placeholder:text-label-assistive",
-                                              }}
-                                              placeholder="코드명 입력"
-                                            />
-                                          </div>
-                                        </div>
-                                        <div className="w-full flex flex-col items-start justify-start mb-[6px]">
-                                          상세 설명
-                                          <div className="w-full">
-                                            <TextField
-                                              value={detailDescriptionField}
-                                              onChange={(
-                                                e: React.ChangeEvent<HTMLInputElement>
-                                              ) => {
-                                                setDetailDescriptionField(
-                                                  e.target.value
-                                                );
-                                              }}
-                                              slot={{
-                                                inputClassName:
-                                                  "px-[12px] py-[9px] w-full border  rounded-[4px] placeholder:text-body2-normal-regular placeholder:text-label-assistive",
-                                              }}
-                                              placeholder="코드 상세 설명 입력"
-                                            />
-                                          </div>
-                                        </div>
-                                        <div className="w-full flex flex-col items-start justify-start mb-[6px]">
-                                          색상(선택)
-                                          <div className="w-full">
-                                            <TextField
-                                              value={colorField}
-                                              onChange={(
-                                                e: React.ChangeEvent<HTMLInputElement>
-                                              ) => {
-                                                setColorField(e.target.value);
-                                              }}
-                                              slot={{
-                                                inputClassName:
-                                                  "px-[12px] py-[9px] w-full border  rounded-[4px] placeholder:text-body2-normal-regular placeholder:text-label-assistive",
-                                              }}
-                                              placeholder="#000000"
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </DialogDescription>
-                                    <DialogFooter>
-                                      <div className="flex gap-[8px] mt-content-vertical-margin  ">
-                                        <DialogClose>
-                                          <div>
-                                            <Button className="py-[12px] border  rounded-[4px]  text-body1-normal-medium text-label-normal bg-static-white">
-                                              취소
-                                            </Button>
-                                          </div>
-                                        </DialogClose>
-                                        <Button className="px-[188px] py-[12px] rounded-[4px] text-body1-normal-medium text-static-white">
-                                          저장
-                                        </Button>
-                                      </div>
-                                    </DialogFooter>
-                                  </DialogHeader>
-
-                                  <DialogClose asChild></DialogClose>
-                                </DialogContent>
-                              </>
-                            </DefaultDialog>
-                          </>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                {/* 상세코드 목록 */}
+                {(isReverse
+                  ? formState.detailCodes.reverse()
+                  : formState.detailCodes
+                ).map((item, index) => {
+                  return (
+                    <TableRow key={index}>
+                      <TableCell>{item.sortOrd}</TableCell>
+                      <TableCell>{item.commDetailCode}</TableCell>
+                      <TableCell>{item.detailCodeName}</TableCell>
+                      <TableCell>{item.detailCodeDesc}</TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={item.isUsed}
+                          onClick={() => {
+                            handleExposure(item);
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          value={item.sortOrd.toString()}
+                          onChange={(e) => {
+                            // 숫자만 필터링
+                            const numericValue = e.target.value.replace(
+                              /\D/g,
+                              ""
+                            );
+                            handleSortOrd(item, Number(numericValue));
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                          onClick={() => handleUpdateModal("update", item)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>

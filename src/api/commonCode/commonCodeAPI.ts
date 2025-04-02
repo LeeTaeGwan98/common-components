@@ -5,7 +5,7 @@ import { COMMON_GROUP_CODE_UNION_TYPE } from "@/Constants/CommonGroupCode";
 export interface DetailCodeType {
   addInfo: null;
   commDetailCode: string;
-  commGroupCode: COMMON_GROUP_CODE_UNION_TYPE;
+  commGroupCode: string;
   createdBy: number;
   createdDt: string;
   detailCodeDesc: string;
@@ -16,16 +16,40 @@ export interface DetailCodeType {
   updatedDt: string;
 }
 
+export interface DetailCodeUpdateReq {
+  commDetailCode: string;
+  commGroupCode?: string;
+  detailCodeName: string;
+  detailCodeDesc: string;
+  addInfo: string;
+  sortOrd?: number;
+  isUsed?: boolean;
+  createdBy: number;
+  updatedBy: number;
+}
+
+export interface DetailCodeAddReq {
+  commDetailCode?: string;
+  commGroupCode: string;
+  detailCodeName: string;
+  detailCodeDesc: string;
+  addInfo?: string;
+  sortOrd?: number;
+  isUsed?: boolean;
+  createdBy: number;
+  updatedBy: number;
+}
+
 export interface GetDetailGroupCodeRes {
+  addInfo: string;
   commDetailCode: string;
   commGroupCode: string;
-  detailCodeName: boolean;
-  detailCodeDesc: boolean;
-  addInfo: null;
-  sortOrd: number;
-  isUsed: boolean;
   createdBy: number;
   createdDt: string;
+  detailCodeDesc: string;
+  detailCodeName: string;
+  isUsed: boolean;
+  sortOrd: number;
   updatedBy: number;
   updatedDt: string;
 }
@@ -69,15 +93,10 @@ export const getGroupCodes = (groupCodes: string[]) => {
   return data;
 };
 
-export const getDetailGroupCodes = (
-  groupCodes: COMMON_GROUP_CODE_UNION_TYPE[]
-) => {
-  const qs = groupCodes
-    .map((code, index) => `${index === 0 ? "" : "&"}${code}`)
-    .join("");
-
-  const data = API.get<APIResponse<GetDetailGroupCodeRes>>(
-    `/common/group-code/${qs}/detail-code`
+//그룹코드의 전체 상세 코드 조회
+export const getDetailGroupCodes = (groupCode: string) => {
+  const data = API.get<APIResponse<GetDetailGroupCodeRes[]>>(
+    `/common/group-code/${groupCode}/detail-code`
   );
 
   return data;
@@ -86,6 +105,41 @@ export const getDetailGroupCodes = (
 //모든 그룹코드 조회
 export const getAllGroupCodes = () => {
   const data = API.get<GetAllGroupCodesReq>(`/common/group-code`);
+
+  return data;
+};
+
+//상세 코드 수정
+export const updateDetailCode = (payload: {
+  groupCode: string;
+  data: DetailCodeUpdateReq;
+}) => {
+  const data = API.patch<GetDetailGroupCodeRes>(
+    `/common/group-code/${payload.groupCode}/detail-code/${payload.data.commDetailCode}`,
+    payload.data
+  );
+
+  return data;
+};
+
+//상세 코드 여러개 수정
+export const updateDetailCodes = (payload: DetailCodeUpdateReq[]) => {
+  const groupCode = payload[0].commGroupCode ?? "";
+  const data = API.patch<GetDetailGroupCodeRes>(
+    `/common/group-code/${groupCode}/detail-codes`,
+    payload
+  );
+
+  return data;
+};
+
+//상세 코드 추가
+export const addDetailCode = (payload: DetailCodeAddReq) => {
+  console.log(payload);
+  const data = API.post<DetailCodeType>(
+    `/common/group-code/${payload.commGroupCode}/detail-code`,
+    payload
+  );
 
   return data;
 };
