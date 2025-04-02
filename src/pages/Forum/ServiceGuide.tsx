@@ -129,10 +129,10 @@ const ServiceGuide = () => {
   };
 
   const handleSortOrder = () => {
-    dispatchWithPageReset(
-      "sortOrder",
-      filterInfo.sortOrder === "DESC" ? "ASC" : "DESC"
-    );
+    dispatch({
+      type: "sortOrder",
+      value: filterInfo.sortOrder === "DESC" ? "ASC" : "DESC",
+    });
   };
 
   const handleisVisible = (visible: string) => {

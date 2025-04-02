@@ -4,7 +4,7 @@ import { TableQueryStringType } from "@/api/common/commonType";
 
 export interface UserQueryStringType
   extends Omit<TableQueryStringType, "isVisible"> {
-  isActive: boolean | null;
+  isActive: "TRUE" | "FALSE" | "WITHDRAWAL" | null;
 }
 
 export interface UserListData {
@@ -15,7 +15,19 @@ export interface UserListData {
   planName: string;
   publishedEbookCount: number;
   point: number;
-  isActive: boolean;
+  isActive: string;
+}
+
+export interface UserDetailSideRes {
+  id: number;
+  createdAt: string;
+  name: string;
+  email: string;
+  providerCode: string;
+  marketingConsent: string;
+  firstPaymentDate: string;
+  nextBillingDate: string;
+  marketingConsentAt: string;
 }
 
 //모든 회원 목록 가져오기
@@ -30,17 +42,42 @@ export const getUserList = (queryStringObj: UserQueryStringType) => {
     page,
   } = queryStringObj;
 
-  const getActiveQueryParam = (isActive: boolean | null): string => {
-    if (isActive === true) return "&isActive=true";
-    if (isActive === false) return "&isActive=false";
-    return "";
-  };
+  let qs = "/admin/user?";
 
-  const queryString = `/admin/user?sortOrder=${sortOrder}&fromDt=${fromDt}&toDt=${toDt}${getActiveQueryParam(
-    isActive
-  )}${keyword ? `&keyword=${keyword}` : ""}&take=${take}&page=${page}`;
+  if (sortOrder) {
+    qs += `sortOrder=${sortOrder}&`;
+  }
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (isActive !== null) {
+    qs += `isActive=${isActive}&`;
+  }
+  if (keyword) {
+    qs += `keyword=${keyword}&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
 
-  const data = API.get<TableResSuccessType<UserListData>>(queryString);
+  const data = API.get<TableResSuccessType<UserListData>>(qs);
 
+  return data;
+};
+
+//회원 상세 왼쪽 사이드 패널 정보 조회
+export const getUserDetailSide = (id: number) => {
+  const data = API.get<{ data: UserDetailSideRes }>(
+    `/admin/user/${id}/detail/side`
+  );
   return data;
 };

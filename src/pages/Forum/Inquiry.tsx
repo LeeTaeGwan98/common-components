@@ -127,10 +127,10 @@ function Inquiry() {
 
   //정렬
   const handleSortOrder = () => {
-    dispatchWithPageReset(
-      "sortOrder",
-      filterInfo.sortOrder === "DESC" ? "ASC" : "DESC"
-    );
+    dispatch({
+      type: "sortOrder",
+      value: filterInfo.sortOrder === "DESC" ? "ASC" : "DESC",
+    });
   };
 
   //답변/미답변
