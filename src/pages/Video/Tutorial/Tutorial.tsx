@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
+import { formatDateTimeToJSX } from "@/lib/dateParse";
 
 const data = [
   {
@@ -53,8 +54,8 @@ function Tutorial() {
             {data.map((item) => {
               return (
                 <TableRow>
+                  <TableCell> {formatDateTimeToJSX(item.createAt)}</TableCell>
                   <TableCell>{item.no}</TableCell>
-                  <TableCell>{item.createAt}</TableCell>
                   <TableCell>{item.nickName}</TableCell>
                   <TableCell>{item.email}</TableCell>
                   <TableCell>{item.state}</TableCell>

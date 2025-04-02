@@ -28,7 +28,7 @@ import {
 import { useSuspenseQuery } from "@tanstack/react-query";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
-import { dateToString } from "@/lib/dateParse";
+import { dateToString, formatDateTimeToJSX } from "@/lib/dateParse";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import {
   COMMON_GROUP_CODE_MAPPING,
@@ -182,7 +182,7 @@ const ServiceGuide = () => {
             <TableRow>
               <TableCell isHeader>
                 <div className="flex items-center justify-center gap-[2px]">
-                  등록일{" "}
+                  등록일
                   <IconButton icon={<Updown />} onClick={handleSortOrder} />
                 </div>
               </TableCell>
@@ -198,7 +198,7 @@ const ServiceGuide = () => {
             {data.list.map((item) => {
               return (
                 <TableRow key={item.id}>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{formatDateTimeToJSX(item.createdAt)}</TableCell>
                   <TableCell>
                     {codeToName(serviceCodes, item.serviceCode)}
                   </TableCell>

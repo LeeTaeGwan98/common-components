@@ -20,7 +20,7 @@ import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { useReducer } from "react";
 import { getInquiry, InquiryQueryStringType } from "@/api/inquiry/inquiryAPI";
-import { dateToString } from "@/lib/dateParse";
+import { dateToString, formatDateTimeToJSX } from "@/lib/dateParse";
 import { ActionType } from "@/api/common/commonType";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
@@ -188,7 +188,7 @@ function Inquiry() {
             {data.list.map((item, index) => {
               return (
                 <TableRow key={index}>
-                  <TableCell>{item.inquiryAt}</TableCell>
+                  <TableCell>{formatDateTimeToJSX(item.inquiryAt)}</TableCell>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>
                     {codeToName(serviceCodes, item.serviceCode)}

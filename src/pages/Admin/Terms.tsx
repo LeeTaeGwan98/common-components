@@ -24,7 +24,7 @@ import {
 } from "@/Constants/CommonGroupCode";
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { codeToName } from "@/utils/uitls";
-import { isoStringToDateString } from "@/lib/dateParse";
+import { formatDateTimeToJSX, isoStringToDateString } from "@/lib/dateParse";
 
 function Terms() {
   //공통 코드 가져오기
@@ -71,12 +71,7 @@ function Terms() {
             {data?.map((item: TermsType, index: number) => {
               return (
                 <TableRow key={index}>
-                  <TableCell>
-                    {isoStringToDateString(
-                      item.updatedAt,
-                      "yyyy-MM-dd HH:mm:ss"
-                    )}
-                  </TableCell>
+                  <TableCell>{formatDateTimeToJSX(item.updatedAt)}</TableCell>
                   <TableCell>
                     {isoStringToDateString(item.effectiveDate)}
                   </TableCell>
