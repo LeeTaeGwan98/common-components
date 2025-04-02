@@ -19,11 +19,12 @@ import { Link } from "react-router-dom";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import { useModalStore } from "@/store/modalStore";
 import WithdrawlModal from "@/components/modal/member/WithdrawlModal";
+import { formatDateTimeToJSX } from "@/lib/dateParse";
 
 const data = [
   {
     no: 999999999,
-    paymentDay: "9999-12-31 24:59:00",
+    withdrawalDay: "9999-12-31 24:59:00",
     nickName: "여덟글자여덟글자",
     email: "a1234@gmail.com",
     withdrawalReason: "다른 계정으로 이용할게요",
@@ -31,7 +32,7 @@ const data = [
   },
   {
     no: 999999999,
-    paymentDay: "9999-12-31 24:59:00",
+    withdrawalDay: "9999-12-31 24:59:00",
     nickName: "여덟글자여덟글자",
     email: "a1234@gmail.com",
     withdrawalReason: "기타",
@@ -39,7 +40,7 @@ const data = [
   },
   {
     no: 999999999,
-    paymentDay: "9999-12-31 24:59:00",
+    withdrawalDay: "9999-12-31 24:59:00",
     nickName: "여덟글자여덟글자",
     email: "a1234@gmail.com",
     withdrawalReason: "별로 사용할 일이 없어요",
@@ -47,7 +48,7 @@ const data = [
   },
   {
     no: 999999999,
-    paymentDay: "9999-12-31 24:59:00",
+    withdrawalDay: "9999-12-31 24:59:00",
     nickName: "여덟글자여덟글자",
     email: "a1234@gmail.com",
     withdrawalReason: "개인 정보 (통신 및 개인정보 등) 노출이 걱정돼요",
@@ -55,7 +56,7 @@ const data = [
   },
   {
     no: 999999999,
-    paymentDay: "9999-12-31 24:59:00",
+    withdrawalDay: "9999-12-31 24:59:00",
     nickName: "여덟글자여덟글자",
     email: "a1234@gmail.com",
     withdrawalReason: "서비스 이용이 불편해요",
@@ -96,7 +97,9 @@ function Withdrawalmanagement() {
                   return (
                     <TableRow>
                       <TableCell>{item.no}</TableCell>
-                      <TableCell>{item.paymentDay}</TableCell>
+                      <TableCell>
+                        {formatDateTimeToJSX(item.withdrawalDay)}
+                      </TableCell>
                       <TableCell>{item.nickName}</TableCell>
                       <TableCell>{item.email}</TableCell>
                       <TableCell>{item.withdrawalReason}</TableCell>

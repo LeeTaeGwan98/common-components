@@ -1,4 +1,5 @@
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
+import AdminTableDescription from "@/components/common/BookaroongAdmin/AdminTableDescription";
 import {
   Table,
   TableBody,
@@ -7,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
+import { formatDateTimeToJSX } from "@/lib/dateParse";
 
 const data = [
   {
@@ -56,7 +58,7 @@ function Plan() {
               return (
                 <TableRow>
                   <TableCell>{item.no}</TableCell>
-                  <TableCell>{item.createAt}</TableCell>
+                  <TableCell>{formatDateTimeToJSX(item.createAt)}</TableCell>
                   <TableCell>{item.nickName}</TableCell>
                   <TableCell>{item.email}</TableCell>
                   <TableCell>{item.plan}</TableCell>
