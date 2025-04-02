@@ -9,6 +9,9 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { deleteGuide } from "@/api/serviceGuied/serviceGuiedAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
+import DialogDetailContent from "@/components/common/BookaroongAdmin/DialogDetailContent";
+import Actions from "@/components/common/Molecules/Actions/Actions";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 
 const ServiceGuideModal = ({ id }: { id: number }) => {
   //챗봇 삭제 api
@@ -28,37 +31,37 @@ const ServiceGuideModal = ({ id }: { id: number }) => {
   const obj = { title: "foo", body: "bar", userId: 1 };
 
   return (
-    <DialogContent>
-      <DialogHeader>
-        <div className="flex justify-start text-heading5-bold text-label-normal ">
-          이 서비스 가이드를 삭제하시겠어요?
-        </div>
-      </DialogHeader>
-      <DialogDescription>
-        <div className="flex flex-col justify-start text-body1-reading-regular text-label-normal">
-          <div className="flex justify-start">
-            삭제된 서비스 가이드는 복구할 수 없습니다.
-          </div>
-        </div>
-      </DialogDescription>
-      <DialogFooter>
-        <div className="flex items-center gap-[8px]">
-          <Button
-            onClick={() => useModalStore.getState().closeModal()}
-            className="border border-line-normal-normal bg-static-white px-[28px] py-[12px] rounded-[4px] text-body1-normal-medium text-label-normal"
-          >
-            취소
-          </Button>
-          <Button
-            className="w-full py-[12px] rounded-[4px] text-body1-normal-medium"
-            onClick={() => {
-              deleteGuideFn(id);
-            }}
-          >
-            삭제
-          </Button>
-        </div>
-      </DialogFooter>
+    <DialogContent
+      onOpenAutoFocus={(event) => event.preventDefault()}
+      className="max-w-[560px] min-w-0 w-full p-0 border-none rounded-[12px] [&>button]:hidden"
+    >
+      <DialogDetailContent
+        heading="이 서비스 가이드를 삭제하시겠어요?"
+        description="삭제된 서비스 가이드는 복구할 수 없습니다."
+        close={true}
+        buttonElements={
+          <Actions className="w-full h-[48px]" priority={"neutral"}>
+            <OutlinedButton
+              className="!flex-none detail-mobile:text-body1-normal-medium detail-mobile:rounded-[10px]"
+              size="large"
+              type="assistive"
+              onClick={() => useModalStore.getState().closeModal()}
+            >
+              취소
+            </OutlinedButton>
+            <Button
+              size="large"
+              onClick={() => {
+                deleteGuideFn(id);
+              }}
+            >
+              확인
+            </Button>
+          </Actions>
+        }
+      >
+        <div className="h-[32px]" />
+      </DialogDetailContent>
     </DialogContent>
   );
 };
