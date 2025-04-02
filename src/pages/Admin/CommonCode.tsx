@@ -43,6 +43,7 @@ function CommonCode() {
   const [isReverse, setIsReverse] = useState(false); //공통 상세코드 역순 처리
 
   //그룹 코드 목록
+  // todo: '스타일' 공통코드 추가해야함
   const groupCodes = [
     COMMON_GROUP_CODE_MAPPING.템플릿카테고리,
     COMMON_GROUP_CODE_MAPPING.챗봇공통카테고리,
@@ -128,7 +129,9 @@ function CommonCode() {
   //업데이트된 상세 코드들 수정 api
   const { mutate: updateDetailCodeFn } = useMutation({
     mutationFn: (payload: DetailCodeUpdateReq[]) => updateDetailCodes(payload),
-    onSuccess() {},
+    onSuccess() {
+      refetch();
+    },
     onError() {
       customToast({
         title: "상세코드 수정중 에러가 발생했습니다.",

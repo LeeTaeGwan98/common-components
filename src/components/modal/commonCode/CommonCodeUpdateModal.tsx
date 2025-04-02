@@ -96,13 +96,14 @@ export const CommonCodeUpdateModal = ({
       AddDetailCode.mutate();
     } else {
       if (code) {
+        //상세 코드 수정
         updateDetailCodeFn({
           groupCode: groupCode.commGroupCode,
           data: {
             commDetailCode: code.commDetailCode,
             detailCodeName: formState.codeNameField,
             detailCodeDesc: formState.detailDescriptionField,
-            addInfo: formState.codeNameField,
+            addInfo: formState.colorField,
             createdBy: user!.id,
             updatedBy: user!.id,
           },
