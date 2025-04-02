@@ -111,7 +111,7 @@ function App() {
                 path={WITHDRAWL_REASON}
                 element={<Withdrawalmanagement />}
               />
-              <Route path={USER_DETAIL} element={<UserDetail />} />
+              <Route path={`${USER_DETAIL}/:id`} element={<UserDetail />} />
 
               <Route path={MAIN} element={<Main />} />
 

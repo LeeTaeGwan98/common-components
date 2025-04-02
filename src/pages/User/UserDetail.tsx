@@ -27,10 +27,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { USER_DETAIL } from "@/Constants/ServiceUrl";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getUserDetailSide } from "@/api/user/userAPI";
 
-const data = [
+const defaultData = [
   {
     no: 0,
     paymentDay: "9999-12-31 24:59:00",
@@ -128,8 +130,16 @@ const publishingData = [
 ];
 
 function UserDetail() {
+  const { id } = useParams();
   const [selectedTab, setSelectedTab] = useState("기본"); // 기본값 설정
-  console.log(selectedTab);
+
+  //회원 목록 사이드 패널 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["userDetailSide"], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getUserDetailSide(Number(id)),
+    select: (data) => data.data.data,
+  });
+
   return (
     <BreadcrumbContainer
       breadcrumbNode={
@@ -375,7 +385,7 @@ function UserDetail() {
                   </TableHeader>
 
                   <TableBody>
-                    {data.map((item) => {
+                    {defaultData.map((item) => {
                       return (
                         <TableRow>
                           <TableCell>{item.no}</TableCell>
