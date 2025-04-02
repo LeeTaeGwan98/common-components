@@ -41,7 +41,7 @@ function Card({
       small: "",
     },
     body: {
-      large: "min-w-[236px]",
+      large: "",
       small: "",
     },
   };
@@ -63,13 +63,13 @@ function Card({
           slot.headClassName
         )}
       >
-        <div className={cn("text-subtitle2-bold text-label-neutral")}>
+        <div className={cn("text-subtitle2-bold text-label-neutral truncate")}>
           {title}
         </div>
         {isButton && (
           <button
             className={cn(
-              `text-label-alternative text-label1-normal-bold flex justify-center items-center gap-[4px] ${
+              `flex-none text-label-alternative text-label1-normal-bold flex justify-center items-center gap-[4px] ${
                 hasMultiChildren
                   ? "absolute right-content-horizon-margin top-1/2 -translate-y-1/2"
                   : ""
