@@ -1,6 +1,6 @@
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent, useEffect } from "react";
 import { login } from "@/api/auth/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const setUserInfo = useAuthStore((state) => state.setUserInfo);
-
   const isFieldCheck = email !== "" && password !== "";
 
   const { mutate: handleLoginMutation } = useMutation({
@@ -43,7 +42,7 @@ function Login() {
 
   return (
     <div className="flex h-screen">
-      <div className="flex flex-1 bg-primary-normal/[0.08] p-8 items-center justify-center sm:hidden">
+      <div className="flex flex-1 bg-primary-normal/[0.08] p-8 items-center justify-center sm:hidden xs:hidden">
         <div className="flex flex-col justify-between items-center h-full">
           {/* 중앙 정렬된 콘텐츠 */}
           <div className="flex flex-col items-center flex-grow justify-center">

@@ -18,6 +18,7 @@ interface SideBarProps {}
 
 function Sidebar({}: SideBarProps) {
   const delUserInfo = useAuthStore((state) => state.delUserInfo);
+  const userName = useAuthStore((state) => state.user?.name);
   const permissions = useAuthStore((state) => state.permissions);
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,7 +39,7 @@ function Sidebar({}: SideBarProps) {
     >
       <div className="px-[30px] text-body2-normal-bold flex items-center gap-[8px]">
         <CompanyIcon />
-        Admin999
+        {userName}
       </div>
 
       <Divider className="my-[12px]" />

@@ -1,5 +1,5 @@
 import API from "@/api/API";
-import { type TableResSuccessType } from "@/api/common/commonType";
+import { type TableResType } from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
 
 export interface UserQueryStringType
@@ -69,7 +69,7 @@ export const getUserList = (queryStringObj: UserQueryStringType) => {
     qs = qs.slice(0, -1);
   }
 
-  const data = API.get<TableResSuccessType<UserListData>>(qs);
+  const data = API.get<TableResType<UserListData>>(qs);
 
   return data;
 };

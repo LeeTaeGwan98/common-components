@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { useAuthStore } from "@/store/authStore";
-import { ResSuccessType } from "@/api/common/commonType";
+import { ApiResType } from "@/api/common/commonType";
 
 export const APIInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -33,7 +33,7 @@ APIInstance.interceptors.response.use(
       try {
         // 엑세스토큰을 다시 받아오는 API호출
         const data = await APIInstance.post<
-          ResSuccessType<{ accessToken: string }>
+          ApiResType<{ accessToken: string }>
         >("/auth/refresh");
 
         const { accessToken: newAccessToken } = data.data.data;

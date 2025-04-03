@@ -1,5 +1,5 @@
 import API from "@/api/API";
-import { APIResponse } from "@/api/common/commonType";
+import { ApiResType } from "@/api/common/commonType";
 import { COMMON_GROUP_CODE_UNION_TYPE } from "@/Constants/CommonGroupCode";
 
 export interface DetailCodeType {
@@ -95,7 +95,7 @@ export const getGroupCodes = (groupCodes: string[]) => {
 
 //그룹코드의 전체 상세 코드 조회
 export const getDetailGroupCodes = (groupCode: string) => {
-  const data = API.get<APIResponse<GetDetailGroupCodeRes[]>>(
+  const data = API.get<ApiResType<GetDetailGroupCodeRes[]>>(
     `/common/group-code/${groupCode}/detail-code`
   );
 
