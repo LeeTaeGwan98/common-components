@@ -1,7 +1,7 @@
 import API from "@/api/API";
-import { type TableResSuccessType } from "@/api/common/commonType";
+import { type TableResType } from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
-import { APIResponse } from "@/api/common/commonType";
+import { ApiResType } from "@/api/common/commonType";
 
 const NOTICE_BASE_URL = "/admin/notice";
 
@@ -27,10 +27,7 @@ export interface AddNoticeRes {
 }
 
 export const addNotice = (payload: NoticeRes) => {
-  const data = API.post<TableResSuccessType<AddNoticeRes>>(
-    NOTICE_BASE_URL,
-    payload
-  );
+  const data = API.post<TableResType<AddNoticeRes>>(NOTICE_BASE_URL, payload);
 
   return data;
 };
@@ -76,13 +73,13 @@ export const getNotice = (
     qs = qs.slice(0, -1);
   }
 
-  const data = API.get<TableResSuccessType<NoticeDataTypeRes>>(qs);
+  const data = API.get<TableResType<NoticeDataTypeRes>>(qs);
 
   return data;
 };
 
 export const getNoticeDetail = (id: number) => {
-  const data = API.get<APIResponse<NoticeRes>>(`${NOTICE_BASE_URL}/${id}`);
+  const data = API.get<ApiResType<NoticeRes>>(`${NOTICE_BASE_URL}/${id}`);
 
   return data;
 };
@@ -116,7 +113,7 @@ export const updateNotice = (payloadWidthId: {
     payload: { ...payload },
   } = payloadWidthId;
 
-  const data = API.patch<APIResponse<UpdateNoticeRes>>(
+  const data = API.patch<ApiResType<UpdateNoticeRes>>(
     `${NOTICE_BASE_URL}/${id}`,
     payload
   );

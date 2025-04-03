@@ -1,8 +1,5 @@
 import API from "@/api/API";
-import {
-  TableQueryStringType,
-  TableResSuccessType,
-} from "@/api/common/commonType";
+import { TableQueryStringType, TableResType } from "@/api/common/commonType";
 
 export interface AccountType {
   id: number;
@@ -105,7 +102,7 @@ export const getAccountList = (queryStringObj: TableQueryStringType) => {
     qs = qs.slice(0, -1);
   }
 
-  const data = API.get<TableResSuccessType<GetAccountType>>(qs);
+  const data = API.get<TableResType<GetAccountType>>(qs);
 
   return data;
 };

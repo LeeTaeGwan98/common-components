@@ -6,22 +6,19 @@ export interface PaginationMetaType {
   totalPage: number;
 }
 
-export interface TableResSuccessType<T> {
-  data: {
-    list: T[];
-    meta: PaginationMetaType;
-  };
+export interface ApiResType<T> {
   message: string;
-  statue: number;
-  success: boolean;
-}
-
-export interface ResSuccessType<T> {
-  message: string;
-  statue: number;
+  status: number;
   success: boolean;
   data: T;
 }
+
+export interface TableDataType<T> {
+  list: T[];
+  meta: PaginationMetaType;
+}
+
+export type TableResType<T> = ApiResType<TableDataType<T>>;
 
 export interface TableQueryStringType {
   sortOrder?: "DESC" | "ASC";
@@ -53,12 +50,3 @@ export type ActionType<T> = {
     value: T[K];
   };
 }[keyof T];
-
-export interface ServerResponse<T> {
-  status: number;
-  success: boolean;
-  message: string;
-  data: T;
-}
-
-export type APIResponse<T> = ServerResponse<T>;

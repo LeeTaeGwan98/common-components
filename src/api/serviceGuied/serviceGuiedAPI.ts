@@ -1,8 +1,8 @@
 import API from "@/api/API";
 import {
-  ResSuccessType,
+  ApiResType,
   TableQueryStringType,
-  type TableResSuccessType,
+  type TableResType,
 } from "@/api/common/commonType";
 import { COMMON_GROUP_CODE_UNION_TYPE } from "@/Constants/CommonGroupCode";
 
@@ -100,7 +100,7 @@ export const getServiceGuide = (
     qs = qs.slice(0, -1);
   }
 
-  const data = API.get<TableResSuccessType<ServiceGuideRes>>(qs);
+  const data = API.get<TableResType<ServiceGuideRes>>(qs);
 
   return data;
 };
@@ -108,10 +108,7 @@ export const getServiceGuide = (
 //서비스 가이드 생성
 export const addGuide = (payload: AddGuiedPayload) => {
   console.log(payload);
-  const data = API.post<TableResSuccessType<AddGuiedRes>>(
-    "/admin/guide",
-    payload
-  );
+  const data = API.post<TableResType<AddGuiedRes>>("/admin/guide", payload);
 
   return data;
 };
@@ -120,7 +117,7 @@ export const addGuide = (payload: AddGuiedPayload) => {
 export const getGuideDetail = (id: number) => {
   const queryString = `/admin/guide/${id}`;
 
-  const data = API.get<ResSuccessType<ResGuideDetailType>>(queryString);
+  const data = API.get<ApiResType<ResGuideDetailType>>(queryString);
 
   return data;
 };
@@ -139,7 +136,7 @@ export const updateGuide = (payload: { id: number; data: UpdateGuiedData }) => {
 export const deleteGuide = (id: number) => {
   const queryString = `/admin/guide/${id}`;
 
-  const data = API.delete<ResSuccessType<{}>>(queryString);
+  const data = API.delete<ApiResType<{}>>(queryString);
 
   return data;
 };

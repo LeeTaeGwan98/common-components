@@ -1,8 +1,8 @@
 import API from "@/api/API";
 import {
-  ResSuccessType,
+  ApiResType,
   TableQueryStringType,
-  TableResSuccessType,
+  TableResType,
 } from "@/api/common/commonType";
 
 export interface DashboardDataTypeRes {
@@ -15,7 +15,7 @@ export interface DashboardDataTypeRes {
 export const getDashboard = () => {
   let qs = "/admin/dashboard?";
 
-  const data = API.get<ResSuccessType<DashboardDataTypeRes>>(qs);
+  const data = API.get<ApiResType<DashboardDataTypeRes>>(qs);
 
   return data;
 };

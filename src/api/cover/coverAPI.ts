@@ -1,7 +1,7 @@
 import API from "@/api/API";
 import {
   type TableQueryStringType,
-  type TableResSuccessType,
+  type TableResType,
 } from "@/api/common/commonType";
 
 const COVER_BASE_URL = "/admin/cover";
@@ -24,7 +24,7 @@ export const getCover = (
 
   let qs = COVER_BASE_URL;
 
-  const data = API.get<TableResSuccessType<GetCoverRes>>(qs);
+  const data = API.get<TableResType<GetCoverRes>>(qs);
 
   return data;
 };

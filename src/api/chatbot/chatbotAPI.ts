@@ -1,8 +1,8 @@
 import API from "@/api/API";
 import {
-  ResSuccessType,
+  ApiResType,
   TableQueryStringType,
-  TableResSuccessType,
+  TableResType,
 } from "@/api/common/commonType";
 
 //챗봇 생성 페이로드
@@ -66,7 +66,7 @@ export const getChatBotList = (queryStringObj: ChatBotQueryStringType) => {
     keyword ? `&keyword=${keyword}` : ""
   }&take=${take}&page=${page}`;
 
-  const data = API.get<TableResSuccessType<ResChatBotDataType>>(queryString);
+  const data = API.get<TableResType<ResChatBotDataType>>(queryString);
 
   return data;
 };
@@ -75,7 +75,7 @@ export const getChatBotList = (queryStringObj: ChatBotQueryStringType) => {
 export const getChatBotDetail = (id: number) => {
   const queryString = `/admin/chatbot/${id}`;
 
-  const data = API.get<ResSuccessType<ResChatBotDataType>>(queryString);
+  const data = API.get<ApiResType<ResChatBotDataType>>(queryString);
 
   return data;
 };
@@ -97,7 +97,7 @@ export const updateChatBot = (payload: {
 export const deleteChatBot = (id: number) => {
   const queryString = `/admin/chatbot/${id}`;
 
-  const data = API.delete<ResSuccessType<{}>>(queryString);
+  const data = API.delete<ApiResType<{}>>(queryString);
 
   return data;
 };

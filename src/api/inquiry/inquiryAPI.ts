@@ -1,8 +1,8 @@
 import API from "@/api/API";
 import {
-  ResSuccessType,
+  ApiResType,
   TableQueryStringType,
-  TableResSuccessType,
+  TableResType,
 } from "@/api/common/commonType";
 
 //문의사항 목록 조회
@@ -71,7 +71,7 @@ export const getInquiry = (queryStringObj: InquiryQueryStringType) => {
     qs = qs.slice(0, -1);
   }
 
-  const data = API.get<TableResSuccessType<InquiryRes>>(qs);
+  const data = API.get<TableResType<InquiryRes>>(qs);
 
   return data;
 };
@@ -80,7 +80,7 @@ export const getInquiry = (queryStringObj: InquiryQueryStringType) => {
 export const getInquiryDetail = (id: number) => {
   const queryString = `/admin/inquiry/${id}`;
 
-  const data = API.get<ResSuccessType<ResGuideDetailType>>(queryString);
+  const data = API.get<ApiResType<ResGuideDetailType>>(queryString);
 
   return data;
 };
