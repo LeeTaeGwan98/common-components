@@ -23,9 +23,26 @@ function Radio({
   };
   const checkedStyle = checked ? "bg-primary-normal relative" : "";
   const disableStyle = disable && "opacity-[.43]";
+  const interactiveTypeStyle = `
+  relative
+  after:content-['']
+  after:absolute
+  after:top-[-6px] after:right-[-6px] after:bottom-[-6px] after:left-[-6px]
+  after:rounded-full
+  after:transition-colors
+  after:-z-10
+  after:hover:bg-label-normal/normal-hover
+  after:focus:bg-label-normal/normal-focus
+  after:active:bg-label-normal/normal-active
+`;
+
   return (
     <button
-      className="w-fit p-[6px] rounded-full hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active cursor-pointer"
+      className={cn(
+        "w-fit rounded-full cursor-pointer",
+        interactiveTypeStyle,
+        className
+      )}
       onClick={onChecked ? () => onChecked((prev) => !prev) : undefined}
     >
       <div
