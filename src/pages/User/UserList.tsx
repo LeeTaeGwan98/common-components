@@ -16,7 +16,11 @@ import Divider from "@/components/common/Atoms/Divider/Divider";
 import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import { ActionType, TableQueryStringType } from "@/api/common/commonType";
 import { useReducer, useState } from "react";
-import { dateToString, formatDateTimeToJSX } from "@/lib/dateParse";
+import {
+  dateToString,
+  formatDateTimeToJSX,
+  formatToUTCString,
+} from "@/lib/dateParse";
 import CACHE_TIME from "@/Constants/CacheTime";
 import { getUserList, UserQueryStringType } from "@/api/user/userAPI";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -182,7 +186,9 @@ function UserList() {
               return (
                 <TableRow key={index}>
                   <TableCell>{item.id}</TableCell>
-                  <TableCell>{formatDateTimeToJSX(item.createdAt)}</TableCell>
+                  <TableCell>
+                    {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
+                  </TableCell>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.email}</TableCell>
                   <TableCell>{item.planName}</TableCell>

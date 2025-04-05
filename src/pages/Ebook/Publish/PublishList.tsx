@@ -20,6 +20,7 @@ import AdminTableDescription from "@/components/common/BookaroongAdmin/AdminTabl
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import { Link } from "react-router-dom";
 import { PUBLISH_LIST_DETAIL } from "@/Constants/ServiceUrl";
+import { formatToUTCString } from "@/lib/dateParse";
 
 const data = [
   {
@@ -148,13 +149,13 @@ function PublishList() {
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[83px]"}
-                      text={item.createAt}
+                      text={formatToUTCString(item.createAt)}
                     />
                   </TableCell>
                   <TableCell className="w-[88px]">
                     <AdminTableDescription
                       className={"w-[88px]"}
-                      text={item.adminSubmitAt}
+                      text={formatToUTCString(item.adminSubmitAt)}
                     />
                   </TableCell>
                   <TableCell>

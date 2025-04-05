@@ -20,7 +20,11 @@ import {
 } from "@/components/common/Tables";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { TUTORIAL_CREATE, TUTORIAL_DETAIL } from "@/Constants/ServiceUrl";
-import { dateToString, formatDateTimeToJSX } from "@/lib/dateParse";
+import {
+  dateToString,
+  formatDateTimeToJSX,
+  formatToUTCString,
+} from "@/lib/dateParse";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useReducer } from "react";
 import { Link } from "react-router-dom";
@@ -186,7 +190,9 @@ function Tutorial() {
             {data.list.map((item, index) => {
               return (
                 <TableRow key={index}>
-                  <TableCell> {formatDateTimeToJSX(item.createdAt)}</TableCell>
+                  <TableCell>
+                    {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
+                  </TableCell>
                   <TableCell>{item.title}</TableCell>
                   <TableCell>
                     {codeToName(categoryCodes, item.categoryCode)}

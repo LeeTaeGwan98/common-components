@@ -27,7 +27,7 @@ import { ActionType } from "@/api/common/commonType";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
-import { formatDateTimeToJSX } from "@/lib/dateParse";
+import { formatDateTimeToJSX, formatToUTCString } from "@/lib/dateParse";
 // import { formatDateTimeToJSX } from "@/lib/dateParse";
 
 type NoticleTableQueryStringType = TableQueryStringType & {
@@ -174,7 +174,9 @@ const Notice = () => {
               const { id, createdAt, title, isPinned, isVisible } = item;
               return (
                 <TableRow key={id}>
-                  <TableCell>{formatDateTimeToJSX(createdAt)}</TableCell>
+                  <TableCell>
+                    {formatDateTimeToJSX(formatToUTCString(createdAt))}
+                  </TableCell>
                   <TableCell>{title}</TableCell>
                   <TableCell>
                     <Checkbox

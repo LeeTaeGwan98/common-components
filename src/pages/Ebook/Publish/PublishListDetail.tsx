@@ -8,6 +8,7 @@ import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import { formatToUTCString } from "@/lib/dateParse";
 
 function PublishListDetail() {
   const { id } = useParams(); // id 값 추출
@@ -42,7 +43,11 @@ function PublishListDetail() {
       <ContentWrapper>
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <TextField label="닉네임" readOnly value={"닉네임"} />
-          <TextField label="제출일" readOnly value={"2025-03-02 12:31:31"} />
+          <TextField
+            label="제출일"
+            readOnly
+            value={formatToUTCString("2025-03-02 12:31:31")}
+          />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <TextField label="도서명" readOnly value={"도서명"} />
