@@ -118,7 +118,7 @@ function App() {
               {/* 전자책 관리 */}
               <Route path={PUBLISH_LIST} element={<PublishList />} />
               <Route
-                path={PUBLISH_LIST_DETAIL}
+                path={`${PUBLISH_LIST_DETAIL}/:id`}
                 element={<PublishListDetail />}
               />
               <Route path={COVER} element={<Cover />} />
@@ -161,7 +161,10 @@ function App() {
               <Route path={PLAN_DETAIL} element={<PlanDetail />} />
               <Route path={TUTORIAL} element={<Tutorial />} />
               <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
-              <Route path={TUTORIAL_DETAIL} element={<TutorialDetail />} />
+              <Route
+                path={`${TUTORIAL_DETAIL}/:id`}
+                element={<TutorialDetail />}
+              />
               <Route path={TEMPLATE} element={<Template />} />
               <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
 

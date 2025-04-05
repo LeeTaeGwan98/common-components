@@ -19,7 +19,6 @@ import SubTitleBar, {
   boolToString,
 } from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
-import { useEffect, useReducer } from "react";
 import { ActionType } from "@/api/common/commonType";
 import {
   getServiceGuide,
@@ -36,6 +35,7 @@ import {
 } from "@/Constants/CommonGroupCode";
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { codeToGetGroupCode, codeToName } from "@/utils/uitls";
+import { useReducer } from "react";
 
 const initState: ServiceGuideQueryStringType = {
   fromDt: undefined,

@@ -9,7 +9,7 @@ export const WITHDRAWL_REASON = "/withdraw-reasons";
 
 // 전자책 관리
 export const PUBLISH_LIST = "/publish";
-export const PUBLISH_LIST_DETAIL = "/publish-list";
+export const PUBLISH_LIST_DETAIL = "/publish";
 export const COVER = "/cover";
 export const COVER_DETAIL = "/cover";
 export const COVER_CREATE = "/cover-create";

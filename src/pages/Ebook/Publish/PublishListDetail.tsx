@@ -1,3 +1,4 @@
+import { getEbookDetail } from "@/api/ebook";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
@@ -5,8 +6,17 @@ import Divider from "@/components/common/Atoms/Divider/Divider";
 import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 function PublishListDetail() {
+  const { id } = useParams(); // id 값 추출
+  //전자책 상세 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["ebookDetailApi"], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getEbookDetail(Number(id)),
+    select: (data) => data.data.data,
+  });
   return (
     <BreadcrumbContainer
       breadcrumbNode={
@@ -40,7 +50,7 @@ function PublishListDetail() {
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <TextField label="저자/역자" readOnly value={"카테고리"} />
-          <TextField label="표지" readOnly value={"표지 방식"} />
+          <TextField label="카테고리" readOnly value={"시/에세이"} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <div className="relative">
@@ -54,15 +64,14 @@ function PublishListDetail() {
             </Text>
           </div>
 
-          <TextField label="표지 방식" readOnly value={"구매한 표지"} />
+          <TextField label="제작 방식" readOnly value={"원고 제출"} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <TextField label="원고 파일" readOnly value={"원고 파일"} />
           <TextField label="용량" readOnly value={"7.68MB"} />
         </div>
-        <div className="flex justify-center *:flex-1 gap-[20px]">
+        <div className="flex justify-center w-[calc(50%-10px)]">
           <TextField label="전자책 정가(판매가)" readOnly value={"8,900원"} />
-          <TextField label="제작 방식" readOnly value={"원고 제출"} />
         </div>
         <div className="flex justify-end">
           <OutlinedButton
