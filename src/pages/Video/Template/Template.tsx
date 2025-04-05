@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import { formatDateTimeToJSX } from "@/lib/dateParse";
+import { formatDateTimeToJSX, formatToUTCString } from "@/lib/dateParse";
 
 const data = [
   {
@@ -57,7 +57,10 @@ function Template() {
             {data.map((item) => {
               return (
                 <TableRow>
-                  <TableCell> {formatDateTimeToJSX(item.createAt)}</TableCell>
+                  <TableCell>
+                    {" "}
+                    {formatDateTimeToJSX(formatToUTCString(item.createAt))}
+                  </TableCell>
                   <TableCell>{item.no}</TableCell>
                   <TableCell>{item.nickName}</TableCell>
                   <TableCell>{item.email}</TableCell>

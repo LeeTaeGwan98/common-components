@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import { useModalStore } from "@/store/modalStore";
 import PaymentModal from "@/components/modal/member/PaymentModal";
-import { formatDateTimeToJSX } from "@/lib/dateParse";
+import { formatDateTimeToJSX, formatToUTCString } from "@/lib/dateParse";
 
 const data = [
   {
@@ -111,7 +111,9 @@ function PaymentManagement() {
                     <TableRow>
                       <TableCell>{item.no}</TableCell>
                       <TableCell>
-                        {formatDateTimeToJSX(item.paymentDay)}
+                        {formatDateTimeToJSX(
+                          formatToUTCString(item.paymentDay)
+                        )}
                       </TableCell>
                       <TableCell className="underline">
                         {item.nickName}

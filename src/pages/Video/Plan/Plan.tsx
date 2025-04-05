@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import { formatDateTimeToJSX } from "@/lib/dateParse";
+import { formatDateTimeToJSX, formatToUTCString } from "@/lib/dateParse";
 
 const data = [
   {
@@ -58,7 +58,9 @@ function Plan() {
               return (
                 <TableRow>
                   <TableCell>{item.no}</TableCell>
-                  <TableCell>{formatDateTimeToJSX(item.createAt)}</TableCell>
+                  <TableCell>
+                    {formatDateTimeToJSX(formatToUTCString(item.createAt))}
+                  </TableCell>
                   <TableCell>{item.nickName}</TableCell>
                   <TableCell>{item.email}</TableCell>
                   <TableCell>{item.plan}</TableCell>

@@ -31,6 +31,7 @@ import {
 } from "@/Constants/CommonGroupCode";
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { codeToGetGroupCode, codeToName } from "@/utils/uitls";
+import { formatToUTCString } from "@/lib/dateParse";
 
 // formState 타입 정의
 type FormState = {
@@ -177,7 +178,7 @@ function InquiryDetail() {
               문의일
               <TextField
                 className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value={formState.inquiryAt}
+                value={formatToUTCString(formState.inquiryAt)}
                 isVisible={false}
                 disabled
               />

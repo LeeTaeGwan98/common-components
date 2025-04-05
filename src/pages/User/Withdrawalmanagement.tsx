@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import { useModalStore } from "@/store/modalStore";
 import WithdrawlModal from "@/components/modal/member/WithdrawlModal";
-import { formatDateTimeToJSX } from "@/lib/dateParse";
+import { formatDateTimeToJSX, formatToUTCString } from "@/lib/dateParse";
 
 const data = [
   {
@@ -98,7 +98,9 @@ function Withdrawalmanagement() {
                     <TableRow>
                       <TableCell>{item.no}</TableCell>
                       <TableCell>
-                        {formatDateTimeToJSX(item.withdrawalDay)}
+                        {formatDateTimeToJSX(
+                          formatToUTCString(item.withdrawalDay)
+                        )}
                       </TableCell>
                       <TableCell>{item.nickName}</TableCell>
                       <TableCell>{item.email}</TableCell>

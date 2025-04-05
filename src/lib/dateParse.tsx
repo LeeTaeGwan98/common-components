@@ -1,4 +1,5 @@
 import { format, parse, parseISO } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 import React from "react";
 
 export const dateToString = (date: Date | undefined) => {
@@ -54,3 +55,20 @@ export const formatDateTimeToJSX = (dateString: string) => {
     </>
   );
 };
+
+/**
+ * UTC 기준으로 날짜를 포맷팅하는 함수
+ * @param date
+ * @param formatStr
+ * @returns
+ */
+export function formatToUTCString(
+  date: Date | string,
+  formatStr: string = "yyyy-MM-dd HH:mm:ss"
+): string {
+  if (!date) return "";
+  return formatInTimeZone(date, "UTC", formatStr);
+}
+
+//{formatDateTimeToJSX(formatToUTCString(item.withdrawalDay))}
+//{formatToUTCString(item.inquiryAt)}

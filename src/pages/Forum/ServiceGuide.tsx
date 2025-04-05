@@ -27,7 +27,11 @@ import {
 import { useSuspenseQuery } from "@tanstack/react-query";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
-import { dateToString, formatDateTimeToJSX } from "@/lib/dateParse";
+import {
+  dateToString,
+  formatDateTimeToJSX,
+  formatToUTCString,
+} from "@/lib/dateParse";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import {
   COMMON_GROUP_CODE_MAPPING,
@@ -198,7 +202,9 @@ const ServiceGuide = () => {
             {data.list.map((item) => {
               return (
                 <TableRow key={item.id}>
-                  <TableCell>{formatDateTimeToJSX(item.createdAt)}</TableCell>
+                  <TableCell>
+                    {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
+                  </TableCell>
                   <TableCell>
                     {codeToName(serviceCodes, item.serviceCode)}
                   </TableCell>
