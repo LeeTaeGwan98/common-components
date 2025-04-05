@@ -29,6 +29,11 @@ export interface TableQueryStringType {
   page?: number;
 }
 
+//파일 업로드 응답
+export interface FileUploadRes {
+  fileId: number;
+}
+
 /**
  * 제네릭 객체 T의 각 속성(key)에 대한 액션 타입을 정의
  * 각 액션은 { type, value } 형태의 객체

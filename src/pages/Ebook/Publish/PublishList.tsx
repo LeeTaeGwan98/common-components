@@ -181,12 +181,12 @@ function PublishList() {
                       text={item.writer}
                     />
                   </TableCell>
-                  <TableCell className="w-[142px]">
-                    <div
-                      className="cursor-pointer underline"
-                      onClick={handlePublishRejectModal}
-                    >
-                      보류
+                  <TableCell>
+                    <div onClick={handlePublishRejectModal}>
+                      <AdminTableDescription
+                        className={"w-[142px] cursor-pointer underline"}
+                        text={"보류"}
+                      />
                     </div>
                   </TableCell>
                   <TableCell>
@@ -196,7 +196,7 @@ function PublishList() {
                     />
                   </TableCell>
                   <TableCell className="w-[56px]">
-                    <Link to={PUBLISH_LIST_DETAIL}>
+                    <Link to={`${PUBLISH_LIST_DETAIL}/${2}`}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
