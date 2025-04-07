@@ -58,7 +58,6 @@ function Template() {
               return (
                 <TableRow>
                   <TableCell>
-                    {" "}
                     {formatDateTimeToJSX(formatToUTCString(item.createAt))}
                   </TableCell>
                   <TableCell>{item.no}</TableCell>
