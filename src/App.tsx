@@ -122,7 +122,7 @@ function App() {
                 element={<PublishListDetail />}
               />
               <Route path={COVER} element={<Cover />} />
-              <Route path={COVER_DETAIL} element={<CoverDetail />} />
+              <Route path={`${COVER_DETAIL}/:id`} element={<CoverDetail />} />
               <Route path={COVER_CREATE} element={<CoverCreate />} />
               <Route path={CHARGING} element={<Charging />} />
 

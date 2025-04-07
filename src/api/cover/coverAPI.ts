@@ -1,11 +1,12 @@
 import API from "@/api/API";
 import {
+  ApiResType,
+  FileUploadRes,
   type TableQueryStringType,
   type TableResType,
 } from "@/api/common/commonType";
 
-const COVER_BASE_URL = "/admin/cover";
-
+//표지목록 응답
 export interface GetCoverRes {
   id: number;
   registeredAt: string;
@@ -17,14 +18,132 @@ export interface GetCoverRes {
   buyerName: string;
 }
 
+//표지 목록 가져오기
 export const getCover = (
-  qsObj: TableQueryStringType & { isVisible: boolean | null }
+  queryStringObj: TableQueryStringType & { isVisible: boolean | null }
 ) => {
-  const { sortOrder, fromDt, toDt, isVisible, keyword, take, page } = qsObj;
+  const { sortOrder, fromDt, toDt, isVisible, keyword, take, page } =
+    queryStringObj;
 
-  let qs = COVER_BASE_URL;
+  let qs = "/admin/cover?";
+
+  if (sortOrder) {
+    qs += `sortOrder=${sortOrder}&`;
+  }
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (isVisible !== null) {
+    qs += `isVisible=${isVisible}&`;
+  }
+  if (keyword) {
+    qs += `keyword=${keyword}&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
 
   const data = API.get<TableResType<GetCoverRes>>(qs);
+
+  return data;
+};
+
+//표지 등록 요청
+export interface CoverCreateReq {
+  title: string;
+  author: string;
+  price: number;
+  isVisible: boolean;
+  description: string;
+  coverSampleUploadId?: number;
+  coverDesignUploadId?: number;
+}
+
+//표지 등록
+export const coverCreate = (payload: CoverCreateReq) => {
+  const data = API.post<ApiResType<{}>>("/admin/cover", payload);
+  return data;
+};
+
+//표지 샘플 이미지
+export const coverSamplelUpload = (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const data = API.post<ApiResType<FileUploadRes>>(
+    `/admin/cover/upload/sample`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return data;
+};
+
+//표지 디자인 파일
+export const coverDesignUpload = (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const data = API.post<ApiResType<FileUploadRes>>(
+    `/admin/cover/upload/design`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return data;
+};
+
+//표지 상세 응답
+export interface GetCoverDetailRes {
+  id: number;
+  title: string;
+  coverNo: string;
+  price: string;
+  author: string;
+  isVisible: boolean;
+  coverSampleUploadId: number;
+  coverDesignUploadId: number;
+  coverSampleUploadName: string;
+  coverDesignUploadName: string;
+  coverSampleUploadUrl: string;
+  coverDesignUploadUrl: string;
+  description: string;
+}
+
+//표지 상세 조회
+export const getCoverDetail = (id: number) => {
+  const queryString = `/admin/cover/${id}`;
+
+  const data = API.get<ApiResType<GetCoverDetailRes>>(queryString);
+
+  return data;
+};
+
+//표지 미리보기 응답
+export interface GetCoverPreviewRes {
+  file: File;
+}
+
+//표지 미리보기
+export const getCoverPreview = (id: number) => {
+  const queryString = `/admin/cover/${id}/preview`;
+
+  const data = API.get<ApiResType<GetCoverPreviewRes>>(queryString);
 
   return data;
 };
