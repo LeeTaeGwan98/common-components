@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
+import { HTMLAttributes } from "react";
 
-interface LabelProps {
+interface LabelProps extends HTMLAttributes<HTMLDivElement> {
   size?: "xSmall" | "small" | "medium";
   variant?: "filled" | "outlined";
   children?: React.ReactNode;
@@ -12,6 +13,7 @@ function Label({
   variant = "filled",
   children,
   className,
+  ...props
 }: LabelProps) {
   const sizeStyle = {
     xSmall: "py-[3px] px-[4px] text-caption2-bold gap-[2px]",
@@ -31,6 +33,7 @@ function Label({
         variantStyle[variant],
         className
       )}
+      {...props}
     >
       <span>{children}</span>
     </div>
