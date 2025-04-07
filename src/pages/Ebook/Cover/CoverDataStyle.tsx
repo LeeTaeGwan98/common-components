@@ -31,12 +31,12 @@ interface CoverDataStyleProps {
   price: number | undefined;
   setPrice: Dispatch<SetStateAction<number | undefined>>;
   //표지 샘플 이미지
-  sampleImgId: number | string;
+  sampleImgId: number | undefined;
   setSampleImgId: Dispatch<SetStateAction<number | undefined>>;
   sampleImgName: string;
   setSampleImgName: Dispatch<SetStateAction<string>>;
   //표지 디자인 파일
-  designFileId: number | string;
+  designFileId: number | undefined;
   setDesignFileId: Dispatch<SetStateAction<number | undefined>>;
   designFileName: string;
   setDesignFileName: Dispatch<SetStateAction<string>>;

@@ -56,7 +56,7 @@ function CoverCreate() {
       setSampleImgId={setSampleImgId}
       sampleImgName={sampleImgName}
       setSampleImgName={setSampleImgName}
-      designFileId={setDesignFileId}
+      designFileId={designFileId}
       setDesignFileId={setDesignFileId}
       designFileName={designFileName}
       setDesignFileName={setDesignFileName}
