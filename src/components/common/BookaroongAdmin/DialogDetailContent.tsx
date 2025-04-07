@@ -16,6 +16,7 @@ interface DialogProps {
   description?: string;
   close?: boolean;
   children?: ReactNode; // contents대신 children으로 contents를 받아옴
+  childrenClassName?: string;
   buttonElements?: ReactNode;
 }
 
@@ -28,6 +29,7 @@ function DialogDetailContent({
   summary,
   description,
   children,
+  childrenClassName,
   close,
   buttonElements,
 }: DialogProps) {
@@ -106,7 +108,12 @@ function DialogDetailContent({
       {fixed && <Divider />}
 
       {children && (
-        <div className={cn(fixed && "h-[274px] overflow-auto scrollbar-hide")}>
+        <div
+          className={cn(
+            fixed && "h-[274px] overflow-auto scrollbar-hide",
+            childrenClassName
+          )}
+        >
           {children}
         </div>
       )}

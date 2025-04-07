@@ -4,7 +4,7 @@ import {
   coverDesignUpload,
 } from "@/api/cover/coverAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
-import CoverDataStyle from "@/pages/Ebook/Cover/CoverDataStyle";
+import CoverDataStyle from "@/pages/Ebook/Cover/CoverDataTemplate";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

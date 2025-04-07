@@ -143,7 +143,7 @@ export interface GetCoverPreviewRes {
 export const getCoverPreview = (id: number) => {
   const queryString = `/admin/cover/${id}/preview`;
 
-  const data = API.get<ApiResType<GetCoverPreviewRes>>(queryString);
+  const data = API.get<Blob>(queryString, { responseType: "blob" });
 
   return data;
 };
