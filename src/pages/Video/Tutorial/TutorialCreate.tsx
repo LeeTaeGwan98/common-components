@@ -1,6 +1,6 @@
 import { tutorialCreate, TutorialCreateReq } from "@/api/tutorial/tutorialAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
-import TutorialDataStyle from "@/pages/Video/Tutorial/TutorialDataStyle";
+import TutorialDataStyle from "@/pages/Video/Tutorial/TutorialDataTemplate";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
