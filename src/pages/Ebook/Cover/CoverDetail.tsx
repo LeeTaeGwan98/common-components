@@ -5,7 +5,7 @@ import {
   getCoverDetail,
 } from "@/api/cover/coverAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
-import CoverDataStyle from "@/pages/Ebook/Cover/CoverDataStyle";
+import CoverDataStyle from "@/pages/Ebook/Cover/CoverDataTemplate";
 import {
   useMutation,
   useQueryClient,
