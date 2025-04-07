@@ -7,7 +7,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export const CoverPreviewModal = ({ id }: { id: number }) => {
-  const [src, setSrc] = useState<string>("");
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
   //표지 미리보기
   const { data } = useSuspenseQuery({
     queryKey: ["coverPreview", id],
@@ -15,21 +15,15 @@ export const CoverPreviewModal = ({ id }: { id: number }) => {
     select: (data) => data,
   });
 
-  function hexToBase64(hex: string): string {
-    const cleanHex = hex.replace(/\s+/g, ""); // 공백 제거
-    const binary = Uint8Array.from(
-      cleanHex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))
-    );
-    return btoa(String.fromCharCode(...binary));
-  }
-
   useEffect(() => {
-    const base64 = hexToBase64(data.data);
-    const dataUrl = `data:image/png;base64,${base64}`;
-    setSrc(dataUrl);
+    fetch(`/admin/cover/${id}/preview`)
+      .then((res) => res.arrayBuffer())
+      .then((buffer) => {
+        const blob = new Blob([buffer], { type: "image/jpeg" }); // 또는 'image/png'
+        const url = URL.createObjectURL(blob);
+        setImageSrc(url);
+      });
   }, []);
-
-  console.log("데이터", data.data);
 
   return (
     <DialogContent
@@ -51,7 +45,7 @@ export const CoverPreviewModal = ({ id }: { id: number }) => {
           </Button>
         }
       >
-        {src ? <img src={data.data} alt="From hex" /> : <p>Loading image...</p>}
+        <img src={imageSrc ?? ""} alt="이미지" />
         <div className="h-[32px]" />
       </DialogDetailContent>
     </DialogContent>
