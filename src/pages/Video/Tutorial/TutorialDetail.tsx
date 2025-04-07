@@ -18,6 +18,7 @@ function TutorialDetail() {
   const { id } = useParams(); // id 값 추출
   const queryClient = useQueryClient();
   const navigate = useNavigate(); //네비게이션
+
   //튜토리얼 상세 조회 api
   const { data } = useSuspenseQuery({
     queryKey: ["tutorialDetail", id],

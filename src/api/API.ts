@@ -8,14 +8,14 @@ export const APIInstance = axios.create({
 });
 
 // API헤더의 Authorization에 accessToken을 심어주는 인터셉터
-// APIInstance.interceptors.request.use((config) => {
-//   const accessToken = useAuthStore.getState().accessToken;
-//   if (accessToken) {
-//     config.headers.Authorization = `Bearer ${accessToken}`;
-//   }
+APIInstance.interceptors.request.use((config) => {
+  const accessToken = useAuthStore.getState().accessToken;
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
 
-//   return config;
-// });
+  return config;
+});
 
 APIInstance.interceptors.response.use(
   (res) => res,
