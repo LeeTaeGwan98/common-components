@@ -11,8 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import { useEffect, useState } from "react";
-import { getEbookList } from "@/api/ebook";
+import { useEffect, useReducer, useState } from "react";
 import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/modal";
 import { useModalStore } from "@/store/modalStore";
 import AdminTableTitle from "@/components/common/BookaroongAdmin/AdminTableTitle";
@@ -20,9 +19,12 @@ import AdminTableDescription from "@/components/common/BookaroongAdmin/AdminTabl
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import { Link } from "react-router-dom";
 import { PUBLISH_LIST_DETAIL } from "@/Constants/ServiceUrl";
-import { formatToUTCString } from "@/lib/dateParse";
+import { dateToString, formatToUTCString } from "@/lib/dateParse";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { EbookQueryStringType, getEbookList } from "@/api/ebook";
+import { ActionType } from "@/api/common/commonType";
 
-const data = [
+const datas = [
   {
     id: 1,
     createAt: "9999-12-31 24:59:00",
@@ -47,23 +49,68 @@ const data = [
   },
 ];
 
+const initState: EbookQueryStringType = {
+  fromDt: undefined,
+  toDt: dateToString(new Date()),
+  sortOrder: "DESC",
+  isVisible: null,
+  keyword: "",
+  take: 10,
+  page: 1,
+};
+
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
+
 function PublishList() {
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
+
   const { openModal } = useModalStore();
   const [selectId, setSelectId] = useState<number[]>([]); //선택한 목록 아이디
-
-  //전자책 전체 목록 가져오기
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await getEbookList();
-      console.log(res);
-      console.log(import.meta.env.VITE_API_URL);
-    };
-    fetchData();
-  }, []);
 
   const handlePublishRejectModal = () => {
     openModal(<PublishRejectReasonModal />);
   };
+
+  //테이블 빈 row 처리
+  const renderEmptyRows = () => {
+    const { take } = filterInfo;
+    if (!take) return;
+    const emptyRowsCount = take - data.list.length;
+    const emptyRows = [];
+
+    for (let i = 0; i < emptyRowsCount; i++) {
+      emptyRows.push(
+        <TableRow key={`empty-row-${i}`}>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+        </TableRow>
+      );
+    }
+
+    return emptyRows;
+  };
+
+  // 전자책 목록 조회
+  const { data } = useSuspenseQuery({
+    queryKey: ["serviceGuideList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getEbookList(filterInfo),
+    select: (data) => data.data.data,
+  });
+
+  console.log(data);
 
   return (
     <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
@@ -75,16 +122,16 @@ function PublishList() {
               <TableCell isHeader>
                 <div>
                   <Checkbox
-                    checked={data.every((item) => selectId.includes(item.id))}
+                    checked={datas.every((item) => selectId.includes(item.id))}
                     onClick={() => {
-                      if (data.every((item) => selectId.includes(item.id))) {
+                      if (datas.every((item) => selectId.includes(item.id))) {
                         //전체 선택 상태인 경우
                         //클릭 시 선택된 아이디 모두 제거
                         setSelectId([]);
                       } else {
                         //전체 선택 상태 아닌 경우
                         //클릭 시 미선택된 아이디 모두 선택
-                        const missingIds = data
+                        const missingIds = datas
                           .filter((item) => !selectId.includes(item.id)) // 빠진 아이디 필터링
                           .map((item) => item.id); // 빠진 아이디들만 배열로 추출
 
@@ -129,7 +176,7 @@ function PublishList() {
           </TableHeader>
 
           <TableBody>
-            {data.map((item, index) => {
+            {datas.map((item, index) => {
               return (
                 <TableRow key={index}>
                   <TableCell>
