@@ -1,12 +1,23 @@
-import { getCoverDetail } from "@/api/cover/coverAPI";
+import {
+  CoverCreateReq,
+  coverUpdate,
+  CoverUpdateReq,
+  getCoverDetail,
+} from "@/api/cover/coverAPI";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
 import CoverDataStyle from "@/pages/Ebook/Cover/CoverDataStyle";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 function CoverDetail() {
   const { id } = useParams(); // id 값 추출
   const navigate = useNavigate(); //네비게이션
+  const queryClient = useQueryClient();
 
   //표지 상세 조회 api
   const { data } = useSuspenseQuery({
@@ -39,6 +50,22 @@ function CoverDetail() {
     data.coverDesignUploadName
   );
   const [intro, setIntro] = useState<string>(data.description); //소개
+
+  // 표지 수정 API 호출
+  const { mutate: coverUpdateFn } = useMutation({
+    mutationFn: (payload: { id: number; data: CoverUpdateReq }) =>
+      coverUpdate(payload),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["coverDetail", id] });
+      navigate(-1);
+    },
+    onError() {
+      customToast({
+        title: "표지를 수정중 에러가 발생했습니다.",
+      });
+    },
+  });
+
   return (
     <CoverDataStyle
       type="detail"
@@ -62,7 +89,22 @@ function CoverDetail() {
       intro={intro}
       setIntro={setIntro}
       onClickSave={() => {
-        console.log("저장");
+        //표지 수정
+        const postData: CoverCreateReq = {
+          title: coverName,
+          author: creater,
+          price: price ?? 0,
+          isVisible: isCoverExposure,
+          description: intro,
+        };
+
+        if (sampleImgId) {
+          postData.coverSampleUploadId = sampleImgId;
+        }
+        if (designFileId) {
+          postData.coverDesignUploadId = designFileId;
+        }
+        coverUpdateFn({ id: Number(id), data: postData });
       }}
     />
   );

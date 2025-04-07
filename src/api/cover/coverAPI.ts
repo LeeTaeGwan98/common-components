@@ -147,3 +147,29 @@ export const getCoverPreview = (id: number) => {
 
   return data;
 };
+
+//표지 수정 요청
+export interface CoverUpdateReq {
+  title: string;
+  author: string;
+  price: number;
+  isVisible: boolean;
+  description: string;
+  coverSampleUploadId?: number;
+  coverDesignUploadId?: number;
+}
+
+//표지 수정
+export const coverUpdate = (payload: { id: number; data: CoverUpdateReq }) => {
+  const data = API.patch<ApiResType<{}>>(
+    `/admin/cover/${payload.id}`,
+    payload.data
+  );
+  return data;
+};
+
+//표지 삭제
+export const coverDelete = (id: number) => {
+  const data = API.delete<ApiResType<{}>>(`/admin/cover/${id}`);
+  return data;
+};

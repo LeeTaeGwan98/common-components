@@ -10,6 +10,7 @@ import Title from "@/components/common/BookaroongAdmin/Title";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
+import CoverDelModal from "@/components/modal/Ebook/Cover/CoverDelModal";
 import CoverPreviewModal from "@/components/modal/Ebook/Cover/CoverPreviewModal";
 import { useModalStore } from "@/store/modalStore";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
@@ -115,6 +116,12 @@ function CoverDataStyle({
   const handlePreviewModal = () => {
     openModal(<CoverPreviewModal id={Number(id)} />);
   };
+
+  //표지 삭제 모달
+  const handleDeleteModal = () => {
+    openModal(<CoverDelModal id={Number(id)} />);
+  };
+
   return (
     <BreadcrumbContainer
       breadcrumbNode={
@@ -139,7 +146,11 @@ function CoverDataStyle({
             표지 미리보기
           </OutlinedButton>
           {type === "detail" && (
-            <Button className="w-[180px]" size="large">
+            <Button
+              className="w-[180px]"
+              size="large"
+              onClick={handleDeleteModal}
+            >
               삭제
             </Button>
           )}
