@@ -3,7 +3,7 @@ import Badge from "@/components/common/Atoms/Badge/Badge";
 
 interface IconButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
-  size?: "normal" | "small";
+  size?: "normal" | "small" | "custom";
   icon: React.ReactNode;
   type?: "normal" | "background" | "outlined" | "solid";
   disable?: boolean;
@@ -21,19 +21,29 @@ function IconButton({
   ...props
 }: IconButtonProps) {
   const sizeStyle = {
-    normal: "p-[10px]",
-    small: "p-[7px]",
-  };
-  const interactiveTypeStyle = {
     normal:
-      "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active",
-    background:
-      "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active",
-    outlined:
-      "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active",
-    solid:
-      "shadow-style-alias-shadow-strong hover:brightness-hover focus:brightness-focus active:brightness-active",
+      "after:top-[-10px] after:right-[-10px] after:bottom-[-10px] after:left-[-10px]",
+    small:
+      "after:top-[-7px] after:right-[-7px] after:bottom-[-7px] after:left-[-7px]",
+    custom:
+      type === "normal"
+        ? "after:top-[-8px] after:right-[-8px] after:bottom-[-8px] after:left-[-8px]"
+        : "after:top-[-6px] after:right-[-6px] after:bottom-[-6px] after:left-[-6px]",
   };
+  const interactiveTypeStyle = `
+  relative
+  after:content-['']
+  after:absolute
+  after:rounded-full
+  after:transition-colors
+  after:-z-10
+  ${
+    type === "solid"
+      ? "shadow-style-alias-shadow-strong hover:brightness-hover focus:brightness-focus active:brightness-active"
+      : "after:hover:bg-label-normal/light-hover after:focus:bg-label-normal/light-focus after:active:bg-label-normal/light-active"
+  }
+`;
+
   const typeStyle = {
     normal: "",
     background: "bg-line-solid-alternative",
@@ -47,8 +57,8 @@ function IconButton({
   return (
     <button
       className={cn(
-        "w-fit p-[8px] rounded-full relative",
-        !disable && interactiveTypeStyle[type],
+        "flex items-center w-fit rounded-full relative",
+        !disable && interactiveTypeStyle,
         sizeStyle[size],
         typeStyle[type],
         disableStyle,

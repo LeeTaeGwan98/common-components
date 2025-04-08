@@ -69,7 +69,7 @@ export const useAuthStore = create<AuthState>()(
     }),
 
     {
-      name: "auth-storage", // localStorage에 저장될 키 이름
+      name: "auth-admin-storage", // localStorage에 저장될 키 이름
       storage: createJSONStorage(() => localStorage), // localStorage 사용
     }
   )

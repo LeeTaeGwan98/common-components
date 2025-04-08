@@ -25,7 +25,7 @@ function CardRow({ data = {}, slot = {} }: CardRowProps) {
       <div className="flex flex-col gap-[6px]">
         <span
           className={cn(
-            "text-label2-bold text-label-normal",
+            "text-label2-bold text-label-alternative",
             slot.titleClassname
           )}
         >
@@ -33,7 +33,7 @@ function CardRow({ data = {}, slot = {} }: CardRowProps) {
         </span>
         <span
           className={cn(
-            "text-body2-normal-regular text-label-neutral",
+            "text-body2-reading-bold-regular text-label-normal",
             slot.contentClassName
           )}
         >

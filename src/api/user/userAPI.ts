@@ -81,3 +81,38 @@ export const getUserDetailSide = (id: number) => {
   );
   return data;
 };
+
+//회원 상세 기본 정보 조회 응답
+export interface UserDefaultRes {
+  id: number;
+  name: string;
+  planName: string;
+  pointBalance: number;
+  publishedEbookCount: string;
+  memberType: string;
+  businessLicenseNumber: string;
+  phoneNumber: string;
+  accountHolder: string;
+  bankCode: string;
+  accountNumber: string;
+}
+
+//회원 상세 기본 정보 조회
+export const getUserDefaultInfo = (id: number) => {
+  const data = API.get<{ data: UserDefaultRes }>(
+    `/admin/user/${id}/detail/default`
+  );
+  return data;
+};
+
+//회원 상태 활성화
+export const userActivate = (id: number) => {
+  const data = API.patch<{ data: {} }>(`/api/v1/admin/user/${id}/activate`);
+  return data;
+};
+
+//회원 상태 비활성화
+export const userDeactivate = (id: number) => {
+  const data = API.patch<{ data: {} }>(`/api/v1/admin/user/${id}/deactivate`);
+  return data;
+};

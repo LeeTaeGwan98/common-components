@@ -24,6 +24,7 @@ import { COVER_CREATE, COVER_DETAIL } from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Label from "@/components/common/Atoms/Label/Label";
+import Updown from "@/assets/svg/common/UpdownIcons.svg";
 
 type CoverTableQueryStringType = TableQueryStringType & {
   isVisible: boolean | null;
@@ -103,6 +104,14 @@ function Cover() {
     });
   };
 
+  //정렬
+  const handleSortOrder = () => {
+    dispatch({
+      type: "sortOrder",
+      value: filterInfo.sortOrder === "DESC" ? "ASC" : "DESC",
+    });
+  };
+
   //카테고리 변경시 핸들
   const handleisVisible = (visible: string | null) => {
     if (!visible) return;
@@ -150,7 +159,11 @@ function Cover() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell isHeader>No</TableCell>
+              <TableCell isHeader>
+                <div className="flex items-center justify-center gap-[2px]">
+                  No <IconButton icon={<Updown />} onClick={handleSortOrder} />
+                </div>
+              </TableCell>
               <TableCell isHeader>표지등록일</TableCell>
               <TableCell isHeader>표지 판매일</TableCell>
               <TableCell isHeader>표지명</TableCell>

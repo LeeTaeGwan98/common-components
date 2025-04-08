@@ -214,8 +214,12 @@ function UserList() {
                     {handleStateLabel(item.isActive)}
                   </TableCell>
                   <TableCell>
-                    <Link to={`${USER_DETAIL}/${item.id}`}>
+                    <Link
+                      to={`${USER_DETAIL}/${item.id}`}
+                      className="flex justify-center items-center"
+                    >
                       <IconButton
+                        size="custom"
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
                         }
