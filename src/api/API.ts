@@ -73,7 +73,7 @@ export default class API {
   ): Promise<R> {
     return APIInstance.get<T, R, D>(...params).catch((error: unknown) => {
       console.log(error);
-      throw Error;
+      throw error;
     });
   }
 
@@ -82,7 +82,7 @@ export default class API {
   ): Promise<R> {
     return APIInstance.post<T, R, D>(...params).catch((error: unknown) => {
       console.log(error);
-      throw Error;
+      throw error;
     });
   }
 
@@ -91,7 +91,7 @@ export default class API {
   ): Promise<R> {
     return APIInstance.put<T, R, D>(...params).catch((error: unknown) => {
       console.log(error);
-      throw Error;
+      throw error;
     });
   }
 
@@ -100,7 +100,7 @@ export default class API {
   ): Promise<R> {
     return APIInstance.patch<T, R, D>(...params).catch((error: unknown) => {
       console.log(error);
-      throw Error;
+      throw error;
     });
   }
 
@@ -109,7 +109,7 @@ export default class API {
   ): Promise<R> {
     return APIInstance.delete<T, R, D>(...params).catch((error: unknown) => {
       console.log(error);
-      throw Error;
+      throw error;
     });
   }
 }

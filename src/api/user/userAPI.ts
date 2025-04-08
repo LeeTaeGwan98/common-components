@@ -1,6 +1,7 @@
 import API from "@/api/API";
-import { type TableResType } from "@/api/common/commonType";
+import { ApiResType, type TableResType } from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
+import { data } from "react-router-dom";
 
 export interface UserQueryStringType
   extends Omit<TableQueryStringType, "isVisible"> {
@@ -118,9 +119,13 @@ export const userDeactivate = (id: number) => {
 };
 
 //회원 닉네임 수정
-export const userNickChange = (id: number) => {
-  const data = API.patch<{ data: {} }>(
-    `/api/v1/account/${id}/profile/nickname`
+export const userNickChange = (payload: {
+  id: number;
+  data: { nickname: string };
+}) => {
+  const data = API.patch<{ data: ApiResType<{}> }>(
+    `/account/${payload.id}/profile/nickname`,
+    payload.data
   );
   return data;
 };

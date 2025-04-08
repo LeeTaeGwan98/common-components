@@ -15,7 +15,7 @@ import {
   SelectItem,
   SelectLabel,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   useMutation,
@@ -50,13 +50,17 @@ import ButtonTextList from "@/components/common/Atoms/Button/ButtonTextList/Butt
 import { PopoverClose } from "@radix-ui/react-popover";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
+import { AxiosError } from "axios";
+import { ApiResType } from "@/api/common/commonType";
 
 function UserDetail() {
   const { openModal, closeModal } = useModalStore();
   const { id } = useParams();
   const queryClient = useQueryClient();
   const [selectedTab, setSelectedTab] = useState("기본"); // 기본값 설정
+  const [nickName, setNickName] = useState(""); //유저 닉네임
   const [isNickEdit, setIsNickEdit] = useState(false); //닉네임 편집 상태 여부
+  const [isNickError, setIsNickError] = useState(false); //닉네임 에러
 
   //사용자 소셜 공통 카테고리 가져오기
   const { data: codeInfo } = useSuspenseQuery({
@@ -109,18 +113,23 @@ function UserDetail() {
 
   //회원 닉네임 수정 api
   const { mutate: userNickChangeFn } = useMutation({
-    mutationFn: (id: number) => userNickChange(id),
+    mutationFn: (payload: { id: number; data: { nickname: string } }) =>
+      userNickChange(payload),
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["userDetailSide", id] });
       customToast({
         title: "수정되었습니다.",
       });
+      setIsNickEdit(false);
       closeModal();
     },
-    onError() {
-      customToast({
-        title: "중복된 닉네임입니다.",
-      });
+    onError(error: AxiosError<ApiResType<unknown>>) {
+      if (error.response?.data.status == 409) {
+        customToast({
+          title: "중복된 닉네임입니다.",
+        });
+      }
+
       closeModal();
     },
   });
@@ -144,6 +153,22 @@ function UserDetail() {
       />
     );
   };
+
+  //닉네임 유효한 문자만 입력
+  const filterInput = (value: string) => {
+    return value.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]/g, ""); // 유효한 문자만 허용
+  };
+
+  //한글 자음 모음 체크
+  const hasHangulJamo = (value: string): boolean => {
+    const jamoRegex = /[\u3131-\u314e\u314f-\u3163]/;
+    return jamoRegex.test(value);
+  };
+
+  //유저 닉네임 저장
+  useEffect(() => {
+    setNickName(data.name);
+  }, [data]);
 
   return (
     <BreadcrumbContainer
@@ -247,13 +272,40 @@ function UserDetail() {
             {isNickEdit ? (
               <TextField
                 size="medium"
-                value={data.name}
+                value={nickName}
+                helperText={isNickError ? " " : ""}
+                errorInfo={
+                  isNickError
+                    ? {
+                        isError: true,
+                        text: "자음, 모음은 사용이 불가합니다.",
+                      }
+                    : {}
+                }
                 maxLength={30}
                 buttonElement={
-                  <Text className="text-label1-normal-regular cursor-pointer">
+                  <Text
+                    className="text-label1-normal-regular cursor-pointer"
+                    onClick={() => {
+                      if (hasHangulJamo(nickName)) {
+                        setIsNickError(true);
+                        return;
+                      }
+                      userNickChangeFn({
+                        id: Number(id),
+                        data: { nickname: nickName },
+                      });
+                    }}
+                  >
                     수정
                   </Text>
                 }
+                onChange={(e) => {
+                  setIsNickError(false);
+                  //유효한 문자만 입력
+                  const filtered = filterInput(e.target.value);
+                  setNickName(filtered);
+                }}
               />
             ) : (
               <></>
