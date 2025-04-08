@@ -158,3 +158,11 @@ export const tutorialDelete = (id: number) => {
   const data = API.delete<ApiResType<{}>>(`/admin/video/tutorial/${id}`);
   return data;
 };
+
+//튜토리얼 영상 스트리밍
+export const tutoriaVideoGet = (id: number) => {
+  const data = API.get<Blob>(`/admin/video/tutorial/${id}/stream`, {
+    responseType: "blob",
+  });
+  return data;
+};

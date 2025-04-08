@@ -151,8 +151,8 @@ function UserList() {
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="ALL">모든상태</SelectItem>
-                <SelectItem value="TRUE">노출</SelectItem>
-                <SelectItem value="FALSE">비노출</SelectItem>
+                <SelectItem value="TRUE">활성</SelectItem>
+                <SelectItem value="FALSE">비활성</SelectItem>
                 <SelectItem value="WITHDRAWAL">탈퇴</SelectItem>
               </SelectGroup>
             </SelectContent>
@@ -210,7 +210,9 @@ function UserList() {
                       item.point.toLocaleString("kr")
                     )}
                   </TableCell>
-                  <TableCell>{handleStateLabel(item.isActive)}</TableCell>
+                  <TableCell className="flex h-[inherit] items-center justify-center content-center">
+                    {handleStateLabel(item.isActive)}
+                  </TableCell>
                   <TableCell>
                     <Link to={`${USER_DETAIL}/${item.id}`}>
                       <IconButton

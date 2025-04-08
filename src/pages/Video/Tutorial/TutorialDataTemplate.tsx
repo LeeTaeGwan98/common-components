@@ -43,6 +43,11 @@ interface TutorialDataStyleProps {
   onclickDelete?: () => void;
   //저장 버튼 클릭
   onClickSave: () => void;
+  // 저장되어 있는 썸네일 이름
+  thumnailUploadedName?: string;
+  // 저장되어 있는 비디오 이름
+  videoUploadedName?: string;
+  uploadedVideoUrl?: string | null;
 }
 
 function TutorialDataStyle({
@@ -57,6 +62,9 @@ function TutorialDataStyle({
   setIsNoExposure,
   onclickDelete,
   onClickSave,
+  thumnailUploadedName,
+  videoUploadedName,
+  uploadedVideoUrl,
 }: TutorialDataStyleProps) {
   const [videoFile, setVideoFile] = useState<File | null>(null); //영상 파일
   const [tumbnailFile, setTumbnailFile] = useState<File | null>(null); //썸네일 파일
@@ -101,20 +109,25 @@ function TutorialDataStyle({
   //저장 버튼 활성화 여부
   const formValid = tumbnailFile && category && videoFile && tutorialName;
 
-  console.log(!formValid);
+  // console.log(!formValid);
 
   //비디오
   const video = useMemo(() => {
-    return (
-      videoFile && (
+    if (videoFile) {
+      return (
         <video
           className="w-full h-[565px]"
           controls
           src={URL.createObjectURL(videoFile)}
         />
-      )
-    );
-  }, [videoFile]);
+      );
+    } else if (uploadedVideoUrl) {
+      return (
+        <video className="w-full h-[565px]" controls src={uploadedVideoUrl} />
+      );
+    }
+    return null;
+  }, [videoFile, uploadedVideoUrl]);
 
   //비디오 url 생성
   useEffect(() => {
@@ -196,14 +209,16 @@ function TutorialDataStyle({
             }}
           >
             <TextField
-              slot={{ inputClassName: "cursor-pointer" }}
+              slot={{ inputClassName: "cursor-pointer " }}
               label="영상 파일"
               placeholder="파일을 첨부해주세요"
               readOnly={true}
               buttonElement={
-                <OutlinedButton size="small">파일 업로드</OutlinedButton>
+                <OutlinedButton size="small" className="">
+                  파일 업로드
+                </OutlinedButton>
               }
-              value={videoFile?.name ?? ""}
+              value={videoFile?.name ?? videoUploadedName ?? ""}
             />
           </FileInput>
         </div>
@@ -241,7 +256,7 @@ function TutorialDataStyle({
               buttonElement={
                 <OutlinedButton size="small">파일 업로드</OutlinedButton>
               }
-              value={tumbnailFile?.name ?? ""}
+              value={tumbnailFile?.name ?? thumnailUploadedName ?? ""}
             />
           </FileInput>
         </div>

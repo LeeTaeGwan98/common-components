@@ -3,39 +3,51 @@ import Button from "@/components/common/Atoms/Button/Solid/Button";
 import DialogDetailContent from "@/components/common/BookaroongAdmin/DialogDetailContent";
 import { DialogContent } from "@/components/ui/dialog";
 import { useModalStore } from "@/store/modalStore";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-export const CoverPreviewModal = ({ id }: { id: number }) => {
+export const CoverPreviewModal = ({
+  id,
+  file,
+}: {
+  id: number;
+  file: File | null;
+}) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   //표지 미리보기
-  const { data } = useSuspenseQuery({
+  const { data } = useQuery({
     queryKey: ["coverPreview", id],
     queryFn: () => getCoverPreview(Number(id)),
-    select: (data) => data,
+    select: (data) => data.data,
+    enabled: !!id,
   });
 
   useEffect(() => {
-    fetch(`/admin/cover/${id}/preview`)
-      .then((res) => res.arrayBuffer())
-      .then((buffer) => {
-        const blob = new Blob([buffer], { type: "image/jpeg" }); // 또는 'image/png'
-        const url = URL.createObjectURL(blob);
-        setImageSrc(url);
-      });
-  }, []);
+    const imageData = file ? file : data;
+
+    if (!imageData) return;
+
+    const objectUrl = URL.createObjectURL(imageData);
+    setImageSrc(objectUrl);
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [id, data, file]);
 
   return (
     <DialogContent
       onOpenAutoFocus={(event) => event.preventDefault()}
-      className="max-w-[560px] min-w-0 w-full p-0 border-none rounded-[12px] [&>button]:hidden"
+      className="max-w-[560px] h-dialog-height min-w-0 w-full p-0 border-none rounded-[12px] [&>button]:hidden"
     >
       <DialogDetailContent
+        fixed={true}
         heading="표지 미리보기"
         close={true}
+        childrenClassName="h-full py-detail-content-vertical-margin px-detail-content-vertical-margin"
         buttonElements={
           <Button
-            className="w-full"
+            className="w-full h-[48px]"
             size="large"
             onClick={() => {
               useModalStore.getState().closeModal();
@@ -45,8 +57,7 @@ export const CoverPreviewModal = ({ id }: { id: number }) => {
           </Button>
         }
       >
-        <img src={imageSrc ?? ""} alt="이미지" />
-        <div className="h-[32px]" />
+        <img src={imageSrc ?? ""} alt="표지 미리보기" />
       </DialogDetailContent>
     </DialogContent>
   );

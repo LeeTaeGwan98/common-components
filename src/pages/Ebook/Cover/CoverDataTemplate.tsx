@@ -112,9 +112,30 @@ function CoverDataStyle({
     sampleImgId &&
     designFileId;
 
+  const resizeImage = (file: File): Promise<File> =>
+    new Promise((res, rej) => {
+      const img = new Image();
+      img.onload = () => {
+        const c = Object.assign(document.createElement("canvas"), {
+          width: 1000,
+          height: 1600,
+        });
+        c.getContext("2d")!.drawImage(img, 0, 0, 1000, 1600);
+        c.toBlob(
+          (b) =>
+            b
+              ? res(new File([b], file.name, { type: file.type }))
+              : rej("blob 실패"),
+          file.type
+        );
+      };
+      img.onerror = rej;
+      img.src = URL.createObjectURL(file);
+    });
+
   //표지 미리보기 모달
   const handlePreviewModal = () => {
-    openModal(<CoverPreviewModal id={Number(id)} />);
+    openModal(<CoverPreviewModal id={Number(id)} file={sampleImgFile} />);
   };
 
   //표지 삭제 모달
@@ -205,12 +226,14 @@ function CoverDataStyle({
           <FileInput
             accept="image/png,image/jpeg"
             files={sampleImgFile ? [sampleImgFile] : []}
-            setFiles={(files) => {
+            setFiles={async (files) => {
+              //todo: 이미지 리사이즈로 인해 시간이 걸림(저장버튼 깜빡거림) - 이에 대해 문의필요
               if (Array.isArray(files) && files.length > 0) {
-                setSampleImgFile(files[0]);
-                setSampleImgName(files[0].name);
-                //샘플 이미지 파일 업로드
-                coverSampleUploadFn(files[0]);
+                setSampleImgId(undefined);
+                const resized = await resizeImage(files[0]); // 여기서 미리 resize
+                setSampleImgFile(resized);
+                setSampleImgName(resized.name);
+                coverSampleUploadFn(resized); // 리사이즈된 걸 바로 업로드
               }
             }}
           >
@@ -220,7 +243,9 @@ function CoverDataStyle({
               value={sampleImgName ? sampleImgName : "파일을 첨부해주세요"}
               readOnly
               buttonElement={
-                <OutlinedButton size="small">파일 업로드</OutlinedButton>
+                <OutlinedButton size="small">
+                  {sampleImgId ? "파일 변경" : "파일 업로드"}
+                </OutlinedButton>
               }
             />
           </FileInput>
@@ -242,7 +267,9 @@ function CoverDataStyle({
               value={designFileName ? designFileName : "파일을 첨부해주세요"}
               readOnly
               buttonElement={
-                <OutlinedButton size="small">파일 업로드</OutlinedButton>
+                <OutlinedButton size="small">
+                  {designFileId ? "파일 변경" : "파일 업로드"}
+                </OutlinedButton>
               }
             />
           </FileInput>
@@ -277,6 +304,7 @@ function CoverDataStyle({
             className="max-w-[180px] w-full"
             size="large"
             type="assistive"
+            onClick={() => history.back()}
           >
             취소
           </OutlinedButton>

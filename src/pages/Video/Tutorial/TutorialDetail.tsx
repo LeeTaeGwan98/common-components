@@ -3,15 +3,16 @@ import {
   TutorialCreateReq,
   tutorialDelete,
   tutorialUpdate,
+  tutoriaVideoGet,
 } from "@/api/tutorial/tutorialAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
-import TutorialDataStyle from "@/pages/Video/Tutorial/TutorialDataStyle";
+import TutorialDataStyle from "@/pages/Video/Tutorial/TutorialDataTemplate";
 import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 function TutorialDetail() {
@@ -25,6 +26,27 @@ function TutorialDetail() {
     queryFn: () => getTutorialDetail(Number(id)),
     select: (data) => data.data.data,
   });
+
+  // 비디오 조회
+  const { data: tutorialVideoBlob } = useSuspenseQuery({
+    queryKey: ["tutorialVideo", id],
+    queryFn: () => tutoriaVideoGet(Number(id)).then((res) => res.data),
+    select: (data) => data,
+  });
+
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!tutorialVideoBlob) return;
+
+    const blob = new Blob([tutorialVideoBlob], { type: "video/mp4" }); // ✨ Blob 생성
+    const url = URL.createObjectURL(blob);
+    setVideoUrl(url);
+
+    return () => {
+      URL.revokeObjectURL(url); // 메모리 해제
+    };
+  }, [tutorialVideoBlob]);
 
   const [tutorialName, setTutorialName] = useState<string>(data.title); //튜토리얼명
   const [category, setCategory] = useState<string>(data.categoryCode); //카테고리
@@ -65,34 +87,46 @@ function TutorialDetail() {
   });
 
   return (
-    <TutorialDataStyle
-      type={"detail"}
-      tutorialName={tutorialName}
-      setTutorialName={setTutorialName}
-      category={category}
-      setCategory={setCategory}
-      setVideoFileId={setVideoFileId}
-      setTutorialTumbnailId={setThumbNailFileId}
-      isExposure={isExposure}
-      setIsNoExposure={setIsNoExposure}
-      onclickDelete={() => {
-        //튜토리얼 삭제
-        deleteTutorialFn(Number(id));
-      }}
-      onClickSave={() => {
-        //튜토리얼 수정
-        updateTutorialFn({
-          id: Number(id),
-          data: {
-            title: tutorialName,
-            categoryCode: category,
-            isVisible: isExposure,
-            videoUploadId: videoFileId,
-            thumnailUploadId: thumbnailFileId,
-          },
-        });
-      }}
-    />
+    <>
+      <TutorialDataStyle
+        type={"detail"}
+        tutorialName={tutorialName}
+        setTutorialName={setTutorialName}
+        category={category}
+        setCategory={setCategory}
+        setVideoFileId={setVideoFileId}
+        setTutorialTumbnailId={setThumbNailFileId}
+        isExposure={isExposure}
+        setIsNoExposure={setIsNoExposure}
+        thumnailUploadedName={data.thumnailUploadName}
+        videoUploadedName={data.videoUploadName}
+        uploadedVideoUrl={videoUrl}
+        onclickDelete={() => {
+          //튜토리얼 삭제
+          deleteTutorialFn(Number(id));
+        }}
+        onClickSave={() => {
+          //튜토리얼 수정
+          updateTutorialFn({
+            id: Number(id),
+            data: {
+              title: tutorialName,
+              categoryCode: category,
+              isVisible: isExposure,
+              videoUploadId: videoFileId,
+              thumnailUploadId: thumbnailFileId,
+            },
+          });
+        }}
+      />
+      {/* {videoUrl && (
+        <video
+          controls
+          className="w-full h-[500px] rounded-xl shadow-md"
+          src={videoUrl}
+        />
+      )} */}
+    </>
   );
 }
 

@@ -2,7 +2,6 @@ import { useModalStore } from "@/store/modalStore";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import { DialogContent } from "@/components/ui/dialog";
 import { useMutation } from "@tanstack/react-query";
-import { deleteNotice } from "@/api/notice/noticeAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
 import Actions from "@/components/common/Molecules/Actions/Actions";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
