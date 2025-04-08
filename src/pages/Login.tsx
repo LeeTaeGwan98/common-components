@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { MAIN } from "@/Constants/ServiceUrl";
 import { useAuthStore } from "@/store/authStore";
+import GIF from "@/assets/gif/loginback.gif";
 
 function Login() {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ function Login() {
         <div className="flex flex-col justify-between items-center h-full">
           {/* 중앙 정렬된 콘텐츠 */}
           <div className="flex flex-col items-center flex-grow justify-center">
-            <img src="src/assets/gif/loginback.gif" />
+            <img src={GIF} />
             <div className="text-primary-normal text-heading3-bold text-[30px] flex items-center justify-center mb-[12px]">
               북카롱 통합 관리자
             </div>
