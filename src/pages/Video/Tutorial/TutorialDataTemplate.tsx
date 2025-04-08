@@ -209,7 +209,7 @@ function TutorialDataStyle({
             }}
           >
             <TextField
-              slot={{ inputClassName: "cursor-pointer " }}
+              slot={{ inputClassName: "cursor-pointer -z-10" }}
               label="영상 파일"
               placeholder="파일을 첨부해주세요"
               readOnly={true}

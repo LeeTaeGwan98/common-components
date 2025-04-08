@@ -12,7 +12,6 @@ import {
   TableRow,
 } from "@/components/common/Tables";
 import { useEffect, useReducer, useState } from "react";
-import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/modal";
 import { useModalStore } from "@/store/modalStore";
 import AdminTableTitle from "@/components/common/BookaroongAdmin/AdminTableTitle";
 import AdminTableDescription from "@/components/common/BookaroongAdmin/AdminTableDescription";
@@ -23,35 +22,85 @@ import { dateToString, formatToUTCString } from "@/lib/dateParse";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { EbookQueryStringType, getEbookList } from "@/api/ebook";
 import { ActionType } from "@/api/common/commonType";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import { Description } from "@radix-ui/react-dialog";
+import Label from "@/components/common/Atoms/Label/Label";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
+import { PublishPostHoldModal } from "@/components/modal/Ebook/Publish/PublishPostHoldModal";
+import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/PublishRejectReasonModal";
+import Divider from "@/components/common/Atoms/Divider/Divider";
+import { getDetailAccountList } from "@/api/account";
 
-const datas = [
-  {
-    id: 1,
-    createAt: "9999-12-31 24:59:00",
-    adminSubmitAt: "9999-12-31 24:59:00",
-    nickName: "여덞",
-    price: "12,900",
-    bookName: "도서명도서명도서명도서명도서명도서명도서명도서명도서명도서명",
-    writer: "여덞글자여덞글자여덞글자여덞글자",
-    state: "admit",
-    adminName: "홍길동",
-  },
-  {
-    id: 2,
-    createAt: "9999-12-31 24:59:00",
-    adminSubmitAt: "9999-12-31 24:59:00",
-    nickName: "여덞글자여덞글자여덞글자여덞글자여덞글자",
-    price: "12,900",
-    bookName: "도서명도서명도서명도서명도서명도서명도서명도서명도서명도서명",
-    writer: "여덞글자여덞글자여덞글자여덞글자",
-    state: "admit",
-    adminName: "홍길동",
-  },
-];
+interface StatusViewProps {
+  status: string;
+  ebookId: number;
+}
+interface AdminNameProps {
+  approveAdminId: number;
+}
+
+const StatusView = ({ status, ebookId }: StatusViewProps) => {
+  const { openModal } = useModalStore();
+
+  const statusMap: Record<string, React.ReactNode> = {
+    CO017002: (
+      <div className="flex gap-[8px] w-full">
+        <OutlinedButton
+          onClick={() => openModal(<PublishPostHoldModal ebookId={ebookId} />)}
+          className="px-[20px] py-[9px] min-w-fit border-line-normal-normal text-label-normal"
+        >
+          보류
+        </OutlinedButton>
+        <OutlinedButton className="px-[20px] py-[9px] min-w-fit ">
+          출간
+        </OutlinedButton>
+      </div>
+    ),
+    CO017003: (
+      <div className="w-[142px] flex items-center justify-center">
+        <Label className="text-status-positive bg-status-positive/normal-focus">
+          출간
+        </Label>
+      </div>
+    ),
+    CO017004: (
+      <div
+        onClick={() =>
+          openModal(<PublishRejectReasonModal ebookId={ebookId} />)
+        }
+      >
+        <AdminTableDescription
+          className={"w-[142px] cursor-pointer underline"}
+          text={"보류"}
+        />
+      </div>
+    ),
+  };
+
+  return <>{statusMap[status] ?? <div>알 수 없음</div>}</>;
+};
+
+const AdminName = ({ approveAdminId }: AdminNameProps) => {
+  if (!approveAdminId) {
+    return (
+      <div className="w-[99px]">
+        <div className="w-full flex justify-center">-</div>
+      </div>
+    );
+  }
+
+  const { data: adminDetail } = useSuspenseQuery({
+    queryKey: ["getDetailAccount", approveAdminId],
+    queryFn: () => getDetailAccountList(approveAdminId),
+    select: (data) => data.data.data,
+  });
+
+  return <div className="w-[99px]">{adminDetail.name}</div>;
+};
 
 const initState: EbookQueryStringType = {
-  fromDt: undefined,
-  toDt: dateToString(new Date()),
+  // fromDt: undefined,
+  // toDt: dateToString(new Date()),
   sortOrder: "DESC",
   isVisible: null,
   keyword: "",
@@ -74,13 +123,7 @@ const reducer = <T extends Record<string, any>>(
 
 function PublishList() {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
-
-  const { openModal } = useModalStore();
   const [selectId, setSelectId] = useState<number[]>([]); //선택한 목록 아이디
-
-  const handlePublishRejectModal = () => {
-    openModal(<PublishRejectReasonModal />);
-  };
 
   //테이블 빈 row 처리
   const renderEmptyRows = () => {
@@ -105,16 +148,21 @@ function PublishList() {
 
   // 전자책 목록 조회
   const { data } = useSuspenseQuery({
-    queryKey: ["serviceGuideList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryKey: ["ebookList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getEbookList(filterInfo),
     select: (data) => data.data.data,
   });
 
-  console.log(data);
-
   return (
     <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
-      <div className="h-[48px] mb-[12px]"></div>
+      <SubTitleBar
+        filterInfo={filterInfo}
+        title="제출일"
+        dispatch={dispatch}
+        excel={true}
+        CustomSelectComponent={<></>}
+      />
+
       <TableContainer>
         <Table>
           <TableHeader>
@@ -122,16 +170,20 @@ function PublishList() {
               <TableCell isHeader>
                 <div>
                   <Checkbox
-                    checked={datas.every((item) => selectId.includes(item.id))}
+                    checked={data.list.every((item) =>
+                      selectId.includes(item.id)
+                    )}
                     onClick={() => {
-                      if (datas.every((item) => selectId.includes(item.id))) {
+                      if (
+                        data.list.every((item) => selectId.includes(item.id))
+                      ) {
                         //전체 선택 상태인 경우
                         //클릭 시 선택된 아이디 모두 제거
                         setSelectId([]);
                       } else {
                         //전체 선택 상태 아닌 경우
                         //클릭 시 미선택된 아이디 모두 선택
-                        const missingIds = datas
+                        const missingIds = data.list
                           .filter((item) => !selectId.includes(item.id)) // 빠진 아이디 필터링
                           .map((item) => item.id); // 빠진 아이디들만 배열로 추출
 
@@ -176,7 +228,7 @@ function PublishList() {
           </TableHeader>
 
           <TableBody>
-            {datas.map((item, index) => {
+            {data.list.map((item, index) => {
               return (
                 <TableRow key={index}>
                   <TableCell>
@@ -196,19 +248,19 @@ function PublishList() {
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[83px]"}
-                      text={formatToUTCString(item.createAt)}
+                      text={formatToUTCString(item.approvedAt)}
                     />
                   </TableCell>
                   <TableCell className="w-[88px]">
                     <AdminTableDescription
                       className={"w-[88px]"}
-                      text={formatToUTCString(item.adminSubmitAt)}
+                      text={formatToUTCString(item.submittedAt)}
                     />
                   </TableCell>
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[99px]"}
-                      text={item.nickName}
+                      text={item.name}
                     />
                   </TableCell>
                   <TableCell>
@@ -220,31 +272,27 @@ function PublishList() {
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[300px] text-left"}
-                      text={item.bookName}
+                      text={item.title}
                     />
                   </TableCell>
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[99px]"}
-                      text={item.writer}
+                      text={item.author}
                     />
                   </TableCell>
                   <TableCell>
-                    <div onClick={handlePublishRejectModal}>
-                      <AdminTableDescription
-                        className={"w-[142px] cursor-pointer underline"}
-                        text={"보류"}
-                      />
-                    </div>
+                    <StatusView status={item.status} ebookId={item.id} />
                   </TableCell>
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[99px]"}
-                      text={item.adminName}
+                      text={item.approveAdminId}
                     />
+                    <AdminName approveAdminId={item.approveAdminId} />
                   </TableCell>
                   <TableCell className="w-[56px]">
-                    <Link to={`${PUBLISH_LIST_DETAIL}/${2}`}>
+                    <Link to={`${PUBLISH_LIST_DETAIL}/${item.id}`}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

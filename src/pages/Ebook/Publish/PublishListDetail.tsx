@@ -9,8 +9,13 @@ import ContentWrapper from "@/components/ContentWrapper";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { formatToUTCString } from "@/lib/dateParse";
+import { getDetailGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import { COMMON_GROUP_CODE_MAPPING } from "@/Constants/CommonGroupCode";
+import { useModalStore } from "@/store/modalStore";
+import { PublishCoverModal } from "@/components/modal/Ebook/Publish/PublishCoverModal";
 
 function PublishListDetail() {
+  const { openModal } = useModalStore();
   const { id } = useParams(); // id 값 추출
   //전자책 상세 조회 api
   const { data } = useSuspenseQuery({
@@ -18,6 +23,38 @@ function PublishListDetail() {
     queryFn: () => getEbookDetail(Number(id)),
     select: (data) => data.data.data,
   });
+  console.log(data);
+
+  const groupCodes = [
+    COMMON_GROUP_CODE_MAPPING.전자책카테고리,
+    COMMON_GROUP_CODE_MAPPING.전자책제작방식,
+  ] as string[];
+
+  //그룹코드의 카테고리 상세 코드 목록 가져오기 api
+  const { data: ebookCategoryCodes } = useSuspenseQuery({
+    queryKey: ["ebookCategoryCodes"],
+    queryFn: () => getDetailGroupCodes(groupCodes[0]),
+    select: (data) => data.data.data,
+  });
+  // 공통코드 디테일 일치하는 내용 찾은 후 카테고리 이름 부여
+  const matchedCategory = ebookCategoryCodes.find(
+    (item) => item.commDetailCode === data.categoryCode
+  );
+  const categoryName = matchedCategory?.detailCodeName ?? "";
+
+  //그룹코드의 제작 방식 상세 코드 목록 가져오기 api
+  const { data: ebookCreationMethod } = useSuspenseQuery({
+    queryKey: ["ebookCreationMethod"],
+    queryFn: () => getDetailGroupCodes(groupCodes[1]),
+    select: (data) => data.data.data,
+  });
+
+  // 공통코드 디테일 일치하는 내용 찾은 후 제작 방식 이름 부여
+  const CreationMethodCategory = ebookCreationMethod.find(
+    (item) => item.commDetailCode === data.creationMethod
+  );
+  const creationMethod = CreationMethodCategory?.detailCodeName ?? "";
+
   return (
     <BreadcrumbContainer
       breadcrumbNode={
@@ -50,33 +87,37 @@ function PublishListDetail() {
           />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="도서명" readOnly value={"도서명"} />
-          <TextField label="부제" readOnly value={"부제"} />
+          <TextField label="도서명" readOnly value={data.title} />
+          <TextField label="부제" readOnly value={data.subTitle} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="저자/역자" readOnly value={"카테고리"} />
-          <TextField label="카테고리" readOnly value={"시/에세이"} />
+          <TextField label="저자/역자" readOnly value={data.author} />
+          <TextField label="카테고리" readOnly value={categoryName} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <div className="relative">
-            <TextField label="표지" readOnly value={"표지명"} />
-            <Text
+            <TextField label="표지" readOnly value={data.coverImageFilePath} />
+            <Button
               size="medium"
-              type="assistive"
               className="flex justify-center !flex-none h-fit items-center underline cursor-pointer"
+              onClick={() => openModal(<PublishCoverModal id={data.id} />)}
             >
-              표지명.jpg
-            </Text>
+              {data.coverImageFilePath}
+            </Button>
           </div>
 
-          <TextField label="제작 방식" readOnly value={"원고 제출"} />
+          <TextField label="제작 방식" readOnly value={creationMethod} />
         </div>
         <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="원고 파일" readOnly value={"원고 파일"} />
-          <TextField label="용량" readOnly value={"7.68MB"} />
+          <TextField
+            label="원고 파일"
+            readOnly
+            value={data.menuscriptFileName}
+          />
+          <TextField label="용량" readOnly value={data.menuscriptFileSize} />
         </div>
         <div className="flex justify-center w-[calc(50%-10px)]">
-          <TextField label="전자책 정가(판매가)" readOnly value={"8,900원"} />
+          <TextField label="전자책 정가(판매가)" readOnly value={data.price} />
         </div>
         <div className="flex justify-end">
           <OutlinedButton
