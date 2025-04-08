@@ -124,7 +124,7 @@ function UserDetailExchange() {
                     })()}
                   </TableCell>
                   <TableCell>
-                    <Link to={USER_DETAIL}>
+                    <Link className="flex justify-center" to={USER_DETAIL}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

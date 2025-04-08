@@ -215,8 +215,8 @@ function UserList() {
                   </TableCell>
                   <TableCell>
                     <Link
+                      className="flex justify-center"
                       to={`${USER_DETAIL}/${item.id}`}
-                      className="flex justify-center items-center"
                     >
                       <IconButton
                         size="custom"

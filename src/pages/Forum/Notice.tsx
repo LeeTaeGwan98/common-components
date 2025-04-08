@@ -203,7 +203,10 @@ const Notice = () => {
                   </TableCell>
 
                   <TableCell>
-                    <Link to={`${NOTICE_DETAIL}/${item.id}`}>
+                    <Link
+                      className="flex justify-center"
+                      to={`${NOTICE_DETAIL}/${item.id}`}
+                    >
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

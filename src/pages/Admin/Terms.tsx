@@ -91,7 +91,10 @@ function Terms() {
                   <TableCell>{codeToName(typeCodes, item.type)}</TableCell>
                   <TableCell>{item.title}</TableCell>
                   <TableCell>
-                    <Link to={`${TERMS_DETAIL}/${item.id}`}>
+                    <Link
+                      className="flex justify-center"
+                      to={`${TERMS_DETAIL}/${item.id}`}
+                    >
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
