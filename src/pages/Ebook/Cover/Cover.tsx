@@ -201,7 +201,10 @@ function Cover() {
                     )}
                   </TableCell>
                   <TableCell>
-                    <Link to={`${COVER_DETAIL}/${item.id}`}>
+                    <Link
+                      className="flex justify-center"
+                      to={`${COVER_DETAIL}/${item.id}`}
+                    >
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

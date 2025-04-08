@@ -57,7 +57,7 @@ function IconButton({
   return (
     <button
       className={cn(
-        "flex items-center w-fit rounded-full relative",
+        "w-fit rounded-full relative",
         !disable && interactiveTypeStyle,
         sizeStyle[size],
         typeStyle[type],
