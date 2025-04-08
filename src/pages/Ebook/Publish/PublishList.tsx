@@ -392,6 +392,7 @@ function PublishList() {
                 </TableRow>
               );
             })}
+            {renderEmptyRows()}
           </TableBody>
         </Table>
       </TableContainer>
