@@ -5,7 +5,7 @@ import {
   getCoverDetail,
 } from "@/api/cover/coverAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
-import CoverDataStyle from "@/pages/Ebook/Cover/CoverDataTemplate";
+import CoverDataTemplate from "@/pages/Ebook/Cover/CoverDataTemplate";
 import {
   useMutation,
   useQueryClient,
@@ -67,7 +67,7 @@ function CoverDetail() {
   });
 
   return (
-    <CoverDataStyle
+    <CoverDataTemplate
       type="detail"
       coverName={coverName}
       setCoverName={setCoverName}
