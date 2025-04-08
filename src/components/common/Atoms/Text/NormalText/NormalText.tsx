@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
+import { HTMLAttributes } from "react";
 
-interface TextProps {
+interface TextProps extends HTMLAttributes<HTMLDivElement> {
   type?: "primary" | "assistive";
   size?: "medium" | "small";
   disable?: boolean;
@@ -14,6 +15,7 @@ function Text({
   disable = false,
   children,
   className,
+  ...props
 }: TextProps) {
   const typeStyle = {
     primary: "text-primary-normal",
@@ -42,6 +44,7 @@ function Text({
         disableStyle,
         className
       )}
+      {...props}
     >
       {children}
     </div>
