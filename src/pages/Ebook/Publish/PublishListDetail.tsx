@@ -105,13 +105,13 @@ function PublishListDetail() {
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <div className="relative">
             <TextField label="표지" readOnly value={data.coverImageFilePath} />
-            <Button
+            <Text
               size="medium"
-              className="flex justify-center !flex-none h-fit items-center underline cursor-pointer text-label-alternative bg-white"
+              className="flex max-w-[478px] text-nowrap overflow-hidden !flex-none h-fit items-center underline cursor-pointer text-label-alternative "
               onClick={() => openModal(<PublishCoverModal id={data.id} />)}
             >
               {data.coverImageFilePath}
-            </Button>
+            </Text>
           </div>
 
           <TextField label="제작 방식" readOnly value={creationMethod} />
