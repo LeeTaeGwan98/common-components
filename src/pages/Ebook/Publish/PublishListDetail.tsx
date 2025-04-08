@@ -7,7 +7,7 @@ import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { formatToUTCString } from "@/lib/dateParse";
 import { getDetailGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { COMMON_GROUP_CODE_MAPPING } from "@/Constants/CommonGroupCode";
@@ -16,6 +16,9 @@ import { PublishCoverModal } from "@/components/modal/Ebook/Publish/PublishCover
 
 function PublishListDetail() {
   const { openModal } = useModalStore();
+  const [searchParams] = useSearchParams();
+  const status = searchParams.get("status"); // status 추출 CO017004
+
   const { id } = useParams(); // id 값 추출
   //전자책 상세 조회 api
   const { data } = useSuspenseQuery({
@@ -23,6 +26,7 @@ function PublishListDetail() {
     queryFn: () => getEbookDetail(Number(id)),
     select: (data) => data.data.data,
   });
+
   console.log(data);
 
   const groupCodes = [
@@ -66,7 +70,11 @@ function PublishListDetail() {
       }
       button={
         <div>
-          <div className="flex gap-[8px]">
+          <div
+            className={`flex gap-[8px] ${
+              status === "CO017002" || status === "CO017001" ? "hidden" : ""
+            }`}
+          >
             <OutlinedButton className="w-[180px]" type="assistive" size="large">
               보류
             </OutlinedButton>
@@ -99,7 +107,7 @@ function PublishListDetail() {
             <TextField label="표지" readOnly value={data.coverImageFilePath} />
             <Button
               size="medium"
-              className="flex justify-center !flex-none h-fit items-center underline cursor-pointer"
+              className="flex justify-center !flex-none h-fit items-center underline cursor-pointer text-label-alternative bg-white"
               onClick={() => openModal(<PublishCoverModal id={data.id} />)}
             >
               {data.coverImageFilePath}

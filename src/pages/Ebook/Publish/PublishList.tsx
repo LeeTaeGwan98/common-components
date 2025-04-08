@@ -3,6 +3,9 @@ import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
 import DownArrow from "@/assets/svg/common/caretDown.svg";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
+import AllDeleted from "@/assets/svg/publish/AllDeleted.svg";
+import AllPaused from "@/assets/svg/publish/AllPaused.svg";
+import AllSelected from "@/assets/svg/publish/AllSelected.svg";
 import {
   Table,
   TableBody,
@@ -19,8 +22,12 @@ import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/Ta
 import { Link } from "react-router-dom";
 import { PUBLISH_LIST_DETAIL } from "@/Constants/ServiceUrl";
 import { dateToString, formatToUTCString } from "@/lib/dateParse";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { EbookQueryStringType, getEbookList } from "@/api/ebook";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  EbookQueryStringType,
+  getEbookList,
+  postEbookApprove,
+} from "@/api/ebook";
 import { ActionType } from "@/api/common/commonType";
 import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import { Description } from "@radix-ui/react-dialog";
@@ -30,6 +37,12 @@ import { PublishPostHoldModal } from "@/components/modal/Ebook/Publish/PublishPo
 import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/PublishRejectReasonModal";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import { getDetailAccountList } from "@/api/account";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 
 interface StatusViewProps {
   status: string;
@@ -42,6 +55,15 @@ interface AdminNameProps {
 const StatusView = ({ status, ebookId }: StatusViewProps) => {
   const { openModal } = useModalStore();
 
+  //전자책 승인처리 api
+  const CreateEbookApprove = useMutation({
+    mutationFn: () => postEbookApprove(ebookId),
+    onSuccess(res, data) {
+      console.log(data);
+      console.log(res);
+    },
+  });
+
   const statusMap: Record<string, React.ReactNode> = {
     CO017002: (
       <div className="flex gap-[8px] w-full">
@@ -51,7 +73,10 @@ const StatusView = ({ status, ebookId }: StatusViewProps) => {
         >
           보류
         </OutlinedButton>
-        <OutlinedButton className="px-[20px] py-[9px] min-w-fit ">
+        <OutlinedButton
+          onClick={() => CreateEbookApprove.mutate()}
+          className="px-[20px] py-[9px] min-w-fit "
+        >
           출간
         </OutlinedButton>
       </div>
@@ -153,6 +178,17 @@ function PublishList() {
     select: (data) => data.data.data,
   });
 
+  // 선택 승인 하기 위한 전자책 승인 api
+  const approveEbook = (ebookId: number) => {
+    postEbookApprove(ebookId)
+      .then((res) => {
+        console.log(`ebook ${ebookId} 승인 완료`, res);
+      })
+      .catch((err) => {
+        console.error(`ebook ${ebookId} 승인 실패`, err);
+      });
+  };
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
       <SubTitleBar
@@ -191,10 +227,54 @@ function PublishList() {
                       }
                     }}
                   />
-                  <IconButton
-                    //className="p-[8px] ml-[-6px]"
-                    icon={<DownArrow width={20} height={20} />}
-                  />
+
+                  <Popover>
+                    <PopoverTrigger asChild className="cursor-pointer">
+                      <IconButton
+                        //className="p-[8px] ml-[-6px]"
+                        icon={<DownArrow width={20} height={20} />}
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent
+                      align="start"
+                      className="w-fit h-fit  bg-white items-start pl-[12px] pr-[8px] rounded-radius-admin"
+                    >
+                      <div className=" text-caption1-regular flex flex-col gap-[12px]">
+                        <Text
+                          onClick={() => {
+                            // 전체 선택: 현재 페이지에 있는 전자책 id 전부 선택
+                            const allIds = data.list.map((item) => item.id);
+                            setSelectId(allIds);
+                          }}
+                          className="flex items-center text-caption1-regular text-label-normal"
+                        >
+                          <AllSelected className="size-[16px] mr-[2px]" />
+                          전체선택
+                        </Text>
+                        <Text
+                          onClick={() => {
+                            // 전체 해제: 빈 배열로 설정
+                            setSelectId([]);
+                          }}
+                          className="flex items-center text-caption1-regular text-label-normal"
+                        >
+                          <AllDeleted className="size-[16px] mr-[2px]" />
+                          전체해제
+                        </Text>
+                        <Text
+                          onClick={() => {
+                            selectId.forEach((id) => {
+                              approveEbook(id); // 개별 승인 함수 호출
+                            });
+                          }}
+                          className="flex items-center text-caption1-regular text-label-normal"
+                        >
+                          <AllPaused className="size-[16px] text-status-positive mr-[2px]" />
+                          선택승인
+                        </Text>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </TableCell>
               <TableCell isHeader>
@@ -232,18 +312,25 @@ function PublishList() {
               return (
                 <TableRow key={index}>
                   <TableCell>
-                    <Checkbox
-                      checked={selectId.some((id) => item.id === id)}
-                      onClick={() => {
-                        if (selectId.some((id) => item.id === id)) {
-                          // selectId에서 항목 제거
-                          setSelectId(selectId.filter((id) => item.id !== id));
-                        } else {
-                          // selectId에 항목 추가
-                          setSelectId([...selectId, item.id]);
-                        }
-                      }}
-                    />
+                    {item.status === "CO017001" ||
+                    item.status === "CO017002" ? (
+                      <Checkbox
+                        checked={selectId.some((id) => item.id === id)}
+                        onClick={() => {
+                          if (selectId.some((id) => item.id === id)) {
+                            // selectId에서 항목 제거
+                            setSelectId(
+                              selectId.filter((id) => item.id !== id)
+                            );
+                          } else {
+                            // selectId에 항목 추가
+                            setSelectId([...selectId, item.id]);
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div>-</div>
+                    )}
                   </TableCell>
                   <TableCell>
                     <AdminTableDescription
@@ -292,7 +379,9 @@ function PublishList() {
                     <AdminName approveAdminId={item.approveAdminId} />
                   </TableCell>
                   <TableCell className="w-[56px]">
-                    <Link to={`${PUBLISH_LIST_DETAIL}/${item.id}`}>
+                    <Link
+                      to={`${PUBLISH_LIST_DETAIL}/${item.id}?status=${item.status}`}
+                    >
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

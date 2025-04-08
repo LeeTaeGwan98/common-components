@@ -72,7 +72,7 @@ export default class API {
     ...params: Parameters<typeof APIInstance.get<T, R, D>>
   ): Promise<R> {
     return APIInstance.get<T, R, D>(...params).catch((error: unknown) => {
-      // console.log(error);
+      console.log(error);
       throw Error;
     });
   }

@@ -101,10 +101,25 @@ export const postEbookHold = (id: number, body: postEbookHoldProps) => {
   return data;
 };
 
-//관리자의 전자책 보류처리
+//전자책 보류 사유 조회
 export const getEbookHold = (id: number) => {
   const data = API.get<ApiResType<getEbookHoldProps>>(
     `/admin/ebook/${id}/hold`
   );
+  return data;
+};
+
+//관리자의 전자책 승인처리
+export const postEbookApprove = (id: number) => {
+  const data = API.post(`/admin/ebook/${id}/approve`, {});
+  return data;
+};
+
+//표지 미리보기
+export const getEbookCoverPreview = (id: number) => {
+  const queryString = `/admin/ebook/${id}/cover/preview`;
+
+  const data = API.get<Blob>(queryString, { responseType: "blob" });
+
   return data;
 };
