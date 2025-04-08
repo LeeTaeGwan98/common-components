@@ -245,7 +245,10 @@ function Inquiry() {
                     )}
                   </TableCell>
                   <TableCell>
-                    <Link to={`${INQUIRY_DETAIL}/${item.id}`}>
+                    <Link
+                      className="flex justify-center"
+                      to={`${INQUIRY_DETAIL}/${item.id}`}
+                    >
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

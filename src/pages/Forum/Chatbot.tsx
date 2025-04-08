@@ -235,7 +235,10 @@ const Chatbot = () => {
                     }
                   </TableCell>
                   <TableCell>
-                    <Link to={`${CHATBOT_DETAIL}/${item.id}`}>
+                    <Link
+                      className="flex justify-center"
+                      to={`${CHATBOT_DETAIL}/${item.id}`}
+                    >
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

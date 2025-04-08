@@ -67,7 +67,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import FetchTest from "@/pages/FetchTest";
 import { Modal } from "@/components/Modal";
 import ModalTest from "@/pages/ModalTest";
-import UserDetail from "@/pages/User/UserDetail";
+import UserDetail from "@/pages/User/Detail/UserDetail";
 import PaymentManagement from "@/pages/User/PaymentManagement";
 import Withdrawalmanagement from "@/pages/User/Withdrawalmanagement";
 import Inquiry from "@/pages/Forum/Inquiry";

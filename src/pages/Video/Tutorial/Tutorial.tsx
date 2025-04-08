@@ -210,7 +210,10 @@ function Tutorial() {
                     )}
                   </TableCell>
                   <TableCell>
-                    <Link to={`${TUTORIAL_DETAIL}/${item.id}`}>
+                    <Link
+                      className="flex justify-center"
+                      to={`${TUTORIAL_DETAIL}/${item.id}`}
+                    >
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />

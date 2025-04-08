@@ -110,7 +110,10 @@ function Account() {
                   </TableCell>
 
                   <TableCell>
-                    <Link to={`${ACCOUNT_DETAIL}/${item.id}`}>
+                    <Link
+                      className="flex justify-center"
+                      to={`${ACCOUNT_DETAIL}/${item.id}`}
+                    >
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
