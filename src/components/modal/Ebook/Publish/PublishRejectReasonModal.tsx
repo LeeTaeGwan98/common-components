@@ -49,15 +49,12 @@ export const PublishRejectReasonModal = ({
       close={true}
       buttonElements={
         <Actions className="w-full h-[48px]" priority={"neutral"}>
-          <OutlinedButton
-            className="!flex-none"
-            size="large"
-            type="assistive"
+          <Button
             onClick={() => useModalStore.getState().closeModal()}
+            size="large"
           >
-            취소
-          </OutlinedButton>
-          <Button size="large">전송</Button>
+            확인
+          </Button>
         </Actions>
       }
     >
@@ -72,9 +69,8 @@ export const PublishRejectReasonModal = ({
               보류 사유
             </div>
             <TextBox
-              className="gap-[6px] h-[166px]"
+              className="gap-[6px] h-[166px] text-label-alternative"
               label=""
-              placeholder="보류 사유를 입력해주세요"
               value={data.holdReason}
               maxLength={1000}
               disabled
