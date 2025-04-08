@@ -75,9 +75,9 @@ function UserDetailDefault() {
               : "No data"}
           </Content>
         </Card>
-        {/* todo: 사업자 등록증, 신분증 데이터 처리해야함 */}
+        {/* todo: 사업자 등록증 데이터 처리해야함 */}
         <Card
-          title="신분증"
+          title={data.memberType === "일반 개인" ? "신분증" : "사업자등록증"}
           size="large"
           isLabel={true}
           isButton={true}
@@ -94,7 +94,13 @@ function UserDetailDefault() {
                 "bg-fill-normal text-label-alternative text-caption1-bold px-[8px ] py-[4px]",
             }}
           >
-            {"010-1111-2222"}
+            {data.memberType === "일반 개인"
+              ? data.phoneNumber
+                ? data.phoneNumber
+                : "No data"
+              : data.businessLicenseNumber
+              ? data.businessLicenseNumber
+              : "No data"}
           </Content>
         </Card>
       </div>

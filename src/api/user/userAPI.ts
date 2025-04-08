@@ -107,12 +107,20 @@ export const getUserDefaultInfo = (id: number) => {
 
 //회원 상태 활성화
 export const userActivate = (id: number) => {
-  const data = API.patch<{ data: {} }>(`/api/v1/admin/user/${id}/activate`);
+  const data = API.patch<{ data: {} }>(`/admin/user/${id}/activate`);
   return data;
 };
 
 //회원 상태 비활성화
 export const userDeactivate = (id: number) => {
-  const data = API.patch<{ data: {} }>(`/api/v1/admin/user/${id}/deactivate`);
+  const data = API.patch<{ data: {} }>(`/admin/user/${id}/deactivate`);
+  return data;
+};
+
+//회원 닉네임 수정
+export const userNickChange = (id: number) => {
+  const data = API.patch<{ data: {} }>(
+    `/api/v1/account/${id}/profile/nickname`
+  );
   return data;
 };

@@ -14,7 +14,7 @@ interface UserActivateModalProps {
   onClickOkBtn: () => void;
 }
 
-const UserActivateModal = ({ id, onClickOkBtn }: UserActivateModalProps) => {
+const UserDeActivateModal = ({ id, onClickOkBtn }: UserActivateModalProps) => {
   return (
     <DialogContent
       onOpenAutoFocus={(event) => event.preventDefault()}
@@ -46,4 +46,4 @@ const UserActivateModal = ({ id, onClickOkBtn }: UserActivateModalProps) => {
   );
 };
 
-export default UserActivateModal;
+export default UserDeActivateModal;

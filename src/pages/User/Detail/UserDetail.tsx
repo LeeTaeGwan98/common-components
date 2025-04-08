@@ -5,7 +5,7 @@ import CardRow from "@/components/common/Molecules/CardRow/CardRow";
 
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Write from "@/assets/svg/common/WriteIcons.svg";
-
+import Circle from "@/assets/svg/common/circle.svg";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
@@ -26,6 +26,7 @@ import {
   getUserDetailSide,
   userActivate,
   userDeactivate,
+  userNickChange,
 } from "@/api/user/userAPI";
 import UserDetailDefault from "@/pages/User/Detail/UserDetailDefault";
 import UserDetailExchange from "@/pages/User/Detail/UserDetailExchange";
@@ -43,11 +44,19 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import DropDownMenu from "@/components/common/Organisms/DropDownMenu";
+import UserActivateModal from "@/components/modal/member/UserActivateModal";
+import { useModalStore } from "@/store/modalStore";
+import ButtonTextList from "@/components/common/Atoms/Button/ButtonTextList/ButtonTextList";
+import { PopoverClose } from "@radix-ui/react-popover";
+import TextField from "@/components/common/Molecules/TextField/TextField";
+import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 
 function UserDetail() {
+  const { openModal, closeModal } = useModalStore();
   const { id } = useParams();
   const queryClient = useQueryClient();
   const [selectedTab, setSelectedTab] = useState("기본"); // 기본값 설정
+  const [isNickEdit, setIsNickEdit] = useState(false); //닉네임 편집 상태 여부
 
   //사용자 소셜 공통 카테고리 가져오기
   const { data: codeInfo } = useSuspenseQuery({
@@ -63,36 +72,78 @@ function UserDetail() {
 
   //회원 목록 사이드 패널 조회 api
   const { data } = useSuspenseQuery({
-    queryKey: ["userDetailSide"], // filterInfo가 변경될 때마다 API 호출
+    queryKey: ["userDetailSide", id],
     queryFn: () => getUserDetailSide(Number(id)),
     select: (data) => data.data.data,
   });
 
-  //회원 활성화
+  //회원 활성화 api
   const { mutate: userActivateFn } = useMutation({
     mutationFn: (id: number) => userActivate(id),
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["userDetailSide", id] });
+      closeModal();
     },
     onError() {
       customToast({
         title: "유저 활성화 중 에러가 발생했습니다.",
       });
+      closeModal();
     },
   });
 
-  //회원 비활성화
+  //회원 비활성화 api
   const { mutate: userDeactivateFn } = useMutation({
     mutationFn: (id: number) => userDeactivate(id),
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["userDetailSide", id] });
+      closeModal();
     },
     onError() {
       customToast({
         title: "유저 비활성화 중 에러가 발생했습니다.",
       });
+      closeModal();
     },
   });
+
+  //회원 닉네임 수정 api
+  const { mutate: userNickChangeFn } = useMutation({
+    mutationFn: (id: number) => userNickChange(id),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["userDetailSide", id] });
+      customToast({
+        title: "수정되었습니다.",
+      });
+      closeModal();
+    },
+    onError() {
+      customToast({
+        title: "중복된 닉네임입니다.",
+      });
+      closeModal();
+    },
+  });
+
+  //회원 활성화 모달
+  const userActivateModal = () => {
+    openModal(
+      <UserActivateModal
+        id={Number(id)}
+        onClickOkBtn={() => userActivateFn(Number(id))}
+      />
+    );
+  };
+
+  //회원 비활성화 모달
+  const userDeActivateModal = () => {
+    openModal(
+      <UserActivateModal
+        id={Number(id)}
+        onClickOkBtn={() => userDeactivateFn(Number(id))}
+      />
+    );
+  };
 
   return (
     <BreadcrumbContainer
@@ -127,7 +178,7 @@ function UserDetail() {
     >
       <div className="flex gap-gutter-horizontal pt-gutter-vertical">
         <div className="w-[440px] h-[720px] flex flex-col border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin gap-[12px] rounded-radius-admin">
-          <div className="flex justify-between gap-[12px]">
+          <div className="flex items-center justify-between gap-[12px]">
             {/* todo: 사이드 패널 api에서 상태 데이터 받아야함 */}
             <CardRow
               data={{
@@ -137,7 +188,7 @@ function UserDetail() {
               slot={{ shortcutClassName: "size-[24px]" }}
             />
             <Popover>
-              <PopoverTrigger>
+              <PopoverTrigger className="h-fit" asChild>
                 <IconButton
                   size="custom"
                   icon={<ThreeDot className="size-[24px]" />}
@@ -148,7 +199,22 @@ function UserDetail() {
                 side="bottom"
                 className="w-auto shadow-none border-0 p-0"
               >
-                <DropDownMenu />
+                <PopoverClose>
+                  <DropDownMenu>
+                    <ButtonTextList size="small" onClick={userActivateModal}>
+                      <Circle className="text-status-positive" />
+                      <div className="text-caption1-regular text-label-normal py-[2px]">
+                        활성화
+                      </div>
+                    </ButtonTextList>
+                    <ButtonTextList size="small" onClick={userDeActivateModal}>
+                      <Circle className="text-fill-normal" />
+                      <div className="text-caption1-regular text-label-normal py-[2px]">
+                        비활성화
+                      </div>
+                    </ButtonTextList>
+                  </DropDownMenu>
+                </PopoverClose>
               </PopoverContent>
             </Popover>
           </div>
@@ -159,17 +225,39 @@ function UserDetail() {
               content: data.id.toString(),
             }}
           />
-          <div className="flex justify-between gap-[12px]">
-            <CardRow
-              data={{
-                title: "닉네임",
-                content: data.name,
-              }}
-            />
-            <IconButton
-              className="h-fit p-[8px]"
-              icon={<Write className="size-[24px]" />}
-            />
+          <div>
+            <div className="flex items-center justify-between gap-[12px]">
+              <CardRow
+                data={{
+                  title: "닉네임",
+                  content: isNickEdit ? "" : data.name,
+                }}
+              />
+              {isNickEdit ? (
+                <></>
+              ) : (
+                <IconButton
+                  className="h-fit"
+                  icon={<Write className="size-[24px]" />}
+                  onClick={() => setIsNickEdit(true)}
+                />
+              )}
+            </div>
+            {/* 닉네임 수정 */}
+            {isNickEdit ? (
+              <TextField
+                size="medium"
+                value={data.name}
+                maxLength={30}
+                buttonElement={
+                  <Text className="text-label1-normal-regular cursor-pointer">
+                    수정
+                  </Text>
+                }
+              />
+            ) : (
+              <></>
+            )}
           </div>
 
           <CardRow
