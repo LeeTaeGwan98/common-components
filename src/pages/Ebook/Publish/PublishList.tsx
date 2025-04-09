@@ -14,7 +14,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import { useEffect, useReducer, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import { useModalStore } from "@/store/modalStore";
 import AdminTableTitle from "@/components/common/BookaroongAdmin/AdminTableTitle";
 import AdminTableDescription from "@/components/common/BookaroongAdmin/AdminTableDescription";
@@ -46,21 +52,18 @@ import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 
 interface StatusViewProps {
   status: string;
+  setStatus: (value: string) => void;
   ebookId: number;
 }
-interface AdminNameProps {
-  approveAdminId: number;
-}
 
-const StatusView = ({ status, ebookId }: StatusViewProps) => {
+const StatusView = ({ status, setStatus, ebookId }: StatusViewProps) => {
   const { openModal } = useModalStore();
 
   //전자책 승인처리 api
   const CreateEbookApprove = useMutation({
     mutationFn: () => postEbookApprove(ebookId),
     onSuccess(res, data) {
-      console.log(data);
-      console.log(res);
+      setStatus("CO017003");
     },
   });
 
@@ -68,7 +71,14 @@ const StatusView = ({ status, ebookId }: StatusViewProps) => {
     CO017002: (
       <div className="flex gap-[8px] w-full">
         <OutlinedButton
-          onClick={() => openModal(<PublishPostHoldModal ebookId={ebookId} />)}
+          onClick={() =>
+            openModal(
+              <PublishPostHoldModal
+                ebookId={ebookId}
+                onHoldSuccess={() => setStatus("CO017004")}
+              />
+            )
+          }
           className="px-[20px] py-[9px] min-w-fit border-line-normal-normal text-label-normal"
         >
           보류
@@ -105,24 +115,6 @@ const StatusView = ({ status, ebookId }: StatusViewProps) => {
   return <>{statusMap[status] ?? <div>알 수 없음</div>}</>;
 };
 
-const AdminName = ({ approveAdminId }: AdminNameProps) => {
-  if (!approveAdminId) {
-    return (
-      <div className="w-[99px]">
-        <div className="w-full flex justify-center">-</div>
-      </div>
-    );
-  }
-
-  const { data: adminDetail } = useSuspenseQuery({
-    queryKey: ["getDetailAccount", approveAdminId],
-    queryFn: () => getDetailAccountList(approveAdminId),
-    select: (data) => data.data.data,
-  });
-
-  return <div className="w-[99px]">{adminDetail.name}</div>;
-};
-
 const initState: EbookQueryStringType = {
   // fromDt: undefined,
   // toDt: dateToString(new Date()),
@@ -154,7 +146,7 @@ function PublishList() {
   const renderEmptyRows = () => {
     const { take } = filterInfo;
     if (!take) return;
-    const emptyRowsCount = take - data.list.length;
+    const emptyRowsCount = take - ebookData.list.length;
     const emptyRows = [];
 
     for (let i = 0; i < emptyRowsCount; i++) {
@@ -177,6 +169,10 @@ function PublishList() {
     queryFn: () => getEbookList(filterInfo),
     select: (data) => data.data.data,
   });
+  const [ebookData, setEbookData] = useState(data);
+  useEffect(() => {
+    setEbookData(data);
+  }, [data]);
 
   // 선택 승인 하기 위한 전자책 승인 api
   const approveEbook = (ebookId: number) => {
@@ -187,6 +183,16 @@ function PublishList() {
       .catch((err) => {
         console.error(`ebook ${ebookId} 승인 실패`, err);
       });
+  };
+
+  //전자책 상태 변경
+  const handleStatusChange = (id: number, newStatus: string) => {
+    setEbookData((prev) => ({
+      ...prev,
+      list: prev.list.map((item) =>
+        item.id === id ? { ...item, status: newStatus } : item
+      ),
+    }));
   };
 
   return (
@@ -206,12 +212,14 @@ function PublishList() {
               <TableCell isHeader>
                 <div>
                   <Checkbox
-                    checked={data.list.every((item) =>
+                    checked={ebookData.list.every((item) =>
                       selectId.includes(item.id)
                     )}
                     onClick={() => {
                       if (
-                        data.list.every((item) => selectId.includes(item.id))
+                        ebookData.list.every((item) =>
+                          selectId.includes(item.id)
+                        )
                       ) {
                         //전체 선택 상태인 경우
                         //클릭 시 선택된 아이디 모두 제거
@@ -219,7 +227,7 @@ function PublishList() {
                       } else {
                         //전체 선택 상태 아닌 경우
                         //클릭 시 미선택된 아이디 모두 선택
-                        const missingIds = data.list
+                        const missingIds = ebookData.list
                           .filter((item) => !selectId.includes(item.id)) // 빠진 아이디 필터링
                           .map((item) => item.id); // 빠진 아이디들만 배열로 추출
 
@@ -243,7 +251,9 @@ function PublishList() {
                         <Text
                           onClick={() => {
                             // 전체 선택: 현재 페이지에 있는 전자책 id 전부 선택
-                            const allIds = data.list.map((item) => item.id);
+                            const allIds = ebookData.list.map(
+                              (item) => item.id
+                            );
                             setSelectId(allIds);
                           }}
                           className="flex items-center text-caption1-regular text-label-normal"
@@ -308,9 +318,10 @@ function PublishList() {
           </TableHeader>
 
           <TableBody>
-            {data.list.map((item, index) => {
+            {ebookData.list.map((item, index) => {
               return (
                 <TableRow key={index}>
+                  {/* 체크박스 */}
                   <TableCell>
                     {item.status === "CO017001" ||
                     item.status === "CO017002" ? (
@@ -332,56 +343,78 @@ function PublishList() {
                       <div>-</div>
                     )}
                   </TableCell>
+                  {/* 제출일 */}
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[83px]"}
-                      text={formatToUTCString(item.approvedAt)}
+                      text={
+                        item.submittedAt
+                          ? formatToUTCString(item.submittedAt)
+                          : "-"
+                      }
                     />
                   </TableCell>
+                  {/* 승인일 */}
                   <TableCell className="w-[88px]">
                     <AdminTableDescription
                       className={"w-[88px]"}
-                      text={formatToUTCString(item.submittedAt)}
+                      text={
+                        item.approvedAt
+                          ? formatToUTCString(item.approvedAt)
+                          : "-"
+                      }
                     />
                   </TableCell>
+                  {/* 닉네임 */}
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[99px]"}
                       text={item.name}
                     />
                   </TableCell>
+                  {/* 전자책 정가(판매가) */}
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[130px]"}
                       text={item.price}
                     />
                   </TableCell>
+                  {/* 도서명 */}
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[300px] text-left"}
                       text={item.title}
                     />
                   </TableCell>
+                  {/* 저자/역자 */}
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[99px]"}
                       text={item.author}
                     />
                   </TableCell>
+                  {/* 상태 */}
                   <TableCell>
-                    <StatusView status={item.status} ebookId={item.id} />
+                    <StatusView
+                      status={item.status}
+                      setStatus={(value: string) => {
+                        handleStatusChange(item.id, value);
+                      }}
+                      ebookId={item.id}
+                    />
                   </TableCell>
+                  {/* 관리자 */}
                   <TableCell>
                     <AdminTableDescription
                       className={"w-[99px]"}
-                      text={item.approveAdminId}
+                      text={item.approveAdminName ? item.approveAdminName : "-"}
                     />
-                    <AdminName approveAdminId={item.approveAdminId} />
                   </TableCell>
+                  {/* 상세정보 */}
                   <TableCell className="w-[56px]">
                     <Link
                       className="flex justify-center"
-                      to={`${PUBLISH_LIST_DETAIL}/${item.id}?status=${item.status}`}
+                      to={`${PUBLISH_LIST_DETAIL}/${item.id}`}
                     >
                       <IconButton
                         icon={
@@ -397,7 +430,12 @@ function PublishList() {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <TableIndicator /> */}
+      {ebookData.meta.totalPage > 1 && (
+        <TableIndicator
+          PaginationMetaType={ebookData.meta}
+          dispatch={dispatch}
+        />
+      )}
     </BreadcrumbContainer>
   );
 }

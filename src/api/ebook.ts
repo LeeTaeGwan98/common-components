@@ -19,6 +19,7 @@ interface EbookRes {
   author: string;
   status: string;
   approveAdminId: any;
+  approveAdminName: string;
 }
 
 interface EbookDetailRes {
@@ -36,6 +37,7 @@ interface EbookDetailRes {
   coverImageMimeType: string;
   menuscriptFileName: string;
   menuscriptFileSize: any;
+  status: string;
 }
 export interface postEbookHoldProps {
   holdReason: any;
