@@ -52,12 +52,23 @@ import TextField from "@/components/common/Molecules/TextField/TextField";
 import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 import { AxiosError } from "axios";
 import { ApiResType } from "@/api/common/commonType";
+import UserDeActivateModal from "@/components/modal/member/UserDeActivateModal";
+
+export type UserMenuType = "기본" | "결제 내역" | "포인트 내역" | "출판 내역";
 
 function UserDetail() {
+  const menuList: UserMenuType[] = [
+    "기본",
+    "결제 내역",
+    "포인트 내역",
+    "출판 내역",
+  ];
   const { openModal, closeModal } = useModalStore();
   const { id } = useParams();
   const queryClient = useQueryClient();
-  const [selectedTab, setSelectedTab] = useState("기본"); // 기본값 설정
+  const [selectedMenu, setSelectedMenu] = useState<UserMenuType>(
+    menuList[0] ?? "기본"
+  ); // 기본값 설정
   const [nickName, setNickName] = useState(""); //유저 닉네임
   const [isNickEdit, setIsNickEdit] = useState(false); //닉네임 편집 상태 여부
   const [isNickError, setIsNickError] = useState(false); //닉네임 에러
@@ -137,20 +148,14 @@ function UserDetail() {
   //회원 활성화 모달
   const userActivateModal = () => {
     openModal(
-      <UserActivateModal
-        id={Number(id)}
-        onClickOkBtn={() => userActivateFn(Number(id))}
-      />
+      <UserActivateModal onClickOkBtn={() => userActivateFn(Number(id))} />
     );
   };
 
   //회원 비활성화 모달
   const userDeActivateModal = () => {
     openModal(
-      <UserActivateModal
-        id={Number(id)}
-        onClickOkBtn={() => userDeactivateFn(Number(id))}
-      />
+      <UserDeActivateModal onClickOkBtn={() => userDeactivateFn(Number(id))} />
     );
   };
 
@@ -179,32 +184,33 @@ function UserDetail() {
           회원 상세
           <Divider vertical className="h-[20px] mx-[12px]" />
           <div className="mr-[8px]">
-            {selectedTab === "기본" && <div>기본</div>}
-            {selectedTab === "결제 내역" && <div>결제 내역</div>}
-            {selectedTab === "포인트 내역" && <div>포인트 내역</div>}
-            {selectedTab === "출판 내역" && <div>출판 내역</div>}
+            {menuList.map((menu) => {
+              return selectedMenu === menu && <div>{menu}</div>;
+            })}
           </div>
           <SelectBox
-            onValueChange={(value) => setSelectedTab(value)}
+            value={selectedMenu}
+            onValueChange={(value) => setSelectedMenu(value as UserMenuType)}
             className="[&>span]:hidden size-[32px] p-0 items-center justify-center"
           >
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>회원 상세</SelectLabel>
-                <SelectItem value="기본">기본</SelectItem>
-                <SelectItem value="결제 내역">결제 내역</SelectItem>
-                <SelectItem value="포인트 내역">포인트 내역</SelectItem>
-                <SelectItem value="출판 내역">출판 내역</SelectItem>
+                {menuList.map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </SelectBox>
         </>
       }
     >
-      <div className="flex gap-gutter-horizontal pt-gutter-vertical">
+      <div className="flex gap-gutter-horizontal">
         <div className="w-[440px] h-[720px] flex flex-col border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin gap-[12px] rounded-radius-admin">
           <div className="flex items-center justify-between gap-[12px]">
-            {/* todo: 사이드 패널 api에서 상태 데이터 받아야함 */}
+            {/* todo: 사이드 패널 api에서 상태 데이터 받아야함(isActive는 현재 탈퇴를 처리하지 못함) */}
             <CardRow
               data={{
                 title: "상태",
@@ -355,15 +361,17 @@ function UserDetail() {
           {/* 메인 카드 부분 */}
 
           {/* 기본일 때 */}
-          {selectedTab === "기본" && <UserDetailDefault />}
+          {selectedMenu === "기본" && (
+            <UserDetailDefault setSeletedMenu={setSelectedMenu} />
+          )}
           {/* 결제내역 일 때 */}
-          {selectedTab === "결제 내역" && <UserDetailExchange />}
+          {selectedMenu === "결제 내역" && <UserDetailExchange />}
 
           {/* 포인트내역 일 때 */}
-          {selectedTab === "포인트 내역" && <UserDetailPoint />}
+          {selectedMenu === "포인트 내역" && <UserDetailPoint />}
 
           {/* 출판내역 일 때 */}
-          {selectedTab === "출판 내역" && <UserDetailPublish />}
+          {selectedMenu === "출판 내역" && <UserDetailPublish />}
         </div>
       </div>
     </BreadcrumbContainer>

@@ -1,5 +1,9 @@
 import API from "@/api/API";
-import { ApiResType, type TableResType } from "@/api/common/commonType";
+import {
+  ApiResType,
+  FileUploadRes,
+  type TableResType,
+} from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
 import { data } from "react-router-dom";
 
@@ -127,5 +131,32 @@ export const userNickChange = (payload: {
     `/account/${payload.id}/profile/nickname`,
     payload.data
   );
+  return data;
+};
+
+//주민등록증 사본 미리보기
+export const getIdCardPreview = (id: number) => {
+  const queryString = `/admin/user/${id}/idcard/preview`;
+
+  const data = API.get<Blob>(queryString, { responseType: "blob" });
+
+  return data;
+};
+
+//사업자등록증 사본 미리보기
+export const getBusCertifPreview = (id: number) => {
+  const queryString = `/admin/user/${id}/business-certificate/preview`;
+
+  const data = API.get<Blob>(queryString, { responseType: "blob" });
+
+  return data;
+};
+
+//통장 사본 미리보기
+export const getBankStatePreview = (id: number) => {
+  const queryString = `/api/v1/admin/user/${id}/bank-statement/preview`;
+
+  const data = API.get<Blob>(queryString, { responseType: "blob" });
+
   return data;
 };

@@ -380,6 +380,7 @@ function PublishList() {
                   </TableCell>
                   <TableCell className="w-[56px]">
                     <Link
+                      className="flex justify-center"
                       to={`${PUBLISH_LIST_DETAIL}/${item.id}?status=${item.status}`}
                     >
                       <IconButton

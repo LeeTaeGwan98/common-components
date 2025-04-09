@@ -10,11 +10,10 @@ import { userActivate } from "@/api/user/userAPI";
 
 interface UserActivateModalProps {
   // 모달에서는 상세페이지 id를 props로 넘겨와야함
-  id: number;
   onClickOkBtn: () => void;
 }
 
-const UserActivateModal = ({ id, onClickOkBtn }: UserActivateModalProps) => {
+const UserActivateModal = ({ onClickOkBtn }: UserActivateModalProps) => {
   return (
     <DialogContent
       onOpenAutoFocus={(event) => event.preventDefault()}
