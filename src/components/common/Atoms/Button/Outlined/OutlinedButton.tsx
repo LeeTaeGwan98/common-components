@@ -67,9 +67,9 @@ function OutlinedButton({
         typeStyle[type],
         !disable && interactiveTypeStyle[type],
         sizeStyle[size],
-        disableStyle,
         fontStyle[type][size],
-        className
+        className,
+        disableStyle
       )}
       onMouseUp={(e) => e.currentTarget.blur()}
       {...props}

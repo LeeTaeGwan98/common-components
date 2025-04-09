@@ -15,7 +15,7 @@ interface DatePickerProps {
   size?: "large" | "small";
   disable?: boolean;
   date: Date | undefined;
-  setDate: Dispatch<SetStateAction<Date | undefined>>;
+  setDate: Dispatch<SetStateAction<Date | undefined>> | ((date: Date) => void);
   pickerClassName?: string;
 }
 
@@ -60,7 +60,13 @@ function DatePicker({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar mode="single" selected={date} autoFocus onSelect={setDate} />
+        <Calendar
+          mode="single"
+          selected={date === undefined ? new Date() : date} // Calendar최초 로드시 초기 값은 undefined이기 때문에 오늘날짜로 초기화
+          autoFocus
+          onSelect={setDate}
+          required
+        />
       </PopoverContent>
     </Popover>
   );

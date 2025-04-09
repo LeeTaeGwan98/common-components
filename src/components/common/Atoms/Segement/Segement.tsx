@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 interface SegmentProps {
   size?: "large" | "medium" | "small";
   selected?: boolean; // true면 왼쪽이 활성화 / false면 오른쪽이 활성화
-  setSelected: Dispatch<SetStateAction<boolean>>;
+  setSelected: Dispatch<SetStateAction<boolean>> | ((value: boolean) => void);
   textList: [string | number, string | number]; // 배열크기 2개로 제한
   className?: string;
   itemClassName?: string;
@@ -62,7 +62,7 @@ Segement.SegementItem = (({
   setSelected,
   size = "medium",
 }: SegementItem) => {
-  const isSelected = !!flag === selected;
+  const isSelected = !flag === selected;
 
   const sizeStyle = {
     large: "text-body1-normal-bold py-[12px]",
@@ -92,7 +92,7 @@ Segement.SegementItem = (({
         sizeStyle[size],
         itemClassName
       )}
-      onClick={() => setSelected(!!flag)}
+      onClick={() => setSelected(!flag)}
     >
       {children}
     </button>

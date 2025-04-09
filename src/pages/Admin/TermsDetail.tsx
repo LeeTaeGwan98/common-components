@@ -1,110 +1,221 @@
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import {
+  getDetailTermsList,
+  patchTermsList,
+  PatchTermsType,
+} from "@/api/terms";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import Button from "@/components/common/Atoms/Button/Solid/Button";
+import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import Divider from "@/components/common/Atoms/Divider/Divider";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
 import DatePicker from "@/components/common/Molecules/DatePicker/DatePicker";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useState } from "react";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { dateToString, isoStringToDate, stringToDate } from "@/lib/dateParse";
+import { useAuthStore } from "@/store/authStore";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+type FormState = {
+  type: string;
+  title: string;
+  effectiveDate: string;
+  content: string;
+};
 
 function TermsDetail() {
-  const [termsField, setTermsField] = useState("개인정보 처리 방침");
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [contentsField, setContentsField] = useState(`개인정보의 처리목적
-  개인정보 처리방침
-(주)nder.co.kr'이하 )은(는) 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리방침을 수립·공개합니다.
+  const queryClient = useQueryClient();
+  const navigate = useNavigate(); //네비게이션
+  const { id } = useParams(); // id 값 추출
+  const { user } = useAuthStore(); //현재 로그인한 유저 정보
 
-  ○ 이 개인정보처리방침은 2023년 8월 20일부터 적용됩니다.
+  //챗봇 상세 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["termsDetail", id],
+    queryFn: () => getDetailTermsList(Number(id)),
+    select: (data) => data.data.data,
+  });
 
-  제1조(개인정보의 처리 목적)
+  // 폼 상태 관리
+  const [formState, setFormState] = useState({
+    type: data.type,
+    title: data.title,
+    effectiveDate: data.effectiveDate,
+    content: data.content,
+  });
 
-  (주)더드림메이커스 >('onder.co.kr'이하 '온누리스마트오더 온더')은(는) 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
-  
-  1. 홈페이지 회원가입 및 관리
-  
-`);
+  // 폼 개별 상태 업데이트 핸들러
+  const updateFormState = <K extends keyof FormState>(
+    field: K,
+    value: FormState[K]
+  ) => {
+    setFormState((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  //공통 코드 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: ["termsSortGroupCodes", COMMON_GROUP_CODE_MAPPING.약관유형코드],
+    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.약관유형코드]),
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const typeCodes = codeInfo[keys[0]]; // 구분 코드들
+
+  //약관 수정 api
+  const { mutate: updateTermsFn } = useMutation({
+    mutationFn: (payload: { id: number; data: PatchTermsType }) =>
+      patchTermsList(payload),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["termsDetail", id] });
+      navigate(-1);
+    },
+    onError() {
+      customToast({
+        title: "약관 수정중 에러가 발생했습니다.",
+      });
+    },
+  });
+
+  //날짜 30일 후로 변환
+  const handleEffectDate = (date: Date) => {
+    const changeDate: Date = date;
+    changeDate.setDate(changeDate.getDate() + 30);
+    return changeDate;
+  };
+
+  //적용일 30일 후로 변환
+  useEffect(() => {
+    updateFormState(
+      "effectiveDate",
+      dateToString(
+        handleEffectDate(isoStringToDate(data.updatedAt) ?? new Date())
+      )
+    );
+  }, [data]);
+
+  // 저장 버튼 활성화 여부
+  const isFormValid = formState.type && formState.title && formState.content;
+
+  // 저장 버튼 핸들러
+  const handleSave = () => {
+    if (!isFormValid) return;
+
+    //약관 수정
+    updateTermsFn({
+      id: Number(id),
+      data: {
+        type: formState.type,
+        title: formState.title,
+        content: formState.content,
+        isRequired: false,
+        effectiveDate: formState.effectiveDate,
+        updatedBy: user!.id,
+        isMarketing: false,
+      },
+    });
+  };
 
   return (
     <BreadcrumbContainer
       breadcrumbNode={
         <>
-          관리자 / 약관 관리 <Divider vertical className="h-[20px] mx-[12px]" />{" "}
-          상세
+          관리자 / 약관 관리 <Divider vertical className="h-[20px] mx-[12px]" />
+          등록
         </>
       }
     >
       <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
-        <div className="w-[1004px]  ">
+        <div className="flex flex-col w-[1004px] gap-gutter-vertical">
+          {/* 구분 */}
+          <SelectBox
+            placeholder="약관 구분을 선택해주세요"
+            className="min-w-[240px]"
+            size="large"
+            label="구분"
+            value={formState.type}
+            onValueChange={(value) => {
+              updateFormState("type", value);
+            }}
+          >
+            <SelectContent>
+              <SelectGroup>
+                {typeCodes.map((item, idx) => {
+                  const { commDetailCode, detailCodeName } = item;
+                  return (
+                    <SelectItem key={idx} value={commDetailCode}>
+                      {detailCodeName}
+                    </SelectItem>
+                  );
+                })}
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
           {/* 이용약관명 */}
           <div className=" gap-gutter-horizon ">
-            이용약관명
             <TextField
-              className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal
-"
               placeholder="이용약관명을 입력해주세요"
-              value={termsField}
+              label="이용약관명"
+              value={formState.title}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setTermsField(e.target.value);
+                updateFormState("title", e.target.value);
               }}
+              maxLength={50}
               isVisible={false}
             />
           </div>
           {/* 적용일 */}
-          <div className=" mt-[32px]">
+          <div>
             <div className="mb-[8px]">적용일</div>
-            <DatePicker date={selectedDate} setDate={setSelectedDate} />
-          </div>
-          {/* 내용 */}
-          <div className=" mt-[32px]">
-            <div className="mb-[8px]">내용</div>
-            <TextBox
-              className="h-[424px] border border-label-assistive rounded-radius-admin p-[12px] placeholder-label-assistive text-body1-normal-regular text-label-normal overflow-y-auto"
-              placeholder="내용을 입력해주세요"
-              value={contentsField}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                setContentsField(e.target.value);
+            <DatePicker
+              date={stringToDate(formState.effectiveDate)}
+              setDate={(date: Date) => {
+                updateFormState("effectiveDate", dateToString(date));
               }}
             />
           </div>
+
+          {/* 내용 */}
+          <TextBox
+            placeholder="내용을 입력해주세요"
+            value={formState.content}
+            label="내용"
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              updateFormState("content", e.target.value);
+            }}
+          />
           {/* 버튼 */}
           <div className="mt-[32px] flex justify-end space-x-4">
-            <Button
-              onClick={() => {
-                console.log("취소 버튼 클릭");
-              }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium "
+            <OutlinedButton
+              className="w-[180px] h-[48px]"
+              type="assistive"
+              size="large"
+              onClick={() => navigate(-1)}
             >
               취소
-            </Button>
-            <Button
-              onClick={() => {
-                const termsMessage = termsField
-                  ? termsField
-                  : "이용약관명이 없습니다.";
-                const contentsMessage = contentsField
-                  ? contentsField
-                  : "내용이 없습니다.";
-
-                // 하나라도 비어 있으면 해당 메시지만 출력
-                if (!termsField && !contentsField) {
-                  console.log("이용약관명과 내용이 없습니다.");
-                } else {
-                  if (!termsField) {
-                    console.log("이용약관명이 없습니다.");
-                  } else {
-                    console.log(termsMessage);
-                  }
-
-                  if (!contentsField) {
-                    console.log("내용이 없습니다.");
-                  } else {
-                    console.log(contentsMessage);
-                  }
-                }
-              }}
-              className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-primary-normal text-body1-normal-medium "
+            </OutlinedButton>
+            <OutlinedButton
+              className="w-[180px] h-[48px]"
+              type="secondary"
+              size="large"
+              disable={!isFormValid}
+              onClick={handleSave}
             >
               저장
-            </Button>
+            </OutlinedButton>
           </div>
         </div>
       </div>

@@ -8,9 +8,9 @@ import ContentWrapper from "@/components/ContentWrapper";
 import { useState } from "react";
 
 function PlanDetail() {
-  const [isNoWaterMark, setIsNoWaterMark] = useState<boolean>(false); //워터마크 x 여부
-  const [isNoChatbot, setIsNoChatBot] = useState<boolean>(false); //챗봇 x 여부
-  const [isNoSceneExtend, setIsNoSceneExtend] = useState<boolean>(false); //연장 x 여부
+  const [isNoWaterMark, setIsNoWaterMark] = useState<boolean>(true); //워터마크 x 여부
+  const [isNoChatbot, setIsNoChatBot] = useState<boolean>(true); //챗봇 x 여부
+  const [isNoSceneExtend, setIsNoSceneExtend] = useState<boolean>(true); //연장 x 여부
   return (
     <BreadcrumbContainer
       breadcrumbNode={

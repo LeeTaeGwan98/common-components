@@ -44,6 +44,13 @@ import {
   NOTICE,
   SERVICE_GUIDE,
   CHATBOT,
+  INQUIRY_DETAIL,
+  NOTICE_DETAIL,
+  NOTICE_REGISTRATION,
+  SERVICE_GUIDE_DETAIL,
+  SERVICE_GUIDE_REGISTRATION,
+  CHATBOT_DETAIL,
+  CHATBOT_REGISTRATION,
 } from "@/Constants/ServiceUrl";
 import CoverCreate from "@/pages/Ebook/Cover/CoverCreate";
 import AccountRegistration from "@/pages/Admin/AccountRegistration";
@@ -55,70 +62,136 @@ import TutorialCreate from "@/pages/Video/Tutorial/TutorialCreate";
 import TutorialDetail from "@/pages/Video/Tutorial/TutorialDetail";
 import Template from "@/pages/Video/Template/Template";
 import TemplateDetail from "@/pages/Video/Template/TemplateDetail";
-import UserDetail from "@/pages/User/UserDetail";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import FetchTest from "@/pages/FetchTest";
 import { Modal } from "@/components/Modal";
 import ModalTest from "@/pages/ModalTest";
+import UserDetail from "@/pages/User/Detail/UserDetail";
+import PaymentManagement from "@/pages/User/PaymentManagement";
+import Withdrawalmanagement from "@/pages/User/Withdrawalmanagement";
+import Inquiry from "@/pages/Forum/Inquiry";
+import InquiryDetail from "@/pages/Forum/InquiryDetail";
+import Notice from "@/pages/Forum/Notice";
+import NoticeDetail from "@/pages/Forum/NoticeDetail";
+import NoticeRegistration from "@/pages/Forum/NoticeAdd";
+import ServiceGuide from "@/pages/Forum/ServiceGuide";
+import ServiceGuideDetail from "@/pages/Forum/ServiceGuideDetail";
+import ServiceGuideRegistration from "@/pages/Forum/ServiceGuideAdd";
+import Chatbot from "@/pages/Forum/Chatbot";
+import ChatbotDetail from "@/pages/Forum/ChatbotDetail";
+import ChatbotRegistration from "@/pages/Forum/ChatbotRegistration";
+import { Toaster } from "@/components/ui/sonner";
+import ProtectedRoute from "@/guard/ProtectedRoute";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnMount: true,
+    },
+  },
+});
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster />
       <Modal />
       <BrowserRouter>
         <Layout>
           <Routes>
             <Route path={LOGIN} element={<Login />} />
-            <Route path={MAIN} element={<Main />} />
 
             {/* 회원관리 */}
-            <Route path={USER_LIST} element={<UserList />} />
-            <Route path={PAY} element={<div>결제관리</div>} />
-            <Route path={WITHDRAWL_REASON} element={<div>탈퇴사유관리</div>} />
-            <Route path={USER_DETAIL} element={<div>회원 상세</div>} />
+            <Route element={<ProtectedRoute />}>
+              <Route path={USER_LIST} element={<UserList />} />
+              <Route path={PAY} element={<PaymentManagement />} />
+              <Route
+                path={WITHDRAWL_REASON}
+                element={<Withdrawalmanagement />}
+              />
+              <Route path={`${USER_DETAIL}/:id`} element={<UserDetail />} />
 
-            {/* 전자책 관리 */}
-            <Route path={PUBLISH_LIST} element={<PublishList />} />
-            <Route path={PUBLISH_LIST_DETAIL} element={<PublishListDetail />} />
-            <Route path={COVER} element={<Cover />} />
-            <Route path={COVER_DETAIL} element={<CoverDetail />} />
-            <Route path={COVER_CREATE} element={<CoverCreate />} />
-            <Route path={CHARGING} element={<Charging />} />
+              <Route path={MAIN} element={<Main />} />
 
-            {/* 비디오북 관리 */}
-            <Route path={PLAN} element={<Plan />} />
-            <Route path={PLAN_DETAIL} element={<PlanDetail />} />
-            <Route path={TUTORIAL} element={<Tutorial />} />
-            <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
-            <Route path={TUTORIAL_DETAIL} element={<TutorialDetail />} />
-            <Route path={TEMPLATE} element={<Template />} />
-            <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
+              {/* 전자책 관리 */}
+              <Route path={PUBLISH_LIST} element={<PublishList />} />
+              <Route
+                path={`${PUBLISH_LIST_DETAIL}/:id`}
+                element={<PublishListDetail />}
+              />
+              <Route path={COVER} element={<Cover />} />
+              <Route path={`${COVER_DETAIL}/:id`} element={<CoverDetail />} />
+              <Route path={COVER_CREATE} element={<CoverCreate />} />
+              <Route path={CHARGING} element={<Charging />} />
 
-            {/* 게시판 관리 */}
-            <Route path={INQUIRY} element={<div>1:1 문의</div>} />
-            <Route path={NOTICE} element={<div>공지사항</div>} />
-            <Route path={SERVICE_GUIDE} element={<div>서비스 가이드</div>} />
-            <Route path={CHATBOT} element={<div>챗봇 관리</div>} />
+              {/* 게시판 관리 */}
+              <Route path={INQUIRY} element={<Inquiry />} />
+              <Route
+                path={`${INQUIRY_DETAIL}/:id`}
+                element={<InquiryDetail />}
+              />
+              <Route path={NOTICE} element={<Notice />} />
+              <Route path={`${NOTICE_DETAIL}/:id`} element={<NoticeDetail />} />
+              <Route
+                path={NOTICE_REGISTRATION}
+                element={<NoticeRegistration />}
+              />
+              <Route path={SERVICE_GUIDE} element={<ServiceGuide />} />
+              <Route
+                path={`${SERVICE_GUIDE_DETAIL}/:id`}
+                element={<ServiceGuideDetail />}
+              />
+              <Route
+                path={SERVICE_GUIDE_REGISTRATION}
+                element={<ServiceGuideRegistration />}
+              />
+              <Route path={CHATBOT} element={<Chatbot />} />
+              <Route
+                path={`${CHATBOT_DETAIL}/:id`}
+                element={<ChatbotDetail />}
+              />
+              <Route
+                path={CHATBOT_REGISTRATION}
+                element={<ChatbotRegistration />}
+              />
+              {/* 비디오북 관리 */}
+              <Route path={PLAN} element={<Plan />} />
+              <Route path={PLAN_DETAIL} element={<PlanDetail />} />
+              <Route path={TUTORIAL} element={<Tutorial />} />
+              <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
+              <Route
+                path={`${TUTORIAL_DETAIL}/:id`}
+                element={<TutorialDetail />}
+              />
+              <Route path={TEMPLATE} element={<Template />} />
+              <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
 
-            {/* 관리자 */}
-            <Route path={TERMS} element={<Terms />} />
-            <Route path={TERMS_DETAIL} element={<TermsDetail />} />
-            <Route path={TERMS_REGISTRATION} element={<TermsRegistration />} />
-            <Route path={ACCOUNT} element={<Account />} />
-            <Route path={COMMON_CODE} element={<CommonCode />} />
-            <Route
-              path={ACCOUNT_REGISTRATION}
-              element={<AccountRegistration />}
-            />
-            <Route path={ACCOUNT_DETAIL} element={<AccountDetail />} />
-            <Route path={USER_DETAIL} element={<UserDetail />} />
+              {/* 관리자 */}
+              <Route path={TERMS} element={<Terms />} />
+              <Route path={`${TERMS_DETAIL}/:id`} element={<TermsDetail />} />
+              <Route
+                path={TERMS_REGISTRATION}
+                element={<TermsRegistration />}
+              />
+              <Route path={ACCOUNT} element={<Account />} />
+              <Route path={COMMON_CODE} element={<CommonCode />} />
+              <Route
+                path={ACCOUNT_REGISTRATION}
+                element={<AccountRegistration />}
+              />
+              <Route
+                path={`${ACCOUNT_DETAIL}/:id`}
+                element={<AccountDetail />}
+              />
+              <Route path={USER_DETAIL} element={<UserDetail />} />
 
-            <Route path="/fetchTest" element={<FetchTest />} />
-            <Route path="/modalTest" element={<ModalTest />} />
+              <Route path="/fetchTest" element={<FetchTest />} />
+              <Route path="/modalTest" element={<ModalTest />} />
+            </Route>
+
+            <Route path="*" element={<div>404</div>} />
           </Routes>
         </Layout>
       </BrowserRouter>

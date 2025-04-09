@@ -1,22 +1,17 @@
 import { cn } from "@/lib/utils";
 import {
-  CommonLoginButtonPrsop,
-  LoginButtinInteractiveTypeStyle1,
-} from "../LoginButton";
+  type CommonLoginButtonPrsop,
+  LoginButtonInteractiveTypeStyle1,
+} from "@/components/common/Molecules/LoginButton/LoginButton";
 
-function AnotherLoginButton({
-  onClick,
-  className,
-  ...props
-}: CommonLoginButtonPrsop) {
+function AnotherLoginButton({ className, ...props }: CommonLoginButtonPrsop) {
   return (
     <button
       className={cn(
         "w-full h-[48px] text-label-alternative text-label1-normal-bold underline rounded-large-button",
-        LoginButtinInteractiveTypeStyle1,
+        LoginButtonInteractiveTypeStyle1,
         className
       )}
-      onClick={() => onClick()}
       onMouseUp={(e) => e.currentTarget.blur()}
       {...props}
     >

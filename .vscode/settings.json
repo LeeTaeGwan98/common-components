@@ -24,9 +24,9 @@
       "comments": "on",
       "strings": "on"
     },
-    "tailwindCSS.experimental.classRegex": [
-      "[\"'`]([^\"'`]*)[\"'`]", // 일반 문자열 내에서도 자동 완성 지원
-    ],
+    // "tailwindCSS.experimental.classRegex": [
+    //   "[\"'`]([^\"'`]*)[\"'`]", // 일반 문자열 내에서도 자동 완성 지원
+    // ],
     "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }

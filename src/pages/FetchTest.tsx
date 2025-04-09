@@ -19,8 +19,10 @@ function FetchTest() {
     queryFn: () => testGet(),
     staleTime: 1000000000,
     gcTime: 1000000000,
-    enabled: false,
+    //enabled: false,
   });
+
+  console.log("데이터", data);
 
   const obj = { title: "foo", body: "bar", userId: 1 };
 

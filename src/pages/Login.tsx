@@ -1,36 +1,53 @@
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import TextField from "@/components/common/Molecules/TextField/TextField";
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent, useEffect } from "react";
+import { login } from "@/api/auth/auth";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { MAIN } from "@/Constants/ServiceUrl";
+import { useAuthStore } from "@/store/authStore";
+import GIF from "@/assets/gif/loginback.gif";
 
 function Login() {
-  const [idField, setIdField] = useState("");
-  const [passwordField, setPasswordField] = useState("");
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const setUserInfo = useAuthStore((state) => state.setUserInfo);
+  const isFieldCheck = email !== "" && password !== "";
 
-  const isFieldCheck = idField !== "" && passwordField !== "";
+  const { mutate: handleLoginMutation } = useMutation({
+    mutationFn: () => login({ email, password }),
+    onSuccess(res) {
+      setUserInfo(res.data.data);
+      navigate(MAIN);
+    },
+  });
 
-  const handleMessage = () => {
-    console.log("로그인 버튼 클릭");
+  const handleLogin = () => {
+    if (isFieldCheck) {
+      handleLoginMutation();
+    }
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && isFieldCheck) {
-      handleMessage();
+      handleLoginMutation();
     }
   };
 
   const handleButtonKeyPress = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === "Enter" && isFieldCheck) {
-      handleMessage();
+      handleLoginMutation();
     }
   };
 
   return (
     <div className="flex h-screen">
-      <div className="flex flex-1 bg-primary-normal/[0.08] p-8 items-center justify-center sm:hidden">
+      <div className="flex flex-1 bg-primary-normal/[0.08] p-8 items-center justify-center sm:hidden xs:hidden">
         <div className="flex flex-col justify-between items-center h-full">
           {/* 중앙 정렬된 콘텐츠 */}
           <div className="flex flex-col items-center flex-grow justify-center">
-            <img src="src/assets/gif/loginback.gif" />
+            <img src={GIF} />
             <div className="text-primary-normal text-heading3-bold text-[30px] flex items-center justify-center mb-[12px]">
               북카롱 통합 관리자
             </div>
@@ -57,9 +74,9 @@ function Login() {
 
           <div className="flex flex-col gap-[16px]">
             <TextField
-              value={idField}
+              value={email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setIdField(e.target.value);
+                setEmail(e.target.value);
               }}
               isVisible={false}
               placeholder="이메일을 입력해주세요"
@@ -71,9 +88,9 @@ function Login() {
               onKeyDown={handleKeyPress}
             />
             <TextField
-              value={passwordField}
+              value={password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setPasswordField(e.target.value);
+                setPassword(e.target.value);
               }}
               isVisible={false}
               placeholder="비밀번호를 입력해주세요"
@@ -93,7 +110,7 @@ function Login() {
                 : "bg-interaction-disable text-label-assistive cursor-not-allowed"
             }`}
             disabled={!isFieldCheck}
-            onClick={handleMessage}
+            onClick={handleLogin}
             onKeyDown={handleButtonKeyPress}
           >
             관리자 로그인

@@ -12,8 +12,8 @@ import { useState } from "react";
 function TemplateDetail() {
   const [templName, setTemplName] = useState<string>(""); //템플릿명
   const [category, setCategory] = useState<string>(""); //카테고리
-  const [isNoExposure, setIsNoExposure] = useState<boolean>(false); //비노출 여부
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(false); //관리자 비추천 여부
+  const [isNoExposure, setIsNoExposure] = useState<boolean>(true); //비노출 여부
+  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true); //관리자 비추천 여부
   const [ratio, setRatio] = useState<string>(""); //비율
   const [length, setLength] = useState<string>(""); //길이
 

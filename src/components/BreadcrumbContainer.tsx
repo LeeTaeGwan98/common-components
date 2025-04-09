@@ -1,6 +1,6 @@
 import { cloneElement, ReactElement, ReactNode } from "react";
 import Divider from "@/components/common/Atoms/Divider/Divider";
-import Button from "@/components/common/Atoms/Button/Solid/Button";
+import { cn } from "@/lib/utils";
 
 interface BreadcrumbContainerProps {
   breadcrumbNode: ReactNode;
@@ -23,7 +23,9 @@ function BreadcrumbContainer({
         </div>
         {button &&
           cloneElement(button, {
-            className: "absolute right-0 bottom-0",
+            className: cn(
+              `${button.props.className} absolute right-0 bottom-0`
+            ),
           })}
       </div>
       <Divider className="mt-[12px] mb-gutter-vertical" />

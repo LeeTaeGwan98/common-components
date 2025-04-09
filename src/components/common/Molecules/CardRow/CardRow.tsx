@@ -22,33 +22,32 @@ function CardRow({ data = {}, slot = {} }: CardRowProps) {
   const { title, content, shortcut } = data;
   return (
     <div className={cn("flex flex-col gap-[2px]", slot.containerClassName)}>
-      <div className="flex items-center justify-between">
-        <div>
-          <div
-            className={cn(
-              "text-label2-bold text-label-normal",
-              slot.titleClassname
-            )}
-          >
-            {title}
-          </div>
-          <span
-            className={cn(
-              "text-body2-normal-regular text-label-neutral",
-              slot.titleClassname
-            )}
-          >
-            {content}
-          </span>
-        </div>
-        {shortcut && (
-          <span>
-            {cloneElement(shortcut, {
-              className: cn("size-[48px]", slot.shortcutClassName),
-            })}
-          </span> // 기본 사이즈 48px
-        )}
+      <div className="flex flex-col gap-[6px]">
+        <span
+          className={cn(
+            "text-label2-bold text-label-alternative",
+            slot.titleClassname
+          )}
+        >
+          {title}
+        </span>
+        <span
+          className={cn(
+            "text-body2-reading-bold-regular text-label-normal",
+            slot.contentClassName
+          )}
+        >
+          {content}
+        </span>
       </div>
+
+      {shortcut && (
+        <span>
+          {cloneElement(shortcut, {
+            className: cn("size-[48px]", slot.shortcutClassName),
+          })}
+        </span> // 기본 사이즈 48px
+      )}
     </div>
   );
 }

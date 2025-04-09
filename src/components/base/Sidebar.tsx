@@ -5,19 +5,32 @@ import SIDEBAR_MENU_ITEM from "@/Constants/SidebarMenuItem";
 import { Link, useLocation } from "react-router-dom";
 import React, { cloneElement } from "react";
 import BottomArrowIcon from "@/assets/svg/Sidebar/Bottom.svg";
-import RightArrowIcon from "@/assets/svg/Sidebar/right.svg";
+import RightArrowIcon from "@/assets/svg/Sidebar/Right.svg";
 import Menu from "@/components/common/Molecules/Menu/Menu";
 import { SIDEBAR_WIDTH } from "@/Constants/UIMagicNumber";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { logout } from "@/api/auth/auth";
+import { useNavigate } from "react-router-dom";
+import { LOGIN } from "@/Constants/ServiceUrl";
+import { useAuthStore } from "@/store/authStore";
 
 interface SideBarProps {}
 
 function Sidebar({}: SideBarProps) {
+  const delUserInfo = useAuthStore((state) => state.delUserInfo);
+  const userName = useAuthStore((state) => state.user?.name);
+  const permissions = useAuthStore((state) => state.permissions);
+  const navigate = useNavigate();
   const location = useLocation();
   const currentPathname = location.pathname;
 
-  const logoutHandler = () => {
-    console.log("logout");
-  };
+  const { mutate: handleLogoutMutation } = useMutation({
+    mutationFn: () => logout(),
+    onSuccess() {
+      delUserInfo();
+      navigate(LOGIN);
+    },
+  });
 
   return (
     <div
@@ -26,16 +39,21 @@ function Sidebar({}: SideBarProps) {
     >
       <div className="px-[30px] text-body2-normal-bold flex items-center gap-[8px]">
         <CompanyIcon />
-        Admin999
+        {userName}
       </div>
 
       <Divider className="my-[12px]" />
 
       <div className="flex flex-col px-[16px]">
-        {SIDEBAR_MENU_ITEM.map((item, idx) => {
+        {SIDEBAR_MENU_ITEM.filter((item) => {
+          if (!permissions) return;
+          if (item.title === "관리자") return true;
+          if (item.title === "메인") return true;
+          return permissions.includes(item.code!);
+        }).map((item) => {
           const isActive =
-            currentPathname === item.path ||
-            item.child.some((child) => currentPathname === child.path);
+            currentPathname.startsWith(item.path) ||
+            item.child.some((child) => currentPathname.startsWith(child.path));
           const hasChildItem = !!item.child.length;
 
           return (
@@ -69,9 +87,14 @@ function Sidebar({}: SideBarProps) {
                   </span>
                 </Menu>
               </Link>
-
               {item.child.map((child) => {
-                const isChildActive = currentPathname === child.path;
+                const isChildActive = currentPathname.startsWith(child.path);
+                const childCode = "code" in child ? child.code : null;
+
+                if (childCode && !permissions?.includes(childCode)) {
+                  return null;
+                }
+
                 return (
                   isActive && (
                     <Link to={child.path} key={child.path}>
@@ -91,7 +114,7 @@ function Sidebar({}: SideBarProps) {
         })}
         <button
           className="mx-auto mt-[24px] font-semibold text-[14px] text-label-alternative underline"
-          onClick={logoutHandler}
+          onClick={() => handleLogoutMutation()}
         >
           로그아웃
         </button>

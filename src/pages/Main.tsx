@@ -2,70 +2,64 @@ import Card from "@/components/common/Molecules/Card/Card";
 import Content from "@/components/common/Molecules/Content/Content";
 import Up from "@/assets/svg/common/Up.svg";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import { ResponsiveLine } from "@nivo/line";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getDashboard } from "@/api/main/dashboardApi";
 
-export const mockLineData = [
-  {
-    id: "japan",
-    data: [
-      {
-        x: "plane",
-        y: 101,
-      },
-      {
-        x: "helicopter",
-        y: 75,
-      },
-      {
-        x: "boat",
-        y: 36,
-      },
-      {
-        x: "train",
-        y: 216,
-      },
-      {
-        x: "subway",
-        y: 35,
-      },
-      {
-        x: "bus",
-        y: 236,
-      },
-      {
-        x: "car",
-        y: 88,
-      },
-      {
-        x: "moto",
-        y: 232,
-      },
-      {
-        x: "bicycle",
-        y: 281,
-      },
-      {
-        x: "horse",
-        y: 1,
-      },
-      {
-        x: "skateboard",
-        y: 35,
-      },
-      {
-        x: "others",
-        y: 14,
-      },
-    ],
-  },
+const datas = [
+  { 날짜: "02.27", 유동인구수: 7276000 },
+  { 날짜: "02.28", 유동인구수: 4327000 },
+  { 날짜: "03.01", 유동인구수: 1585000 },
+  { 날짜: "03.02", 유동인구수: 2000000 },
+  { 날짜: "03.03", 유동인구수: 1685000 },
+  { 날짜: "03.04", 유동인구수: 3812600 },
 ];
 
+const renderActiveDot = (props: any) => {
+  const { cx, cy, value } = props;
+
+  return (
+    <svg
+      x={cx - 112}
+      y={cy - 56}
+      width="200"
+      height="68"
+      viewBox="0 0 110 68"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10 5 H130 V40 H78 L68 50 L58 40 H10 Z"
+        fill="#171719BD"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <text textAnchor="middle" dy={28} dx={70} fontSize={15} fill="white">
+        {value.toLocaleString()} 원
+      </text>
+    </svg>
+  );
+};
+
 function Main() {
+  const { data } = useSuspenseQuery({
+    queryKey: ["dashboardList"],
+    queryFn: () => getDashboard(),
+    select: (data) => data.data.data,
+  });
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>메인</>}>
       {/* 메인 카드 부분 */}
       <div className="mt-[32px]">
-        <div className="grid grid-cols-4 gap-[20px]">
+        <div className="grid grid-cols-4 gap-[20px] md:grid-cols-2 sm:grid-cols-1">
           <Card
             title="회원현황"
             size="large"
@@ -73,12 +67,12 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: "min-w-[360px]",
+              containerClassName: "w-full",
             }}
           >
             <Content
               label="오늘"
-              summary="320명"
+              summary={`${data.userIncreaseCount}`}
               icon={<Up />}
               slot={{
                 summaryClassName:
@@ -86,7 +80,7 @@ function Main() {
                 labelClassName: "text-primary-normal text-caption1-bold",
               }}
             >
-              51,000명
+              {`${data.totalUserCount} 명`}
             </Content>
           </Card>
           <Card
@@ -96,7 +90,7 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: "min-w-[360px]",
+              containerClassName: "w-full",
             }}
           >
             <Content
@@ -107,7 +101,7 @@ function Main() {
                 labelClassName: "text-primary-normal text-caption1-bold",
               }}
             >
-              20권
+              {`${data.pendingEbookCount} 권`}
             </Content>
           </Card>
           <Card
@@ -117,7 +111,7 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: "min-w-[360px]",
+              containerClassName: "w-full",
             }}
           >
             <Content
@@ -139,7 +133,7 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: "min-w-[360px]",
+              containerClassName: "w-full",
             }}
           >
             <Content
@@ -162,7 +156,7 @@ function Main() {
             isButton={true}
             isSkeleton={false}
             slot={{
-              containerClassName: "min-w-[360px] max-w-[360px]",
+              containerClassName: "w-full",
             }}
           >
             <Content
@@ -173,7 +167,7 @@ function Main() {
                 labelClassName: "text-primary-normal text-caption1-bold",
               }}
             >
-              22건
+              {`${data.pendingEbookCount} 건`}
             </Content>
           </Card>
         </div>
@@ -187,24 +181,33 @@ function Main() {
               단위: 원
             </span>
           </div>
-          <div className="h-[520px]">
-            <ResponsiveLine
-              data={mockLineData}
-              colors="#28A8FB"
-              xScale={{ type: "point" }}
-              pointSize={10}
-              pointBorderWidth={2}
-              pointBorderColor={{ from: "serieColor" }}
-              theme={{
-                grid: {
-                  line: {
-                    stroke: "#70737C29",
-                    strokeWidth: 1,
-                  },
-                },
-              }}
-            />
-          </div>
+          <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
+            <LineChart
+              data={datas}
+              margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="" />
+              <XAxis dataKey="날짜" tickLine={false} />
+              <YAxis
+                domain={[0, 10000000]}
+                ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
+                tickFormatter={(value) => value.toLocaleString()}
+                width={90}
+                tickLine={false}
+              />
+              <Tooltip content={() => null} />
+
+              <Line
+                type="linear"
+                dataKey="유동인구수"
+                stroke="#28A8FB"
+                activeDot={renderActiveDot}
+                strokeWidth={2}
+                dot={{ r: 5 }}
+              />
+              <Line type="linear" dataKey="비유동인구수" stroke="#82ca9d" />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
 
         {/* 충전소 현황 표  */}
@@ -216,24 +219,32 @@ function Main() {
             </span>
           </div>
 
-          <div className="h-[520px]">
-            <ResponsiveLine
-              data={mockLineData}
-              colors="#28A8FB"
-              xScale={{ type: "point" }}
-              pointSize={10}
-              pointBorderWidth={2}
-              pointBorderColor={{ from: "serieColor" }}
-              theme={{
-                grid: {
-                  line: {
-                    stroke: "#70737C29",
-                    strokeWidth: 1,
-                  },
-                },
-              }}
-            />
-          </div>
+          <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
+            <LineChart
+              data={datas}
+              margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="" />
+              <XAxis dataKey="날짜" tickLine={false} />
+              <YAxis
+                domain={[0, 10000000]}
+                ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
+                tickFormatter={(value) => value.toLocaleString()}
+                width={90}
+                tickLine={false}
+              />
+              <Tooltip content={() => null} />
+              <Line
+                type="linear"
+                dataKey="유동인구수"
+                stroke="#28A8FB"
+                activeDot={renderActiveDot}
+                strokeWidth={2}
+                dot={{ r: 5 }}
+              />
+              <Line type="linear" dataKey="비유동인구수" stroke="#82ca9d" />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </BreadcrumbContainer>

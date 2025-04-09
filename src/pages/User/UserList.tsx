@@ -13,48 +13,152 @@ import { USER_DETAIL } from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import Divider from "@/components/common/Atoms/Divider/Divider";
-import SubTitleBar from "@/components/SubTitleBar";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import { ActionType, TableQueryStringType } from "@/api/common/commonType";
+import { useReducer, useState } from "react";
+import {
+  dateToString,
+  formatDateTimeToJSX,
+  formatToUTCString,
+} from "@/lib/dateParse";
+import CACHE_TIME from "@/Constants/CacheTime";
+import { getUserList, UserQueryStringType } from "@/api/user/userAPI";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
+import Label from "@/components/common/Atoms/Label/Label";
+import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 
-const data = [
-  {
-    no: 0,
-    createAt: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자홍길",
-    email: "a12345a12345a12345a12345a12345@gmail.com",
-    plan: "Starter",
-    ebook: "0",
-    point: "1,000",
-    state: "active",
-    detail: true,
-  },
-  {
-    no: 0,
-    createAt: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자홍길",
-    email: "a12345a12345a12345a12345a12345@gmail.com",
-    plan: "Starter",
-    ebook: "1",
-    point: "0",
-    state: "inactive",
-    detail: true,
-  },
-  {
-    no: 0,
-    createAt: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자홍길",
-    email: "a12345a12345a12345a12345a12345@gmail.com",
-    plan: "Starter",
-    ebook: "1",
-    point: "1,000",
-    state: "withdrawl",
-    detail: true,
-  },
-];
+const initState: UserQueryStringType = {
+  sortOrder: "DESC",
+  fromDt: dateToString(
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+  ),
+  toDt: dateToString(new Date()),
+  keyword: "",
+  take: 10,
+  page: 1,
+  isActive: null,
+};
+
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
 
 function UserList() {
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
+
+  //회원 목록 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["userList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getUserList(filterInfo),
+    select: (data) => data.data.data,
+  });
+
+  //테이블 빈 row 처리
+  const renderEmptyRows = () => {
+    const { take } = filterInfo;
+    if (!take) return;
+    const emptyRowsCount = take - data.list.length;
+    const emptyRows = [];
+
+    for (let i = 0; i < emptyRowsCount; i++) {
+      emptyRows.push(
+        <TableRow key={`empty-row-${i}`}>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+        </TableRow>
+      );
+    }
+
+    return emptyRows;
+  };
+
+  //페이지 초기화
+  const dispatchWithPageReset = (
+    type: keyof UserQueryStringType,
+    value: any
+  ) => {
+    // 필터 값 변경
+    dispatch({
+      type,
+      value,
+    });
+    // 페이지 초기화
+    dispatch({
+      type: "page",
+      value: 1,
+    });
+  };
+
+  //카테고리 변경시 핸들
+  const handleIsActive = (isActive: string | null) => {
+    if (!isActive) return;
+    dispatchWithPageReset("isActive", isActive === "ALL" ? null : isActive);
+  };
+
+  //정렬 변경시 핸들
+  const handleSortOrder = () => {
+    dispatch({
+      type: "sortOrder",
+      value: filterInfo.sortOrder === "DESC" ? "ASC" : "DESC",
+    });
+  };
+
+  //상태 라벨
+  const handleStateLabel = (isActive: string) => {
+    const green = "bg-status-positive/[0.08] text-status-positive";
+    const red = "bg-status-negative/[0.08] text-status-negative";
+    const gray = "bg-status-alternative/[0.08] text-status-alternative";
+
+    let labelColor = gray;
+
+    if (isActive === "활성") {
+      labelColor = green;
+    } else if (isActive === "비활성") {
+      labelColor = gray;
+    } else {
+      labelColor = red;
+    }
+    return <Label className={labelColor}>{isActive}</Label>;
+  };
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
-      <SubTitleBar />
+      <SubTitleBar
+        filterInfo={filterInfo}
+        title="가입일"
+        dispatch={dispatch}
+        CustomSelectComponent={
+          <SelectBox
+            placeholder="모든 상태"
+            className="min-w-[240px]"
+            size="large"
+            defaultValue="ALL"
+            onValueChange={handleIsActive}
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">모든상태</SelectItem>
+                <SelectItem value="TRUE">활성</SelectItem>
+                <SelectItem value="FALSE">비활성</SelectItem>
+                <SelectItem value="WITHDRAWAL">탈퇴</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
+        }
+      />
 
       <TableContainer>
         <Table>
@@ -62,7 +166,8 @@ function UserList() {
             <TableRow>
               <TableCell isHeader>
                 <div className="flex items-center justify-center gap-[2px]">
-                  No <Updown />
+                  가입일
+                  <IconButton icon={<Updown />} onClick={handleSortOrder} />
                 </div>
               </TableCell>
               <TableCell isHeader>가입일</TableCell>
@@ -77,21 +182,23 @@ function UserList() {
           </TableHeader>
 
           <TableBody>
-            {data.map((item) => {
+            {data.list.map((item, index) => {
               return (
-                <TableRow>
-                  <TableCell>{item.no}</TableCell>
-                  <TableCell>{item.createAt}</TableCell>
-                  <TableCell>{item.nickName}</TableCell>
-                  <TableCell>{item.email}</TableCell>
-                  <TableCell>{item.plan}</TableCell>
+                <TableRow key={index}>
+                  <TableCell>{item.id}</TableCell>
                   <TableCell>
-                    {Number(item.ebook) === 0 ? (
+                    {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
+                  </TableCell>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.email}</TableCell>
+                  <TableCell>{item.planName}</TableCell>
+                  <TableCell>
+                    {Number(item.publishedEbookCount) === 0 ? (
                       <div className="flex items-center justify-center h-[20px]">
                         <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
                       </div>
                     ) : (
-                      item.ebook
+                      item.publishedEbookCount
                     )}
                   </TableCell>
                   <TableCell>
@@ -100,44 +207,19 @@ function UserList() {
                         <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
                       </div>
                     ) : (
-                      item.point
+                      item.point.toLocaleString("kr")
                     )}
                   </TableCell>
-                  <TableCell>
-                    {(() => {
-                      switch (item.state) {
-                        case "active":
-                          return (
-                            <div className="w-full flex justify-center items-center">
-                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-positive/10 text-label1-normal-bold text-status-positive">
-                                활성
-                              </div>
-                            </div>
-                          );
-                        case "inactive":
-                          return (
-                            <div className="w-full flex justify-center items-center">
-                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
-                                비활성
-                              </div>
-                            </div>
-                          );
-                        case "withdrawl":
-                          return (
-                            <div className="w-full flex justify-center items-center">
-                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-negative/10 text-label1-normal-bold text-status-negative">
-                                탈퇴
-                              </div>
-                            </div>
-                          );
-                        default:
-                          return null;
-                      }
-                    })()}
+                  <TableCell className="flex h-[inherit] items-center justify-center content-center">
+                    {handleStateLabel(item.isActive)}
                   </TableCell>
                   <TableCell>
-                    <Link to={USER_DETAIL}>
+                    <Link
+                      className="flex justify-center"
+                      to={`${USER_DETAIL}/${item.id}`}
+                    >
                       <IconButton
+                        size="custom"
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
                         }
@@ -147,9 +229,13 @@ function UserList() {
                 </TableRow>
               );
             })}
+            {renderEmptyRows()}
           </TableBody>
         </Table>
       </TableContainer>
+      {data.meta.totalPage > 1 && (
+        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+      )}
     </BreadcrumbContainer>
   );
 }
