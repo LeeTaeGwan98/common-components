@@ -53,6 +53,7 @@ import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 import { AxiosError } from "axios";
 import { ApiResType } from "@/api/common/commonType";
 import UserDeActivateModal from "@/components/modal/member/UserDeActivateModal";
+import { cn } from "@/lib/utils";
 
 export type UserMenuType = "기본" | "결제 내역" | "포인트 내역" | "출판 내역";
 
@@ -184,8 +185,8 @@ function UserDetail() {
           회원 상세
           <Divider vertical className="h-[20px] mx-[12px]" />
           <div className="mr-[8px]">
-            {menuList.map((menu) => {
-              return selectedMenu === menu && <div>{menu}</div>;
+            {menuList.map((menu, index) => {
+              return selectedMenu === menu && <div key={index}>{menu}</div>;
             })}
           </div>
           <SelectBox
@@ -210,44 +211,59 @@ function UserDetail() {
       <div className="flex gap-gutter-horizontal">
         <div className="w-[440px] h-[720px] flex flex-col border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin gap-[12px] rounded-radius-admin">
           <div className="flex items-center justify-between gap-[12px]">
-            {/* todo: 사이드 패널 api에서 상태 데이터 받아야함(isActive는 현재 탈퇴를 처리하지 못함) */}
-            <CardRow
-              data={{
-                title: "상태",
-                content: "탈퇴",
-              }}
-              slot={{ shortcutClassName: "size-[24px]" }}
-            />
-            <Popover>
-              <PopoverTrigger className="h-fit" asChild>
-                <IconButton
-                  size="custom"
-                  icon={<ThreeDot className="size-[24px]" />}
-                />
-              </PopoverTrigger>
-              <PopoverContent
-                align="start"
-                side="bottom"
-                className="w-auto shadow-none border-0 p-0"
-              >
-                <PopoverClose>
-                  <DropDownMenu>
-                    <ButtonTextList size="small" onClick={userActivateModal}>
-                      <Circle className="text-status-positive" />
-                      <div className="text-caption1-regular text-label-normal py-[2px]">
-                        활성화
-                      </div>
-                    </ButtonTextList>
-                    <ButtonTextList size="small" onClick={userDeActivateModal}>
-                      <Circle className="text-fill-normal" />
-                      <div className="text-caption1-regular text-label-normal py-[2px]">
-                        비활성화
-                      </div>
-                    </ButtonTextList>
-                  </DropDownMenu>
-                </PopoverClose>
-              </PopoverContent>
-            </Popover>
+            <div>
+              <CardRow
+                data={{
+                  title: "상태",
+                }}
+                slot={{ shortcutClassName: "size-[24px]" }}
+              />
+              <div className="flex items-center">
+                {data.isDeleted ? (
+                  <StateText state={"탈퇴"} />
+                ) : data.isActive ? (
+                  <StateText state={"활성화"} />
+                ) : (
+                  <StateText state={"비활성화"} />
+                )}
+              </div>
+            </div>
+
+            {!data.isDeleted && (
+              <Popover>
+                <PopoverTrigger className="h-fit" asChild>
+                  <IconButton
+                    size="custom"
+                    icon={<ThreeDot className="size-[24px]" />}
+                  />
+                </PopoverTrigger>
+                <PopoverContent
+                  align="start"
+                  side="bottom"
+                  className="w-auto shadow-none border-0 p-0"
+                >
+                  <PopoverClose>
+                    <DropDownMenu>
+                      <ButtonTextList size="small" onClick={userActivateModal}>
+                        <StateText
+                          state={"활성화"}
+                          textClassName="text-caption1-regular text-label-normal py-[2px]"
+                        />
+                      </ButtonTextList>
+                      <ButtonTextList
+                        size="small"
+                        onClick={userDeActivateModal}
+                      >
+                        <StateText
+                          state={"비활성화"}
+                          textClassName="text-caption1-regular text-label-normal py-[2px]"
+                        />
+                      </ButtonTextList>
+                    </DropDownMenu>
+                  </PopoverClose>
+                </PopoverContent>
+              </Popover>
+            )}
           </div>
 
           <CardRow
@@ -376,6 +392,39 @@ function UserDetail() {
       </div>
     </BreadcrumbContainer>
   );
+
+  //유저 상태 텍스트 표시
+  function StateText({
+    state,
+    textClassName,
+  }: {
+    state: "활성화" | "비활성화" | "탈퇴";
+    textClassName?: string;
+  }) {
+    let circleColor = "";
+
+    if (state === "활성화") {
+      circleColor = "text-status-positive";
+    } else if (state === "비활성화") {
+      circleColor = "text-fill-normal";
+    } else if (state === "탈퇴") {
+      circleColor = "text-status-negative";
+    }
+
+    return (
+      <>
+        <Circle className={circleColor} />
+        <div
+          className={cn(
+            "text-body2-reading--regular text-label-normal",
+            textClassName
+          )}
+        >
+          {state}
+        </div>
+      </>
+    );
+  }
 }
 
 export default UserDetail;

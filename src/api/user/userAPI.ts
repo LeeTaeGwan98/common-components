@@ -33,6 +33,8 @@ export interface UserDetailSideRes {
   firstPaymentDate: string;
   nextBillingDate: string;
   marketingConsentAt: string;
+  isActive: boolean;
+  isDeleted: boolean;
 }
 
 //모든 회원 목록 가져오기

@@ -20,8 +20,8 @@ const UserDeActivateModal = ({ onClickOkBtn }: UserActivateModalProps) => {
       className="max-w-[560px] min-w-0 w-full p-0 border-none rounded-[12px] [&>button]:hidden"
     >
       <DialogDetailContent
-        heading="이 고객을 활성 처리하시겠어요?"
-        description="사용자는 다시 로그인을 할 수 있습니다."
+        heading="이 고객을 비활성 처리하시겠어요?"
+        description="사용자의 모든 정보는 유지되지만 로그인을 할 수 없습니다."
         close={true}
         buttonElements={
           <Actions className="w-full h-[48px]" priority={"neutral"}>
@@ -34,7 +34,7 @@ const UserDeActivateModal = ({ onClickOkBtn }: UserActivateModalProps) => {
               취소
             </OutlinedButton>
             <Button size="large" onClick={onClickOkBtn}>
-              활성
+              비활성
             </Button>
           </Actions>
         }
