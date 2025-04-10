@@ -1,7 +1,5 @@
-import { getCoverPreview } from "@/api/cover/coverAPI";
 import { getEbookCoverPreview } from "@/api/ebook";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
-import Divider from "@/components/common/Atoms/Divider/Divider";
 import DialogDetailContent from "@/components/common/BookaroongAdmin/DialogDetailContent";
 import { DialogContent } from "@/components/ui/dialog";
 import { useModalStore } from "@/store/modalStore";
@@ -34,14 +32,16 @@ export const PublishCoverModal = ({ id }: { id: number }) => {
   return (
     <DialogContent
       onOpenAutoFocus={(event) => event.preventDefault()}
-      className="max-w-[560px] min-w-0 w-full p-0 border-none rounded-[12px] [&>button]:hidden"
+      className="max-w-[560px] h-dialog-height min-w-0 w-full p-0 border-none rounded-[12px] [&>button]:hidden"
     >
       <DialogDetailContent
+        fixed={true}
         heading="표지 미리보기"
         close={true}
+        childrenClassName="h-full py-detail-content-vertical-margin px-detail-content-vertical-margin"
         buttonElements={
           <Button
-            className="w-full"
+            className="w-full h-[48px]"
             size="large"
             onClick={() => {
               useModalStore.getState().closeModal();
@@ -51,12 +51,9 @@ export const PublishCoverModal = ({ id }: { id: number }) => {
           </Button>
         }
       >
-        <Divider className="my-content-vertical-margin" />
-        {imageSrc && (
-          <div className="w-full flex justify-center px-content-horizon-margin pb-content-vertical-margin">
-            <img src={imageSrc} alt="표지 미리보기" />
-          </div>
-        )}
+        <div className="flex items-center justify-center min-h-[400px]">
+          <img src={imageSrc ?? ""} alt="표지 미리보기" />
+        </div>
       </DialogDetailContent>
     </DialogContent>
   );
