@@ -60,10 +60,10 @@ export const PublishRejectReasonModal = ({
     >
       <div className="py-content-vertical-margin px-content-horizon-margin">
         <div className="grid gap-[12px] py-[calc(var(--content-vertical-margin)-1px)] px-content-horizon-margin border-[1px] border-solid border-line-normal-normal rounded-radius-admin !box-border">
-          <Row label={"닉네임"} description={"닉네임"} />
-          <Row label={"도서명"} description={"도서명"} />
-          <Row label={"저자/역자"} description={"저자/역자"} />
-          <Row label={"제출일"} description={"제출일"} />
+          <Row label={"닉네임"} description={data.name} />
+          <Row label={"도서명"} description={data.title} />
+          <Row label={"저자/역자"} description={data.author} />
+          <Row label={"제출일"} description={data.submittedAt} />
           <div>
             <div className="text-label2-bold text-label-alternative mb-[6px]">
               보류 사유

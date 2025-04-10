@@ -1,4 +1,4 @@
-import { getEbookDetail } from "@/api/ebook";
+import { getEbookDetail, postEbookApprove } from "@/api/ebook";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
@@ -6,25 +6,37 @@ import Divider from "@/components/common/Atoms/Divider/Divider";
 import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router-dom";
 import { formatToUTCString } from "@/lib/dateParse";
 import { getDetailGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { COMMON_GROUP_CODE_MAPPING } from "@/Constants/CommonGroupCode";
 import { useModalStore } from "@/store/modalStore";
 import { PublishCoverModal } from "@/components/modal/Ebook/Publish/PublishCoverModal";
+import { fileSizeToMb } from "@/components/common/BookaroongAdmin/FileInput";
+import { PublishPostHoldModal } from "@/components/modal/Ebook/Publish/PublishPostHoldModal";
 
 function PublishListDetail() {
   const { openModal } = useModalStore();
-  const [searchParams] = useSearchParams();
-  const status = searchParams.get("status"); // status 추출 CO017004
-
+  const queryClient = useQueryClient();
   const { id } = useParams(); // id 값 추출
   //전자책 상세 조회 api
   const { data } = useSuspenseQuery({
     queryKey: ["ebookDetailApi"], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getEbookDetail(Number(id)),
     select: (data) => data.data.data,
+  });
+
+  //전자책 승인처리 api
+  const CreateEbookApprove = useMutation({
+    mutationFn: () => postEbookApprove(Number(id)),
+    onSuccess(res, data) {
+      queryClient.invalidateQueries({ queryKey: ["ebookDetailApi"] });
+    },
   });
 
   console.log(data);
@@ -72,13 +84,35 @@ function PublishListDetail() {
         <div>
           <div
             className={`flex gap-[8px] ${
-              status === "CO017002" || status === "CO017001" ? "hidden" : ""
+              data.status === "CO017002" || data.status === "CO017001"
+                ? ""
+                : "hidden"
             }`}
           >
-            <OutlinedButton className="w-[180px]" type="assistive" size="large">
+            <OutlinedButton
+              className="w-[180px]"
+              type="assistive"
+              size="large"
+              onClick={() =>
+                openModal(
+                  <PublishPostHoldModal
+                    ebookId={Number(id)}
+                    onHoldSuccess={() => {
+                      queryClient.invalidateQueries({
+                        queryKey: ["ebookDetailApi"],
+                      });
+                    }}
+                  />
+                )
+              }
+            >
               보류
             </OutlinedButton>
-            <Button className="w-[180px]" size="large">
+            <Button
+              className="w-[180px]"
+              size="large"
+              onClick={() => CreateEbookApprove.mutate()}
+            >
               승인
             </Button>
           </div>
@@ -122,7 +156,11 @@ function PublishListDetail() {
             readOnly
             value={data.menuscriptFileName}
           />
-          <TextField label="용량" readOnly value={data.menuscriptFileSize} />
+          <TextField
+            label="용량"
+            readOnly
+            value={fileSizeToMb(data.menuscriptFileSize).toFixed(3) + "MB"}
+          />
         </div>
         <div className="flex justify-center w-[calc(50%-10px)]">
           <TextField label="전자책 정가(판매가)" readOnly value={data.price} />
@@ -132,6 +170,7 @@ function PublishListDetail() {
             className="max-w-[180px] w-full"
             type="assistive"
             size="large"
+            onClick={() => history.back()}
           >
             확인
           </OutlinedButton>

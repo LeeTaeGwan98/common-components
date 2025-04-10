@@ -22,13 +22,17 @@ function IconButton({
 }: IconButtonProps) {
   const sizeStyle = {
     normal:
-      "after:top-[-10px] after:right-[-10px] after:bottom-[-10px] after:left-[-10px]",
+      type === "normal"
+        ? "after:top-[-10px] after:right-[-10px] after:bottom-[-10px] after:left-[-10px]"
+        : "p-[10px]",
     small:
-      "after:top-[-7px] after:right-[-7px] after:bottom-[-7px] after:left-[-7px]",
+      type === "normal"
+        ? "after:top-[-7px] after:right-[-7px] after:bottom-[-7px] after:left-[-7px]"
+        : "p-[7px]",
     custom:
       type === "normal"
         ? "after:top-[-8px] after:right-[-8px] after:bottom-[-8px] after:left-[-8px]"
-        : "after:top-[-6px] after:right-[-6px] after:bottom-[-6px] after:left-[-6px]",
+        : "p-[6px]",
   };
   const interactiveTypeStyle = `
   relative
@@ -40,7 +44,9 @@ function IconButton({
   ${
     type === "solid"
       ? "shadow-style-alias-shadow-strong hover:brightness-hover focus:brightness-focus active:brightness-active"
-      : "after:hover:bg-label-normal/light-hover after:focus:bg-label-normal/light-focus after:active:bg-label-normal/light-active"
+      : type === "normal"
+      ? "after:hover:bg-label-normal/light-hover after:focus:bg-label-normal/light-focus after:active:bg-label-normal/light-active"
+      : "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active"
   }
 `;
 

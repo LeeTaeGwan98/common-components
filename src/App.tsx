@@ -158,7 +158,7 @@ function App() {
               />
               {/* 비디오북 관리 */}
               <Route path={PLAN} element={<Plan />} />
-              <Route path={PLAN_DETAIL} element={<PlanDetail />} />
+              <Route path={`${PLAN_DETAIL}/:id`} element={<PlanDetail />} />
               <Route path={TUTORIAL} element={<Tutorial />} />
               <Route path={TUTORIAL_CREATE} element={<TutorialCreate />} />
               <Route

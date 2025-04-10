@@ -1,5 +1,7 @@
+import { getPlanList } from "@/api/plan/planAPI";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import AdminTableDescription from "@/components/common/BookaroongAdmin/AdminTableDescription";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
+import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import {
   Table,
   TableBody,
@@ -8,34 +10,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import { formatDateTimeToJSX, formatToUTCString } from "@/lib/dateParse";
-
-const data = [
-  {
-    no: 0,
-    createAt: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자홍길",
-    email: "a12345a12345a12345a12345a12345@gmail.com",
-    plan: "Starter",
-    ebook: "1",
-    point: "1,000",
-    state: "asdf",
-    detail: true,
-  },
-  {
-    no: 0,
-    createAt: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자홍길",
-    email: "a12345a12345a12345a12345a12345@gmail.com",
-    plan: "Starter",
-    ebook: "1",
-    point: "1,000",
-    state: "asdf",
-    detail: true,
-  },
-];
+import { PLAN_DETAIL } from "@/Constants/ServiceUrl";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 function Plan() {
+  //플랜 목록 조회
+  const { data } = useSuspenseQuery({
+    queryKey: ["planListApi"],
+    queryFn: () => getPlanList(),
+    select: (data) => data.data.data,
+  });
+
+  //테이블 빈 row 처리
+  const renderEmptyRows = () => {
+    const emptyRowsCount = 10 - data.length;
+    const emptyRows = [];
+
+    for (let i = 0; i < emptyRowsCount; i++) {
+      emptyRows.push(
+        <TableRow key={`empty-row-${i}`}>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+          <TableCell>&nbsp;</TableCell>
+        </TableRow>
+      );
+    }
+
+    return emptyRows;
+  };
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>비디오북 관리 / 플랜 관리</>}>
       <div className="h-[48px] mb-[12px]"></div>
@@ -57,18 +63,38 @@ function Plan() {
             {data.map((item) => {
               return (
                 <TableRow>
-                  <TableCell>{item.no}</TableCell>
+                  <TableCell>{item.planName}</TableCell>
                   <TableCell>
-                    {formatDateTimeToJSX(formatToUTCString(item.createAt))}
+                    {item.usePersonCnt.toLocaleString("kr")}
                   </TableCell>
-                  <TableCell>{item.nickName}</TableCell>
-                  <TableCell>{item.email}</TableCell>
-                  <TableCell>{item.plan}</TableCell>
-                  <TableCell>{item.ebook}</TableCell>
-                  <TableCell>{item.state}</TableCell>
+                  <TableCell>
+                    {item.annualFeeYear.toLocaleString("kr")}
+                  </TableCell>
+                  <TableCell>
+                    {item.annualFeeMonth.toLocaleString("kr")}
+                  </TableCell>
+                  <TableCell>
+                    {item.monthlyFeeMonth.toLocaleString("kr")}
+                  </TableCell>
+                  <TableCell>
+                    {item.monthlyFeeYear.toLocaleString("kr")}
+                  </TableCell>
+                  <TableCell>
+                    <Link
+                      className="flex justify-center"
+                      to={`${PLAN_DETAIL}/${item.id}`}
+                    >
+                      <IconButton
+                        icon={
+                          <ThreeDot className="size-[24px] fill-label-alternative" />
+                        }
+                      />
+                    </Link>
+                  </TableCell>
                 </TableRow>
               );
             })}
+            {renderEmptyRows()}
           </TableBody>
         </Table>
       </TableContainer>

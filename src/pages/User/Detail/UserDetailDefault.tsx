@@ -1,18 +1,48 @@
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { getUserDefaultInfo } from "@/api/user/userAPI";
 import Card from "@/components/common/Molecules/Card/Card";
 import Content from "@/components/common/Molecules/Content/Content";
+import UserPreviewModal from "@/components/modal/member/UserPreviewModal";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { UserMenuType } from "@/pages/User/Detail/UserDetail";
+import { useModalStore } from "@/store/modalStore";
+import { codeToName } from "@/utils/uitls";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import React from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useParams } from "react-router-dom";
+import { JSX } from "react/jsx-runtime";
 
-function UserDetailDefault() {
+interface UserDetailDefaultProps {
+  setSeletedMenu: Dispatch<SetStateAction<UserMenuType>>;
+}
+
+function UserDetailDefault({ setSeletedMenu }: UserDetailDefaultProps) {
+  const { openModal } = useModalStore();
   const { id } = useParams();
+
+  //공통 코드 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: ["memberTypeCodes", COMMON_GROUP_CODE_MAPPING.회원유형],
+    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.회원유형]),
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const memberTypeCodes = codeInfo[keys[0]]; // 회원유형 코드들
+
   //회원 목록 기본 조회 api
   const { data } = useSuspenseQuery({
     queryKey: ["userDetailDefaultInfo"], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getUserDefaultInfo(Number(id)),
     select: (data) => data.data.data,
   });
+
+  //미리보기 모달
+  const previewModal = (type: "bussiness" | "bank" | "idcard") => {
+    openModal(<UserPreviewModal id={Number(id)} type={type} />);
+  };
 
   return (
     <div className="">
@@ -44,6 +74,7 @@ function UserDetailDefault() {
           slot={{
             containerClassName: "w-full",
           }}
+          buttonOnClick={() => setSeletedMenu("포인트 내역")}
         >
           <Content
             slot={{
@@ -75,9 +106,12 @@ function UserDetailDefault() {
               : "No data"}
           </Content>
         </Card>
-        {/* todo: 사업자 등록증, 신분증 데이터 처리해야함 */}
         <Card
-          title="신분증"
+          title={
+            !data.memberType || data.memberType === "CO025001"
+              ? "신분증"
+              : "사업자등록증"
+          }
           size="large"
           isLabel={true}
           isButton={true}
@@ -85,16 +119,29 @@ function UserDetailDefault() {
           slot={{
             containerClassName: "w-full",
           }}
+          buttonOnClick={() =>
+            previewModal(
+              !data.memberType || data.memberType === "CO025001"
+                ? "idcard"
+                : "bussiness"
+            )
+          }
         >
           <Content
-            label={data.memberType}
+            label={codeToName(memberTypeCodes, data.memberType)}
             slot={{
               summaryClassName: "text-label-alternative text-body1-normal-bold",
               labelClassName:
                 "bg-fill-normal text-label-alternative text-caption1-bold px-[8px ] py-[4px]",
             }}
           >
-            {"010-1111-2222"}
+            {!data.memberType || data.memberType === "CO025001"
+              ? data.phoneNumber
+                ? data.phoneNumber
+                : "No data"
+              : data.businessLicenseNumber
+              ? data.businessLicenseNumber
+              : "No data"}
           </Content>
         </Card>
       </div>
@@ -108,6 +155,7 @@ function UserDetailDefault() {
           containerClassName: "w-full",
           bodyClassName: "",
         }}
+        buttonOnClick={() => previewModal("bank")}
       >
         <Content
           slot={{
@@ -137,3 +185,6 @@ function UserDetailDefault() {
 }
 
 export default UserDetailDefault;
+function openModal(arg0: JSX.Element) {
+  throw new Error("Function not implemented.");
+}

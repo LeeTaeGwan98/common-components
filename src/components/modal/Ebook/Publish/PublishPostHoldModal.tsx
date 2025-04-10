@@ -1,4 +1,4 @@
-import { postEbookHold } from "@/api/ebook";
+import { getEbookDetail, postEbookHold } from "@/api/ebook";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Actions from "@/components/common/Molecules/Actions/Actions";
@@ -6,21 +6,30 @@ import TextBox from "@/components/common/Molecules/TextBox/TextBox";
 import Dialog from "@/components/common/Organisms/Dialog/Dialog";
 import { useAuthStore } from "@/store/authStore";
 import { useModalStore } from "@/store/modalStore";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 interface PublishPostHoldModalProps {
   ebookId: number;
+  onHoldSuccess: () => void; //보류 성공시 이벤트
 }
 
 export const PublishPostHoldModal = ({
   ebookId,
+  onHoldSuccess,
 }: PublishPostHoldModalProps) => {
   const [reason, setReason] = useState<string>(""); //보류 사유
 
   const { user } = useAuthStore();
 
-  //약관 생성 api
+  //전자책 상세 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["ebookDetailApi"], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getEbookDetail(ebookId),
+    select: (data) => data.data.data,
+  });
+
+  //전자책 보류 api
   const CreateEbookHold = useMutation({
     mutationFn: () =>
       postEbookHold(ebookId, {
@@ -28,8 +37,7 @@ export const PublishPostHoldModal = ({
         adminId: user?.id as number,
       }),
     onSuccess(res, data) {
-      console.log(data);
-      console.log(res);
+      onHoldSuccess && onHoldSuccess();
     },
   });
 
@@ -73,10 +81,10 @@ export const PublishPostHoldModal = ({
     >
       <div className="py-content-vertical-margin px-content-horizon-margin">
         <div className="grid gap-[12px] py-[calc(var(--content-vertical-margin)-1px)] px-content-horizon-margin border-[1px] border-solid border-line-normal-normal rounded-radius-admin !box-border">
-          <Row label={"닉네임"} description={"닉네임"} />
-          <Row label={"도서명"} description={"도서명"} />
-          <Row label={"저자/역자"} description={"저자/역자"} />
-          <Row label={"제출일"} description={"제출일"} />
+          <Row label={"닉네임"} description={data.name} />
+          <Row label={"도서명"} description={data.title} />
+          <Row label={"저자/역자"} description={data.author} />
+          <Row label={"제출일"} description={data.submittedAt} />
           <div>
             <div className="text-label2-bold text-label-alternative mb-[6px]">
               보류 사유
