@@ -38,6 +38,7 @@ export const PublishPostHoldModal = ({
       }),
     onSuccess(res, data) {
       onHoldSuccess && onHoldSuccess();
+      useModalStore.getState().closeModal();
     },
   });
 

@@ -42,12 +42,10 @@ import {
 } from "@/api/ebook";
 import { ActionType, TableDataType } from "@/api/common/commonType";
 import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
-import { Description } from "@radix-ui/react-dialog";
 import Label from "@/components/common/Atoms/Label/Label";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import { PublishPostHoldModal } from "@/components/modal/Ebook/Publish/PublishPostHoldModal";
 import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/PublishRejectReasonModal";
-
 import {
   Popover,
   PopoverContent,
@@ -193,6 +191,7 @@ function PublishList() {
   const approveEbook = (ebookId: number) => {
     postEbookApprove(ebookId)
       .then((res) => {
+        handleStatusChange(ebookId, "CO017003");
         console.log(`ebook ${ebookId} 승인 완료`, res);
         refetch();
       })
