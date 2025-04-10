@@ -28,21 +28,26 @@ import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/Ta
 import { Link } from "react-router-dom";
 import { PUBLISH_LIST_DETAIL } from "@/Constants/ServiceUrl";
 import { dateToString, formatToUTCString } from "@/lib/dateParse";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useMutation,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import {
   EbookQueryStringType,
+  EbookRes,
   getEbookList,
   postEbookApprove,
 } from "@/api/ebook";
-import { ActionType } from "@/api/common/commonType";
+import { ActionType, TableDataType } from "@/api/common/commonType";
 import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import { Description } from "@radix-ui/react-dialog";
 import Label from "@/components/common/Atoms/Label/Label";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import { PublishPostHoldModal } from "@/components/modal/Ebook/Publish/PublishPostHoldModal";
 import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/PublishRejectReasonModal";
-import Divider from "@/components/common/Atoms/Divider/Divider";
-import { getDetailAccountList } from "@/api/account";
+
 import {
   Popover,
   PopoverContent,
@@ -54,16 +59,24 @@ interface StatusViewProps {
   status: string;
   setStatus: (value: string) => void;
   ebookId: number;
+  refetch: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<TableDataType<EbookRes>, Error>>;
 }
 
-const StatusView = ({ status, setStatus, ebookId }: StatusViewProps) => {
+const StatusView = ({
+  status,
+  setStatus,
+  ebookId,
+  refetch,
+}: StatusViewProps) => {
   const { openModal } = useModalStore();
 
   //전자책 승인처리 api
   const CreateEbookApprove = useMutation({
     mutationFn: () => postEbookApprove(ebookId),
-    onSuccess(res, data) {
-      setStatus("CO017003");
+    onSuccess: () => {
+      refetch();
     },
   });
 
@@ -116,8 +129,8 @@ const StatusView = ({ status, setStatus, ebookId }: StatusViewProps) => {
 };
 
 const initState: EbookQueryStringType = {
-  // fromDt: undefined,
-  // toDt: dateToString(new Date()),
+  fromDt: undefined,
+  toDt: undefined,
   sortOrder: "DESC",
   isVisible: null,
   keyword: "",
@@ -141,6 +154,7 @@ const reducer = <T extends Record<string, any>>(
 function PublishList() {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
   const [selectId, setSelectId] = useState<number[]>([]); //선택한 목록 아이디
+  console.log(selectId);
 
   //테이블 빈 row 처리
   const renderEmptyRows = () => {
@@ -164,7 +178,7 @@ function PublishList() {
   };
 
   // 전자책 목록 조회
-  const { data } = useSuspenseQuery({
+  const { data, refetch } = useSuspenseQuery({
     queryKey: ["ebookList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getEbookList(filterInfo),
     select: (data) => data.data.data,
@@ -172,13 +186,15 @@ function PublishList() {
   const [ebookData, setEbookData] = useState(data);
   useEffect(() => {
     setEbookData(data);
-  }, [data]);
+    refetch();
+  }, [data, ebookData]);
 
   // 선택 승인 하기 위한 전자책 승인 api
   const approveEbook = (ebookId: number) => {
     postEbookApprove(ebookId)
       .then((res) => {
         console.log(`ebook ${ebookId} 승인 완료`, res);
+        refetch();
       })
       .catch((err) => {
         console.error(`ebook ${ebookId} 승인 실패`, err);
@@ -216,22 +232,29 @@ function PublishList() {
                       selectId.includes(item.id)
                     )}
                     onClick={() => {
-                      if (
-                        ebookData.list.every((item) =>
-                          selectId.includes(item.id)
-                        )
-                      ) {
-                        //전체 선택 상태인 경우
-                        //클릭 시 선택된 아이디 모두 제거
-                        setSelectId([]);
-                      } else {
-                        //전체 선택 상태 아닌 경우
-                        //클릭 시 미선택된 아이디 모두 선택
-                        const missingIds = ebookData.list
-                          .filter((item) => !selectId.includes(item.id)) // 빠진 아이디 필터링
-                          .map((item) => item.id); // 빠진 아이디들만 배열로 추출
+                      const validStatusList = ["CO017001", "CO017002"];
 
-                        setSelectId([...selectId, ...missingIds]); // 빠진 아이디들을 selectId에 추가
+                      // 조건에 맞는 항목만 필터링
+                      const filteredItems = ebookData.list.filter((item) =>
+                        validStatusList.includes(item.status)
+                      );
+                      const filteredIds = filteredItems.map((item) => item.id);
+
+                      const isAllSelected = filteredIds.every((id) =>
+                        selectId.includes(id)
+                      );
+
+                      if (isAllSelected) {
+                        // 조건에 맞는 아이디만 제거
+                        setSelectId(
+                          selectId.filter((id) => !filteredIds.includes(id))
+                        );
+                      } else {
+                        // 조건에 맞는 아이디들만 추가 (중복 없이)
+                        const newIds = filteredIds.filter(
+                          (id) => !selectId.includes(id)
+                        );
+                        setSelectId([...selectId, ...newIds]);
                       }
                     }}
                   />
@@ -251,9 +274,13 @@ function PublishList() {
                         <Text
                           onClick={() => {
                             // 전체 선택: 현재 페이지에 있는 전자책 id 전부 선택
-                            const allIds = ebookData.list.map(
-                              (item) => item.id
-                            );
+                            const allIds = ebookData.list
+                              .filter(
+                                (item) =>
+                                  item.status === "CO017001" ||
+                                  item.status === "CO017002"
+                              )
+                              .map((item) => item.id); // 상태가 맞는 아이템만 필터링
                             setSelectId(allIds);
                           }}
                           className="flex items-center text-caption1-regular text-label-normal"
@@ -401,6 +428,7 @@ function PublishList() {
                         handleStatusChange(item.id, value);
                       }}
                       ebookId={item.id}
+                      refetch={refetch}
                     />
                   </TableCell>
                   {/* 관리자 */}

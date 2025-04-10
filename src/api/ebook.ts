@@ -9,7 +9,7 @@ export interface EbookQueryStringType extends Omit<TableQueryStringType, ""> {
   isVisible: boolean | null;
 }
 
-interface EbookRes {
+export interface EbookRes {
   id: number;
   submittedAt: string;
   approvedAt: string;
