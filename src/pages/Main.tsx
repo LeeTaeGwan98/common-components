@@ -13,6 +13,8 @@ import {
 } from "recharts";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getDashboard } from "@/api/main/dashboardApi";
+import { INQUIRY, PAY, PUBLISH_LIST, USER_LIST } from "@/Constants/ServiceUrl";
+import { useNavigate } from "react-router-dom";
 
 const datas = [
   { 날짜: "02.27", 유동인구수: 7276000 },
@@ -49,6 +51,8 @@ const renderActiveDot = (props: any) => {
 };
 
 function Main() {
+  const navigate = useNavigate();
+
   const { data } = useSuspenseQuery({
     queryKey: ["dashboardList"],
     queryFn: () => getDashboard(),
@@ -69,6 +73,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(USER_LIST)}
           >
             <Content
               label="오늘"
@@ -92,6 +97,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(PUBLISH_LIST)}
           >
             <Content
               summary="승인대기중"
@@ -113,6 +119,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(PAY)}
           >
             <Content
               label="오늘"
@@ -135,6 +142,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(PAY)}
           >
             <Content
               label="오늘"
@@ -158,6 +166,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(INQUIRY)}
           >
             <Content
               summary="미답변"
@@ -187,13 +196,18 @@ function Main() {
               margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="" />
-              <XAxis dataKey="날짜" tickLine={false} />
+              <XAxis
+                dataKey="날짜"
+                tickLine={false}
+                axisLine={{ stroke: "#70737C" }}
+              />
               <YAxis
                 domain={[0, 10000000]}
                 ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
                 tickFormatter={(value) => value.toLocaleString()}
                 width={90}
                 tickLine={false}
+                axisLine={{ stroke: "#70737C" }}
               />
               <Tooltip content={() => null} />
 
@@ -205,7 +219,7 @@ function Main() {
                 strokeWidth={2}
                 dot={{ r: 5 }}
               />
-              <Line type="linear" dataKey="비유동인구수" stroke="#82ca9d" />
+              <Line type="linear" dataKey="비유동인구수" stroke="##82ca9d" />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -225,13 +239,18 @@ function Main() {
               margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="" />
-              <XAxis dataKey="날짜" tickLine={false} />
+              <XAxis
+                dataKey="날짜"
+                tickLine={false}
+                axisLine={{ stroke: "#70737C" }}
+              />
               <YAxis
                 domain={[0, 10000000]}
                 ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
                 tickFormatter={(value) => value.toLocaleString()}
                 width={90}
                 tickLine={false}
+                axisLine={{ stroke: "#70737C" }}
               />
               <Tooltip content={() => null} />
               <Line

@@ -56,8 +56,8 @@ function Sidebar({}: SideBarProps) {
             item.child.some((child) => currentPathname.startsWith(child.path));
           const hasChildItem = !!item.child.length;
 
-          return (
-            <React.Fragment key={item.path}>
+          const menuContent = (
+            <>
               <Link to={item.path} className={cn("w-full flex gap-[4px]")}>
                 <Menu
                   className={cn(
@@ -79,7 +79,7 @@ function Sidebar({}: SideBarProps) {
                   }
                   {...(item.title === "게시판 관리" && {
                     labelText: "텍스트",
-                    slot: { labelClassName: "mr-[34px]" },
+                    slot: { labelClassName: "mr-[34px] " },
                   })}
                 >
                   <span className={cn(isActive && "text-primary-normal")}>
@@ -87,6 +87,7 @@ function Sidebar({}: SideBarProps) {
                   </span>
                 </Menu>
               </Link>
+
               {item.child.map((child) => {
                 const isChildActive = currentPathname.startsWith(child.path);
                 const childCode = "code" in child ? child.code : null;
@@ -109,9 +110,25 @@ function Sidebar({}: SideBarProps) {
                   )
                 );
               })}
-            </React.Fragment>
+            </>
           );
+
+          // 게시판 관리일 경우만 구분선으로 감싼다
+          if (item.title === "게시판 관리") {
+            return (
+              <div
+                key={item.path}
+                className="border-y border-line-normal-normal py-[12px]"
+              >
+                {menuContent}
+              </div>
+            );
+          }
+
+          // 나머지는 기본 프래그먼트로
+          return <React.Fragment key={item.path}>{menuContent}</React.Fragment>;
         })}
+
         <button
           className="mx-auto mt-[24px] font-semibold text-[14px] text-label-alternative underline"
           onClick={() => handleLogoutMutation()}

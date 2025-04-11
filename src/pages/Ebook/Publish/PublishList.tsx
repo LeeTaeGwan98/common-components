@@ -48,6 +48,7 @@ import Label from "@/components/common/Atoms/Label/Label";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import { PublishPostHoldModal } from "@/components/modal/Ebook/Publish/PublishPostHoldModal";
 import { PublishRejectReasonModal } from "@/components/modal/Ebook/Publish/PublishRejectReasonModal";
+
 import {
   Popover,
   PopoverContent,

@@ -45,7 +45,7 @@ function IconButton({
     type === "solid"
       ? "shadow-style-alias-shadow-strong hover:brightness-hover focus:brightness-focus active:brightness-active"
       : type === "normal"
-      ? "after:hover:bg-label-normal/light-hover after:focus:bg-label-normal/light-focus after:active:bg-label-normal/light-active"
+      ? "after:hover:bg-label-normal/light-hover after:active:bg-label-normal/light-active"
       : "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active"
   }
 `;
