@@ -74,12 +74,21 @@ function Checkbox({
     "opacity-[.43]": disable,
   };
 
+  const interactiveTypeStyle = `
+  relative
+  after:content-['']
+  after:absolute
+  after:rounded-full
+  after:transition-colors
+  after:-z-10
+  after:hover:bg-label-normal/normal-hover after:focus:bg-label-normal/normal-focus after:active:bg-label-normal/normal-active
+`;
+
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center p-[7px] rounded-full",
-        isInteraction &&
-          "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",
+        "inline-flex items-center justify-center after:top-[-7px] after:right-[-7px] after:bottom-[-7px] after:left-[-7px] rounded-full",
+        isInteraction && interactiveTypeStyle,
         disable && "cursor-not-allowed"
       )}
       disabled={disable}

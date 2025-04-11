@@ -6,7 +6,7 @@ import {
 } from "@/api/common/commonType";
 
 export interface EbookQueryStringType extends Omit<TableQueryStringType, ""> {
-  isVisible: boolean | null;
+  status: string;
 }
 
 export interface EbookRes {
@@ -56,7 +56,7 @@ export interface getEbookHoldProps {
 
 //전자책 모든 목록 가져오기
 export const getEbookList = (queryStringObj: EbookQueryStringType) => {
-  const { sortOrder, fromDt, toDt, isVisible, keyword, take, page } =
+  const { sortOrder, fromDt, toDt, status, keyword, take, page } =
     queryStringObj;
 
   let qs = "/admin/ebook?";
@@ -70,8 +70,8 @@ export const getEbookList = (queryStringObj: EbookQueryStringType) => {
   if (toDt) {
     qs += `toDt=${toDt}&`;
   }
-  if (isVisible !== null) {
-    qs += `isVisible=${isVisible}&`;
+  if (status !== null && status !== "ALL") {
+    qs += `status=${status}&`;
   }
   if (keyword) {
     qs += `keyword=${keyword}&`;

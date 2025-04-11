@@ -63,7 +63,10 @@ export const PublishRejectReasonModal = ({
           <Row label={"닉네임"} description={data.name} />
           <Row label={"도서명"} description={data.title} />
           <Row label={"저자/역자"} description={data.author} />
-          <Row label={"제출일"} description={data.submittedAt} />
+          <Row
+            label={"제출일"}
+            description={data.submittedAt ? data.submittedAt : "-"}
+          />
           <div>
             <div className="text-label2-bold text-label-alternative mb-[6px]">
               보류 사유
