@@ -19,7 +19,16 @@ import { Link } from "react-router-dom";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import { useModalStore } from "@/store/modalStore";
 import PaymentModal from "@/components/modal/member/PaymentModal";
-import { formatDateTimeToJSX, formatToUTCString } from "@/lib/dateParse";
+import {
+  dateToString,
+  formatDateTimeToJSX,
+  formatToUTCString,
+} from "@/lib/dateParse";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
+import { ActionType, TableQueryStringType } from "@/api/common/commonType";
+import { useReducer } from "react";
 
 const data = [
   {
@@ -43,7 +52,7 @@ const data = [
     paymentDetail: "Professional",
     paymentAmount: "120,000",
     state: "payment",
-    manager: "홍길동",
+    manager: "",
     detail: true,
   },
 
@@ -68,12 +77,43 @@ const data = [
     paymentDetail: "Professional",
     paymentAmount: "120,000",
     state: "refund",
-    manager: "",
+    manager: "홍길동",
     detail: true,
   },
 ];
 
+export interface PaymentStringType
+  extends Omit<TableQueryStringType, "isVisible"> {
+  isActive: "TRUE" | "FALSE" | "WITHDRAWAL" | null;
+}
+
+const initState: PaymentStringType = {
+  sortOrder: "DESC",
+  fromDt: dateToString(
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+  ),
+  toDt: dateToString(new Date()),
+  keyword: "",
+  take: 10,
+  page: 1,
+  isActive: null,
+};
+
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
+
 function PaymentManagement() {
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
   const { openModal } = useModalStore();
 
   const handleModal = () => {
@@ -82,6 +122,30 @@ function PaymentManagement() {
 
   return (
     <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 결제 관리</>}>
+      <SubTitleBar
+        filterInfo={filterInfo}
+        title="결제일"
+        dispatch={() => {}}
+        CustomSelectComponent={
+          <SelectBox
+            placeholder="모든 상태"
+            className="min-w-[240px]"
+            size="large"
+            defaultValue="ALL"
+            onValueChange={() => {}}
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">모든 상태</SelectItem>
+                <SelectItem value="TRUE">결제완료</SelectItem>
+                <SelectItem value="FALSE">취소완료</SelectItem>
+                <SelectItem value="REFUND">환불완료</SelectItem>
+                <SelectItem value="WITHDRAWAL">결제오류</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
+        }
+      />
       <div>
         <div>
           <TableContainer>
