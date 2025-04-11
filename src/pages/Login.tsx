@@ -68,7 +68,7 @@ function Login() {
       <div className="flex-1 bg-Background/Normal/Normal p-8 flex items-center justify-center">
         <div className="w-[400px]">
           <div className="mb-[16px] text-subtitle1-bold relative flex items-center gap-2">
-            북카롱(Bookarong) 관리자 페이지
+            북카롱(Bookaroon) 관리자 페이지
             <span className="flex-1 h-[1px] bg-primary-normal"></span>
           </div>
 

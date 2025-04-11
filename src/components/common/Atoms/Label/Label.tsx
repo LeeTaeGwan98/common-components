@@ -33,7 +33,7 @@ function Label({
         className
       )}
     >
-      <span className="leading-[150%]">{children}</span>
+      <span className="">{children}</span>
     </div>
   );
 }

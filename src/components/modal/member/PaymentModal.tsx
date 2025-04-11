@@ -34,7 +34,7 @@ const PaymentModal = () => {
       <div className="flex justify-between py-content-vertical-margin px-content-horizon-margin">
         <div className="justify-start text-heading5-bold">결제 상세</div>
 
-        <div className="flex items-center w=[28px] h-[28px] p-0">
+        <div className="flex items-center w=[28px] h-[28px] p-0 ">
           <IconButton
             onClick={() => useModalStore.getState().closeModal()}
             icon={<X className="w-[20px] h-[20px] text-label-neutral" />}
@@ -44,7 +44,7 @@ const PaymentModal = () => {
 
       <Divider className="m-0" />
 
-      <div className="mt-content-vertical-margin mx-content-horizon-margin py-content-vertical-margin px-content-horizon-margin border border-line-normal-normal overflow-y-scroll flex flex-col gap-[12px]">
+      <div className="mt-content-vertical-margin mx-content-horizon-margin py-content-vertical-margin px-content-horizon-margin border border-line-normal-normal overflow-y-scroll flex flex-col gap-[12px] rounded-[4px]">
         {dummydata.map((data) => {
           const { label, value } = data;
           return (
