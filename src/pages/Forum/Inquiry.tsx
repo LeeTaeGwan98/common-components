@@ -150,6 +150,7 @@ function Inquiry() {
         filterInfo={filterInfo}
         title="문의일"
         dispatch={dispatch}
+        excel={true}
         CustomSelectComponent={
           <SelectBox
             placeholder="모든 상태"
@@ -180,7 +181,7 @@ function Inquiry() {
               </TableCell>
               <TableCell isHeader>닉네임</TableCell>
               <TableCell isHeader>서비스</TableCell>
-              <TableCell isHeader>문의 유형</TableCell>
+              <TableCell isHeader>문의유형</TableCell>
               <TableCell isHeader>제목</TableCell>
               <TableCell isHeader>상태</TableCell>
               <TableCell isHeader>관리자</TableCell>
@@ -236,13 +237,7 @@ function Inquiry() {
                     })()}
                   </TableCell>
                   <TableCell>
-                    {item.responseAdminName === "" ? (
-                      <div className="flex items-center justify-center h-[20px]">
-                        <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
-                      </div>
-                    ) : (
-                      item.responseAdminName
-                    )}
+                    {item.responseAdminName ? item.responseAdminName : "-"}
                   </TableCell>
                   <TableCell>
                     <Link

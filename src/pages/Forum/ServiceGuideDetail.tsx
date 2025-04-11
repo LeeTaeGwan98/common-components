@@ -165,7 +165,7 @@ const ServiceGuideDetail = () => {
             <div className="w-full">
               서비스 가이드 제목
               <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular text-label-normal"
+                className="w-full h-[48px] mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular text-label-normal"
                 value={formState.title}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   updateFormState("title", e.target.value);
@@ -179,6 +179,7 @@ const ServiceGuideDetail = () => {
           <div className="flex  w-full">
             <div className="w-full">
               <SelectBox
+                size="large"
                 label="카테고리"
                 placeholder="카테고리를 선택해주세요"
                 value={formState.categoryCode}

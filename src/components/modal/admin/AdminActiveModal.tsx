@@ -32,7 +32,7 @@ export const AdminActiveModal = ({ onOkClick }: { onOkClick: () => void }) => {
                 useModalStore.getState().closeModal();
               }}
             >
-              확인
+              활성화
             </Button>
           </Actions>
         }
