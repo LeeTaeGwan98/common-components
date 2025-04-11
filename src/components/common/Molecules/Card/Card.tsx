@@ -49,14 +49,14 @@ function Card({
   return (
     <div
       className={cn(
-        "w-fit border-[1px] border-line-solid-normal rounded-[4px] overflow-hidden",
+        "w-fit border-[1px] border-line-solid-normal rounded-[4px] overflow-hidden flex flex-col",
         sizeStyle.container[size],
         slot.containerClassName
       )}
     >
       <div
         className={cn(
-          `bg-primary-normal/[0.08] py-[10px] px-content-horizon-margin flex justify-between border-b-[1px] border-line-solid-normal ${
+          `bg-primary-normal/[0.08] py-[10px] px-content-horizon-margin flex justify-between border-b-[1px] border-line-solid-normal flex-shrink-0 ${
             hasMultiChildren ? "justify-center relative" : ""
           }`,
           sizeStyle.header[size],
@@ -84,7 +84,7 @@ function Card({
 
       <div
         className={cn(
-          "relative py-[20px] px-content-horizon-margin flex justify-center items-center gap-[8px] flex-wrap",
+          "relative py-[20px] px-content-horizon-margin flex justify-center items-center gap-[8px] flex-wrap flex-grow",
           sizeStyle.body[size],
           slot.bodyClassName
         )}
