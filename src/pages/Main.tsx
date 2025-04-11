@@ -13,6 +13,8 @@ import {
 } from "recharts";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getDashboard } from "@/api/main/dashboardApi";
+import { INQUIRY, PAY, PUBLISH_LIST, USER_LIST } from "@/Constants/ServiceUrl";
+import { useNavigate } from "react-router-dom";
 
 const datas = [
   { 날짜: "02.27", 유동인구수: 7276000 },
@@ -49,6 +51,8 @@ const renderActiveDot = (props: any) => {
 };
 
 function Main() {
+  const navigate = useNavigate();
+
   const { data } = useSuspenseQuery({
     queryKey: ["dashboardList"],
     queryFn: () => getDashboard(),
@@ -69,6 +73,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(USER_LIST)}
           >
             <Content
               label="오늘"
@@ -92,6 +97,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(PUBLISH_LIST)}
           >
             <Content
               summary="승인대기중"
@@ -113,6 +119,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(PAY)}
           >
             <Content
               label="오늘"
@@ -135,6 +142,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(PAY)}
           >
             <Content
               label="오늘"
@@ -158,6 +166,7 @@ function Main() {
             slot={{
               containerClassName: "w-full",
             }}
+            buttonOnClick={() => navigate(INQUIRY)}
           >
             <Content
               summary="미답변"
