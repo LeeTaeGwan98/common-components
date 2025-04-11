@@ -161,7 +161,7 @@ function Inquiry() {
           >
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="ALL">모든상태</SelectItem>
+                <SelectItem value="ALL">모든 상태</SelectItem>
                 <SelectItem value="true">답변</SelectItem>
                 <SelectItem value="false">미답변</SelectItem>
               </SelectGroup>

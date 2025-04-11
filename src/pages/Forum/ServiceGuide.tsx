@@ -172,7 +172,7 @@ const ServiceGuide = () => {
           >
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="ALL">모든상태</SelectItem>
+                <SelectItem value="ALL">모든 상태</SelectItem>
                 <SelectItem value="true">노출</SelectItem>
                 <SelectItem value="false">비노출</SelectItem>
               </SelectGroup>
