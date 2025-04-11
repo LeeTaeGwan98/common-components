@@ -1,6 +1,11 @@
 import API from "@/api/API";
-import { type TableResType } from "@/api/common/commonType";
+import {
+  ApiResType,
+  FileUploadRes,
+  type TableResType,
+} from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
+import { data } from "react-router-dom";
 
 export interface UserQueryStringType
   extends Omit<TableQueryStringType, "isVisible"> {
@@ -28,6 +33,8 @@ export interface UserDetailSideRes {
   firstPaymentDate: string;
   nextBillingDate: string;
   marketingConsentAt: string;
+  isActive: boolean;
+  isDeleted: boolean;
 }
 
 //모든 회원 목록 가져오기
@@ -107,12 +114,51 @@ export const getUserDefaultInfo = (id: number) => {
 
 //회원 상태 활성화
 export const userActivate = (id: number) => {
-  const data = API.patch<{ data: {} }>(`/api/v1/admin/user/${id}/activate`);
+  const data = API.patch<{ data: {} }>(`/admin/user/${id}/activate`);
   return data;
 };
 
 //회원 상태 비활성화
 export const userDeactivate = (id: number) => {
-  const data = API.patch<{ data: {} }>(`/api/v1/admin/user/${id}/deactivate`);
+  const data = API.patch<{ data: {} }>(`/admin/user/${id}/deactivate`);
+  return data;
+};
+
+//회원 닉네임 수정
+export const userNickChange = (payload: {
+  id: number;
+  data: { nickname: string };
+}) => {
+  const data = API.patch<{ data: ApiResType<{}> }>(
+    `/account/${payload.id}/profile/nickname`,
+    payload.data
+  );
+  return data;
+};
+
+//주민등록증 사본 미리보기
+export const getIdCardPreview = (id: number) => {
+  const queryString = `/admin/user/${id}/idcard/preview`;
+
+  const data = API.get<Blob>(queryString, { responseType: "blob" });
+
+  return data;
+};
+
+//사업자등록증 사본 미리보기
+export const getBusCertifPreview = (id: number) => {
+  const queryString = `/admin/user/${id}/business-certificate/preview`;
+
+  const data = API.get<Blob>(queryString, { responseType: "blob" });
+
+  return data;
+};
+
+//통장 사본 미리보기
+export const getBankStatePreview = (id: number) => {
+  const queryString = `/api/v1/admin/user/${id}/bank-statement/preview`;
+
+  const data = API.get<Blob>(queryString, { responseType: "blob" });
+
   return data;
 };

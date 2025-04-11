@@ -120,7 +120,7 @@ function UserList() {
   const handleStateLabel = (isActive: string) => {
     const green = "bg-status-positive/[0.08] text-status-positive";
     const red = "bg-status-negative/[0.08] text-status-negative";
-    const gray = "bg-status-alternative/[0.08] text-status-alternative";
+    const gray = "bg-label-alternative/[0.08] text-label-alternative";
 
     let labelColor = gray;
 
