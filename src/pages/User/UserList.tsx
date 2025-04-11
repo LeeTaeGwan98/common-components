@@ -150,7 +150,7 @@ function UserList() {
           >
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="ALL">모든상태</SelectItem>
+                <SelectItem value="ALL">모든 상태</SelectItem>
                 <SelectItem value="TRUE">활성</SelectItem>
                 <SelectItem value="FALSE">비활성</SelectItem>
                 <SelectItem value="WITHDRAWAL">탈퇴</SelectItem>

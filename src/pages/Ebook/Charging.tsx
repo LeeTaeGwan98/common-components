@@ -59,14 +59,44 @@ function Charging() {
   //가데이터
   const [data, setData] = useState<DataListProps[]>([
     {
-      number: 0,
-      point: 0,
-      amount: 0,
+      number: 1,
+      point: 1000,
+      amount: 1000,
     },
     {
-      number: 1,
-      point: 0,
-      amount: 0,
+      number: 2,
+      point: 3000,
+      amount: 3000,
+    },
+    {
+      number: 3,
+      point: 5000,
+      amount: 5000,
+    },
+    {
+      number: 4,
+      point: 10000,
+      amount: 10000,
+    },
+    {
+      number: 5,
+      point: 30000,
+      amount: 30000,
+    },
+    {
+      number: 6,
+      point: 50000,
+      amount: 50000,
+    },
+    {
+      number: 7,
+      point: 100000,
+      amount: 100000,
+    },
+    {
+      number: 8,
+      point: 300000,
+      amount: 300000,
     },
   ]);
 

@@ -162,7 +162,7 @@ const NoticeDetail = () => {
 
           {/* 세번째 줄 */}
           <div className="w-full flex flex-col gap-[8px]">
-            답변내용
+            내용
             <AdminEdit
               value={formState.content}
               onChange={(value) => updateFormState("content", value)}

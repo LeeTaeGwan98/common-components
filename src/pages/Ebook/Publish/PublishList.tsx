@@ -41,7 +41,9 @@ import {
   postEbookApprove,
 } from "@/api/ebook";
 import { ActionType, TableDataType } from "@/api/common/commonType";
-import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import SubTitleBar, {
+  boolToString,
+} from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import Label from "@/components/common/Atoms/Label/Label";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import { PublishPostHoldModal } from "@/components/modal/Ebook/Publish/PublishPostHoldModal";
@@ -53,6 +55,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 
 interface StatusViewProps {
   status: string;
@@ -131,7 +135,7 @@ const initState: EbookQueryStringType = {
   fromDt: undefined,
   toDt: undefined,
   sortOrder: "DESC",
-  isVisible: null,
+  status: "ALL",
   keyword: "",
   take: 10,
   page: 1,
@@ -201,6 +205,22 @@ function PublishList() {
       });
   };
 
+  const dispatchWithPageReset = (
+    type: keyof EbookQueryStringType,
+    value: any
+  ) => {
+    // 필터 값 변경
+    dispatch({
+      type,
+      value,
+    });
+    // 페이지 초기화
+    dispatch({
+      type: "page",
+      value: 1,
+    });
+  };
+
   //전자책 상태 변경
   const handleStatusChange = (id: number, newStatus: string) => {
     setEbookData((prev) => ({
@@ -211,6 +231,12 @@ function PublishList() {
     }));
   };
 
+  //카테고리 변경시 핸들
+  const handleisVisible = (status: string) => {
+    if (!status) return;
+    dispatchWithPageReset("status", status);
+  };
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
       <SubTitleBar
@@ -218,7 +244,24 @@ function PublishList() {
         title="제출일"
         dispatch={dispatch}
         excel={true}
-        CustomSelectComponent={<></>}
+        CustomSelectComponent={
+          <SelectBox
+            placeholder="모든 상태"
+            className="min-w-[240px]"
+            size="large"
+            defaultValue="ALL"
+            onValueChange={handleisVisible}
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">모든 상태</SelectItem>
+                <SelectItem value="CO017002">검수중</SelectItem>
+                <SelectItem value="CO017003">출간</SelectItem>
+                <SelectItem value="CO017004">보류</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
+        }
       />
 
       <TableContainer>
@@ -226,7 +269,7 @@ function PublishList() {
           <TableHeader>
             <TableRow>
               <TableCell isHeader>
-                <div>
+                <div className="flex gap-[2px] items-center">
                   <Checkbox
                     checked={ebookData.list.every((item) =>
                       selectId.includes(item.id)
@@ -262,6 +305,7 @@ function PublishList() {
                   <Popover>
                     <PopoverTrigger asChild className="cursor-pointer">
                       <IconButton
+                        type="normal"
                         //className="p-[8px] ml-[-6px]"
                         icon={<DownArrow width={20} height={20} />}
                       />

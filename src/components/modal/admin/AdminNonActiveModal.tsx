@@ -36,7 +36,7 @@ export const AdminNonActiveModal = ({
                 useModalStore.getState().closeModal();
               }}
             >
-              확인
+              비활성화
             </Button>
           </Actions>
         }

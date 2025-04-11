@@ -63,7 +63,7 @@ function IconButton({
   return (
     <button
       className={cn(
-        "w-fit rounded-full relative",
+        "w-fit h-fit rounded-full relative",
         !disable && interactiveTypeStyle,
         sizeStyle[size],
         typeStyle[type],
