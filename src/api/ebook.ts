@@ -24,7 +24,7 @@ export interface EbookRes {
 
 interface EbookDetailRes {
   id: number;
-  name: "홍길동";
+  name: string;
   submittedAt: string;
   title: string;
   subTitle: string;
