@@ -111,3 +111,16 @@
 .ql-active {
   color: #28a8fb !important;
 }
+
+.ql-size-14px {
+  font-size: 14px;
+}
+.ql-size-16px {
+  font-size: 16px;
+}
+.ql-size-18px {
+  font-size: 18px;
+}
+.ql-size-24px {
+  font-size: 24px;
+}

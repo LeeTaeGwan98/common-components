@@ -4,6 +4,13 @@ import CustomToolbar from "./CustomToolbar";
 import "react-quill-new/dist/quill.snow.css";
 import "@/components/common/Molecules/AdminEdit/AdminEditStyle.css";
 
+// 사용할 사이즈 명시(기본: small, normal, large, huge)
+const Size = Quill.import("formats/size") as {
+  whitelist: string[];
+};
+Size.whitelist = ["14px", "16px", "18px", "24px"];
+Quill.register("formats/size", Size);
+
 // BlockEmbed을 가져오고, 타입을 명확히 지정
 const BlockEmbed = Quill.import("blots/block/embed") as {
   create(): HTMLElement;
@@ -90,6 +97,18 @@ const AdminEdit: React.FC<AdminEditProps> = ({
         value={value}
         onChange={handleChange}
         modules={modules}
+        formats={[
+          "size",
+          "bold",
+          "italic",
+          "underline",
+          "align",
+          "list",
+          "background",
+          "image",
+          "video",
+          "divider",
+        ]}
         placeholder={placeholder}
       />
     </div>
