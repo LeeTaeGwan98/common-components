@@ -15,19 +15,24 @@ import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import { ActionType, TableQueryStringType } from "@/api/common/commonType";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import {
   dateToString,
   formatDateTimeToJSX,
   formatToUTCString,
 } from "@/lib/dateParse";
 import CACHE_TIME from "@/Constants/CacheTime";
-import { getUserList, UserQueryStringType } from "@/api/user/userAPI";
+import {
+  getUserList,
+  UserListData,
+  UserQueryStringType,
+} from "@/api/user/userAPI";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import Label from "@/components/common/Atoms/Label/Label";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
+import { excelDownload } from "@/components/excel/Excel";
 
 const initState: UserQueryStringType = {
   sortOrder: "DESC",
@@ -134,12 +139,61 @@ function UserList() {
     return <Label className={labelColor}>{isActive}</Label>;
   };
 
+  //엑셀 조건없이 모든 데이터 다운로드
+  const handleAllDataExcelDownload = async () => {
+    const excelAllData = await getUserList({
+      isActive: null,
+      take: (filterInfo.take ?? 1) * data.meta.totalPage,
+      page: 1,
+    });
+
+    handleExcelDownload(excelAllData.data.data.list);
+  };
+
+  //엑셀 조건 적용 모든 데이터 다운로드
+  const handleFilterDataExcelDownload = async () => {
+    const excelFilterData = await getUserList(filterInfo);
+
+    handleExcelDownload(excelFilterData.data.data.list);
+  };
+
+  //엑셀 다운로드
+  const handleExcelDownload = (excelDatas: UserListData[]) => {
+    excelDownload(
+      "회원목록",
+      [
+        "No",
+        "가입일",
+        "닉네임",
+        "이메일",
+        "이용중인 플랜",
+        "출판한 전자책",
+        "보유 포인트",
+        "상태",
+      ],
+      [80, 120, 150, 200, 100, 100, 100, 100],
+      excelDatas.map((item) => [
+        item.id,
+        item.createdAt,
+        item.name,
+        item.email,
+        item.planName,
+        item.publishedEbookCount.toLocaleString("kr"),
+        item.point.toLocaleString("kr"),
+        item.isActive,
+      ])
+    );
+  };
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
       <SubTitleBar
         filterInfo={filterInfo}
         title="가입일"
         dispatch={dispatch}
+        excel={true}
+        excelAllDataOnClick={handleAllDataExcelDownload}
+        excelFilterDataOnClick={handleFilterDataExcelDownload}
         CustomSelectComponent={
           <SelectBox
             placeholder="모든 상태"
