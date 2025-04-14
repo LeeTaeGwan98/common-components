@@ -8,6 +8,8 @@ import { ActionDispatch, ReactNode, useState } from "react";
 import { TableQueryStringType } from "@/api/common/commonType";
 import { dateToString, stringToDate } from "@/lib/dateParse";
 import { ActionType } from "@/api/common/commonType";
+import { useModalStore } from "@/store/modalStore";
+import ExcelModal from "@/components/modal/Excel/ExcelModal";
 
 export const boolToString = (boolString: string) => {
   // shadcn의 selectItem에는 string타입만 들어갈 수 있어서 만든 함수
@@ -20,6 +22,8 @@ interface SubtitleBarProps {
   dispatch: ActionDispatch<[action: ActionType<TableQueryStringType>]>;
   CustomSelectComponent: ReactNode;
   excel?: boolean;
+  excelAllDataOnClick?: () => void;
+  excelFilterDataOnClick?: () => void;
 }
 
 function SubTitleBar({
@@ -28,7 +32,10 @@ function SubTitleBar({
   dispatch,
   CustomSelectComponent,
   excel = false,
+  excelAllDataOnClick,
+  excelFilterDataOnClick,
 }: SubtitleBarProps) {
+  const { openModal } = useModalStore();
   // 입력 중인 keyword를 별도로 관리
   // onchange중에는 API를 호출하지 않기 위해
   const [inputKeyword, setInputKeyword] = useState("");
@@ -73,6 +80,15 @@ function SubTitleBar({
 
   const handleTake = (take: number) => {
     dispatchWithPageReset("take", take);
+  };
+
+  const handleExcelModal = () => {
+    openModal(
+      <ExcelModal
+        excelAllDataOnClick={excelAllDataOnClick}
+        excelFilterDataOnClick={excelFilterDataOnClick}
+      />
+    );
   };
 
   return (
@@ -120,7 +136,7 @@ function SubTitleBar({
           </SelectContent>
         </SelectBox>
         {excel && (
-          <button>
+          <button onClick={handleExcelModal}>
             <img src={ExcelImage} className="size-[48px]" />
           </button>
         )}
