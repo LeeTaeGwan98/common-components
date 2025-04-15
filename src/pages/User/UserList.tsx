@@ -33,6 +33,7 @@ import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import Label from "@/components/common/Atoms/Label/Label";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import { excelDownload } from "@/components/excel/Excel";
+import { getExcelSearch } from "@/api/excel/excel";
 
 const initState: UserQueryStringType = {
   sortOrder: "DESC",
@@ -141,18 +142,16 @@ function UserList() {
 
   //엑셀 조건없이 모든 데이터 다운로드
   const handleAllDataExcelDownload = async () => {
-    const excelAllData = await getUserList({
-      isActive: null,
-      take: (filterInfo.take ?? 1) * data.meta.totalPage,
-      page: 1,
-    });
+    const excelAllData = await getExcelSearch("user");
 
-    handleExcelDownload(excelAllData.data.data.list);
+    handleExcelDownload(excelAllData.data.data);
   };
 
   //엑셀 조건 적용 모든 데이터 다운로드
   const handleFilterDataExcelDownload = async () => {
-    const excelFilterData = await getUserList(filterInfo);
+    const modifiedFilterInfo = { ...filterInfo, take: data.meta.totalCount };
+
+    const excelFilterData = await getUserList(modifiedFilterInfo);
 
     handleExcelDownload(excelFilterData.data.data.list);
   };
@@ -220,7 +219,7 @@ function UserList() {
             <TableRow>
               <TableCell isHeader>
                 <div className="flex items-center justify-center gap-[2px]">
-                  가입일
+                  No
                   <IconButton icon={<Updown />} onClick={handleSortOrder} />
                 </div>
               </TableCell>
