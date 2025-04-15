@@ -21,6 +21,7 @@ interface SubtitleBarProps {
   filterInfo: TableQueryStringType;
   dispatch: ActionDispatch<[action: ActionType<TableQueryStringType>]>;
   CustomSelectComponent: ReactNode;
+  isSearchField?: boolean;
   excel?: boolean;
   excelAllDataOnClick?: () => void;
   excelFilterDataOnClick?: () => void;
@@ -30,6 +31,7 @@ function SubTitleBar({
   filterInfo,
   title,
   dispatch,
+  isSearchField = true,
   CustomSelectComponent,
   excel = false,
   excelAllDataOnClick,
@@ -111,14 +113,16 @@ function SubTitleBar({
       <div className="flex gap-[12px]">
         {CustomSelectComponent}
 
-        <TextField
-          value={inputKeyword || ""}
-          onChange={handleKeywordOnchange}
-          onKeyDown={handleKeywordEnter}
-          searchIcon
-          placeholder="검색어를 입력해주세요"
-          maxLength={100}
-        />
+        {isSearchField && (
+          <TextField
+            value={inputKeyword || ""}
+            onChange={handleKeywordOnchange}
+            onKeyDown={handleKeywordEnter}
+            searchIcon
+            placeholder="검색어를 입력해주세요"
+            maxLength={100}
+          />
+        )}
 
         <SelectBox
           placeholder="10개 씩"
