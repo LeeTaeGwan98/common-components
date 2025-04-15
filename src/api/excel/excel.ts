@@ -1,4 +1,5 @@
 import API from "@/api/API";
+import { GetCoverRes } from "@/api/cover/coverAPI";
 import { EbookRes } from "@/api/ebook";
 import { UserListData, UserWithdrawlListRes } from "@/api/user/userAPI";
 
@@ -24,7 +25,7 @@ type ExcelDataMap = {
   pay: any;
   withdrawal: UserWithdrawlListRes[];
   publish: EbookRes[];
-  cover: any;
+  cover: GetCoverRes[];
   inquiry: any;
   admin: any;
 };

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import { getCover } from "@/api/cover/coverAPI";
+import { getCover, GetCoverRes } from "@/api/cover/coverAPI";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useReducer } from "react";
 import { ActionType, TableQueryStringType } from "@/api/common/commonType";
@@ -25,6 +25,8 @@ import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Label from "@/components/common/Atoms/Label/Label";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
+import { getExcelSearch } from "@/api/excel/excel";
+import { excelDownload } from "@/components/excel/Excel";
 
 type CoverTableQueryStringType = TableQueryStringType & {
   isVisible: boolean | null;
@@ -121,6 +123,48 @@ function Cover() {
     );
   };
 
+  //엑셀 조건없이 모든 데이터 다운로드
+  const handleAllDataExcelDownload = async () => {
+    const excelAllData = await getExcelSearch("cover");
+
+    handleExcelDownload(excelAllData.data.data);
+  };
+
+  //엑셀 조건 적용 모든 데이터 다운로드
+  const handleFilterDataExcelDownload = async () => {
+    const modifiedFilterInfo = { ...filterInfo, take: data.meta.totalCount };
+
+    const excelFilterData = await getCover(modifiedFilterInfo);
+
+    handleExcelDownload(excelFilterData.data.data.list);
+  };
+
+  //엑셀 다운로드
+  const handleExcelDownload = (excelDatas: GetCoverRes[]) => {
+    excelDownload(
+      "표지 관리",
+      [
+        "표지등록일",
+        "표지 판매일",
+        "표지명",
+        "표지번호",
+        "가격",
+        "구매자",
+        "상태",
+      ],
+      [120, 120, 150, 100, 100, 100, 100],
+      excelDatas.map((item) => [
+        item.registeredAt ? item.registeredAt : "-",
+        item.soldAt ? item.soldAt : "-",
+        item.title ? item.title : "-",
+        item.coverNo ? item.coverNo : "-",
+        item.price ? item.price : "-",
+        item.buyerName ? item.buyerName : "-",
+        item.isVisible ? "노출" : "비노출",
+      ])
+    );
+  };
+
   return (
     <BreadcrumbContainer
       breadcrumbNode={<>전자책 관리 / 표지 관리</>}
@@ -137,6 +181,8 @@ function Cover() {
         title="등록일"
         dispatch={dispatch}
         excel={true}
+        excelAllDataOnClick={handleAllDataExcelDownload}
+        excelFilterDataOnClick={handleFilterDataExcelDownload}
         CustomSelectComponent={
           <SelectBox
             placeholder="모든 상태"
