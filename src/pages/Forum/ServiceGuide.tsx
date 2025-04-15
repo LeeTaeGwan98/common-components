@@ -161,7 +161,6 @@ const ServiceGuide = () => {
         filterInfo={filterInfo}
         title="등록일"
         dispatch={dispatch}
-        excel={true}
         CustomSelectComponent={
           <SelectBox
             placeholder="모든 상태"
