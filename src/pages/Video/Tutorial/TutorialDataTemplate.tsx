@@ -50,7 +50,7 @@ interface TutorialDataStyleProps {
   uploadedVideoUrl?: string | null;
 }
 
-function TutorialDataStyle({
+function TutorialDataTemplate({
   type,
   tutorialName,
   setTutorialName,
@@ -289,4 +289,4 @@ function TutorialDataStyle({
   );
 }
 
-export default TutorialDataStyle;
+export default TutorialDataTemplate;

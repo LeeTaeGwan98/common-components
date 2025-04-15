@@ -6,7 +6,7 @@ import {
   tutoriaVideoGet,
 } from "@/api/tutorial/tutorialAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
-import TutorialDataStyle from "@/pages/Video/Tutorial/TutorialDataTemplate";
+import TutorialDataTemplate from "@/pages/Video/Tutorial/TutorialDataTemplate";
 import {
   useMutation,
   useQueryClient,
@@ -88,7 +88,7 @@ function TutorialDetail() {
 
   return (
     <>
-      <TutorialDataStyle
+      <TutorialDataTemplate
         type={"detail"}
         tutorialName={tutorialName}
         setTutorialName={setTutorialName}
