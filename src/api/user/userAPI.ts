@@ -166,6 +166,7 @@ export const getBankStatePreview = (id: number) => {
 //회원 출판 목록 요청 타입
 export interface UserPublishQueryStringType
   extends Omit<TableQueryStringType, "isVisible"> {
+  status: string | null;
   userId: number;
 }
 
@@ -187,7 +188,8 @@ export interface UserPublishRes {
 export const getUserPublishList = (
   queryStringObj: UserPublishQueryStringType
 ) => {
-  const { userId, sortOrder, fromDt, toDt, take, page } = queryStringObj;
+  const { userId, sortOrder, fromDt, toDt, status, take, page } =
+    queryStringObj;
 
   let qs = `/admin/ebook/user/${userId}?`;
 
@@ -200,8 +202,8 @@ export const getUserPublishList = (
   if (toDt) {
     qs += `toDt=${toDt}&`;
   }
-  if (userId) {
-    qs += `status=CO017003&`;
+  if (status != null) {
+    qs += `status=${status}&`;
   }
   if (take !== null) {
     qs += `take=${take}&`;
