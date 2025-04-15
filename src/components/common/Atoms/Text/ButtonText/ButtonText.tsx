@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 
-interface TextProps {
+interface TextProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
   type?: "primary" | "assistive";
   size?: "medium" | "small";
   disable?: boolean;
@@ -8,12 +9,13 @@ interface TextProps {
   className?: string;
 }
 
-function Text({
+function ButtonText({
   type = "primary",
   size = "medium",
   disable = false,
   children,
   className,
+  ...props
 }: TextProps) {
   const typeStyle = {
     primary: "text-primary-normal",
@@ -33,7 +35,7 @@ function Text({
     "text-label-disable": disable,
   };
   return (
-    <div
+    <button
       className={cn(
         "text-body1-normal-regular flex gap-[4px] w-fit py-[4px] px-[7px] rounded-radius-admin",
         !disable && interactiveTypeStyle[type],
@@ -42,10 +44,11 @@ function Text({
         disableStyle,
         className
       )}
+      {...props}
     >
       {children}
-    </div>
+    </button>
   );
 }
 
-export default Text;
+export default ButtonText;
