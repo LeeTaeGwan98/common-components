@@ -1,6 +1,7 @@
 import API from "@/api/API";
 import { GetCoverRes } from "@/api/cover/coverAPI";
 import { EbookRes } from "@/api/ebook";
+import { InquiryRes } from "@/api/inquiry/inquiryAPI";
 import { UserListData, UserWithdrawlListRes } from "@/api/user/userAPI";
 
 //엑셀 다운로드 조회 키 목록
@@ -26,7 +27,7 @@ type ExcelDataMap = {
   withdrawal: UserWithdrawlListRes[];
   publish: EbookRes[];
   cover: GetCoverRes[];
-  inquiry: any;
+  inquiry: InquiryRes[];
   admin: any;
 };
 

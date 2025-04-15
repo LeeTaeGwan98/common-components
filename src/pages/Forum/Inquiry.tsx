@@ -19,7 +19,11 @@ import SubTitleBar, {
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { useReducer } from "react";
-import { getInquiry, InquiryQueryStringType } from "@/api/inquiry/inquiryAPI";
+import {
+  getInquiry,
+  InquiryQueryStringType,
+  InquiryRes,
+} from "@/api/inquiry/inquiryAPI";
 import {
   dateToString,
   formatDateTimeToJSX,
@@ -33,6 +37,8 @@ import {
 } from "@/Constants/CommonGroupCode";
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { codeToGetGroupCode, codeToName } from "@/utils/uitls";
+import { getExcelSearch } from "@/api/excel/excel";
+import { excelDownload } from "@/components/excel/Excel";
 
 const initState: InquiryQueryStringType = {
   fromDt: undefined,
@@ -144,6 +150,49 @@ function Inquiry() {
       visible === "ALL" ? null : boolToString(visible)
     );
   };
+
+  //엑셀 조건없이 모든 데이터 다운로드
+  const handleAllDataExcelDownload = async () => {
+    const excelAllData = await getExcelSearch("inquiry");
+
+    handleExcelDownload(excelAllData.data.data);
+  };
+
+  //엑셀 조건 적용 모든 데이터 다운로드
+  const handleFilterDataExcelDownload = async () => {
+    const modifiedFilterInfo = { ...filterInfo, take: data.meta.totalCount };
+
+    const excelFilterData = await getInquiry(modifiedFilterInfo);
+
+    handleExcelDownload(excelFilterData.data.data.list);
+  };
+
+  //엑셀 다운로드
+  const handleExcelDownload = (excelDatas: InquiryRes[]) => {
+    excelDownload(
+      "문의내역",
+      ["문의일", "닉네임", "서비스", "문의유형", "제목", "상태", "관리자"],
+      [120, 120, 150, 100, 200, 100, 100],
+      excelDatas.map((item) => [
+        item.inquiryAt ? item.inquiryAt : "-",
+        item.name ? item.name : "-",
+        item.serviceCode ? codeToName(serviceCodes, item.serviceCode) : "-",
+        item.type
+          ? codeToName(
+              codeToGetGroupCode(item.type) ===
+                COMMON_GROUP_CODE_MAPPING.전자책서비스문의유형
+                ? eBookInquiryCodes
+                : videoInquiryCodes,
+              item.type
+            )
+          : "-",
+        item.title ? item.title : "-",
+        item.isResponse ? "답변" : "미답변",
+        item.responseAdminName ? item.responseAdminName : "-",
+      ])
+    );
+  };
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>게시판 관리 / 1:1문의</>}>
       <SubTitleBar
@@ -151,6 +200,8 @@ function Inquiry() {
         title="문의일"
         dispatch={dispatch}
         excel={true}
+        excelAllDataOnClick={handleAllDataExcelDownload}
+        excelFilterDataOnClick={handleFilterDataExcelDownload}
         CustomSelectComponent={
           <SelectBox
             placeholder="모든 상태"
