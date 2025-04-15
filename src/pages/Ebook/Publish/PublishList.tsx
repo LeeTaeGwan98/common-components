@@ -35,6 +35,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import {
+  EbookDetailRes,
   EbookQueryStringType,
   EbookRes,
   getEbookList,
@@ -57,6 +58,14 @@ import {
 import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
+import { getExcelSearch } from "@/api/excel/excel";
+import { excelDownload } from "@/components/excel/Excel";
+import { codeToName } from "@/utils/uitls";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 
 interface StatusViewProps {
   status: string;
@@ -157,7 +166,17 @@ const reducer = <T extends Record<string, any>>(
 function PublishList() {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
   const [selectId, setSelectId] = useState<number[]>([]); //선택한 목록 아이디
-  console.log(selectId);
+  //전자책 상태 공통 코드 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: [
+      "ebookStatusGroupCodes",
+      COMMON_GROUP_CODE_MAPPING.전자책출판상태,
+    ],
+    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.전자책출판상태]),
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const publishCodes = codeInfo[keys[0]]; // 전자책 상태 사유 코드들
 
   //테이블 빈 row 처리
   const renderEmptyRows = () => {
@@ -237,6 +256,50 @@ function PublishList() {
     dispatchWithPageReset("status", status);
   };
 
+  //엑셀 조건없이 모든 데이터 다운로드
+  const handleAllDataExcelDownload = async () => {
+    const excelAllData = await getExcelSearch("publish");
+
+    handleExcelDownload(excelAllData.data.data);
+  };
+
+  //엑셀 조건 적용 모든 데이터 다운로드
+  const handleFilterDataExcelDownload = async () => {
+    const modifiedFilterInfo = { ...filterInfo, take: data.meta.totalCount };
+
+    const excelFilterData = await getEbookList(modifiedFilterInfo);
+
+    handleExcelDownload(excelFilterData.data.data.list);
+  };
+
+  //엑셀 다운로드
+  const handleExcelDownload = (excelDatas: EbookRes[]) => {
+    excelDownload(
+      "출판 내역",
+      [
+        "제출일",
+        "관리자 승인일",
+        "닉네임",
+        "전자책 정가(판매가)",
+        "도서명",
+        "저자/역자",
+        "상태",
+        "관리자",
+      ],
+      [80, 120, 120, 100, 200, 100, 100, 100],
+      excelDatas.map((item) => [
+        item.submittedAt ? item.submittedAt : "-",
+        item.approvedAt ? item.approvedAt : "-",
+        item.name ? item.name : "-",
+        item.price ? item.price : "-",
+        item.title ? item.title : "-",
+        item.author ? item.author : "-",
+        item.status ? codeToName(publishCodes, item.status) : "-",
+        item.approveAdminName ? item.approveAdminName : "-",
+      ])
+    );
+  };
+
   return (
     <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
       <SubTitleBar
@@ -244,6 +307,8 @@ function PublishList() {
         title="제출일"
         dispatch={dispatch}
         excel={true}
+        excelAllDataOnClick={handleAllDataExcelDownload}
+        excelFilterDataOnClick={handleFilterDataExcelDownload}
         CustomSelectComponent={
           <SelectBox
             placeholder="모든 상태"

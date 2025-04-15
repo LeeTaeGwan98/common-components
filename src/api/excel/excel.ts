@@ -1,4 +1,5 @@
 import API from "@/api/API";
+import { EbookRes } from "@/api/ebook";
 import { UserListData, UserWithdrawlListRes } from "@/api/user/userAPI";
 
 //엑셀 다운로드 조회 키 목록
@@ -22,7 +23,7 @@ type ExcelDataMap = {
   userPublish: any;
   pay: any;
   withdrawal: UserWithdrawlListRes[];
-  publish: any;
+  publish: EbookRes[];
   cover: any;
   inquiry: any;
   admin: any;
