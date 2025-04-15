@@ -1,3 +1,4 @@
+import { GetAccountType } from "@/api/account";
 import API from "@/api/API";
 import { GetCoverRes } from "@/api/cover/coverAPI";
 import { EbookRes } from "@/api/ebook";
@@ -28,7 +29,7 @@ type ExcelDataMap = {
   publish: EbookRes[];
   cover: GetCoverRes[];
   inquiry: InquiryRes[];
-  admin: any;
+  admin: GetAccountType[];
 };
 
 type ExcelType<T extends ExcelKey> = ExcelDataMap[T];
