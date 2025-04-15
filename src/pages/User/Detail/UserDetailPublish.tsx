@@ -7,6 +7,15 @@ import {
   TableRow,
 } from "@/components/common/Tables";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
+import {
+  getUserPublishList,
+  UserPublishQueryStringType,
+} from "@/api/user/userAPI";
+import { dateToString } from "@/lib/dateParse";
+import { ActionType } from "@/api/common/commonType";
+import { useReducer } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 const publishingData = [
   {
@@ -28,6 +37,39 @@ const publishingData = [
 ];
 
 function UserDetailPublish() {
+  const { id } = useParams();
+  const initState: UserPublishQueryStringType = {
+    sortOrder: "DESC",
+    fromDt: dateToString(
+      new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+    ),
+    toDt: dateToString(new Date()),
+    keyword: "",
+    take: 10,
+    page: 1,
+    userId: Number(id),
+  };
+
+  const reducer = <T extends Record<string, any>>(
+    queryInfo: T,
+    action: ActionType<T>
+  ): T => {
+    if (!action) return queryInfo; // undefined 체크
+
+    const { type, value } = action;
+    return {
+      ...queryInfo,
+      [type]: value,
+    };
+  };
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
+  //회원 출판 목록 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["userPublishList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getUserPublishList(filterInfo),
+    select: (data) => data.data.data,
+  });
+
   return (
     <div>
       <TableContainer>

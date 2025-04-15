@@ -163,6 +163,61 @@ export const getBankStatePreview = (id: number) => {
   return data;
 };
 
+//회원 출판 목록 요청 타입
+export interface UserPublishQueryStringType
+  extends Omit<TableQueryStringType, "isVisible"> {
+  userId: number;
+}
+
+//회원 출판 목록 응답 타입
+export interface UserPublishRes {
+  id: number;
+  submittedAt: string;
+  approvedAt: string;
+  name: string;
+  price: string;
+  title: string;
+  author: string;
+  status: string;
+  approveAdminId: number;
+  approveAdminName: string;
+}
+
+//회원 출판 목록 가져오기
+export const getUserPublishList = (
+  queryStringObj: UserPublishQueryStringType
+) => {
+  const { userId, sortOrder, fromDt, toDt, take, page } = queryStringObj;
+
+  let qs = `/admin/ebook/user/${userId}?`;
+
+  if (sortOrder) {
+    qs += `sortOrder=${sortOrder}&`;
+  }
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (userId) {
+    qs += `status=CO017003&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
+
+  const data = API.get<TableResType<UserPublishRes>>(qs);
+
+  return data;
+};
+
 //탈퇴 목록 요청 타입
 export interface UserWithdrawlQueryStringType
   extends Omit<TableQueryStringType, "isVisible"> {
