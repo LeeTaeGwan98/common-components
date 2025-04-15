@@ -23,6 +23,9 @@ export const TUTORIAL_CREATE = "/tutorial-create";
 export const TUTORIAL_DETAIL = "/tutorial";
 export const TEMPLATE = "/template";
 export const TEMPLATE_DETAIL = "/template";
+export const VIDEOIMAGE = "/image";
+export const VIDEOIMAGE_CREATE = "/image-create";
+export const VIDEOIMAGE_DETAIL = "/image-detail";
 
 // 게시판 관리
 export const INQUIRY = "/inquiry";

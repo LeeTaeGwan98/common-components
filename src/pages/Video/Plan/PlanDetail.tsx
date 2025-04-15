@@ -92,9 +92,9 @@ function PlanDetail() {
     soundEffectCreationCount: data.soundEffectCreationCount ?? 0, //효과음 생성 횟수
     soundEffectCreationDeductedPoint:
       data.soundEffectCreationDeductedPoint ?? 0, //효과음 생성 차감 포인트
-    sceneVideoExtensionCount: data.sceneVideoExtensionCount ?? 0, //씬별 비디오 연장 횟수
+    sceneVideoExtensionCount: data.sceneVideoExtensionCount ?? 0, //씬별 오디오 연장 횟수
     sceneVideoExtensionDeductedPoint:
-      data.sceneVideoExtensionDeductedPoint ?? 0, //씬별 비디오 연장 차감
+      data.sceneVideoExtensionDeductedPoint ?? 0, //씬별 오디오 연장 차감
     isWaterMark: data.isWatermark, //워터마크 x 여부
     isChatbot: data.isChatbot, //챗봇 x 여부
   });
@@ -588,9 +588,9 @@ function PlanDetail() {
             />
           </div>
           <div className="flex w-full gap-gutter-horizontal">
-            {/* 씬별 비디오 연장 */}
+            {/* 씬별 오디오 연장 */}
             <TextField
-              label="씬별 비디오 연장"
+              label="씬별 오디오 연장"
               subText="회"
               slot={{ subTextClassName: "text-label-alternative" }}
               value={formState.sceneVideoExtensionCount?.toLocaleString("kr")}
