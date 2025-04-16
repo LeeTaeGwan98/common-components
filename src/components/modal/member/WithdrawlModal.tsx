@@ -1,31 +1,20 @@
 import { useModalStore } from "@/store/modalStore";
-import { useQuery } from "@tanstack/react-query";
-import { testGet, testPost } from "@/api/example";
-
 import Button from "@/components/common/Atoms/Button/Solid/Button";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { DialogContent } from "@/components/ui/dialog";
 import CardRow from "@/components/common/Molecules/CardRow/CardRow";
-import Divider from "@/components/common/Atoms/Divider/Divider";
 import TextBox from "@/components/common/Molecules/TextBox/TextBox";
-import { useState } from "react";
 import DialogDetailContent from "@/components/common/BookaroongAdmin/DialogDetailContent";
 import Actions from "@/components/common/Molecules/Actions/Actions";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getWithdrawlDetail } from "@/api/user/userAPI";
 
-function WithdrawlModal() {
-  // 모달에서 GET API요청이 필요한 경우
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["secondModalData"],
-    queryFn: () => testGet(),
-    enabled: false, // 자동 실행 비활성화, 이 속성을 없애면 모달이 열리자마자 GET요청이 실행됨
+function WithdrawlModal({ id }: { id: number }) {
+  //탈퇴 상세 조회
+  const { data } = useSuspenseQuery({
+    queryKey: ["withdrawalDetail", id],
+    queryFn: () => getWithdrawlDetail(Number(id)),
+    select: (data) => data.data.data,
   });
-
-  const [field, setField] = useState("");
 
   return (
     <DialogContent
@@ -37,7 +26,7 @@ function WithdrawlModal() {
         fixed={false}
         close={true}
         buttonElements={
-          <Actions className="w-full h-[48px]  mx-0" priority={"single"}>
+          <Actions className="w-full h-[48px] !mx-0" priority={"single"}>
             <Button
               size="large"
               onClick={() => {
@@ -55,7 +44,7 @@ function WithdrawlModal() {
               className="w-[432px]"
               data={{
                 title: "닉네임",
-                content: "닉네임",
+                content: data.name,
               }}
               slot={{
                 contentClassName:
@@ -71,7 +60,7 @@ function WithdrawlModal() {
               }}
               data={{
                 title: "탈퇴일",
-                content: "탈퇴일",
+                content: data.createdAt,
               }}
             />
             <div className="flex flex-col justify-start w-full">
@@ -79,7 +68,7 @@ function WithdrawlModal() {
                 탈퇴 사유
               </div>
               <TextBox
-                value="탈퇴사유 탈퇴사유 탈퇴사유"
+                value={data.etc}
                 className="w-full flex text-body2-normal-regular text-label-alternative"
                 disabled
               />

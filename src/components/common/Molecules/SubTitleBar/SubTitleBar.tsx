@@ -8,6 +8,8 @@ import { ActionDispatch, ReactNode, useState } from "react";
 import { TableQueryStringType } from "@/api/common/commonType";
 import { dateToString, stringToDate } from "@/lib/dateParse";
 import { ActionType } from "@/api/common/commonType";
+import { useModalStore } from "@/store/modalStore";
+import ExcelModal from "@/components/modal/Excel/ExcelModal";
 
 export const boolToString = (boolString: string) => {
   // shadcn의 selectItem에는 string타입만 들어갈 수 있어서 만든 함수
@@ -19,16 +21,23 @@ interface SubtitleBarProps {
   filterInfo: TableQueryStringType;
   dispatch: ActionDispatch<[action: ActionType<TableQueryStringType>]>;
   CustomSelectComponent: ReactNode;
+  isSearchField?: boolean;
   excel?: boolean;
+  excelAllDataOnClick?: () => void;
+  excelFilterDataOnClick?: () => void;
 }
 
 function SubTitleBar({
   filterInfo,
   title,
   dispatch,
+  isSearchField = true,
   CustomSelectComponent,
   excel = false,
+  excelAllDataOnClick,
+  excelFilterDataOnClick,
 }: SubtitleBarProps) {
+  const { openModal } = useModalStore();
   // 입력 중인 keyword를 별도로 관리
   // onchange중에는 API를 호출하지 않기 위해
   const [inputKeyword, setInputKeyword] = useState("");
@@ -75,6 +84,15 @@ function SubTitleBar({
     dispatchWithPageReset("take", take);
   };
 
+  const handleExcelModal = () => {
+    openModal(
+      <ExcelModal
+        excelAllDataOnClick={excelAllDataOnClick}
+        excelFilterDataOnClick={excelFilterDataOnClick}
+      />
+    );
+  };
+
   return (
     <div className="flex items-center justify-between mb-[12px] flex-wrap gap-[8px]">
       <div className="flex">
@@ -95,14 +113,16 @@ function SubTitleBar({
       <div className="flex gap-[12px]">
         {CustomSelectComponent}
 
-        <TextField
-          value={inputKeyword || ""}
-          onChange={handleKeywordOnchange}
-          onKeyDown={handleKeywordEnter}
-          searchIcon
-          placeholder="검색어를 입력해주세요"
-          maxLength={100}
-        />
+        {isSearchField && (
+          <TextField
+            value={inputKeyword || ""}
+            onChange={handleKeywordOnchange}
+            onKeyDown={handleKeywordEnter}
+            searchIcon
+            placeholder="검색어를 입력해주세요"
+            maxLength={100}
+          />
+        )}
 
         <SelectBox
           placeholder="10개 씩"
@@ -120,7 +140,7 @@ function SubTitleBar({
           </SelectContent>
         </SelectBox>
         {excel && (
-          <button>
+          <button onClick={handleExcelModal}>
             <img src={ExcelImage} className="size-[48px]" />
           </button>
         )}

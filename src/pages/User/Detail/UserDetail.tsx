@@ -295,15 +295,7 @@ function UserDetail() {
               <TextField
                 size="medium"
                 value={nickName}
-                helperText={isNickError ? " " : ""}
-                errorInfo={
-                  isNickError
-                    ? {
-                        isError: true,
-                        text: "자음, 모음은 사용이 불가합니다.",
-                      }
-                    : {}
-                }
+                errorText={isNickError ? "자음, 모음은 사용이 불가합니다." : ""}
                 maxLength={30}
                 buttonElement={
                   <Text

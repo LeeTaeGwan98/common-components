@@ -22,7 +22,7 @@ export interface EbookRes {
   approveAdminName: string;
 }
 
-interface EbookDetailRes {
+export interface EbookDetailRes {
   id: number;
   name: string;
   submittedAt: string;

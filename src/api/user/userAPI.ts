@@ -162,3 +162,142 @@ export const getBankStatePreview = (id: number) => {
 
   return data;
 };
+
+//회원 출판 목록 요청 타입
+export interface UserPublishQueryStringType
+  extends Omit<TableQueryStringType, "isVisible"> {
+  status: string | null;
+  userId: number;
+}
+
+//회원 출판 목록 응답 타입
+export interface UserPublishRes {
+  id: number;
+  submittedAt: string;
+  approvedAt: string;
+  name: string;
+  price: string;
+  title: string;
+  author: string;
+  status: string;
+  approveAdminId: number;
+  approveAdminName: string;
+}
+
+//회원 출판 목록 가져오기
+export const getUserPublishList = (
+  queryStringObj: UserPublishQueryStringType
+) => {
+  const { userId, sortOrder, fromDt, toDt, status, take, page } =
+    queryStringObj;
+
+  let qs = `/admin/ebook/user/${userId}?`;
+
+  if (sortOrder) {
+    qs += `sortOrder=${sortOrder}&`;
+  }
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (status != null) {
+    qs += `status=${status}&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
+
+  const data = API.get<TableResType<UserPublishRes>>(qs);
+
+  return data;
+};
+
+//탈퇴 목록 요청 타입
+export interface UserWithdrawlQueryStringType
+  extends Omit<TableQueryStringType, "isVisible"> {
+  reason: string | null;
+}
+
+//탈퇴 목록 응답 타입
+export interface UserWithdrawlListRes {
+  rownum: number;
+  id: number;
+  createdAt: string;
+  name: string;
+  email: string;
+  reason: string;
+  etc: string;
+}
+
+//탈퇴 목록 가져오기
+export const getWithdrwalList = (
+  queryStringObj: UserWithdrawlQueryStringType
+) => {
+  const {
+    sortOrder,
+    fromDt,
+    toDt,
+    reason,
+    keyword = "",
+    take,
+    page,
+  } = queryStringObj;
+
+  let qs = "/admin/user/withdrawal?";
+
+  if (sortOrder) {
+    qs += `sortOrder=${sortOrder}&`;
+  }
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (reason !== null) {
+    qs += `reason=${reason}&`;
+  }
+  if (keyword) {
+    qs += `keyword=${keyword}&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
+
+  const data = API.get<TableResType<UserWithdrawlListRes>>(qs);
+
+  return data;
+};
+
+//탈퇴 상세 응답 타입
+export interface UserWithdrawlDetailRes {
+  rownum: number;
+  id: number;
+  createdAt: string;
+  name: string;
+  email: string;
+  reason: string;
+  etc: string;
+}
+
+//탈퇴 상세 기본 정보 조회
+export const getWithdrawlDetail = (id: number) => {
+  const data = API.get<{ data: UserWithdrawlDetailRes }>(
+    `/admin/user/withdrawal/${id}`
+  );
+  return data;
+};

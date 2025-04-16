@@ -239,11 +239,7 @@ function AccountDetail() {
             <div className="w-full">
               <TextField
                 label="아이디"
-                helperText={formState.isIdError ? " " : ""}
-                errorInfo={{
-                  isError: formState.isIdError ? true : undefined,
-                  text: idErrorMsg,
-                }}
+                errorText={formState.isIdError ? idErrorMsg : ""}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   updateFormState("isIdError", false);
                   updateFormState("idField", e.target.value);
@@ -257,11 +253,7 @@ function AccountDetail() {
                 label="비밀번호"
                 value={formState.passwordField}
                 maxLength={20}
-                helperText={formState.isPasswordError ? " " : ""}
-                errorInfo={{
-                  isError: formState.isPasswordError ? true : undefined,
-                  text: passwrodErrorMsg,
-                }}
+                errorText={formState.isPasswordError ? passwrodErrorMsg : ""}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   updateFormState("isPasswordError", false);
                   const regex = /^[A-Za-z0-9]*$/; //입력시 영어, 숫자만 허용

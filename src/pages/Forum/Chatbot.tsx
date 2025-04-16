@@ -189,10 +189,6 @@ const Chatbot = () => {
             </SelectGroup>
           </SelectContent>
         </SelectBox>
-
-        <button>
-          <img src={ExcelImage} className="size-[48px]" />
-        </button>
       </div>
 
       <TableContainer>

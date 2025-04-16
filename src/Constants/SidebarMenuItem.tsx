@@ -21,6 +21,7 @@ import {
   TERMS,
   TUTORIAL,
   USER_LIST,
+  VIDEOIMAGE,
   WITHDRAWL_REASON,
 } from "@/Constants/ServiceUrl";
 
@@ -98,6 +99,10 @@ const SIDEBAR_MENU_ITEM = [
       {
         title: "템플릿 관리",
         path: TEMPLATE,
+      },
+      {
+        title: "무료 이미지 관리",
+        path: VIDEOIMAGE,
       },
     ],
   },

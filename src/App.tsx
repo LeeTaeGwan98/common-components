@@ -51,6 +51,9 @@ import {
   SERVICE_GUIDE_REGISTRATION,
   CHATBOT_DETAIL,
   CHATBOT_REGISTRATION,
+  VIDEOIMAGE,
+  VIDEOIMAGE_CREATE,
+  VIDEOIMAGE_DETAIL,
 } from "@/Constants/ServiceUrl";
 import CoverCreate from "@/pages/Ebook/Cover/CoverCreate";
 import AccountRegistration from "@/pages/Admin/AccountRegistration";
@@ -83,6 +86,9 @@ import ChatbotDetail from "@/pages/Forum/ChatbotDetail";
 import ChatbotRegistration from "@/pages/Forum/ChatbotRegistration";
 import { Toaster } from "@/components/ui/sonner";
 import ProtectedRoute from "@/guard/ProtectedRoute";
+import VideoImage from "@/pages/Video/VideoImage/VideoImage";
+import VideoImageCreate from "@/pages/Video/VideoImage/VideoImageCreate";
+import VideoImageDetail from "@/pages/Video/VideoImage/VideoImageDetail";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -167,6 +173,12 @@ function App() {
               />
               <Route path={TEMPLATE} element={<Template />} />
               <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
+              <Route path={VIDEOIMAGE} element={<VideoImage />} />
+              <Route path={VIDEOIMAGE_CREATE} element={<VideoImageCreate />} />
+              <Route
+                path={`${VIDEOIMAGE_DETAIL}/:id`}
+                element={<VideoImageDetail />}
+              />
 
               {/* 관리자 */}
               <Route path={TERMS} element={<Terms />} />
