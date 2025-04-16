@@ -363,6 +363,7 @@ function CommonCode() {
                       <TableCell>
                         <TextField
                           value={item.sortOrd.toString()}
+                          slot={{ inputClassName: "text-center" }}
                           onChange={(e) => {
                             // 숫자만 필터링
                             const numericValue = e.target.value.replace(
