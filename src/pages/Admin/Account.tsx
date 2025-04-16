@@ -167,16 +167,18 @@ function Account() {
                   </TableCell>
 
                   <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${ACCOUNT_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
-                        }
-                      />
-                    </Link>
+                    <div className="flex justify-center">
+                      <Link
+                        className="flex justify-center w-fit"
+                        to={`${ACCOUNT_DETAIL}/${item.id}`}
+                      >
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </div>
                   </TableCell>
                 </TableRow>
               );
