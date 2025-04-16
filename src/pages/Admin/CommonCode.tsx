@@ -344,7 +344,7 @@ function CommonCode() {
               <TableBody>
                 {/* 상세코드 목록 */}
                 {(isReverse
-                  ? formState.detailCodes.reverse()
+                  ? [...formState.detailCodes].reverse()
                   : formState.detailCodes
                 ).map((item, index) => {
                   return (
