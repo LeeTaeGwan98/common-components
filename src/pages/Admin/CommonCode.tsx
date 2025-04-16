@@ -303,10 +303,13 @@ function CommonCode() {
                               }
                               onChecked={() =>
                                 //상세코드 조회할 그룹코드 선택
-                                updateFormState(
-                                  "selectGroupCode",
-                                  groupCode.commGroupCode
-                                )
+                                {
+                                  updateFormState(
+                                    "selectGroupCode",
+                                    groupCode.commGroupCode
+                                  );
+                                  setIsReverse(false);
+                                }
                               }
                             />
                           </div>
