@@ -14,10 +14,8 @@ interface TextFieldProps
   label?: string;
   count?: boolean;
   helperText?: string;
-  errorInfo?: {
-    isError?: boolean;
-    text?: string;
-  };
+  errorText?: string;
+  successText?: string;
   searchIcon?: boolean;
   subText?: string;
   isVisible?: boolean;
@@ -39,7 +37,8 @@ function TextField({
   label,
   count = false,
   helperText = "",
-  errorInfo,
+  errorText,
+  successText,
   searchIcon = false,
   subText = "",
   isVisible = false,
@@ -67,13 +66,7 @@ function TextField({
   const searchIconStyle = searchIcon && "pl-[44px]";
   const rightIconStyle = subText && "pr-[54px]";
 
-  const interactiveTypeStyle = `hover:border-coolNeutral-50/[.52] focus:border-primary-normal ${
-    errorInfo?.isError !== undefined
-      ? errorInfo.isError
-        ? "border-status-negative"
-        : "border-status-positive"
-      : ""
-  }`;
+  const interactiveTypeStyle = `hover:border-coolNeutral-50/[.52] focus:border-primary-normal`;
 
   return (
     <div className={cn("flex flex-col flex-1", slot.containerClassName)}>
@@ -107,6 +100,9 @@ function TextField({
             !readOnly && interactiveTypeStyle,
             searchIconStyle,
             rightIconStyle,
+            successText &&
+              "border-status-positive hover:border-status-positive",
+            errorText && "border-status-negative hover:border-status-negative",
             slot.inputClassName
           )}
           value={value}
@@ -126,10 +122,11 @@ function TextField({
         />
       </div>
 
-      {helperText && (
+      {(helperText || errorText || successText) && (
         <TextField.HelperTextArea
           helperText={helperText}
-          errorInfo={errorInfo}
+          errorText={errorText}
+          successText={successText}
           count={count}
           value={value}
         />
@@ -194,39 +191,38 @@ TextField.RightIconArea.displayName = "TextFieldRightIconArea";
 
 type HelperTextAreaProps = Pick<
   TextFieldProps,
-  "helperText" | "errorInfo" | "count"
+  "helperText" | "errorText" | "count" | "successText"
 > & {
   value: string;
 };
 
 TextField.HelperTextArea = (({
   helperText,
-  errorInfo,
+  successText,
+  errorText,
   count,
   value,
 }: HelperTextAreaProps) => {
+  console.log(successText);
+
   return (
     <div className="flex justify-between *:text-caption1-regular mt-[4px]">
       <div className="w-fit text-label-assistive ml-[12px]">
         <span>{helperText && helperText}</span>
-        {errorInfo && (
-          <div className="flex gap-[2px] text-status-positive">
+        {errorText && (
+          <div className="flex gap-[2px]">
             <span>
-              {errorInfo?.isError ? (
-                <ErrorIcon className="size-[16px] fill-status-negative" />
-              ) : (
-                <SuccessIcon className="size-[16px] fill-status-positive" />
-              )}
+              <ErrorIcon className="size-[16px] text-status-negative" />
             </span>
-            <span
-              className={
-                errorInfo?.isError
-                  ? "text-status-negative"
-                  : "text-status-positive"
-              }
-            >
-              {errorInfo?.text}
+            <span className="text-status-negative">{errorText}</span>
+          </div>
+        )}
+        {successText && (
+          <div className="flex gap-[2px]">
+            <span>
+              <SuccessIcon className="size-[16px] text-status-positive" />
             </span>
+            <span className="text-status-positive">{successText}</span>
           </div>
         )}
       </div>
