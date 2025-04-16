@@ -136,20 +136,27 @@ function PublishListDetail() {
           <TextField label="저자/역자" readOnly value={data.author} />
           <TextField label="카테고리" readOnly value={categoryName} />
         </div>
-        <div className="flex justify-center *:flex-1 gap-[20px]">
-          <div className="relative">
-            <TextField label="표지" readOnly value={data.coverImageFilePath} />
-            <Text
-              size="medium"
-              className="flex max-w-[478px] text-nowrap overflow-hidden !flex-none h-fit items-center underline cursor-pointer text-label-alternative "
-              onClick={() => openModal(<PublishCoverModal id={data.id} />)}
-            >
-              {data.coverImageFilePath}
-            </Text>
+        <div className="flex justify-between gap-[20px] w-full">
+          <div className="flex-1 flex flex-col min-w-0">
+            <label className="text-label1-normal-bold text-label-alternative mb-[8px]">
+              표지
+            </label>
+            <div className="border border-line-normal-neutral rounded-radius-admin px-[12px] pl-[5px] h-[48px] flex items-center bg-interaction-disable overflow-hidden">
+              <Text
+                size="medium"
+                className="text-nowrap underline cursor-pointer text-label-alternative px-[7px] py-[4px] overflow-hidden text-ellipsis"
+                onClick={() => openModal(<PublishCoverModal id={data.id} />)}
+              >
+                {data.coverImageFilePath}
+              </Text>
+            </div>
           </div>
 
-          <TextField label="제작 방식" readOnly value={creationMethod} />
+          <div className="flex-1 min-w-0">
+            <TextField label="제작 방식" readOnly value={creationMethod} />
+          </div>
         </div>
+
         <div className="flex justify-center *:flex-1 gap-[20px]">
           <TextField
             label="원고 파일"
