@@ -59,6 +59,7 @@ function Terms() {
         </Link>
       }
     >
+      <div className="h-[60px]" />
       <TableContainer>
         <Table>
           <TableHeader>
