@@ -7,8 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { MAIN } from "@/Constants/ServiceUrl";
 import { useAuthStore } from "@/store/authStore";
 import GIF from "@/assets/gif/loginback.gif";
+import { useModalStore } from "@/store/modalStore";
+import LoginFailModal from "@/components/modal/login/LoginFailModal";
 
 function Login() {
+  const { openModal } = useModalStore();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +23,9 @@ function Login() {
     onSuccess(res) {
       setUserInfo(res.data.data);
       navigate(MAIN);
+    },
+    onError() {
+      openModal(<LoginFailModal />);
     },
   });
 
