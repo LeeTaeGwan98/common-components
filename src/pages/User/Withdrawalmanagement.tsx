@@ -176,90 +176,94 @@ function Withdrawalmanagement() {
   };
 
   return (
-    <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 탈퇴 사유 관리</>}>
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="탈퇴일"
-        dispatch={dispatch}
-        excel={true}
-        excelAllDataOnClick={handleAllDataExcelDownload}
-        excelFilterDataOnClick={handleFilterDataExcelDownload}
-        CustomSelectComponent={
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            defaultValue="ALL"
-            onValueChange={handleIsActive}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">모든 탈퇴 사유</SelectItem>
-                {withdrawlCodes.map((code, index) => {
-                  return (
-                    <SelectItem key={index} value={code.commDetailCode}>
-                      {code.detailCodeName}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
-        }
-      />
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>
-                <div className="flex items-center justify-center gap-[2px]">
-                  No <IconButton icon={<Updown />} onClick={handleSortOrder} />
-                </div>
-              </TableCell>
-              <TableCell isHeader>탈퇴일</TableCell>
-              <TableCell isHeader>닉네임</TableCell>
-              <TableCell isHeader>이메일</TableCell>
-              <TableCell isHeader>탈퇴 사유</TableCell>
-              <TableCell isHeader>기타</TableCell>
-            </TableRow>
-          </TableHeader>
+    <>
+      <title>북카롱 | 탈퇴 사유 관리</title>
+      <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 탈퇴 사유 관리</>}>
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="탈퇴일"
+          dispatch={dispatch}
+          excel={true}
+          excelAllDataOnClick={handleAllDataExcelDownload}
+          excelFilterDataOnClick={handleFilterDataExcelDownload}
+          CustomSelectComponent={
+            <SelectBox
+              placeholder="모든 상태"
+              className="min-w-[240px]"
+              size="large"
+              defaultValue="ALL"
+              onValueChange={handleIsActive}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="ALL">모든 탈퇴 사유</SelectItem>
+                  {withdrawlCodes.map((code, index) => {
+                    return (
+                      <SelectItem key={index} value={code.commDetailCode}>
+                        {code.detailCodeName}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          }
+        />
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>
+                  <div className="flex items-center justify-center gap-[2px]">
+                    No{" "}
+                    <IconButton icon={<Updown />} onClick={handleSortOrder} />
+                  </div>
+                </TableCell>
+                <TableCell isHeader>탈퇴일</TableCell>
+                <TableCell isHeader>닉네임</TableCell>
+                <TableCell isHeader>이메일</TableCell>
+                <TableCell isHeader>탈퇴 사유</TableCell>
+                <TableCell isHeader>기타</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data.list.map((item, index) => {
-              return (
-                <TableRow key={index}>
-                  <TableCell>{item.id}</TableCell>
-                  <TableCell>
-                    {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
-                  </TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.email}</TableCell>
-                  <TableCell>
-                    {codeToName(withdrawlCodes, item.reason)}
-                  </TableCell>
-                  <TableCell>
-                    {item.etc ? (
-                      <div
-                        className="underline cursor-pointer"
-                        onClick={() => handleModal(item.id)}
-                      >
-                        {item.etc}
-                      </div>
-                    ) : (
-                      <div>-</div>
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {data.meta.totalPage > 1 && (
-        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
-      )}
-    </BreadcrumbContainer>
+            <TableBody>
+              {data.list.map((item, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>
+                      {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
+                    </TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.email}</TableCell>
+                    <TableCell>
+                      {codeToName(withdrawlCodes, item.reason)}
+                    </TableCell>
+                    <TableCell>
+                      {item.etc ? (
+                        <div
+                          className="underline cursor-pointer"
+                          onClick={() => handleModal(item.id)}
+                        >
+                          {item.etc}
+                        </div>
+                      ) : (
+                        <div>-</div>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
+      </BreadcrumbContainer>
+    </>
   );
 }
 

@@ -135,124 +135,127 @@ const Chatbot = () => {
   };
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={<>게시판 관리 / 챗봇 관리</>}
-      button={
-        <Link to={CHATBOT_REGISTRATION}>
-          <Button className="rounded-radius-admin w-[180px] h-[48px]">
-            등록
-          </Button>
-        </Link>
-      }
-    >
-      <div className="flex justify-end gap-[12px] mb-[12px]">
-        <SelectBox
-          placeholder="모든 상태"
-          className="w-[240px]"
-          size="large"
-          defaultValue="ALL"
-          onValueChange={handleisVisible}
-        >
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="ALL">모든 상태</SelectItem>
-              <SelectItem value="true">노출</SelectItem>
-              <SelectItem value="false">비노출</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </SelectBox>
+    <>
+      <title>북카롱 | 챗봇 관리</title>
+      <BreadcrumbContainer
+        breadcrumbNode={<>게시판 관리 / 챗봇 관리</>}
+        button={
+          <Link to={CHATBOT_REGISTRATION}>
+            <Button className="rounded-radius-admin w-[180px] h-[48px]">
+              등록
+            </Button>
+          </Link>
+        }
+      >
+        <div className="flex justify-end gap-[12px] mb-[12px]">
+          <SelectBox
+            placeholder="모든 상태"
+            className="w-[240px]"
+            size="large"
+            defaultValue="ALL"
+            onValueChange={handleisVisible}
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="ALL">모든 상태</SelectItem>
+                <SelectItem value="true">노출</SelectItem>
+                <SelectItem value="false">비노출</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
 
-        <div className="w-[240px]">
-          <TextField
-            value={searchWord}
-            onChange={(e) => {
-              setSearchWord(e.target.value);
-            }}
-            onKeyDown={handleKeywordEnter}
-            searchIcon
-            placeholder="검색어를 입력해주세요"
-          />
+          <div className="w-[240px]">
+            <TextField
+              value={searchWord}
+              onChange={(e) => {
+                setSearchWord(e.target.value);
+              }}
+              onKeyDown={handleKeywordEnter}
+              searchIcon
+              placeholder="검색어를 입력해주세요"
+            />
+          </div>
+
+          <SelectBox
+            placeholder="10개 씩"
+            className="w-[108px]"
+            size="large"
+            defaultValue="10"
+            onValueChange={(value) => handleTake(Number(value))}
+          >
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="10">10개 씩</SelectItem>
+                <SelectItem value="20">20개 씩</SelectItem>
+                <SelectItem value="30">30개 씩</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </SelectBox>
         </div>
 
-        <SelectBox
-          placeholder="10개 씩"
-          className="w-[108px]"
-          size="large"
-          defaultValue="10"
-          onValueChange={(value) => handleTake(Number(value))}
-        >
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="10">10개 씩</SelectItem>
-              <SelectItem value="20">20개 씩</SelectItem>
-              <SelectItem value="30">30개 씩</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </SelectBox>
-      </div>
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>카테고리</TableCell>
+                <TableCell isHeader>질문</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>카테고리</TableCell>
-              <TableCell isHeader>질문</TableCell>
-              <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {data.list.map((item) => {
-              const { id, categoryCode, question, isVisible } = item;
-              return (
-                <TableRow key={id}>
-                  <TableCell>
-                    {
-                      categoryCodes.find(
-                        (code) => code.commDetailCode === categoryCode
-                      )?.detailCodeName
-                    }
-                  </TableCell>
-                  <TableCell>{question}</TableCell>
-                  <TableCell>
-                    {
-                      <div className="w-full flex justify-center items-center">
-                        <Label
-                          size="medium"
-                          className={cn(
-                            isVisible &&
-                              "bg-primary-normal/normal-focus text-primary-normal"
-                          )}
-                        >
-                          {isVisible ? "노출" : "비노출"}
-                        </Label>
-                      </div>
-                    }
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${CHATBOT_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
-                        }
-                      />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {data.meta.totalPage > 1 && (
-        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
-      )}
-    </BreadcrumbContainer>
+            <TableBody>
+              {data.list.map((item) => {
+                const { id, categoryCode, question, isVisible } = item;
+                return (
+                  <TableRow key={id}>
+                    <TableCell>
+                      {
+                        categoryCodes.find(
+                          (code) => code.commDetailCode === categoryCode
+                        )?.detailCodeName
+                      }
+                    </TableCell>
+                    <TableCell>{question}</TableCell>
+                    <TableCell>
+                      {
+                        <div className="w-full flex justify-center items-center">
+                          <Label
+                            size="medium"
+                            className={cn(
+                              isVisible &&
+                                "bg-primary-normal/normal-focus text-primary-normal"
+                            )}
+                          >
+                            {isVisible ? "노출" : "비노출"}
+                          </Label>
+                        </div>
+                      }
+                    </TableCell>
+                    <TableCell>
+                      <Link
+                        className="flex justify-center"
+                        to={`${CHATBOT_DETAIL}/${item.id}`}
+                      >
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
+      </BreadcrumbContainer>
+    </>
   );
 };
 

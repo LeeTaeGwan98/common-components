@@ -137,101 +137,104 @@ function Tutorial() {
     );
   };
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={<>비디오북 관리 / 튜토리얼 관리</>}
-      button={
-        <Link to={TUTORIAL_CREATE}>
-          <Button className="rounded-radius-admin w-[180px] h-[48px]">
-            등록
-          </Button>
-        </Link>
-      }
-    >
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="등록일"
-        dispatch={dispatch}
-        CustomSelectComponent={
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            defaultValue="ALL"
-            onValueChange={handleisVisible}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">모든 상태</SelectItem>
-                <SelectItem value="true">노출</SelectItem>
-                <SelectItem value="false">비노출</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
+    <>
+      <title>북카롱 | 튜토리얼 관리</title>
+      <BreadcrumbContainer
+        breadcrumbNode={<>비디오북 관리 / 튜토리얼 관리</>}
+        button={
+          <Link to={TUTORIAL_CREATE}>
+            <Button className="rounded-radius-admin w-[180px] h-[48px]">
+              등록
+            </Button>
+          </Link>
         }
-      />
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>
-                <div className="flex items-center justify-center gap-[2px]">
-                  등록일
-                  <IconButton icon={<Updown />} onClick={handleSortOrder} />
-                </div>
-              </TableCell>
-              <TableCell isHeader>튜토리얼명</TableCell>
-              <TableCell isHeader>카테고리</TableCell>
-              <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+      >
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="등록일"
+          dispatch={dispatch}
+          CustomSelectComponent={
+            <SelectBox
+              placeholder="모든 상태"
+              className="min-w-[240px]"
+              size="large"
+              defaultValue="ALL"
+              onValueChange={handleisVisible}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="ALL">모든 상태</SelectItem>
+                  <SelectItem value="true">노출</SelectItem>
+                  <SelectItem value="false">비노출</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          }
+        />
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>
+                  <div className="flex items-center justify-center gap-[2px]">
+                    등록일
+                    <IconButton icon={<Updown />} onClick={handleSortOrder} />
+                  </div>
+                </TableCell>
+                <TableCell isHeader>튜토리얼명</TableCell>
+                <TableCell isHeader>카테고리</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data.list.map((item, index) => {
-              return (
-                <TableRow key={index}>
-                  <TableCell>
-                    {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
-                  </TableCell>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell>
-                    {codeToName(categoryCodes, item.categoryCode)}
-                  </TableCell>
-                  <TableCell className="flex h-[inherit] items-center justify-center content-center">
-                    {item.isVisible ? (
-                      <Label
-                        size="medium"
-                        className="bg-status-positive/[0.08] text-status-positive"
+            <TableBody>
+              {data.list.map((item, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>
+                      {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
+                    </TableCell>
+                    <TableCell>{item.title}</TableCell>
+                    <TableCell>
+                      {codeToName(categoryCodes, item.categoryCode)}
+                    </TableCell>
+                    <TableCell className="flex h-[inherit] items-center justify-center content-center">
+                      {item.isVisible ? (
+                        <Label
+                          size="medium"
+                          className="bg-status-positive/[0.08] text-status-positive"
+                        >
+                          노출
+                        </Label>
+                      ) : (
+                        <Label size="medium">비노출</Label>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Link
+                        className="flex justify-center"
+                        to={`${TUTORIAL_DETAIL}/${item.id}`}
                       >
-                        노출
-                      </Label>
-                    ) : (
-                      <Label size="medium">비노출</Label>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${TUTORIAL_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
-                        }
-                      />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {data.meta.totalPage > 1 && (
-        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
-      )}
-    </BreadcrumbContainer>
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
+      </BreadcrumbContainer>
+    </>
   );
 }
 

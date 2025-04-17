@@ -72,118 +72,125 @@ function PublishListDetail() {
   const creationMethod = CreationMethodCategory?.detailCodeName ?? "";
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={
-        <div className="flex justify-center items-center">
-          <>전자책 관리 / 출판 목록</>
-          <Divider vertical className="h-[20px] mx-[12px]" />
-          <>상세</>
-        </div>
-      }
-      button={
-        <div>
-          <div
-            className={`flex gap-[8px] ${
-              data.status === "CO017002" || data.status === "CO017001"
-                ? ""
-                : "hidden"
-            }`}
-          >
-            <OutlinedButton
-              className="w-[180px]"
-              type="assistive"
-              size="large"
-              onClick={() =>
-                openModal(
-                  <PublishPostHoldModal
-                    ebookId={Number(id)}
-                    onHoldSuccess={() => {
-                      queryClient.invalidateQueries({
-                        queryKey: ["ebookDetailApi"],
-                      });
-                    }}
-                  />
-                )
-              }
-            >
-              보류
-            </OutlinedButton>
-            <Button
-              className="w-[180px]"
-              size="large"
-              onClick={() => CreateEbookApprove.mutate()}
-            >
-              승인
-            </Button>
+    <>
+      <title>북카롱 | 출판 목록 상세</title>
+      <BreadcrumbContainer
+        breadcrumbNode={
+          <div className="flex justify-center items-center">
+            <>전자책 관리 / 출판 목록</>
+            <Divider vertical className="h-[20px] mx-[12px]" />
+            <>상세</>
           </div>
-        </div>
-      }
-    >
-      <ContentWrapper>
-        <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="닉네임" readOnly value={"닉네임"} />
-          <TextField
-            label="제출일"
-            readOnly
-            value={formatToUTCString("2025-03-02 12:31:31")}
-          />
-        </div>
-        <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="도서명" readOnly value={data.title} />
-          <TextField label="부제" readOnly value={data.subTitle} />
-        </div>
-        <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField label="저자/역자" readOnly value={data.author} />
-          <TextField label="카테고리" readOnly value={categoryName} />
-        </div>
-        <div className="flex justify-between gap-[20px] w-full">
-          <div className="flex-1 flex flex-col min-w-0">
-            <label className="text-label1-normal-bold text-label-alternative mb-[8px]">
-              표지
-            </label>
-            <div className="border border-line-normal-neutral rounded-radius-admin px-[12px] pl-[5px] h-[48px] flex items-center bg-interaction-disable overflow-hidden">
-              <Text
-                size="medium"
-                className="text-nowrap underline cursor-pointer text-label-alternative px-[7px] py-[4px] overflow-hidden text-ellipsis"
-                onClick={() => openModal(<PublishCoverModal id={data.id} />)}
+        }
+        button={
+          <div>
+            <div
+              className={`flex gap-[8px] ${
+                data.status === "CO017002" || data.status === "CO017001"
+                  ? ""
+                  : "hidden"
+              }`}
+            >
+              <OutlinedButton
+                className="w-[180px]"
+                type="assistive"
+                size="large"
+                onClick={() =>
+                  openModal(
+                    <PublishPostHoldModal
+                      ebookId={Number(id)}
+                      onHoldSuccess={() => {
+                        queryClient.invalidateQueries({
+                          queryKey: ["ebookDetailApi"],
+                        });
+                      }}
+                    />
+                  )
+                }
               >
-                {data.coverImageFilePath}
-              </Text>
+                보류
+              </OutlinedButton>
+              <Button
+                className="w-[180px]"
+                size="large"
+                onClick={() => CreateEbookApprove.mutate()}
+              >
+                승인
+              </Button>
+            </div>
+          </div>
+        }
+      >
+        <ContentWrapper>
+          <div className="flex justify-center *:flex-1 gap-[20px]">
+            <TextField label="닉네임" readOnly value={"닉네임"} />
+            <TextField
+              label="제출일"
+              readOnly
+              value={formatToUTCString("2025-03-02 12:31:31")}
+            />
+          </div>
+          <div className="flex justify-center *:flex-1 gap-[20px]">
+            <TextField label="도서명" readOnly value={data.title} />
+            <TextField label="부제" readOnly value={data.subTitle} />
+          </div>
+          <div className="flex justify-center *:flex-1 gap-[20px]">
+            <TextField label="저자/역자" readOnly value={data.author} />
+            <TextField label="카테고리" readOnly value={categoryName} />
+          </div>
+          <div className="flex justify-between gap-[20px] w-full">
+            <div className="flex-1 flex flex-col min-w-0">
+              <label className="text-label1-normal-bold text-label-alternative mb-[8px]">
+                표지
+              </label>
+              <div className="border border-line-normal-neutral rounded-radius-admin px-[12px] pl-[5px] h-[48px] flex items-center bg-interaction-disable overflow-hidden">
+                <Text
+                  size="medium"
+                  className="text-nowrap underline cursor-pointer text-label-alternative px-[7px] py-[4px] overflow-hidden text-ellipsis"
+                  onClick={() => openModal(<PublishCoverModal id={data.id} />)}
+                >
+                  {data.coverImageFilePath}
+                </Text>
+              </div>
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <TextField label="제작 방식" readOnly value={creationMethod} />
             </div>
           </div>
 
-          <div className="flex-1 min-w-0">
-            <TextField label="제작 방식" readOnly value={creationMethod} />
+          <div className="flex justify-center *:flex-1 gap-[20px]">
+            <TextField
+              label="원고 파일"
+              readOnly
+              value={data.menuscriptFileName}
+            />
+            <TextField
+              label="용량"
+              readOnly
+              value={fileSizeToMb(data.menuscriptFileSize).toFixed(3) + "MB"}
+            />
           </div>
-        </div>
-
-        <div className="flex justify-center *:flex-1 gap-[20px]">
-          <TextField
-            label="원고 파일"
-            readOnly
-            value={data.menuscriptFileName}
-          />
-          <TextField
-            label="용량"
-            readOnly
-            value={fileSizeToMb(data.menuscriptFileSize).toFixed(3) + "MB"}
-          />
-        </div>
-        <div className="flex justify-center w-[calc(50%-10px)]">
-          <TextField label="전자책 정가(판매가)" readOnly value={data.price} />
-        </div>
-        <div className="flex justify-end">
-          <OutlinedButton
-            className="max-w-[180px] w-full"
-            type="assistive"
-            size="large"
-            onClick={() => history.back()}
-          >
-            확인
-          </OutlinedButton>
-        </div>
-      </ContentWrapper>
-    </BreadcrumbContainer>
+          <div className="flex justify-center w-[calc(50%-10px)]">
+            <TextField
+              label="전자책 정가(판매가)"
+              readOnly
+              value={data.price}
+            />
+          </div>
+          <div className="flex justify-end">
+            <OutlinedButton
+              className="max-w-[180px] w-full"
+              type="assistive"
+              size="large"
+              onClick={() => history.back()}
+            >
+              확인
+            </OutlinedButton>
+          </div>
+        </ContentWrapper>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

@@ -147,126 +147,129 @@ const ServiceGuide = () => {
   };
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={<>게시판 관리 / 서비스 가이드</>}
-      button={
-        <Link to={SERVICE_GUIDE_REGISTRATION}>
-          <Button className="rounded-radius-admin w-[180px] h-[48px]">
-            등록
-          </Button>
-        </Link>
-      }
-    >
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="등록일"
-        dispatch={dispatch}
-        CustomSelectComponent={
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            defaultValue="ALL"
-            onValueChange={handleisVisible}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">모든 상태</SelectItem>
-                <SelectItem value="true">노출</SelectItem>
-                <SelectItem value="false">비노출</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
+    <>
+      <title>북카롱 | 서비스 가이드</title>
+      <BreadcrumbContainer
+        breadcrumbNode={<>게시판 관리 / 서비스 가이드</>}
+        button={
+          <Link to={SERVICE_GUIDE_REGISTRATION}>
+            <Button className="rounded-radius-admin w-[180px] h-[48px]">
+              등록
+            </Button>
+          </Link>
         }
-      />
+      >
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="등록일"
+          dispatch={dispatch}
+          CustomSelectComponent={
+            <SelectBox
+              placeholder="모든 상태"
+              className="min-w-[240px]"
+              size="large"
+              defaultValue="ALL"
+              onValueChange={handleisVisible}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="ALL">모든 상태</SelectItem>
+                  <SelectItem value="true">노출</SelectItem>
+                  <SelectItem value="false">비노출</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          }
+        />
 
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>
-                <div className="flex items-center justify-center gap-[2px]">
-                  등록일
-                  <IconButton icon={<Updown />} onClick={handleSortOrder} />
-                </div>
-              </TableCell>
-              <TableCell isHeader>서비스</TableCell>
-              <TableCell isHeader>카테고리</TableCell>
-              <TableCell isHeader>제목</TableCell>
-              <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>
+                  <div className="flex items-center justify-center gap-[2px]">
+                    등록일
+                    <IconButton icon={<Updown />} onClick={handleSortOrder} />
+                  </div>
+                </TableCell>
+                <TableCell isHeader>서비스</TableCell>
+                <TableCell isHeader>카테고리</TableCell>
+                <TableCell isHeader>제목</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data.list.map((item) => {
-              return (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
-                  </TableCell>
-                  <TableCell>
-                    {codeToName(serviceCodes, item.serviceCode)}
-                  </TableCell>
-                  <TableCell>
-                    {codeToName(
-                      codeToGetGroupCode(item.categoryCode) ===
-                        COMMON_GROUP_CODE_MAPPING.전자책만들기서비스가이드카테고리
-                        ? eBookCategoryCodes
-                        : videoCategoryCodes,
-                      item.categoryCode
-                    )}
-                  </TableCell>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell>
-                    {(() => {
-                      switch (item.isVisible) {
-                        case true:
-                          return (
-                            <div className="w-full flex justify-center items-center">
-                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-primary-normal/10 text-label1-normal-bold text-primary-normal">
-                                노출
+            <TableBody>
+              {data.list.map((item) => {
+                return (
+                  <TableRow key={item.id}>
+                    <TableCell>
+                      {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
+                    </TableCell>
+                    <TableCell>
+                      {codeToName(serviceCodes, item.serviceCode)}
+                    </TableCell>
+                    <TableCell>
+                      {codeToName(
+                        codeToGetGroupCode(item.categoryCode) ===
+                          COMMON_GROUP_CODE_MAPPING.전자책만들기서비스가이드카테고리
+                          ? eBookCategoryCodes
+                          : videoCategoryCodes,
+                        item.categoryCode
+                      )}
+                    </TableCell>
+                    <TableCell>{item.title}</TableCell>
+                    <TableCell>
+                      {(() => {
+                        switch (item.isVisible) {
+                          case true:
+                            return (
+                              <div className="w-full flex justify-center items-center">
+                                <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-primary-normal/10 text-label1-normal-bold text-primary-normal">
+                                  노출
+                                </div>
                               </div>
-                            </div>
-                          );
-                        case false:
-                          return (
-                            <div className="w-full flex justify-center items-center">
-                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
-                                비노출
+                            );
+                          case false:
+                            return (
+                              <div className="w-full flex justify-center items-center">
+                                <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
+                                  비노출
+                                </div>
                               </div>
-                            </div>
-                          );
+                            );
 
-                        default:
-                          return null;
-                      }
-                    })()}
-                  </TableCell>
-
-                  <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${SERVICE_GUIDE_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
+                          default:
+                            return null;
                         }
-                      />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {data.meta.totalPage > 1 && (
-        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
-      )}
-    </BreadcrumbContainer>
+                      })()}
+                    </TableCell>
+
+                    <TableCell>
+                      <Link
+                        className="flex justify-center"
+                        to={`${SERVICE_GUIDE_DETAIL}/${item.id}`}
+                      >
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
+      </BreadcrumbContainer>
+    </>
   );
 };
 

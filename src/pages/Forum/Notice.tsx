@@ -119,113 +119,116 @@ const Notice = () => {
   };
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={<>게시판 관리 / 공지사항</>}
-      button={
-        <Link to={NOTICE_REGISTRATION}>
-          <Button className="rounded-radius-admin w-[180px] h-[48px]">
-            등록
-          </Button>
-        </Link>
-      }
-    >
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="등록일"
-        dispatch={dispatch}
-        CustomSelectComponent={
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            defaultValue="ALL"
-            onValueChange={handleisVisible}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">모든 상태</SelectItem>
-                <SelectItem value="true">노출</SelectItem>
-                <SelectItem value="false">비노출</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
+    <>
+      <title>북카롱 | 공지사항</title>
+      <BreadcrumbContainer
+        breadcrumbNode={<>게시판 관리 / 공지사항</>}
+        button={
+          <Link to={NOTICE_REGISTRATION}>
+            <Button className="rounded-radius-admin w-[180px] h-[48px]">
+              등록
+            </Button>
+          </Link>
         }
-      />
+      >
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="등록일"
+          dispatch={dispatch}
+          CustomSelectComponent={
+            <SelectBox
+              placeholder="모든 상태"
+              className="min-w-[240px]"
+              size="large"
+              defaultValue="ALL"
+              onValueChange={handleisVisible}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="ALL">모든 상태</SelectItem>
+                  <SelectItem value="true">노출</SelectItem>
+                  <SelectItem value="false">비노출</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          }
+        />
 
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>
-                <div className="flex items-center justify-center gap-[2px]">
-                  등록일
-                  <IconButton icon={<Updown />} onClick={handleSortOrder} />
-                </div>
-              </TableCell>
-              <TableCell isHeader>제목</TableCell>
-              <TableCell isHeader>관리자 고정</TableCell>
-              <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>
+                  <div className="flex items-center justify-center gap-[2px]">
+                    등록일
+                    <IconButton icon={<Updown />} onClick={handleSortOrder} />
+                  </div>
+                </TableCell>
+                <TableCell isHeader>제목</TableCell>
+                <TableCell isHeader>관리자 고정</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data.list.map((item) => {
-              const { id, createdAt, title, isPinned, isVisible } = item;
-              return (
-                <TableRow key={id}>
-                  <TableCell>
-                    {formatDateTimeToJSX(formatToUTCString(createdAt))}
-                  </TableCell>
-                  <TableCell>{title}</TableCell>
-                  <TableCell>
-                    <Checkbox
-                      checked={isPinned}
-                      isInteraction={false}
-                      disabled
-                    />
-                  </TableCell>
-
-                  <TableCell>
-                    {
-                      <div className="w-full flex justify-center items-center">
-                        <Label
-                          size="medium"
-                          className={cn(
-                            isVisible &&
-                              "bg-primary-normal/normal-focus text-primary-normal"
-                          )}
-                        >
-                          {isVisible ? "노출" : "비노출"}
-                        </Label>
-                      </div>
-                    }
-                  </TableCell>
-
-                  <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${NOTICE_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
-                        }
+            <TableBody>
+              {data.list.map((item) => {
+                const { id, createdAt, title, isPinned, isVisible } = item;
+                return (
+                  <TableRow key={id}>
+                    <TableCell>
+                      {formatDateTimeToJSX(formatToUTCString(createdAt))}
+                    </TableCell>
+                    <TableCell>{title}</TableCell>
+                    <TableCell>
+                      <Checkbox
+                        checked={isPinned}
+                        isInteraction={false}
+                        disabled
                       />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    </TableCell>
 
-      {data.meta.totalPage > 1 && (
-        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
-      )}
-    </BreadcrumbContainer>
+                    <TableCell>
+                      {
+                        <div className="w-full flex justify-center items-center">
+                          <Label
+                            size="medium"
+                            className={cn(
+                              isVisible &&
+                                "bg-primary-normal/normal-focus text-primary-normal"
+                            )}
+                          >
+                            {isVisible ? "노출" : "비노출"}
+                          </Label>
+                        </div>
+                      }
+                    </TableCell>
+
+                    <TableCell>
+                      <Link
+                        className="flex justify-center"
+                        to={`${NOTICE_DETAIL}/${item.id}`}
+                      >
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
+      </BreadcrumbContainer>
+    </>
   );
 };
 

@@ -185,111 +185,114 @@ function UserList() {
   };
 
   return (
-    <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="가입일"
-        dispatch={dispatch}
-        excel={true}
-        excelAllDataOnClick={handleAllDataExcelDownload}
-        excelFilterDataOnClick={handleFilterDataExcelDownload}
-        CustomSelectComponent={
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            defaultValue="ALL"
-            onValueChange={handleIsActive}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">모든 상태</SelectItem>
-                <SelectItem value="TRUE">활성</SelectItem>
-                <SelectItem value="FALSE">비활성</SelectItem>
-                <SelectItem value="WITHDRAWAL">탈퇴</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
-        }
-      />
+    <>
+      <title>북카롱 | 회원 목록</title>
+      <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 회원 목록</>}>
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="가입일"
+          dispatch={dispatch}
+          excel={true}
+          excelAllDataOnClick={handleAllDataExcelDownload}
+          excelFilterDataOnClick={handleFilterDataExcelDownload}
+          CustomSelectComponent={
+            <SelectBox
+              placeholder="모든 상태"
+              className="min-w-[240px]"
+              size="large"
+              defaultValue="ALL"
+              onValueChange={handleIsActive}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="ALL">모든 상태</SelectItem>
+                  <SelectItem value="TRUE">활성</SelectItem>
+                  <SelectItem value="FALSE">비활성</SelectItem>
+                  <SelectItem value="WITHDRAWAL">탈퇴</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          }
+        />
 
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>
-                <div className="flex items-center justify-center gap-[2px]">
-                  No
-                  <IconButton icon={<Updown />} onClick={handleSortOrder} />
-                </div>
-              </TableCell>
-              <TableCell isHeader>가입일</TableCell>
-              <TableCell isHeader>닉네임</TableCell>
-              <TableCell isHeader>이메일</TableCell>
-              <TableCell isHeader>이용중인 플랜</TableCell>
-              <TableCell isHeader>출판한 전자책</TableCell>
-              <TableCell isHeader>보유 포인트</TableCell>
-              <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>
+                  <div className="flex items-center justify-center gap-[2px]">
+                    No
+                    <IconButton icon={<Updown />} onClick={handleSortOrder} />
+                  </div>
+                </TableCell>
+                <TableCell isHeader>가입일</TableCell>
+                <TableCell isHeader>닉네임</TableCell>
+                <TableCell isHeader>이메일</TableCell>
+                <TableCell isHeader>이용중인 플랜</TableCell>
+                <TableCell isHeader>출판한 전자책</TableCell>
+                <TableCell isHeader>보유 포인트</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data.list.map((item, index) => {
-              return (
-                <TableRow key={index}>
-                  <TableCell>{item.id}</TableCell>
-                  <TableCell>
-                    {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
-                  </TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.email}</TableCell>
-                  <TableCell>{item.planName}</TableCell>
-                  <TableCell>
-                    {Number(item.publishedEbookCount) === 0 ? (
-                      <div className="flex items-center justify-center h-[20px]">
-                        <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
-                      </div>
-                    ) : (
-                      item.publishedEbookCount
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {Number(item.point) === 0 ? (
-                      <div className="flex items-center justify-center h-[20px]">
-                        <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
-                      </div>
-                    ) : (
-                      item.point.toLocaleString("kr")
-                    )}
-                  </TableCell>
-                  <TableCell className="flex h-[inherit] items-center justify-center content-center">
-                    {handleStateLabel(item.isActive)}
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${USER_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        size="custom"
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
-                        }
-                      />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {data.meta.totalPage > 1 && (
-        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
-      )}
-    </BreadcrumbContainer>
+            <TableBody>
+              {data.list.map((item, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>
+                      {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
+                    </TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.email}</TableCell>
+                    <TableCell>{item.planName}</TableCell>
+                    <TableCell>
+                      {Number(item.publishedEbookCount) === 0 ? (
+                        <div className="flex items-center justify-center h-[20px]">
+                          <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
+                        </div>
+                      ) : (
+                        item.publishedEbookCount
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {Number(item.point) === 0 ? (
+                        <div className="flex items-center justify-center h-[20px]">
+                          <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
+                        </div>
+                      ) : (
+                        item.point.toLocaleString("kr")
+                      )}
+                    </TableCell>
+                    <TableCell className="flex h-[inherit] items-center justify-center content-center">
+                      {handleStateLabel(item.isActive)}
+                    </TableCell>
+                    <TableCell>
+                      <Link
+                        className="flex justify-center"
+                        to={`${USER_DETAIL}/${item.id}`}
+                      >
+                        <IconButton
+                          size="custom"
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
+      </BreadcrumbContainer>
+    </>
   );
 }
 

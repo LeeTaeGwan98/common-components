@@ -60,213 +60,216 @@ function Main() {
   });
 
   return (
-    <BreadcrumbContainer breadcrumbNode={<>메인</>}>
-      {/* 메인 카드 부분 */}
-      <div className="mt-[32px]">
-        <div className="grid grid-cols-4 gap-[20px] md:grid-cols-2 sm:grid-cols-1">
-          <Card
-            title="회원현황"
-            size="large"
-            isLabel={true}
-            isButton={true}
-            isSkeleton={false}
-            slot={{
-              containerClassName: "w-full",
-            }}
-            buttonOnClick={() => navigate(USER_LIST)}
-          >
-            <Content
-              label="오늘"
-              summary={`${data.userIncreaseCount}`}
-              icon={<Up />}
+    <>
+      <title>북카롱 | 메인</title>
+      <BreadcrumbContainer breadcrumbNode={<>메인</>}>
+        {/* 메인 카드 부분 */}
+        <div className="mt-[32px]">
+          <div className="grid grid-cols-4 gap-[20px] md:grid-cols-2 sm:grid-cols-1">
+            <Card
+              title="회원현황"
+              size="large"
+              isLabel={true}
+              isButton={true}
+              isSkeleton={false}
               slot={{
-                summaryClassName:
-                  "text-label-alternative text-body1-normal-bold",
-                labelClassName: "text-primary-normal text-caption1-bold",
+                containerClassName: "w-full",
               }}
+              buttonOnClick={() => navigate(USER_LIST)}
             >
-              {`${data.totalUserCount} 명`}
-            </Content>
-          </Card>
-          <Card
-            title="출판 승인 요청"
-            size="large"
-            isLabel={true}
-            isButton={true}
-            isSkeleton={false}
-            slot={{
-              containerClassName: "w-full",
-            }}
-            buttonOnClick={() => navigate(PUBLISH_LIST)}
-          >
-            <Content
-              summary="승인대기중"
+              <Content
+                label="오늘"
+                summary={`${data.userIncreaseCount}`}
+                icon={<Up />}
+                slot={{
+                  summaryClassName:
+                    "text-label-alternative text-body1-normal-bold",
+                  labelClassName: "text-primary-normal text-caption1-bold",
+                }}
+              >
+                {`${data.totalUserCount} 명`}
+              </Content>
+            </Card>
+            <Card
+              title="출판 승인 요청"
+              size="large"
+              isLabel={true}
+              isButton={true}
+              isSkeleton={false}
               slot={{
-                summaryClassName:
-                  "text-label-alternative text-body1-normal-bold",
-                labelClassName: "text-primary-normal text-caption1-bold",
+                containerClassName: "w-full",
               }}
+              buttonOnClick={() => navigate(PUBLISH_LIST)}
             >
-              {`${data.pendingEbookCount} 권`}
-            </Content>
-          </Card>
-          <Card
-            title="최근 6개월 누적 플랜 결제금"
-            size="large"
-            isLabel={true}
-            isButton={true}
-            isSkeleton={false}
-            slot={{
-              containerClassName: "w-full",
-            }}
-            buttonOnClick={() => navigate(PAY)}
-          >
-            <Content
-              label="오늘"
-              summary="262,200원"
-              icon={<Up />}
+              <Content
+                summary="승인대기중"
+                slot={{
+                  summaryClassName:
+                    "text-label-alternative text-body1-normal-bold",
+                  labelClassName: "text-primary-normal text-caption1-bold",
+                }}
+              >
+                {`${data.pendingEbookCount} 권`}
+              </Content>
+            </Card>
+            <Card
+              title="최근 6개월 누적 플랜 결제금"
+              size="large"
+              isLabel={true}
+              isButton={true}
+              isSkeleton={false}
               slot={{
-                summaryClassName:
-                  "text-label-alternative text-body1-normal-bold",
+                containerClassName: "w-full",
               }}
+              buttonOnClick={() => navigate(PAY)}
             >
-              324,000,000원
-            </Content>
-          </Card>
-          <Card
-            title="최근 6개월 누적 충전소 결제금"
-            size="large"
-            isLabel={true}
-            isButton={true}
-            isSkeleton={false}
-            slot={{
-              containerClassName: "w-full",
-            }}
-            buttonOnClick={() => navigate(PAY)}
-          >
-            <Content
-              label="오늘"
-              summary="36,000원"
-              icon={<Up />}
+              <Content
+                label="오늘"
+                summary="262,200원"
+                icon={<Up />}
+                slot={{
+                  summaryClassName:
+                    "text-label-alternative text-body1-normal-bold",
+                }}
+              >
+                324,000,000원
+              </Content>
+            </Card>
+            <Card
+              title="최근 6개월 누적 충전소 결제금"
+              size="large"
+              isLabel={true}
+              isButton={true}
+              isSkeleton={false}
               slot={{
-                summaryClassName:
-                  "text-label-alternative text-body1-normal-bold",
-                labelClassName: "text-primary-normal text-caption1-bold",
+                containerClassName: "w-full",
               }}
+              buttonOnClick={() => navigate(PAY)}
             >
-              1,160,000원
-            </Content>
-          </Card>
-          <Card
-            title="문의현황"
-            size="large"
-            isLabel={true}
-            isButton={true}
-            isSkeleton={false}
-            slot={{
-              containerClassName: "w-full",
-            }}
-            buttonOnClick={() => navigate(INQUIRY)}
-          >
-            <Content
-              summary="미답변"
+              <Content
+                label="오늘"
+                summary="36,000원"
+                icon={<Up />}
+                slot={{
+                  summaryClassName:
+                    "text-label-alternative text-body1-normal-bold",
+                  labelClassName: "text-primary-normal text-caption1-bold",
+                }}
+              >
+                1,160,000원
+              </Content>
+            </Card>
+            <Card
+              title="문의현황"
+              size="large"
+              isLabel={true}
+              isButton={true}
+              isSkeleton={false}
               slot={{
-                summaryClassName:
-                  "text-label-alternative text-body1-normal-bold",
-                labelClassName: "text-primary-normal text-caption1-bold",
+                containerClassName: "w-full",
               }}
+              buttonOnClick={() => navigate(INQUIRY)}
             >
-              {`${data.pendingEbookCount} 건`}
-            </Content>
-          </Card>
-        </div>
-
-        {/* 플랜 현황 표  */}
-
-        <div className="mt-[49px] mb-[49px]">
-          <div className="text-heading4-bold text-label-normal mb-[13px]">
-            최근 일주일 플랜 결제 현황
-            <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
-              단위: 원
-            </span>
-          </div>
-          <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
-            <LineChart
-              data={datas}
-              margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="" />
-              <XAxis
-                dataKey="날짜"
-                tickLine={false}
-                axisLine={{ stroke: "#70737C" }}
-              />
-              <YAxis
-                domain={[0, 10000000]}
-                ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
-                tickFormatter={(value) => value.toLocaleString()}
-                width={90}
-                tickLine={false}
-                axisLine={{ stroke: "#70737C" }}
-              />
-              <Tooltip content={() => null} />
-
-              <Line
-                type="linear"
-                dataKey="유동인구수"
-                stroke="#28A8FB"
-                activeDot={renderActiveDot}
-                strokeWidth={2}
-                dot={{ r: 5 }}
-              />
-              <Line type="linear" dataKey="비유동인구수" stroke="##82ca9d" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* 충전소 현황 표  */}
-        <div className="mt-[49px]">
-          <div className="text-heading4-bold text-label-normal mb-[13px]">
-            최근 일주일 충전소 결제 현황
-            <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
-              단위: 원
-            </span>
+              <Content
+                summary="미답변"
+                slot={{
+                  summaryClassName:
+                    "text-label-alternative text-body1-normal-bold",
+                  labelClassName: "text-primary-normal text-caption1-bold",
+                }}
+              >
+                {`${data.pendingEbookCount} 건`}
+              </Content>
+            </Card>
           </div>
 
-          <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
-            <LineChart
-              data={datas}
-              margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="" />
-              <XAxis
-                dataKey="날짜"
-                tickLine={false}
-                axisLine={{ stroke: "#70737C" }}
-              />
-              <YAxis
-                domain={[0, 10000000]}
-                ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
-                tickFormatter={(value) => value.toLocaleString()}
-                width={90}
-                tickLine={false}
-                axisLine={{ stroke: "#70737C" }}
-              />
-              <Tooltip content={() => null} />
-              <Line
-                type="linear"
-                dataKey="유동인구수"
-                stroke="#28A8FB"
-                activeDot={renderActiveDot}
-                strokeWidth={2}
-                dot={{ r: 5 }}
-              />
-              <Line type="linear" dataKey="비유동인구수" stroke="#82ca9d" />
-            </LineChart>
-          </ResponsiveContainer>
+          {/* 플랜 현황 표  */}
+
+          <div className="mt-[49px] mb-[49px]">
+            <div className="text-heading4-bold text-label-normal mb-[13px]">
+              최근 일주일 플랜 결제 현황
+              <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
+                단위: 원
+              </span>
+            </div>
+            <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
+              <LineChart
+                data={datas}
+                margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="" />
+                <XAxis
+                  dataKey="날짜"
+                  tickLine={false}
+                  axisLine={{ stroke: "#70737C" }}
+                />
+                <YAxis
+                  domain={[0, 10000000]}
+                  ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
+                  tickFormatter={(value) => value.toLocaleString()}
+                  width={90}
+                  tickLine={false}
+                  axisLine={{ stroke: "#70737C" }}
+                />
+                <Tooltip content={() => null} />
+
+                <Line
+                  type="linear"
+                  dataKey="유동인구수"
+                  stroke="#28A8FB"
+                  activeDot={renderActiveDot}
+                  strokeWidth={2}
+                  dot={{ r: 5 }}
+                />
+                <Line type="linear" dataKey="비유동인구수" stroke="##82ca9d" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* 충전소 현황 표  */}
+          <div className="mt-[49px]">
+            <div className="text-heading4-bold text-label-normal mb-[13px]">
+              최근 일주일 충전소 결제 현황
+              <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
+                단위: 원
+              </span>
+            </div>
+
+            <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
+              <LineChart
+                data={datas}
+                margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="" />
+                <XAxis
+                  dataKey="날짜"
+                  tickLine={false}
+                  axisLine={{ stroke: "#70737C" }}
+                />
+                <YAxis
+                  domain={[0, 10000000]}
+                  ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
+                  tickFormatter={(value) => value.toLocaleString()}
+                  width={90}
+                  tickLine={false}
+                  axisLine={{ stroke: "#70737C" }}
+                />
+                <Tooltip content={() => null} />
+                <Line
+                  type="linear"
+                  dataKey="유동인구수"
+                  stroke="#28A8FB"
+                  activeDot={renderActiveDot}
+                  strokeWidth={2}
+                  dot={{ r: 5 }}
+                />
+                <Line type="linear" dataKey="비유동인구수" stroke="#82ca9d" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </div>
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

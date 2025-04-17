@@ -130,96 +130,100 @@ function TermsDetail() {
   };
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={
-        <>
-          관리자 / 약관 관리 <Divider vertical className="h-[20px] mx-[12px]" />
-          등록
-        </>
-      }
-    >
-      <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
-        <div className="flex flex-col w-[1004px] gap-gutter-vertical">
-          {/* 구분 */}
-          <SelectBox
-            placeholder="약관 구분을 선택해주세요"
-            className="min-w-[240px]"
-            size="large"
-            label="구분"
-            value={formState.type}
-            onValueChange={(value) => {
-              updateFormState("type", value);
-            }}
-          >
-            <SelectContent>
-              <SelectGroup>
-                {typeCodes.map((item, idx) => {
-                  const { commDetailCode, detailCodeName } = item;
-                  return (
-                    <SelectItem key={idx} value={commDetailCode}>
-                      {detailCodeName}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
-          {/* 이용약관명 */}
-          <div className=" gap-gutter-horizon ">
-            <TextField
-              placeholder="이용약관명을 입력해주세요"
-              label="이용약관명"
-              value={formState.title}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                updateFormState("title", e.target.value);
+    <>
+      <title>북카롱 | 약관 상세</title>
+      <BreadcrumbContainer
+        breadcrumbNode={
+          <>
+            관리자 / 약관 관리
+            <Divider vertical className="h-[20px] mx-[12px]" />
+            상세
+          </>
+        }
+      >
+        <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
+          <div className="flex flex-col w-[1004px] gap-gutter-vertical">
+            {/* 구분 */}
+            <SelectBox
+              placeholder="약관 구분을 선택해주세요"
+              className="min-w-[240px]"
+              size="large"
+              label="구분"
+              value={formState.type}
+              onValueChange={(value) => {
+                updateFormState("type", value);
               }}
-              maxLength={50}
-              isVisible={false}
-            />
-          </div>
-          {/* 적용일 */}
-          <div>
-            <div className="mb-[8px]">적용일</div>
-            <DatePicker
-              date={stringToDate(formState.effectiveDate)}
-              setDate={(date: Date) => {
-                updateFormState("effectiveDate", dateToString(date));
-              }}
-            />
-          </div>
+            >
+              <SelectContent>
+                <SelectGroup>
+                  {typeCodes.map((item, idx) => {
+                    const { commDetailCode, detailCodeName } = item;
+                    return (
+                      <SelectItem key={idx} value={commDetailCode}>
+                        {detailCodeName}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+            {/* 이용약관명 */}
+            <div className=" gap-gutter-horizon ">
+              <TextField
+                placeholder="이용약관명을 입력해주세요"
+                label="이용약관명"
+                value={formState.title}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  updateFormState("title", e.target.value);
+                }}
+                maxLength={50}
+                isVisible={false}
+              />
+            </div>
+            {/* 적용일 */}
+            <div>
+              <div className="mb-[8px]">적용일</div>
+              <DatePicker
+                date={stringToDate(formState.effectiveDate)}
+                setDate={(date: Date) => {
+                  updateFormState("effectiveDate", dateToString(date));
+                }}
+              />
+            </div>
 
-          {/* 내용 */}
-          <TextBox
-            placeholder="내용을 입력해주세요"
-            value={formState.content}
-            label="내용"
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              updateFormState("content", e.target.value);
-            }}
-          />
-          {/* 버튼 */}
-          <div className="mt-[32px] flex justify-end space-x-4">
-            <OutlinedButton
-              className="w-[180px] h-[48px]"
-              type="assistive"
-              size="large"
-              onClick={() => navigate(-1)}
-            >
-              취소
-            </OutlinedButton>
-            <OutlinedButton
-              className="w-[180px] h-[48px]"
-              type="secondary"
-              size="large"
-              disable={!isFormValid}
-              onClick={handleSave}
-            >
-              저장
-            </OutlinedButton>
+            {/* 내용 */}
+            <TextBox
+              placeholder="내용을 입력해주세요"
+              value={formState.content}
+              label="내용"
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                updateFormState("content", e.target.value);
+              }}
+            />
+            {/* 버튼 */}
+            <div className="mt-[32px] flex justify-end space-x-4">
+              <OutlinedButton
+                className="w-[180px] h-[48px]"
+                type="assistive"
+                size="large"
+                onClick={() => navigate(-1)}
+              >
+                취소
+              </OutlinedButton>
+              <OutlinedButton
+                className="w-[180px] h-[48px]"
+                type="secondary"
+                size="large"
+                disable={!isFormValid}
+                onClick={handleSave}
+              >
+                저장
+              </OutlinedButton>
+            </div>
           </div>
         </div>
-      </div>
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

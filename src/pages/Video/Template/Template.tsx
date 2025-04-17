@@ -36,44 +36,47 @@ const data = [
 
 function Template() {
   return (
-    <BreadcrumbContainer breadcrumbNode={<>비디오북 관리 / 템플릿 관리</>}>
-      <div className="h-[48px] mb-[12px]"></div>
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>등록일</TableCell>
-              <TableCell isHeader>템플릿명</TableCell>
-              <TableCell isHeader>비율</TableCell>
-              <TableCell isHeader>카테고리</TableCell>
-              <TableCell isHeader>길이</TableCell>
-              <TableCell isHeader>관리자 추천 여부</TableCell>
-              <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+    <>
+      <title>북카롱 | 템플릿 관리</title>
+      <BreadcrumbContainer breadcrumbNode={<>비디오북 관리 / 템플릿 관리</>}>
+        <div className="h-[48px] mb-[12px]"></div>
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>등록일</TableCell>
+                <TableCell isHeader>템플릿명</TableCell>
+                <TableCell isHeader>비율</TableCell>
+                <TableCell isHeader>카테고리</TableCell>
+                <TableCell isHeader>길이</TableCell>
+                <TableCell isHeader>관리자 추천 여부</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data.map((item) => {
-              return (
-                <TableRow>
-                  <TableCell>
-                    {formatDateTimeToJSX(formatToUTCString(item.createAt))}
-                  </TableCell>
-                  <TableCell>{item.no}</TableCell>
-                  <TableCell>{item.nickName}</TableCell>
-                  <TableCell>{item.email}</TableCell>
-                  <TableCell>{item.plan}</TableCell>
-                  <TableCell>{item.ebook}</TableCell>
-                  <TableCell>{item.state}</TableCell>
-                  <TableCell>{item.state}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </BreadcrumbContainer>
+            <TableBody>
+              {data.map((item) => {
+                return (
+                  <TableRow>
+                    <TableCell>
+                      {formatDateTimeToJSX(formatToUTCString(item.createAt))}
+                    </TableCell>
+                    <TableCell>{item.no}</TableCell>
+                    <TableCell>{item.nickName}</TableCell>
+                    <TableCell>{item.email}</TableCell>
+                    <TableCell>{item.plan}</TableCell>
+                    <TableCell>{item.ebook}</TableCell>
+                    <TableCell>{item.state}</TableCell>
+                    <TableCell>{item.state}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

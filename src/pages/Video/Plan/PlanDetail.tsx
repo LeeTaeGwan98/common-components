@@ -125,573 +125,587 @@ function PlanDetail() {
   });
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={
-        <div className="flex justify-center items-center">
-          <>비디오북 관리 / 플랜 관리</>
-          <Divider vertical className="h-[20px] mx-[12px]" />
-          <>상세</>
-        </div>
-      }
-    >
-      <ContentWrapper>
-        {/* 플랜 */}
-        <TextField label="플랜" readOnly={true} value={data.planName} />
-        {/* 연/월간 요금 */}
-        <div className="flex gap-gutter-horizontal">
-          <TextField
-            label="연간 요금(월)"
-            placeholder="Placeholder"
-            value={formState.annualFeeYear?.toLocaleString("kr")}
-            maxLength={12}
-            onChange={(e) => {
-              // 숫자만 필터링
-              const numericValue = e.target.value.replace(/\D/g, "");
-
-              updateFormState("annualFeeYear", Number(numericValue));
-            }}
-          />
-          <TextField
-            label="연간 요금(연)"
-            placeholder="Placeholder"
-            value={formState.annualFeeMonth?.toLocaleString("kr")}
-            maxLength={12}
-            onChange={(e) => {
-              // 숫자만 필터링
-              const numericValue = e.target.value.replace(/\D/g, "");
-
-              updateFormState("annualFeeMonth", Number(numericValue));
-            }}
-          />
-          <TextField
-            label="월간 요금(월)"
-            placeholder="Placeholder"
-            value={formState.monthlyFeeMonth?.toLocaleString("kr")}
-            maxLength={12}
-            onChange={(e) => {
-              // 숫자만 필터링
-              const numericValue = e.target.value.replace(/\D/g, "");
-
-              updateFormState("monthlyFeeMonth", Number(numericValue));
-            }}
-          />
-          <TextField
-            label="월간 요금(연)"
-            placeholder="Placeholder"
-            value={formState.monthlyFeeYear?.toLocaleString("kr")}
-            maxLength={12}
-            onChange={(e) => {
-              // 숫자만 필터링
-              const numericValue = e.target.value.replace(/\D/g, "");
-
-              updateFormState("monthlyFeeYear", Number(numericValue));
-            }}
-          />
-        </div>
-
-        <div className="flex gap-gutter-horizontal">
-          {/* 포인트 */}
-          <div className="w-full">
-            <TextField label="포인트" value={"10,000"} />
+    <>
+      <title>북카롱 | 픞랜 상세</title>
+      <BreadcrumbContainer
+        breadcrumbNode={
+          <div className="flex justify-center items-center">
+            <>비디오북 관리 / 플랜 관리</>
+            <Divider vertical className="h-[20px] mx-[12px]" />
+            <>상세</>
           </div>
-          {/* 전자책 출판 등록 */}
-          <div className="flex w-full gap-gutter-horizontal">
+        }
+      >
+        <ContentWrapper>
+          {/* 플랜 */}
+          <TextField label="플랜" readOnly={true} value={data.planName} />
+          {/* 연/월간 요금 */}
+          <div className="flex gap-gutter-horizontal">
             <TextField
-              label="전자책 출판 등록"
-              placeholder="횟수"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.ebookPublishCount?.toLocaleString("kr")}
+              label="연간 요금(월)"
+              placeholder="Placeholder"
+              value={formState.annualFeeYear?.toLocaleString("kr")}
               maxLength={12}
               onChange={(e) => {
                 // 숫자만 필터링
                 const numericValue = e.target.value.replace(/\D/g, "");
 
-                updateFormState("ebookPublishCount", Number(numericValue));
+                updateFormState("annualFeeYear", Number(numericValue));
               }}
             />
             <TextField
-              label="&nbsp;"
-              placeholder="차감포인트"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.ebookPublishDeductedPoint?.toLocaleString("kr")}
+              label="연간 요금(연)"
+              placeholder="Placeholder"
+              value={formState.annualFeeMonth?.toLocaleString("kr")}
               maxLength={12}
               onChange={(e) => {
                 // 숫자만 필터링
                 const numericValue = e.target.value.replace(/\D/g, "");
 
-                updateFormState(
-                  "ebookPublishDeductedPoint",
-                  Number(numericValue)
-                );
+                updateFormState("annualFeeMonth", Number(numericValue));
+              }}
+            />
+            <TextField
+              label="월간 요금(월)"
+              placeholder="Placeholder"
+              value={formState.monthlyFeeMonth?.toLocaleString("kr")}
+              maxLength={12}
+              onChange={(e) => {
+                // 숫자만 필터링
+                const numericValue = e.target.value.replace(/\D/g, "");
+
+                updateFormState("monthlyFeeMonth", Number(numericValue));
+              }}
+            />
+            <TextField
+              label="월간 요금(연)"
+              placeholder="Placeholder"
+              value={formState.monthlyFeeYear?.toLocaleString("kr")}
+              maxLength={12}
+              onChange={(e) => {
+                // 숫자만 필터링
+                const numericValue = e.target.value.replace(/\D/g, "");
+
+                updateFormState("monthlyFeeYear", Number(numericValue));
               }}
             />
           </div>
-        </div>
 
-        <div className="flex gap-gutter-horizontal">
-          {/* 워터마크 */}
-          <div className="w-full">
-            <Title label={"워터마크"} />
-            <Segement
-              className="w-full"
-              itemClassName="text-body1-normal-medium"
+          <div className="flex gap-gutter-horizontal">
+            {/* 포인트 */}
+            <div className="w-full">
+              <TextField label="포인트" value={"10,000"} />
+            </div>
+            {/* 전자책 출판 등록 */}
+            <div className="flex w-full gap-gutter-horizontal">
+              <TextField
+                label="전자책 출판 등록"
+                placeholder="횟수"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.ebookPublishCount?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState("ebookPublishCount", Number(numericValue));
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                placeholder="차감포인트"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.ebookPublishDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "ebookPublishDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-gutter-horizontal">
+            {/* 워터마크 */}
+            <div className="w-full">
+              <Title label={"워터마크"} />
+              <Segement
+                className="w-full"
+                itemClassName="text-body1-normal-medium"
+                size="large"
+                setSelected={(value: boolean) => {
+                  updateFormState("isWaterMark", value);
+                }}
+                selected={formState.isWaterMark}
+                textList={["O", "X"]}
+              />
+            </div>
+            {/* 챗봇 */}
+            <div className="w-full">
+              <Title label={"챗봇"} />
+              <Segement
+                className="w-full"
+                itemClassName="text-body1-normal-medium"
+                size="large"
+                setSelected={(value: boolean) => {
+                  updateFormState("isChatbot", value);
+                }}
+                selected={formState.isChatbot}
+                textList={["O", "X"]}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-gutter-horizontal">
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* AI 글쓰기 */}
+              <TextField
+                label="AI 글쓰기"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.aiWritingCount?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState("aiWritingCount", Number(numericValue));
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.aiWritingDeductedPoint?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "aiWritingDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* 대본생성 */}
+              <TextField
+                label="대본생성"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.scriptCreationCount?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState("scriptCreationCount", Number(numericValue));
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.scriptCreationDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "scriptCreationDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-gutter-horizontal">
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* 장면 이미지 생성 */}
+              <TextField
+                label="장면 이미지 생성"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.sceneImageCreationCount?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "sceneImageCreationCount",
+                    Number(numericValue)
+                  );
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.sceneImageCreationDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "sceneImageCreationDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* 아바타 배경 생성 */}
+              <TextField
+                label="아바타 배경 생성"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.avatarBackgroundCreationCount?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "avatarBackgroundCreationCount",
+                    Number(numericValue)
+                  );
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.avatarBackgroundCreationDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "avatarBackgroundCreationDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-gutter-horizontal">
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* 씬별 립싱크 */}
+              <TextField
+                label="씬별 립싱크"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.sceneLipsyncCount?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState("sceneLipsyncCount", Number(numericValue));
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.sceneLipsyncDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "sceneLipsyncDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* AI 목소리 생성 */}
+              <TextField
+                label="AI 목소리 생성"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.aiVoiceCreationCount?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState("aiVoiceCreationCount", Number(numericValue));
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.aiVoiceCreationDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "aiVoiceCreationDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-gutter-horizontal">
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* 이미지 생성 */}
+              <TextField
+                label="이미지 생성"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.imageCreationCount?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState("imageCreationCount", Number(numericValue));
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.imageCreationDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "imageCreationDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* 배경음 생성 */}
+              <TextField
+                label="배경음 생성"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.backgroundSoundCreationCount?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "backgroundSoundCreationCount",
+                    Number(numericValue)
+                  );
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.backgroundSoundCreationDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "backgroundSoundCreationDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-gutter-horizontal">
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* 효과음 생성 */}
+              <TextField
+                label="효과음 생성"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.soundEffectCreationCount?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "soundEffectCreationCount",
+                    Number(numericValue)
+                  );
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.soundEffectCreationDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "soundEffectCreationDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+            <div className="flex w-full gap-gutter-horizontal">
+              {/* 씬별 오디오 연장 */}
+              <TextField
+                label="씬별 오디오 연장"
+                subText="회"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.sceneVideoExtensionCount?.toLocaleString("kr")}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "sceneVideoExtensionCount",
+                    Number(numericValue)
+                  );
+                }}
+              />
+              <TextField
+                label="&nbsp;"
+                subText="차감"
+                slot={{ subTextClassName: "text-label-alternative" }}
+                value={formState.sceneVideoExtensionDeductedPoint?.toLocaleString(
+                  "kr"
+                )}
+                maxLength={12}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState(
+                    "sceneVideoExtensionDeductedPoint",
+                    Number(numericValue)
+                  );
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-[12px]">
+            <OutlinedButton
+              className="max-w-[180px] w-full"
               size="large"
-              setSelected={(value: boolean) => {
-                updateFormState("isWaterMark", value);
-              }}
-              selected={formState.isWaterMark}
-              textList={["O", "X"]}
-            />
-          </div>
-          {/* 챗봇 */}
-          <div className="w-full">
-            <Title label={"챗봇"} />
-            <Segement
-              className="w-full"
-              itemClassName="text-body1-normal-medium"
+              type="assistive"
+            >
+              취소
+            </OutlinedButton>
+            <OutlinedButton
+              type="secondary"
+              className="max-w-[180px] w-full"
               size="large"
-              setSelected={(value: boolean) => {
-                updateFormState("isChatbot", value);
-              }}
-              selected={formState.isChatbot}
-              textList={["O", "X"]}
-            />
+              onClick={() =>
+                updatePlanFn({
+                  id: Number(id),
+                  data: {
+                    annualFeeYear: formState.annualFeeYear,
+                    annualFeeMonth: formState.annualFeeMonth,
+                    monthlyFeeYear: formState.monthlyFeeYear,
+                    monthlyFeeMonth: formState.monthlyFeeMonth,
+                    point: formState.point,
+                    ebookPublishCount: formState.ebookPublishCount,
+                    ebookPublishDeductedPoint:
+                      formState.ebookPublishDeductedPoint,
+                    isWatermark: formState.isWaterMark,
+                    isChatbot: formState.isChatbot,
+                    aiWritingCount: formState.aiWritingCount,
+                    aiWritingDeductedPoint: formState.aiWritingDeductedPoint,
+                    scriptCreationCount: formState.scriptCreationCount,
+                    scriptCreationDeductedPoint:
+                      formState.scriptCreationDeductedPoint,
+                    sceneImageCreationCount: formState.sceneImageCreationCount,
+                    sceneImageCreationDeductedPoint:
+                      formState.sceneImageCreationDeductedPoint,
+                    avatarBackgroundCreationCount:
+                      formState.avatarBackgroundCreationCount,
+                    avatarBackgroundCreationDeductedPoint:
+                      formState.avatarBackgroundCreationDeductedPoint,
+                    sceneLipsyncCount: formState.sceneLipsyncCount,
+                    sceneLipsyncDeductedPoint:
+                      formState.sceneLipsyncDeductedPoint,
+                    aiVoiceCreationCount: formState.aiVoiceCreationCount,
+                    aiVoiceCreationDeductedPoint:
+                      formState.aiVoiceCreationDeductedPoint,
+                    imageCreationCount: formState.imageCreationCount,
+                    imageCreationDeductedPoint:
+                      formState.imageCreationDeductedPoint,
+                    backgroundSoundCreationCount:
+                      formState.backgroundSoundCreationCount,
+                    backgroundSoundCreationDeductedPoint:
+                      formState.backgroundSoundCreationDeductedPoint,
+                    soundEffectCreationCount:
+                      formState.soundEffectCreationCount,
+                    soundEffectCreationDeductedPoint:
+                      formState.soundEffectCreationDeductedPoint,
+                    sceneVideoExtensionCount:
+                      formState.sceneVideoExtensionCount,
+                    sceneVideoExtensionDeductedPoint:
+                      formState.sceneVideoExtensionDeductedPoint,
+                  },
+                })
+              }
+            >
+              저장
+            </OutlinedButton>
           </div>
-        </div>
-
-        <div className="flex gap-gutter-horizontal">
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* AI 글쓰기 */}
-            <TextField
-              label="AI 글쓰기"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.aiWritingCount?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState("aiWritingCount", Number(numericValue));
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.aiWritingDeductedPoint?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState("aiWritingDeductedPoint", Number(numericValue));
-              }}
-            />
-          </div>
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* 대본생성 */}
-            <TextField
-              label="대본생성"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.scriptCreationCount?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState("scriptCreationCount", Number(numericValue));
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.scriptCreationDeductedPoint?.toLocaleString(
-                "kr"
-              )}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "scriptCreationDeductedPoint",
-                  Number(numericValue)
-                );
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-gutter-horizontal">
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* 장면 이미지 생성 */}
-            <TextField
-              label="장면 이미지 생성"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.sceneImageCreationCount?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "sceneImageCreationCount",
-                  Number(numericValue)
-                );
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.sceneImageCreationDeductedPoint?.toLocaleString(
-                "kr"
-              )}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "sceneImageCreationDeductedPoint",
-                  Number(numericValue)
-                );
-              }}
-            />
-          </div>
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* 아바타 배경 생성 */}
-            <TextField
-              label="아바타 배경 생성"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.avatarBackgroundCreationCount?.toLocaleString(
-                "kr"
-              )}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "avatarBackgroundCreationCount",
-                  Number(numericValue)
-                );
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.avatarBackgroundCreationDeductedPoint?.toLocaleString(
-                "kr"
-              )}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "avatarBackgroundCreationDeductedPoint",
-                  Number(numericValue)
-                );
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-gutter-horizontal">
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* 씬별 립싱크 */}
-            <TextField
-              label="씬별 립싱크"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.sceneLipsyncCount?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState("sceneLipsyncCount", Number(numericValue));
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.sceneLipsyncDeductedPoint?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "sceneLipsyncDeductedPoint",
-                  Number(numericValue)
-                );
-              }}
-            />
-          </div>
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* AI 목소리 생성 */}
-            <TextField
-              label="AI 목소리 생성"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.aiVoiceCreationCount?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState("aiVoiceCreationCount", Number(numericValue));
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.aiVoiceCreationDeductedPoint?.toLocaleString(
-                "kr"
-              )}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "aiVoiceCreationDeductedPoint",
-                  Number(numericValue)
-                );
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-gutter-horizontal">
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* 이미지 생성 */}
-            <TextField
-              label="이미지 생성"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.imageCreationCount?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState("imageCreationCount", Number(numericValue));
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.imageCreationDeductedPoint?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "imageCreationDeductedPoint",
-                  Number(numericValue)
-                );
-              }}
-            />
-          </div>
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* 배경음 생성 */}
-            <TextField
-              label="배경음 생성"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.backgroundSoundCreationCount?.toLocaleString(
-                "kr"
-              )}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "backgroundSoundCreationCount",
-                  Number(numericValue)
-                );
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.backgroundSoundCreationDeductedPoint?.toLocaleString(
-                "kr"
-              )}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "backgroundSoundCreationDeductedPoint",
-                  Number(numericValue)
-                );
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-gutter-horizontal">
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* 효과음 생성 */}
-            <TextField
-              label="효과음 생성"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.soundEffectCreationCount?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "soundEffectCreationCount",
-                  Number(numericValue)
-                );
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.soundEffectCreationDeductedPoint?.toLocaleString(
-                "kr"
-              )}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "soundEffectCreationDeductedPoint",
-                  Number(numericValue)
-                );
-              }}
-            />
-          </div>
-          <div className="flex w-full gap-gutter-horizontal">
-            {/* 씬별 오디오 연장 */}
-            <TextField
-              label="씬별 오디오 연장"
-              subText="회"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.sceneVideoExtensionCount?.toLocaleString("kr")}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "sceneVideoExtensionCount",
-                  Number(numericValue)
-                );
-              }}
-            />
-            <TextField
-              label="&nbsp;"
-              subText="차감"
-              slot={{ subTextClassName: "text-label-alternative" }}
-              value={formState.sceneVideoExtensionDeductedPoint?.toLocaleString(
-                "kr"
-              )}
-              maxLength={12}
-              onChange={(e) => {
-                // 숫자만 필터링
-                const numericValue = e.target.value.replace(/\D/g, "");
-
-                updateFormState(
-                  "sceneVideoExtensionDeductedPoint",
-                  Number(numericValue)
-                );
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="flex justify-end gap-[12px]">
-          <OutlinedButton
-            className="max-w-[180px] w-full"
-            size="large"
-            type="assistive"
-          >
-            취소
-          </OutlinedButton>
-          <OutlinedButton
-            type="secondary"
-            className="max-w-[180px] w-full"
-            size="large"
-            onClick={() =>
-              updatePlanFn({
-                id: Number(id),
-                data: {
-                  annualFeeYear: formState.annualFeeYear,
-                  annualFeeMonth: formState.annualFeeMonth,
-                  monthlyFeeYear: formState.monthlyFeeYear,
-                  monthlyFeeMonth: formState.monthlyFeeMonth,
-                  point: formState.point,
-                  ebookPublishCount: formState.ebookPublishCount,
-                  ebookPublishDeductedPoint:
-                    formState.ebookPublishDeductedPoint,
-                  isWatermark: formState.isWaterMark,
-                  isChatbot: formState.isChatbot,
-                  aiWritingCount: formState.aiWritingCount,
-                  aiWritingDeductedPoint: formState.aiWritingDeductedPoint,
-                  scriptCreationCount: formState.scriptCreationCount,
-                  scriptCreationDeductedPoint:
-                    formState.scriptCreationDeductedPoint,
-                  sceneImageCreationCount: formState.sceneImageCreationCount,
-                  sceneImageCreationDeductedPoint:
-                    formState.sceneImageCreationDeductedPoint,
-                  avatarBackgroundCreationCount:
-                    formState.avatarBackgroundCreationCount,
-                  avatarBackgroundCreationDeductedPoint:
-                    formState.avatarBackgroundCreationDeductedPoint,
-                  sceneLipsyncCount: formState.sceneLipsyncCount,
-                  sceneLipsyncDeductedPoint:
-                    formState.sceneLipsyncDeductedPoint,
-                  aiVoiceCreationCount: formState.aiVoiceCreationCount,
-                  aiVoiceCreationDeductedPoint:
-                    formState.aiVoiceCreationDeductedPoint,
-                  imageCreationCount: formState.imageCreationCount,
-                  imageCreationDeductedPoint:
-                    formState.imageCreationDeductedPoint,
-                  backgroundSoundCreationCount:
-                    formState.backgroundSoundCreationCount,
-                  backgroundSoundCreationDeductedPoint:
-                    formState.backgroundSoundCreationDeductedPoint,
-                  soundEffectCreationCount: formState.soundEffectCreationCount,
-                  soundEffectCreationDeductedPoint:
-                    formState.soundEffectCreationDeductedPoint,
-                  sceneVideoExtensionCount: formState.sceneVideoExtensionCount,
-                  sceneVideoExtensionDeductedPoint:
-                    formState.sceneVideoExtensionDeductedPoint,
-                },
-              })
-            }
-          >
-            저장
-          </OutlinedButton>
-        </div>
-      </ContentWrapper>
-    </BreadcrumbContainer>
+        </ContentWrapper>
+      </BreadcrumbContainer>
+    </>
   );
 }
 
