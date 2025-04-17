@@ -143,116 +143,119 @@ function InquiryDetail() {
   };
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={
-        <>
-          게시판 관리 / 1:1문의
-          <Divider vertical className="h-[20px] mx-[12px]" /> 상세
-        </>
-      }
-      button={
-        <>
-          <Button
-            className="rounded-radius-admin w-[180px] h-[48px]"
-            onClick={deleteModal}
-          >
-            삭제
-          </Button>
-        </>
-      }
-    >
-      <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
-        <div className="w-[1004px] flex flex-col gap-gutter-vertical">
-          {/* 첫번째 줄 */}
-          <div className="flex gap-[20px] w-full">
-            <div className="w-full">
-              닉네임
-              <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value={formState.name}
-                isVisible={false}
-                disabled
-              />
-            </div>
-            <div className="w-full">
-              문의일
-              <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value={formatToUTCString(formState.inquiryAt)}
-                isVisible={false}
-                disabled
-              />
-            </div>
-          </div>
-          {/* 두번째 줄  */}
-          <div className="flex gap-[20px] w-full">
-            <div className="w-full">
-              서비스
-              <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value={codeToName(serviceCodes, formState.serviceCode)}
-                isVisible={false}
-                disabled
-              />
-            </div>
-            <div className="w-full">
-              문의유형
-              <TextField
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
-                value={codeToName(
-                  codeToGetGroupCode(formState.type) ===
-                    COMMON_GROUP_CODE_MAPPING.전자책서비스문의유형
-                    ? eBookInquiryCodes
-                    : videoInquiryCodes,
-                  formState.type
-                )}
-                isVisible={false}
-                disabled
-              />
-            </div>
-          </div>
-          {/* 세번째 줄  */}
-          <div className="flex gap-[20px] w-full">
-            <div className="w-full">
-              문의내용
-              <TextBox
-                className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] text-body1-normal-regular max-h-[156px]"
-                value={formState.content}
-                disabled
-              />
-            </div>
-          </div>
-          {/* 네번째 줄 */}
-          <div className="w-full flex flex-col gap-[8px]">
-            답변내용
-            <AdminEdit
-              value={formState.responseContent}
-              onChange={(value) => updateFormState("responseContent", value)}
-            />
-          </div>
-          {/* 버튼 */}
-          <div className="mt-[32px] flex justify-end space-x-4">
-            <OutlinedButton
-              type="assistive"
-              onClick={() => {
-                navigate(-1);
-              }}
-              className="w-[180px] h-[48px]"
+    <>
+      <title>북카롱 | 1:1 문의 상세</title>
+      <BreadcrumbContainer
+        breadcrumbNode={
+          <>
+            게시판 관리 / 1:1문의
+            <Divider vertical className="h-[20px] mx-[12px]" /> 상세
+          </>
+        }
+        button={
+          <>
+            <Button
+              className="rounded-radius-admin w-[180px] h-[48px]"
+              onClick={deleteModal}
             >
-              취소
-            </OutlinedButton>
-            <OutlinedButton
-              type="secondary"
-              disable={!isFormValid}
-              onClick={handleSave}
-              className="w-[180px] h-[48px]"
-            >
-              저장
-            </OutlinedButton>
+              삭제
+            </Button>
+          </>
+        }
+      >
+        <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
+          <div className="w-[1004px] flex flex-col gap-gutter-vertical">
+            {/* 첫번째 줄 */}
+            <div className="flex gap-[20px] w-full">
+              <div className="w-full">
+                닉네임
+                <TextField
+                  className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
+                  value={formState.name}
+                  isVisible={false}
+                  disabled
+                />
+              </div>
+              <div className="w-full">
+                문의일
+                <TextField
+                  className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
+                  value={formatToUTCString(formState.inquiryAt)}
+                  isVisible={false}
+                  disabled
+                />
+              </div>
+            </div>
+            {/* 두번째 줄  */}
+            <div className="flex gap-[20px] w-full">
+              <div className="w-full">
+                서비스
+                <TextField
+                  className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
+                  value={codeToName(serviceCodes, formState.serviceCode)}
+                  isVisible={false}
+                  disabled
+                />
+              </div>
+              <div className="w-full">
+                문의유형
+                <TextField
+                  className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular "
+                  value={codeToName(
+                    codeToGetGroupCode(formState.type) ===
+                      COMMON_GROUP_CODE_MAPPING.전자책서비스문의유형
+                      ? eBookInquiryCodes
+                      : videoInquiryCodes,
+                    formState.type
+                  )}
+                  isVisible={false}
+                  disabled
+                />
+              </div>
+            </div>
+            {/* 세번째 줄  */}
+            <div className="flex gap-[20px] w-full">
+              <div className="w-full">
+                문의내용
+                <TextBox
+                  className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] text-body1-normal-regular max-h-[156px]"
+                  value={formState.content}
+                  disabled
+                />
+              </div>
+            </div>
+            {/* 네번째 줄 */}
+            <div className="w-full flex flex-col gap-[8px]">
+              답변내용
+              <AdminEdit
+                value={formState.responseContent}
+                onChange={(value) => updateFormState("responseContent", value)}
+              />
+            </div>
+            {/* 버튼 */}
+            <div className="mt-[32px] flex justify-end space-x-4">
+              <OutlinedButton
+                type="assistive"
+                onClick={() => {
+                  navigate(-1);
+                }}
+                className="w-[180px] h-[48px]"
+              >
+                취소
+              </OutlinedButton>
+              <OutlinedButton
+                type="secondary"
+                disable={!isFormValid}
+                onClick={handleSave}
+                className="w-[180px] h-[48px]"
+              >
+                저장
+              </OutlinedButton>
+            </div>
           </div>
         </div>
-      </div>
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

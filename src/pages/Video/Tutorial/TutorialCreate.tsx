@@ -27,27 +27,30 @@ function TutorialCreate() {
   });
 
   return (
-    <TutorialDataTemplate
-      type={"create"}
-      tutorialName={tutorialName}
-      setTutorialName={setTutorialName}
-      category={category}
-      setCategory={setCategory}
-      setVideoFileId={setVideoFileId}
-      setTutorialTumbnailId={setThumbNailFileId}
-      isExposure={isExposure}
-      setIsNoExposure={setIsExposure}
-      onClickSave={() => {
-        //튜토리얼 생성
-        tutorialCreateFn({
-          title: tutorialName,
-          categoryCode: category,
-          isVisible: isExposure,
-          videoUploadId: videoFileId,
-          thumnailUploadId: thumbnailFileId,
-        });
-      }}
-    />
+    <>
+      <title>북카롱 | 튜토리얼 등록</title>
+      <TutorialDataTemplate
+        type={"create"}
+        tutorialName={tutorialName}
+        setTutorialName={setTutorialName}
+        category={category}
+        setCategory={setCategory}
+        setVideoFileId={setVideoFileId}
+        setTutorialTumbnailId={setThumbNailFileId}
+        isExposure={isExposure}
+        setIsNoExposure={setIsExposure}
+        onClickSave={() => {
+          //튜토리얼 생성
+          tutorialCreateFn({
+            title: tutorialName,
+            categoryCode: category,
+            isVisible: isExposure,
+            videoUploadId: videoFileId,
+            thumnailUploadId: thumbnailFileId,
+          });
+        }}
+      />
+    </>
   );
 }
 

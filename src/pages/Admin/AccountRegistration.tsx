@@ -171,160 +171,164 @@ function AccountRegistration() {
   };
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={
-        <>
-          관리자 / 계정 관리 <Divider vertical className="h-[20px] mx-[12px]" />
-          등록
-        </>
-      }
-    >
-      <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
-        <div className="w-[1004px] flex flex-col gap-gutter-vertical">
-          {/* 첫번째 줄 */}
-          <div className="flex gap-[20px] w-full">
-            <div className="w-full">
-              <TextField
-                label="아이디"
-                errorText={formState.isIdError ? idErrorMsg : ""}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  updateFormState("isIdError", false);
-                  updateFormState("idField", e.target.value);
-                }}
-                isVisible={false}
-                value={formState.idField}
-              />
+    <>
+      <title>북카롱 | 계정 등록</title>
+      <BreadcrumbContainer
+        breadcrumbNode={
+          <>
+            관리자 / 계정 관리{" "}
+            <Divider vertical className="h-[20px] mx-[12px]" />
+            등록
+          </>
+        }
+      >
+        <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
+          <div className="w-[1004px] flex flex-col gap-gutter-vertical">
+            {/* 첫번째 줄 */}
+            <div className="flex gap-[20px] w-full">
+              <div className="w-full">
+                <TextField
+                  label="아이디"
+                  errorText={formState.isIdError ? idErrorMsg : ""}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    updateFormState("isIdError", false);
+                    updateFormState("idField", e.target.value);
+                  }}
+                  isVisible={false}
+                  value={formState.idField}
+                />
+              </div>
+              <div className="w-full">
+                <TextField
+                  label="비밀번호"
+                  value={formState.passwordField}
+                  maxLength={20}
+                  errorText={formState.isPasswordError ? passwrodErrorMsg : ""}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    updateFormState("isPasswordError", false);
+                    const regex = /^[A-Za-z0-9]*$/; //입력시 영어, 숫자만 허용
+                    if (regex.test(e.target.value)) {
+                      updateFormState("passwordField", e.target.value);
+                    }
+                  }}
+                  isVisible={false}
+                  type="password"
+                />
+              </div>
             </div>
-            <div className="w-full">
-              <TextField
-                label="비밀번호"
-                value={formState.passwordField}
-                maxLength={20}
-                errorText={formState.isPasswordError ? passwrodErrorMsg : ""}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  updateFormState("isPasswordError", false);
-                  const regex = /^[A-Za-z0-9]*$/; //입력시 영어, 숫자만 허용
-                  if (regex.test(e.target.value)) {
-                    updateFormState("passwordField", e.target.value);
-                  }
-                }}
-                isVisible={false}
-                type="password"
-              />
-            </div>
-          </div>
-          {/* 두번째 줄  */}
-          <div className="flex gap-[20px] w-full">
-            <div className="w-full">
-              <TextField
-                label="이름"
-                value={formState.nameField}
-                maxLength={20}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  updateFormState("nameField", e.target.value);
-                }}
-                isVisible={false}
-              />
-            </div>
-            <div className="w-full">
-              <TextField
-                label="연락처"
-                value={formState.contactField}
-                maxLength={11}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  // 숫자만 필터링
-                  const numericValue = e.target.value.replace(/\D/g, "");
+            {/* 두번째 줄  */}
+            <div className="flex gap-[20px] w-full">
+              <div className="w-full">
+                <TextField
+                  label="이름"
+                  value={formState.nameField}
+                  maxLength={20}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    updateFormState("nameField", e.target.value);
+                  }}
+                  isVisible={false}
+                />
+              </div>
+              <div className="w-full">
+                <TextField
+                  label="연락처"
+                  value={formState.contactField}
+                  maxLength={11}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    // 숫자만 필터링
+                    const numericValue = e.target.value.replace(/\D/g, "");
 
-                  updateFormState("contactField", numericValue);
-                }}
-                isVisible={false}
-              />
+                    updateFormState("contactField", numericValue);
+                  }}
+                  isVisible={false}
+                />
+              </div>
             </div>
-          </div>
-          {/* 세번째 줄  */}
-          <div className="flex gap-[20px] w-full">
+            {/* 세번째 줄  */}
+            <div className="flex gap-[20px] w-full">
+              <div className="w-full">
+                <TextField
+                  label="직책"
+                  value={formState.positionField}
+                  maxLength={20}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    updateFormState("positionField", e.target.value);
+                  }}
+                  isVisible={false}
+                />
+              </div>
+              <div className="w-full">
+                상태
+                <Segement
+                  size="large"
+                  selected={formState.situationSelected}
+                  setSelected={(value: boolean) =>
+                    updateFormState("situationSelected", value)
+                  }
+                  textList={["활성", "비활성"]}
+                  className="ml-auto w-full mt-[12px]"
+                />
+              </div>
+            </div>
+            {/* 네번째 줄 */}
             <div className="w-full">
-              <TextField
-                label="직책"
-                value={formState.positionField}
-                maxLength={20}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  updateFormState("positionField", e.target.value);
-                }}
-                isVisible={false}
-              />
-            </div>
-            <div className="w-full">
-              상태
-              <Segement
-                size="large"
-                selected={formState.situationSelected}
-                setSelected={(value: boolean) =>
-                  updateFormState("situationSelected", value)
-                }
-                textList={["활성", "비활성"]}
-                className="ml-auto w-full mt-[12px]"
-              />
-            </div>
-          </div>
-          {/* 네번째 줄 */}
-          <div className="w-full">
-            권한
-            <div className="flex gap-[8px] mt-[8px]">
-              {permissionCodes.map((code, index) => {
-                return (
-                  <Chip
-                    key={index}
-                    onClick={() => handleChipClick(code.commDetailCode)}
-                    className={`transition-colors whitespace-nowrap ${
-                      formState.permissionCodes.find(
+              권한
+              <div className="flex gap-[8px] mt-[8px]">
+                {permissionCodes.map((code, index) => {
+                  return (
+                    <Chip
+                      key={index}
+                      onClick={() => handleChipClick(code.commDetailCode)}
+                      className={`transition-colors whitespace-nowrap ${
+                        formState.permissionCodes.find(
+                          (selectedCode) => code.commDetailCode === selectedCode
+                        )
+                          ? "bg-primary-normal/10 text-primary-normal text-body2-normal-medium border border-line-normal-normal rounded-[100px] px-[16px] cursor-pointer "
+                          : "bg-white text-label-normal border text-body2-normal-medium rounded-[100px] px-[16px] cursor-pointer"
+                      }`}
+                    >
+                      {formState.permissionCodes.find(
                         (selectedCode) => code.commDetailCode === selectedCode
-                      )
-                        ? "bg-primary-normal/10 text-primary-normal text-body2-normal-medium border border-line-normal-normal rounded-[100px] px-[16px] cursor-pointer "
-                        : "bg-white text-label-normal border text-body2-normal-medium rounded-[100px] px-[16px] cursor-pointer"
-                    }`}
-                  >
-                    {formState.permissionCodes.find(
-                      (selectedCode) => code.commDetailCode === selectedCode
-                    ) ? (
-                      <>
-                        {codeToName(permissionCodes, code.commDetailCode)}
-                        <Check />
-                      </>
-                    ) : (
-                      <>
-                        {codeToName(permissionCodes, code.commDetailCode)}
-                        <Plus />
-                      </>
-                    )}
-                  </Chip>
-                );
-              })}
+                      ) ? (
+                        <>
+                          {codeToName(permissionCodes, code.commDetailCode)}
+                          <Check />
+                        </>
+                      ) : (
+                        <>
+                          {codeToName(permissionCodes, code.commDetailCode)}
+                          <Plus />
+                        </>
+                      )}
+                    </Chip>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-          {/* 버튼 */}
-          <div className="mt-[32px] flex justify-end space-x-4">
-            <OutlinedButton
-              type="assistive"
-              onClick={() => {
-                navigate(-1);
-              }}
-              className="w-[180px] h-[48px]"
-            >
-              취소
-            </OutlinedButton>
-            <OutlinedButton
-              type="secondary"
-              disable={!isFormValid}
-              onClick={handleSave}
-              className="w-[180px] h-[48px]"
-            >
-              저장
-            </OutlinedButton>
+            {/* 버튼 */}
+            <div className="mt-[32px] flex justify-end space-x-4">
+              <OutlinedButton
+                type="assistive"
+                onClick={() => {
+                  navigate(-1);
+                }}
+                className="w-[180px] h-[48px]"
+              >
+                취소
+              </OutlinedButton>
+              <OutlinedButton
+                type="secondary"
+                disable={!isFormValid}
+                onClick={handleSave}
+                className="w-[180px] h-[48px]"
+              >
+                저장
+              </OutlinedButton>
+            </div>
           </div>
         </div>
-      </div>
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

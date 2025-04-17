@@ -86,70 +86,75 @@ function VideoImage() {
     });
   };
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={<>비디오북 관리 / 무료 이미지 관리</>}
-      button={
-        <Link to={VIDEOIMAGE_CREATE}>
-          <Button className="rounded-radius-admin w-[180px] h-[48px]">
-            추가
-          </Button>
-        </Link>
-      }
-    >
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="등록일"
-        dispatch={dispatch}
-        excel={true}
-        CustomSelectComponent={<></>}
-      />
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>
-                <div className="flex items-center justify-center gap-[2px]">
-                  등록일
-                  <IconButton icon={<Updown />} onClick={handleSortOrder} />
-                </div>
-              </TableCell>
-              <TableCell isHeader>구분</TableCell>
-              <TableCell isHeader>이미지명</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+    <>
+      <title>북카롱 | 무료 이미지 관리</title>
+      <BreadcrumbContainer
+        breadcrumbNode={<>비디오북 관리 / 무료 이미지 관리</>}
+        button={
+          <Link to={VIDEOIMAGE_CREATE}>
+            <Button className="rounded-radius-admin w-[180px] h-[48px]">
+              추가
+            </Button>
+          </Link>
+        }
+      >
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="등록일"
+          dispatch={dispatch}
+          excel={true}
+          CustomSelectComponent={<></>}
+        />
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>
+                  <div className="flex items-center justify-center gap-[2px]">
+                    등록일
+                    <IconButton icon={<Updown />} onClick={handleSortOrder} />
+                  </div>
+                </TableCell>
+                <TableCell isHeader>구분</TableCell>
+                <TableCell isHeader>이미지명</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data.list.map((item, index) => {
-              return (
-                <TableRow key={index}>
-                  <TableCell>{formatDateTimeToJSX(item.registedAt)}</TableCell>
-                  <TableCell>{item.type}</TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${VIDEOIMAGE_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
-                        }
-                      />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/* todo: 기능구현 되면 주석 풀어야함 */}
-      {/* {data.meta.totalPage > 1 && (
+            <TableBody>
+              {data.list.map((item, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>
+                      {formatDateTimeToJSX(item.registedAt)}
+                    </TableCell>
+                    <TableCell>{item.type}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>
+                      <Link
+                        className="flex justify-center"
+                        to={`${VIDEOIMAGE_DETAIL}/${item.id}`}
+                      >
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {/* todo: 기능구현 되면 주석 풀어야함 */}
+        {/* {data.meta.totalPage > 1 && (
         <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
       )} */}
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

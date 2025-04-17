@@ -194,122 +194,125 @@ function Inquiry() {
   };
 
   return (
-    <BreadcrumbContainer breadcrumbNode={<>게시판 관리 / 1:1문의</>}>
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="문의일"
-        dispatch={dispatch}
-        excel={true}
-        excelAllDataOnClick={handleAllDataExcelDownload}
-        excelFilterDataOnClick={handleFilterDataExcelDownload}
-        CustomSelectComponent={
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            defaultValue="ALL"
-            onValueChange={handleIsResponse}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">모든 상태</SelectItem>
-                <SelectItem value="true">답변</SelectItem>
-                <SelectItem value="false">미답변</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
-        }
-      />
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>
-                <div className="flex items-center justify-center gap-[2px]">
-                  문의일{" "}
-                  <IconButton icon={<Updown />} onClick={handleSortOrder} />
-                </div>
-              </TableCell>
-              <TableCell isHeader>닉네임</TableCell>
-              <TableCell isHeader>서비스</TableCell>
-              <TableCell isHeader>문의유형</TableCell>
-              <TableCell isHeader>제목</TableCell>
-              <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>관리자</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+    <>
+      <title>북카롱 | 1:1 문의</title>
+      <BreadcrumbContainer breadcrumbNode={<>게시판 관리 / 1:1문의</>}>
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="문의일"
+          dispatch={dispatch}
+          excel={true}
+          excelAllDataOnClick={handleAllDataExcelDownload}
+          excelFilterDataOnClick={handleFilterDataExcelDownload}
+          CustomSelectComponent={
+            <SelectBox
+              placeholder="모든 상태"
+              className="min-w-[240px]"
+              size="large"
+              defaultValue="ALL"
+              onValueChange={handleIsResponse}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="ALL">모든 상태</SelectItem>
+                  <SelectItem value="true">답변</SelectItem>
+                  <SelectItem value="false">미답변</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          }
+        />
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>
+                  <div className="flex items-center justify-center gap-[2px]">
+                    문의일{" "}
+                    <IconButton icon={<Updown />} onClick={handleSortOrder} />
+                  </div>
+                </TableCell>
+                <TableCell isHeader>닉네임</TableCell>
+                <TableCell isHeader>서비스</TableCell>
+                <TableCell isHeader>문의유형</TableCell>
+                <TableCell isHeader>제목</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>관리자</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data.list.map((item, index) => {
-              return (
-                <TableRow key={index}>
-                  <TableCell>
-                    {formatDateTimeToJSX(formatToUTCString(item.inquiryAt))}
-                  </TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>
-                    {codeToName(serviceCodes, item.serviceCode)}
-                  </TableCell>
-                  <TableCell>
-                    {codeToName(
-                      codeToGetGroupCode(item.type) ===
-                        COMMON_GROUP_CODE_MAPPING.전자책서비스문의유형
-                        ? eBookInquiryCodes
-                        : videoInquiryCodes,
-                      item.type
-                    )}
-                  </TableCell>
-                  <TableCell>{item.title}</TableCell>
+            <TableBody>
+              {data.list.map((item, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>
+                      {formatDateTimeToJSX(formatToUTCString(item.inquiryAt))}
+                    </TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>
+                      {codeToName(serviceCodes, item.serviceCode)}
+                    </TableCell>
+                    <TableCell>
+                      {codeToName(
+                        codeToGetGroupCode(item.type) ===
+                          COMMON_GROUP_CODE_MAPPING.전자책서비스문의유형
+                          ? eBookInquiryCodes
+                          : videoInquiryCodes,
+                        item.type
+                      )}
+                    </TableCell>
+                    <TableCell>{item.title}</TableCell>
 
-                  <TableCell>
-                    {(() => {
-                      switch (item.isResponse) {
-                        case true:
-                          return (
-                            <div className="w-full flex justify-center items-center">
-                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-primary-normal/10 text-label1-normal-bold text-primary-normal">
-                                답변
+                    <TableCell>
+                      {(() => {
+                        switch (item.isResponse) {
+                          case true:
+                            return (
+                              <div className="w-full flex justify-center items-center">
+                                <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-primary-normal/10 text-label1-normal-bold text-primary-normal">
+                                  답변
+                                </div>
                               </div>
-                            </div>
-                          );
-                        case false:
-                          return (
-                            <div className="w-full flex justify-center items-center">
-                              <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
-                                미답변
+                            );
+                          case false:
+                            return (
+                              <div className="w-full flex justify-center items-center">
+                                <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
+                                  미답변
+                                </div>
                               </div>
-                            </div>
-                          );
+                            );
 
-                        default:
-                          return null;
-                      }
-                    })()}
-                  </TableCell>
-                  <TableCell>
-                    {item.responseAdminName ? item.responseAdminName : "-"}
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${INQUIRY_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
+                          default:
+                            return null;
                         }
-                      />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </BreadcrumbContainer>
+                      })()}
+                    </TableCell>
+                    <TableCell>
+                      {item.responseAdminName ? item.responseAdminName : "-"}
+                    </TableCell>
+                    <TableCell>
+                      <Link
+                        className="flex justify-center"
+                        to={`${INQUIRY_DETAIL}/${item.id}`}
+                      >
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

@@ -121,139 +121,142 @@ function PaymentManagement() {
   };
 
   return (
-    <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 결제 관리</>}>
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="결제일"
-        dispatch={() => {}}
-        CustomSelectComponent={
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            defaultValue="ALL"
-            onValueChange={() => {}}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">모든 상태</SelectItem>
-                <SelectItem value="TRUE">결제완료</SelectItem>
-                <SelectItem value="FALSE">취소완료</SelectItem>
-                <SelectItem value="REFUND">환불완료</SelectItem>
-                <SelectItem value="WITHDRAWAL">결제오류</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
-        }
-      />
-      <div>
+    <>
+      <title>북카롱 | 결제 관리</title>
+      <BreadcrumbContainer breadcrumbNode={<>회원 관리 / 결제 관리</>}>
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="결제일"
+          dispatch={() => {}}
+          CustomSelectComponent={
+            <SelectBox
+              placeholder="모든 상태"
+              className="min-w-[240px]"
+              size="large"
+              defaultValue="ALL"
+              onValueChange={() => {}}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="ALL">모든 상태</SelectItem>
+                  <SelectItem value="TRUE">결제완료</SelectItem>
+                  <SelectItem value="FALSE">취소완료</SelectItem>
+                  <SelectItem value="REFUND">환불완료</SelectItem>
+                  <SelectItem value="WITHDRAWAL">결제오류</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          }
+        />
         <div>
-          <TableContainer>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableCell isHeader>
-                    <div className="flex items-center justify-center gap-[2px]">
-                      No <Updown />
-                    </div>
-                  </TableCell>
-                  <TableCell isHeader>결제일</TableCell>
-                  <TableCell isHeader>닉네임</TableCell>
-                  <TableCell isHeader>결제 이메일</TableCell>
-                  <TableCell isHeader>결제 내역</TableCell>
-                  <TableCell isHeader>결제 내역 상세</TableCell>
-                  <TableCell isHeader>결제 금액</TableCell>
-                  <TableCell isHeader>상태</TableCell>
-                  <TableCell isHeader>관리자</TableCell>
-                  <TableCell isHeader>상세정보</TableCell>
-                </TableRow>
-              </TableHeader>
+          <div>
+            <TableContainer>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableCell isHeader>
+                      <div className="flex items-center justify-center gap-[2px]">
+                        No <Updown />
+                      </div>
+                    </TableCell>
+                    <TableCell isHeader>결제일</TableCell>
+                    <TableCell isHeader>닉네임</TableCell>
+                    <TableCell isHeader>결제 이메일</TableCell>
+                    <TableCell isHeader>결제 내역</TableCell>
+                    <TableCell isHeader>결제 내역 상세</TableCell>
+                    <TableCell isHeader>결제 금액</TableCell>
+                    <TableCell isHeader>상태</TableCell>
+                    <TableCell isHeader>관리자</TableCell>
+                    <TableCell isHeader>상세정보</TableCell>
+                  </TableRow>
+                </TableHeader>
 
-              <TableBody>
-                {data.map((item) => {
-                  return (
-                    <TableRow>
-                      <TableCell>{item.no}</TableCell>
-                      <TableCell>
-                        {formatDateTimeToJSX(
-                          formatToUTCString(item.paymentDay)
-                        )}
-                      </TableCell>
-                      <TableCell className="underline">
-                        {item.nickName}
-                      </TableCell>
-                      <TableCell>{item.email}</TableCell>
-                      <TableCell>{item.paymentHistory}</TableCell>
-                      <TableCell>{item.paymentDetail}</TableCell>
-                      <TableCell>{item.paymentAmount}</TableCell>
+                <TableBody>
+                  {data.map((item) => {
+                    return (
+                      <TableRow>
+                        <TableCell>{item.no}</TableCell>
+                        <TableCell>
+                          {formatDateTimeToJSX(
+                            formatToUTCString(item.paymentDay)
+                          )}
+                        </TableCell>
+                        <TableCell className="underline">
+                          {item.nickName}
+                        </TableCell>
+                        <TableCell>{item.email}</TableCell>
+                        <TableCell>{item.paymentHistory}</TableCell>
+                        <TableCell>{item.paymentDetail}</TableCell>
+                        <TableCell>{item.paymentAmount}</TableCell>
 
-                      <TableCell>
-                        {(() => {
-                          switch (item.state) {
-                            case "payment":
-                              return (
-                                <div className="w-full flex justify-center items-center">
-                                  <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-positive/10 text-label1-normal-bold text-status-positive">
-                                    결제완료
+                        <TableCell>
+                          {(() => {
+                            switch (item.state) {
+                              case "payment":
+                                return (
+                                  <div className="w-full flex justify-center items-center">
+                                    <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-positive/10 text-label1-normal-bold text-status-positive">
+                                      결제완료
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            case "refund":
-                              return (
-                                <div className="w-full flex justify-center items-center">
-                                  <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
-                                    환불완료
+                                );
+                              case "refund":
+                                return (
+                                  <div className="w-full flex justify-center items-center">
+                                    <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
+                                      환불완료
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            case "cancle":
-                              return (
-                                <div className="w-full flex justify-center items-center">
-                                  <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-cautionary/10 text-label1-normal-bold text-status-cautionary">
-                                    취소완료
+                                );
+                              case "cancle":
+                                return (
+                                  <div className="w-full flex justify-center items-center">
+                                    <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-cautionary/10 text-label1-normal-bold text-status-cautionary">
+                                      취소완료
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            case "error":
-                              return (
-                                <div className="w-full flex justify-center items-center">
-                                  <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-negative/10 text-label1-normal-bold text-status-negative">
-                                    결제오류
+                                );
+                              case "error":
+                                return (
+                                  <div className="w-full flex justify-center items-center">
+                                    <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-negative/10 text-label1-normal-bold text-status-negative">
+                                      결제오류
+                                    </div>
                                   </div>
-                                </div>
-                              );
-                            default:
-                              return null;
-                          }
-                        })()}
-                      </TableCell>
-                      <TableCell>
-                        {item.manager === "" ? (
-                          <div className="flex items-center justify-center h-[20px]">
-                            <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
-                          </div>
-                        ) : (
-                          item.manager
-                        )}
-                      </TableCell>
+                                );
+                              default:
+                                return null;
+                            }
+                          })()}
+                        </TableCell>
+                        <TableCell>
+                          {item.manager === "" ? (
+                            <div className="flex items-center justify-center h-[20px]">
+                              <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
+                            </div>
+                          ) : (
+                            item.manager
+                          )}
+                        </TableCell>
 
-                      <TableCell>
-                        <IconButton
-                          icon={
-                            <ThreeDot className="size-[24px] fill-label-alternative" />
-                          }
-                          onClick={handleModal}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                        <TableCell>
+                          <IconButton
+                            icon={
+                              <ThreeDot className="size-[24px] fill-label-alternative" />
+                            }
+                            onClick={handleModal}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
         </div>
-      </div>
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

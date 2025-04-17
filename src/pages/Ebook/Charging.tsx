@@ -125,30 +125,33 @@ function Charging() {
   };
 
   return (
-    <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 충전소 관리</>}>
-      <ContentWrapper>
-        {data.map((item, index) => {
-          return (
-            <TextList
-              number={item.number}
-              point={item.point}
-              amount={item.amount}
-              setPoint={(value) => updateData("point", index, value)}
-              setAmount={(value) => updateData("amount", index, value)}
-            />
-          );
-        })}
-        <div className="flex justify-end w-full">
-          <OutlinedButton
-            className="max-w-[180px] w-full"
-            type="secondary"
-            size="large"
-          >
-            저장
-          </OutlinedButton>
-        </div>
-      </ContentWrapper>
-    </BreadcrumbContainer>
+    <>
+      <title>북카롱 | 충전소 관리</title>
+      <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 충전소 관리</>}>
+        <ContentWrapper>
+          {data.map((item, index) => {
+            return (
+              <TextList
+                number={item.number}
+                point={item.point}
+                amount={item.amount}
+                setPoint={(value) => updateData("point", index, value)}
+                setAmount={(value) => updateData("amount", index, value)}
+              />
+            );
+          })}
+          <div className="flex justify-end w-full">
+            <OutlinedButton
+              className="max-w-[180px] w-full"
+              type="secondary"
+              size="large"
+            >
+              저장
+            </OutlinedButton>
+          </div>
+        </ContentWrapper>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

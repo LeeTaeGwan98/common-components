@@ -61,84 +61,87 @@ const ChatbotRegistration = () => {
   };
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={
-        <>
-          게시판 관리 / 챗봇 관리
-          <Divider vertical className="h-[20px] mx-[12px]" /> 등록
-        </>
-      }
-    >
-      <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
-        <div className="w-[1004px] flex flex-col gap-gutter-vertical">
-          <div className="flex *:flex-1 items-center gap-gutter-horizontal">
-            <div className="w-full">
-              <SelectBox
-                label="카테고리"
-                placeholder="카테고리를 선택해주세요"
-                onValueChange={(value) => {
-                  setCategoryCode(value);
-                }}
-              >
-                <SelectContent>
-                  <SelectGroup>
-                    {categoryCodes.map((code) => {
-                      return (
-                        <SelectItem value={code.commDetailCode}>
-                          {code.detailCodeName}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectGroup>
-                </SelectContent>
-              </SelectBox>
+    <>
+      <title>북카롱 | 챗봇 등록</title>
+      <BreadcrumbContainer
+        breadcrumbNode={
+          <>
+            게시판 관리 / 챗봇 관리
+            <Divider vertical className="h-[20px] mx-[12px]" /> 등록
+          </>
+        }
+      >
+        <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
+          <div className="w-[1004px] flex flex-col gap-gutter-vertical">
+            <div className="flex *:flex-1 items-center gap-gutter-horizontal">
+              <div className="w-full">
+                <SelectBox
+                  label="카테고리"
+                  placeholder="카테고리를 선택해주세요"
+                  onValueChange={(value) => {
+                    setCategoryCode(value);
+                  }}
+                >
+                  <SelectContent>
+                    <SelectGroup>
+                      {categoryCodes.map((code) => {
+                        return (
+                          <SelectItem value={code.commDetailCode}>
+                            {code.detailCodeName}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectGroup>
+                  </SelectContent>
+                </SelectBox>
+              </div>
+              <div>
+                <Title label={"노출 상태"} />
+                <Segement
+                  className="w-full"
+                  itemClassName="text-body1-normal-medium"
+                  size="large"
+                  setSelected={setIsVisible}
+                  selected={isVisible}
+                  textList={["노출", "비노출"]}
+                />
+              </div>
             </div>
-            <div>
-              <Title label={"노출 상태"} />
-              <Segement
-                className="w-full"
-                itemClassName="text-body1-normal-medium"
-                size="large"
-                setSelected={setIsVisible}
-                selected={isVisible}
-                textList={["노출", "비노출"]}
+
+            <div className="w-full flex flex-col gap-[8px]">
+              질문
+              <TextBox
+                value={question}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                  setQuestion(e.target.value);
+                }}
+                placeholder="질문을 입력하세요"
               />
             </div>
-          </div>
-
-          <div className="w-full flex flex-col gap-[8px]">
-            질문
-            <TextBox
-              value={question}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                setQuestion(e.target.value);
-              }}
-              placeholder="질문을 입력하세요"
-            />
-          </div>
-          {/* 버튼 */}
-          <div className="mt-[32px] flex justify-end space-x-4">
-            <OutlinedButton
-              className="w-[180px] h-[48px]"
-              type="assistive"
-              size="large"
-              onClick={() => navigate(-1)}
-            >
-              취소
-            </OutlinedButton>
-            <OutlinedButton
-              className="w-[180px] h-[48px]"
-              type="secondary"
-              size="large"
-              disable={isDisableSave()}
-              onClick={() => !isDisableSave() && CreateChatBot.mutate()}
-            >
-              저장
-            </OutlinedButton>
+            {/* 버튼 */}
+            <div className="mt-[32px] flex justify-end space-x-4">
+              <OutlinedButton
+                className="w-[180px] h-[48px]"
+                type="assistive"
+                size="large"
+                onClick={() => navigate(-1)}
+              >
+                취소
+              </OutlinedButton>
+              <OutlinedButton
+                className="w-[180px] h-[48px]"
+                type="secondary"
+                size="large"
+                disable={isDisableSave()}
+                onClick={() => !isDisableSave() && CreateChatBot.mutate()}
+              >
+                저장
+              </OutlinedButton>
+            </div>
           </div>
         </div>
-      </div>
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 };
 
