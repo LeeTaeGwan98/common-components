@@ -59,6 +59,7 @@ function Terms() {
         </Link>
       }
     >
+      <div className="h-[60px]" />
       <TableContainer>
         <Table>
           <TableHeader>
@@ -83,7 +84,12 @@ function Terms() {
                     <br />
                   </TableCell>
                   <TableCell>
-                    {formatToUTCString(item.effectiveDate ?? "", "yyyy-MM-dd")}
+                    {item.effectiveDate
+                      ? formatToUTCString(
+                          item.effectiveDate ?? "",
+                          "yyyy-MM-dd"
+                        )
+                      : "-"}
                   </TableCell>
                   <TableCell className="underline">
                     <Link to={ACCOUNT}>{item.name}</Link>

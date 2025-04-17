@@ -264,6 +264,7 @@ function CommonCode() {
         </div>
       }
     >
+      <div className="h-[60px]" />
       <div className="flex gap-[20px] justify-between">
         <div className="w-full">
           <TableContainer>
@@ -302,10 +303,13 @@ function CommonCode() {
                               }
                               onChecked={() =>
                                 //상세코드 조회할 그룹코드 선택
-                                updateFormState(
-                                  "selectGroupCode",
-                                  groupCode.commGroupCode
-                                )
+                                {
+                                  updateFormState(
+                                    "selectGroupCode",
+                                    groupCode.commGroupCode
+                                  );
+                                  setIsReverse(false);
+                                }
                               }
                             />
                           </div>
@@ -343,7 +347,7 @@ function CommonCode() {
               <TableBody>
                 {/* 상세코드 목록 */}
                 {(isReverse
-                  ? formState.detailCodes.reverse()
+                  ? [...formState.detailCodes].reverse()
                   : formState.detailCodes
                 ).map((item, index) => {
                   return (
