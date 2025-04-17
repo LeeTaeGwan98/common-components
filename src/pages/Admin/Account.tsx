@@ -108,89 +108,92 @@ function Account() {
   };
 
   return (
-    <BreadcrumbContainer
-      button={
-        <Link to={ACCOUNT_REGISTRATION}>
-          <Button className="rounded-radius-admin w-[180px] h-[48px]">
-            등록
-          </Button>
-        </Link>
-      }
-      breadcrumbNode={<>관리자 / 계정 관리</>}
-    >
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="접속일"
-        dispatch={dispatch}
-        excel={true}
-        excelAllDataOnClick={handleAllDataExcelDownload}
-        excelFilterDataOnClick={handleFilterDataExcelDownload}
-        CustomSelectComponent={<></>}
-      />
+    <>
+      <title>북카롱 | 계정 관리</title>
+      <BreadcrumbContainer
+        button={
+          <Link to={ACCOUNT_REGISTRATION}>
+            <Button className="rounded-radius-admin w-[180px] h-[48px]">
+              등록
+            </Button>
+          </Link>
+        }
+        breadcrumbNode={<>관리자 / 계정 관리</>}
+      >
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="접속일"
+          dispatch={dispatch}
+          excel={true}
+          excelAllDataOnClick={handleAllDataExcelDownload}
+          excelFilterDataOnClick={handleFilterDataExcelDownload}
+          CustomSelectComponent={<></>}
+        />
 
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>아이디</TableCell>
-              <TableCell isHeader>사용자</TableCell>
-              <TableCell isHeader>최근 접속일</TableCell>
-              <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>아이디</TableCell>
+                <TableCell isHeader>사용자</TableCell>
+                <TableCell isHeader>최근 접속일</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data?.list.map((item: GetAccountType, index) => {
-              return (
-                <TableRow key={index}>
-                  <TableCell>{item.email}</TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>
-                    {item.lastLoginAt ? item.lastLoginAt : "-"}
-                  </TableCell>
+            <TableBody>
+              {data?.list.map((item: GetAccountType, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{item.email}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>
+                      {item.lastLoginAt ? item.lastLoginAt : "-"}
+                    </TableCell>
 
-                  <TableCell className=" pr-0">
-                    {item.isActive ? (
-                      <div className="w-full flex justify-center items-center ">
-                        <div className="w-fit  border border-none rounded-[4px] py-[6px] px-[12px] bg-status-positive/10 text-label1-normal-bold text-status-positive">
-                          활성
+                    <TableCell className=" pr-0">
+                      {item.isActive ? (
+                        <div className="w-full flex justify-center items-center ">
+                          <div className="w-fit  border border-none rounded-[4px] py-[6px] px-[12px] bg-status-positive/10 text-label1-normal-bold text-status-positive">
+                            활성
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="w-full flex justify-center items-center ">
-                        <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
-                          비활성
+                      ) : (
+                        <div className="w-full flex justify-center items-center ">
+                          <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
+                            비활성
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </TableCell>
+                      )}
+                    </TableCell>
 
-                  <TableCell>
-                    <div className="flex justify-center">
-                      <Link
-                        className="flex justify-center w-fit"
-                        to={`${ACCOUNT_DETAIL}/${item.id}`}
-                      >
-                        <IconButton
-                          icon={
-                            <ThreeDot className="size-[24px] fill-label-alternative" />
-                          }
-                        />
-                      </Link>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {data.meta.totalPage > 1 && (
-        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
-      )}
-    </BreadcrumbContainer>
+                    <TableCell>
+                      <div className="flex justify-center">
+                        <Link
+                          className="flex justify-center w-fit"
+                          to={`${ACCOUNT_DETAIL}/${item.id}`}
+                        >
+                          <IconButton
+                            icon={
+                              <ThreeDot className="size-[24px] fill-label-alternative" />
+                            }
+                          />
+                        </Link>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
+      </BreadcrumbContainer>
+    </>
   );
 }
 

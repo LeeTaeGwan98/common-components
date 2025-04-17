@@ -107,121 +107,124 @@ const ServiceGuideRegistration = () => {
   };
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={
-        <>
-          게시판 관리 / 서비스 가이드{" "}
-          <Divider vertical className="h-[20px] mx-[12px]" /> 등록
-        </>
-      }
-    >
-      <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
-        <div className="w-[1004px] flex flex-col gap-gutter-vertical">
-          {/* 첫번째 줄 */}
-          <div className="flex  w-full">
-            <div className="w-full">
-              서비스 가이드 제목
-              <TextField
-                size="large"
-                className="w-full h-[48px] mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular text-label-normal"
-                value={formState.title}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  updateFormState("title", e.target.value);
-                }}
-                maxLength={30}
-                placeholder="서비스 가이드 제목을 입력해주세요"
-                isVisible={false}
-              />
+    <>
+      <title>북카롱 | 서비스 가이드 등록</title>
+      <BreadcrumbContainer
+        breadcrumbNode={
+          <>
+            게시판 관리 / 서비스 가이드
+            <Divider vertical className="h-[20px] mx-[12px]" /> 등록
+          </>
+        }
+      >
+        <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">
+          <div className="w-[1004px] flex flex-col gap-gutter-vertical">
+            {/* 첫번째 줄 */}
+            <div className="flex  w-full">
+              <div className="w-full">
+                서비스 가이드 제목
+                <TextField
+                  size="large"
+                  className="w-full h-[48px] mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular text-label-normal"
+                  value={formState.title}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    updateFormState("title", e.target.value);
+                  }}
+                  maxLength={30}
+                  placeholder="서비스 가이드 제목을 입력해주세요"
+                  isVisible={false}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex  w-full">
-            <div className="w-full">
-              <SelectBox
-                size="large"
-                label="카테고리"
-                placeholder="카테고리를 선택해주세요"
-                value={formState.categoryCode}
-                onValueChange={(value) =>
-                  updateFormState("categoryCode", value)
-                }
-              >
-                <SelectContent>
-                  <SelectGroup>
-                    {categoryItems.map((item, idx) => {
-                      const { commDetailCode, detailCodeName } = item;
-                      return (
-                        <SelectItem key={idx} value={commDetailCode}>
-                          {detailCodeName}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectGroup>
-                </SelectContent>
-              </SelectBox>
+            <div className="flex  w-full">
+              <div className="w-full">
+                <SelectBox
+                  size="large"
+                  label="카테고리"
+                  placeholder="카테고리를 선택해주세요"
+                  value={formState.categoryCode}
+                  onValueChange={(value) =>
+                    updateFormState("categoryCode", value)
+                  }
+                >
+                  <SelectContent>
+                    <SelectGroup>
+                      {categoryItems.map((item, idx) => {
+                        const { commDetailCode, detailCodeName } = item;
+                        return (
+                          <SelectItem key={idx} value={commDetailCode}>
+                            {detailCodeName}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectGroup>
+                  </SelectContent>
+                </SelectBox>
+              </div>
             </div>
-          </div>
-          {/* 두번째 줄  */}
-          <div className="flex *:flex-1 gap-gutter-horizontal">
-            <div>
-              <Title label={"서비스"} />
-              <Segement
-                className="w-full"
-                itemClassName="text-body1-normal-medium"
-                size="large"
-                setSelected={(value: boolean) => {
-                  updateFormState("isEbook", value);
-                  updateFormState("categoryCode", "");
-                }}
-                selected={formState.isEbook}
-                textList={["전자책 만들기", "비디오북 만들기"]}
-              />
+            {/* 두번째 줄  */}
+            <div className="flex *:flex-1 gap-gutter-horizontal">
+              <div>
+                <Title label={"서비스"} />
+                <Segement
+                  className="w-full"
+                  itemClassName="text-body1-normal-medium"
+                  size="large"
+                  setSelected={(value: boolean) => {
+                    updateFormState("isEbook", value);
+                    updateFormState("categoryCode", "");
+                  }}
+                  selected={formState.isEbook}
+                  textList={["전자책 만들기", "비디오북 만들기"]}
+                />
+              </div>
+              <div>
+                <Title label={"노출 상태"} />
+                <Segement
+                  className="w-full"
+                  itemClassName="text-body1-normal-medium"
+                  size="large"
+                  setSelected={(value: boolean) =>
+                    updateFormState("isVisible", value)
+                  }
+                  selected={formState.isVisible}
+                  textList={["노출", "비노출"]}
+                />
+              </div>
             </div>
-            <div>
-              <Title label={"노출 상태"} />
-              <Segement
-                className="w-full"
-                itemClassName="text-body1-normal-medium"
-                size="large"
-                setSelected={(value: boolean) =>
-                  updateFormState("isVisible", value)
-                }
-                selected={formState.isVisible}
-                textList={["노출", "비노출"]}
-              />
-            </div>
-          </div>
 
-          {/* 세번째 줄 */}
-          <div className="w-full flex flex-col gap-[8px]">
-            내용
-            <AdminEdit
-              value={formState.content}
-              onChange={(value) => updateFormState("content", value)}
-            />
-          </div>
-          {/* 버튼 */}
-          <div className="mt-[32px] flex justify-end space-x-4">
-            <OutlinedButton
-              type="assistive"
-              onClick={() => {
-                navigate(-1);
-              }}
-              className="w-[180px] h-[48px]"
-            >
-              취소
-            </OutlinedButton>
-            <OutlinedButton
-              type="secondary"
-              disable={!isFormValid}
-              onClick={handleSave}
-              className="w-[180px] h-[48px]"
-            >
-              저장
-            </OutlinedButton>
+            {/* 세번째 줄 */}
+            <div className="w-full flex flex-col gap-[8px]">
+              내용
+              <AdminEdit
+                value={formState.content}
+                onChange={(value) => updateFormState("content", value)}
+              />
+            </div>
+            {/* 버튼 */}
+            <div className="mt-[32px] flex justify-end space-x-4">
+              <OutlinedButton
+                type="assistive"
+                onClick={() => {
+                  navigate(-1);
+                }}
+                className="w-[180px] h-[48px]"
+              >
+                취소
+              </OutlinedButton>
+              <OutlinedButton
+                type="secondary"
+                disable={!isFormValid}
+                onClick={handleSave}
+                className="w-[180px] h-[48px]"
+              >
+                저장
+              </OutlinedButton>
+            </div>
           </div>
         </div>
-      </div>
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 };
 

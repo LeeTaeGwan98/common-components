@@ -88,6 +88,7 @@ function TutorialDetail() {
 
   return (
     <>
+      <title>북카롱 | 튜토리얼 상세</title>
       <TutorialDataTemplate
         type={"detail"}
         tutorialName={tutorialName}

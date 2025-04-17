@@ -177,212 +177,220 @@ function UserDetail() {
   }, [data]);
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={
-        <>
-          회원 관리 / 회원 목록
-          <Divider vertical className="h-[20px] mx-[12px]" />
-          회원 상세
-          <Divider vertical className="h-[20px] mx-[12px]" />
-          <div className="mr-[8px]">
-            {menuList.map((menu, index) => {
-              return selectedMenu === menu && <div key={index}>{menu}</div>;
-            })}
-          </div>
-          <SelectBox
-            value={selectedMenu}
-            onValueChange={(value) => setSelectedMenu(value as UserMenuType)}
-            className="[&>span]:hidden size-[32px] p-0 items-center justify-center"
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>회원 상세</SelectLabel>
-                {menuList.map((item) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
-        </>
-      }
-    >
-      <div className="flex gap-gutter-horizontal">
-        <div className="w-[440px] h-[720px] flex flex-col border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin gap-[12px] rounded-radius-admin">
-          <div className="flex items-center justify-between gap-[12px]">
-            <div>
-              <CardRow
-                data={{
-                  title: "상태",
-                }}
-                slot={{ shortcutClassName: "size-[24px]" }}
-              />
-              <div className="flex items-center">
-                {data.isDeleted ? (
-                  <StateText state={"탈퇴"} />
-                ) : data.isActive ? (
-                  <StateText state={"활성화"} />
-                ) : (
-                  <StateText state={"비활성화"} />
-                )}
-              </div>
+    <>
+      <title>북카롱 | 회원 목록 상세</title>
+      <BreadcrumbContainer
+        breadcrumbNode={
+          <>
+            회원 관리 / 회원 목록
+            <Divider vertical className="h-[20px] mx-[12px]" />
+            회원 상세
+            <Divider vertical className="h-[20px] mx-[12px]" />
+            <div className="mr-[8px]">
+              {menuList.map((menu, index) => {
+                return selectedMenu === menu && <div key={index}>{menu}</div>;
+              })}
             </div>
-
-            {!data.isDeleted && (
-              <Popover>
-                <PopoverTrigger className="h-fit" asChild>
-                  <IconButton
-                    size="custom"
-                    icon={<ThreeDot className="size-[24px]" />}
-                  />
-                </PopoverTrigger>
-                <PopoverContent
-                  align="start"
-                  side="bottom"
-                  className="w-auto shadow-none border-0 p-0"
-                >
-                  <PopoverClose>
-                    <DropDownMenu>
-                      <ButtonTextList size="small" onClick={userActivateModal}>
-                        <StateText
-                          state={"활성화"}
-                          textClassName="text-caption1-regular text-label-normal py-[2px]"
-                        />
-                      </ButtonTextList>
-                      <ButtonTextList
-                        size="small"
-                        onClick={userDeActivateModal}
-                      >
-                        <StateText
-                          state={"비활성화"}
-                          textClassName="text-caption1-regular text-label-normal py-[2px]"
-                        />
-                      </ButtonTextList>
-                    </DropDownMenu>
-                  </PopoverClose>
-                </PopoverContent>
-              </Popover>
-            )}
-          </div>
-
-          <CardRow
-            data={{
-              title: "회원번호",
-              content: data.id.toString(),
-            }}
-          />
-          <div>
+            <SelectBox
+              value={selectedMenu}
+              onValueChange={(value) => setSelectedMenu(value as UserMenuType)}
+              className="[&>span]:hidden size-[32px] p-0 items-center justify-center"
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>회원 상세</SelectLabel>
+                  {menuList.map((item) => (
+                    <SelectItem key={item} value={item}>
+                      {item}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          </>
+        }
+      >
+        <div className="flex gap-gutter-horizontal">
+          <div className="w-[440px] h-[720px] flex flex-col border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin gap-[12px] rounded-radius-admin">
             <div className="flex items-center justify-between gap-[12px]">
-              <CardRow
-                data={{
-                  title: "닉네임",
-                  content: isNickEdit ? "" : data.name,
-                }}
-              />
-              {isNickEdit ? (
-                <></>
-              ) : (
-                <IconButton
-                  className="h-fit"
-                  icon={<Write className="size-[24px]" />}
-                  onClick={() => setIsNickEdit(true)}
+              <div>
+                <CardRow
+                  data={{
+                    title: "상태",
+                  }}
+                  slot={{ shortcutClassName: "size-[24px]" }}
                 />
+                <div className="flex items-center">
+                  {data.isDeleted ? (
+                    <StateText state={"탈퇴"} />
+                  ) : data.isActive ? (
+                    <StateText state={"활성화"} />
+                  ) : (
+                    <StateText state={"비활성화"} />
+                  )}
+                </div>
+              </div>
+
+              {!data.isDeleted && (
+                <Popover>
+                  <PopoverTrigger className="h-fit" asChild>
+                    <IconButton
+                      size="custom"
+                      icon={<ThreeDot className="size-[24px]" />}
+                    />
+                  </PopoverTrigger>
+                  <PopoverContent
+                    align="start"
+                    side="bottom"
+                    className="w-auto shadow-none border-0 p-0"
+                  >
+                    <PopoverClose>
+                      <DropDownMenu>
+                        <ButtonTextList
+                          size="small"
+                          onClick={userActivateModal}
+                        >
+                          <StateText
+                            state={"활성화"}
+                            textClassName="text-caption1-regular text-label-normal py-[2px]"
+                          />
+                        </ButtonTextList>
+                        <ButtonTextList
+                          size="small"
+                          onClick={userDeActivateModal}
+                        >
+                          <StateText
+                            state={"비활성화"}
+                            textClassName="text-caption1-regular text-label-normal py-[2px]"
+                          />
+                        </ButtonTextList>
+                      </DropDownMenu>
+                    </PopoverClose>
+                  </PopoverContent>
+                </Popover>
               )}
             </div>
-            {/* 닉네임 수정 */}
-            {isNickEdit ? (
-              <TextField
-                size="medium"
-                value={nickName}
-                errorText={isNickError ? "자음, 모음은 사용이 불가합니다." : ""}
-                maxLength={30}
-                buttonElement={
-                  <Text
-                    className="text-label1-normal-regular cursor-pointer"
-                    onClick={() => {
-                      if (hasHangulJamo(nickName)) {
-                        setIsNickError(true);
-                        return;
-                      }
-                      userNickChangeFn({
-                        id: Number(id),
-                        data: { nickname: nickName },
-                      });
-                    }}
-                  >
-                    수정
-                  </Text>
-                }
-                onChange={(e) => {
-                  setIsNickError(false);
-                  //유효한 문자만 입력
-                  const filtered = filterInput(e.target.value);
-                  setNickName(filtered);
-                }}
-              />
-            ) : (
-              <></>
-            )}
+
+            <CardRow
+              data={{
+                title: "회원번호",
+                content: data.id.toString(),
+              }}
+            />
+            <div>
+              <div className="flex items-center justify-between gap-[12px]">
+                <CardRow
+                  data={{
+                    title: "닉네임",
+                    content: isNickEdit ? "" : data.name,
+                  }}
+                />
+                {isNickEdit ? (
+                  <></>
+                ) : (
+                  <IconButton
+                    className="h-fit"
+                    icon={<Write className="size-[24px]" />}
+                    onClick={() => setIsNickEdit(true)}
+                  />
+                )}
+              </div>
+              {/* 닉네임 수정 */}
+              {isNickEdit ? (
+                <TextField
+                  size="medium"
+                  value={nickName}
+                  errorText={
+                    isNickError ? "자음, 모음은 사용이 불가합니다." : ""
+                  }
+                  maxLength={30}
+                  buttonElement={
+                    <Text
+                      className="text-label1-normal-regular cursor-pointer"
+                      onClick={() => {
+                        if (hasHangulJamo(nickName)) {
+                          setIsNickError(true);
+                          return;
+                        }
+                        userNickChangeFn({
+                          id: Number(id),
+                          data: { nickname: nickName },
+                        });
+                      }}
+                    >
+                      수정
+                    </Text>
+                  }
+                  onChange={(e) => {
+                    setIsNickError(false);
+                    //유효한 문자만 입력
+                    const filtered = filterInput(e.target.value);
+                    setNickName(filtered);
+                  }}
+                />
+              ) : (
+                <></>
+              )}
+            </div>
+
+            <CardRow
+              data={{
+                title: "이메일",
+                content: data.email,
+              }}
+            />
+            <CardRow
+              data={{
+                title: "가입 계정",
+                content: providerCodes.find(
+                  (code) => code.commDetailCode === data.providerCode
+                )?.detailCodeName,
+              }}
+            />
+            <CardRow
+              data={{
+                title: "마케팅",
+                content: data.marketingConsentAt,
+              }}
+            />
+            <CardRow
+              data={{
+                title: "최초 가입일",
+                content: data.createdAt,
+              }}
+            />
+            <CardRow
+              data={{
+                title: "최초 결제일",
+                content: data.firstPaymentDate ? data.firstPaymentDate : "-",
+              }}
+            />
+            <CardRow
+              data={{
+                title: "다음 결제일",
+                content: data.nextBillingDate ? data.nextBillingDate : "-",
+              }}
+            />
           </div>
+          <div className="w-full h-full flex flex-col">
+            {/* 메인 카드 부분 */}
 
-          <CardRow
-            data={{
-              title: "이메일",
-              content: data.email,
-            }}
-          />
-          <CardRow
-            data={{
-              title: "가입 계정",
-              content: providerCodes.find(
-                (code) => code.commDetailCode === data.providerCode
-              )?.detailCodeName,
-            }}
-          />
-          <CardRow
-            data={{
-              title: "마케팅",
-              content: data.marketingConsentAt,
-            }}
-          />
-          <CardRow
-            data={{
-              title: "최초 가입일",
-              content: data.createdAt,
-            }}
-          />
-          <CardRow
-            data={{
-              title: "최초 결제일",
-              content: data.firstPaymentDate ? data.firstPaymentDate : "-",
-            }}
-          />
-          <CardRow
-            data={{
-              title: "다음 결제일",
-              content: data.nextBillingDate ? data.nextBillingDate : "-",
-            }}
-          />
+            {/* 기본일 때 */}
+            {selectedMenu === "기본" && (
+              <UserDetailDefault setSeletedMenu={setSelectedMenu} />
+            )}
+            {/* 결제내역 일 때 */}
+            {selectedMenu === "결제 내역" && <UserDetailExchange />}
+
+            {/* 포인트내역 일 때 */}
+            {selectedMenu === "포인트 내역" && <UserDetailPoint />}
+
+            {/* 출판내역 일 때 */}
+            {selectedMenu === "출판 내역" && <UserDetailPublish />}
+          </div>
         </div>
-        <div className="w-full h-full flex flex-col">
-          {/* 메인 카드 부분 */}
-
-          {/* 기본일 때 */}
-          {selectedMenu === "기본" && (
-            <UserDetailDefault setSeletedMenu={setSelectedMenu} />
-          )}
-          {/* 결제내역 일 때 */}
-          {selectedMenu === "결제 내역" && <UserDetailExchange />}
-
-          {/* 포인트내역 일 때 */}
-          {selectedMenu === "포인트 내역" && <UserDetailPoint />}
-
-          {/* 출판내역 일 때 */}
-          {selectedMenu === "출판 내역" && <UserDetailPublish />}
-        </div>
-      </div>
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 
   //유저 상태 텍스트 표시

@@ -67,9 +67,7 @@ import Template from "@/pages/Video/Template/Template";
 import TemplateDetail from "@/pages/Video/Template/TemplateDetail";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import FetchTest from "@/pages/FetchTest";
 import { Modal } from "@/components/Modal";
-import ModalTest from "@/pages/ModalTest";
 import UserDetail from "@/pages/User/Detail/UserDetail";
 import PaymentManagement from "@/pages/User/PaymentManagement";
 import Withdrawalmanagement from "@/pages/User/Withdrawalmanagement";
@@ -198,9 +196,6 @@ function App() {
                 element={<AccountDetail />}
               />
               <Route path={USER_DETAIL} element={<UserDetail />} />
-
-              <Route path="/fetchTest" element={<FetchTest />} />
-              <Route path="/modalTest" element={<ModalTest />} />
             </Route>
 
             <Route path="*" element={<div>404</div>} />

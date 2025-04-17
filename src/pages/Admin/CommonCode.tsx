@@ -244,157 +244,160 @@ function CommonCode() {
   }, [formState.selectGroupCode]);
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={<>관리자 / 공통 코드 관리</>}
-      button={
-        <div className="flex gap-[8px]">
-          <OutlinedButton
-            className="w-[180px] h-[48px] p-0"
-            type="assistive"
-            onClick={handleSaveBtn}
-          >
-            저장
-          </OutlinedButton>
-          <Button
-            className="w-[180px] h-[48px] p-0"
-            onClick={() => handleUpdateModal("create")}
-          >
-            추가
-          </Button>
-        </div>
-      }
-    >
-      <div className="h-[60px]" />
-      <div className="flex gap-[20px] justify-between">
-        <div className="w-full">
-          <TableContainer>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableCell isHeader>그룹코드명</TableCell>
-                  <TableCell isHeader>그룹 코드 ID</TableCell>
-                  <TableCell isHeader>선택</TableCell>
-                </TableRow>
-              </TableHeader>
+    <>
+      <title>북카롱 | 공통 코드 관리</title>
+      <BreadcrumbContainer
+        breadcrumbNode={<>관리자 / 공통 코드 관리</>}
+        button={
+          <div className="flex gap-[8px]">
+            <OutlinedButton
+              className="w-[180px] h-[48px] p-0"
+              type="assistive"
+              onClick={handleSaveBtn}
+            >
+              저장
+            </OutlinedButton>
+            <Button
+              className="w-[180px] h-[48px] p-0"
+              onClick={() => handleUpdateModal("create")}
+            >
+              추가
+            </Button>
+          </div>
+        }
+      >
+        <div className="h-[60px]" />
+        <div className="flex gap-[20px] justify-between">
+          <div className="w-full">
+            <TableContainer>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableCell isHeader>그룹코드명</TableCell>
+                    <TableCell isHeader>그룹 코드 ID</TableCell>
+                    <TableCell isHeader>선택</TableCell>
+                  </TableRow>
+                </TableHeader>
 
-              <TableBody>
-                {/* 그룹코드 목록 */}
-                {allGroupCodes
-                  .filter((groupCode) =>
-                    groupCodes.includes(groupCode.commGroupCode)
-                  )
-                  .sort(
-                    //그룹 코드 순서 정렬
-                    (a, b) =>
-                      groupCodes.indexOf(a.commGroupCode) -
-                      groupCodes.indexOf(b.commGroupCode)
-                  )
-                  .map((groupCode, index) => {
+                <TableBody>
+                  {/* 그룹코드 목록 */}
+                  {allGroupCodes
+                    .filter((groupCode) =>
+                      groupCodes.includes(groupCode.commGroupCode)
+                    )
+                    .sort(
+                      //그룹 코드 순서 정렬
+                      (a, b) =>
+                        groupCodes.indexOf(a.commGroupCode) -
+                        groupCodes.indexOf(b.commGroupCode)
+                    )
+                    .map((groupCode, index) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell>{groupCode.commGroupCode}</TableCell>
+                          <TableCell>{groupCode.groupCodeName}</TableCell>
+                          <TableCell>
+                            <div>
+                              <Radio
+                                checked={
+                                  formState.selectGroupCode ===
+                                  groupCode.commGroupCode
+                                }
+                                onChecked={() =>
+                                  //상세코드 조회할 그룹코드 선택
+                                  {
+                                    updateFormState(
+                                      "selectGroupCode",
+                                      groupCode.commGroupCode
+                                    );
+                                    setIsReverse(false);
+                                  }
+                                }
+                              />
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div className="w-full">
+            <TableContainer>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableCell isHeader>
+                      <div className="flex items-center justify-center gap-[2px]">
+                        No{" "}
+                        <IconButton
+                          icon={<Updown />}
+                          onClick={() => setIsReverse(!isReverse)}
+                        />
+                      </div>
+                    </TableCell>
+                    <TableCell isHeader>코드 ID</TableCell>
+                    <TableCell isHeader>코드명</TableCell>
+                    <TableCell isHeader>싱세 설명</TableCell>
+                    <TableCell isHeader>노출 상태</TableCell>
+                    <TableCell isHeader>순서변경</TableCell>
+                    <TableCell isHeader>상세정보</TableCell>
+                  </TableRow>
+                </TableHeader>
+
+                <TableBody>
+                  {/* 상세코드 목록 */}
+                  {(isReverse
+                    ? [...formState.detailCodes].reverse()
+                    : formState.detailCodes
+                  ).map((item, index) => {
                     return (
                       <TableRow key={index}>
-                        <TableCell>{groupCode.commGroupCode}</TableCell>
-                        <TableCell>{groupCode.groupCodeName}</TableCell>
+                        <TableCell>{item.sortOrd}</TableCell>
+                        <TableCell>{item.commDetailCode}</TableCell>
+                        <TableCell>{item.detailCodeName}</TableCell>
+                        <TableCell>{item.detailCodeDesc}</TableCell>
                         <TableCell>
-                          <div>
-                            <Radio
-                              checked={
-                                formState.selectGroupCode ===
-                                groupCode.commGroupCode
-                              }
-                              onChecked={() =>
-                                //상세코드 조회할 그룹코드 선택
-                                {
-                                  updateFormState(
-                                    "selectGroupCode",
-                                    groupCode.commGroupCode
-                                  );
-                                  setIsReverse(false);
-                                }
-                              }
-                            />
-                          </div>
+                          <Checkbox
+                            checked={item.isUsed}
+                            onClick={() => {
+                              handleExposure(item);
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={item.sortOrd.toString()}
+                            slot={{ inputClassName: "text-center" }}
+                            onChange={(e) => {
+                              // 숫자만 필터링
+                              const numericValue = e.target.value.replace(
+                                /\D/g,
+                                ""
+                              );
+                              handleSortOrd(item, Number(numericValue));
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <IconButton
+                            icon={
+                              <ThreeDot className="size-[24px] fill-label-alternative" />
+                            }
+                            onClick={() => handleUpdateModal("update", item)}
+                          />
                         </TableCell>
                       </TableRow>
                     );
                   })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
         </div>
-        <div className="w-full">
-          <TableContainer>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableCell isHeader>
-                    <div className="flex items-center justify-center gap-[2px]">
-                      No{" "}
-                      <IconButton
-                        icon={<Updown />}
-                        onClick={() => setIsReverse(!isReverse)}
-                      />
-                    </div>
-                  </TableCell>
-                  <TableCell isHeader>코드 ID</TableCell>
-                  <TableCell isHeader>코드명</TableCell>
-                  <TableCell isHeader>싱세 설명</TableCell>
-                  <TableCell isHeader>노출 상태</TableCell>
-                  <TableCell isHeader>순서변경</TableCell>
-                  <TableCell isHeader>상세정보</TableCell>
-                </TableRow>
-              </TableHeader>
-
-              <TableBody>
-                {/* 상세코드 목록 */}
-                {(isReverse
-                  ? [...formState.detailCodes].reverse()
-                  : formState.detailCodes
-                ).map((item, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell>{item.sortOrd}</TableCell>
-                      <TableCell>{item.commDetailCode}</TableCell>
-                      <TableCell>{item.detailCodeName}</TableCell>
-                      <TableCell>{item.detailCodeDesc}</TableCell>
-                      <TableCell>
-                        <Checkbox
-                          checked={item.isUsed}
-                          onClick={() => {
-                            handleExposure(item);
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          value={item.sortOrd.toString()}
-                          slot={{ inputClassName: "text-center" }}
-                          onChange={(e) => {
-                            // 숫자만 필터링
-                            const numericValue = e.target.value.replace(
-                              /\D/g,
-                              ""
-                            );
-                            handleSortOrd(item, Number(numericValue));
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <IconButton
-                          icon={
-                            <ThreeDot className="size-[24px] fill-label-alternative" />
-                          }
-                          onClick={() => handleUpdateModal("update", item)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-      </div>
-    </BreadcrumbContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

@@ -166,109 +166,115 @@ function Cover() {
   };
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={<>전자책 관리 / 표지 관리</>}
-      button={
-        <Link to={COVER_CREATE}>
-          <Button className="rounded-radius-admin w-[180px] h-[48px]">
-            등록
-          </Button>
-        </Link>
-      }
-    >
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="등록일"
-        dispatch={dispatch}
-        excel={true}
-        excelAllDataOnClick={handleAllDataExcelDownload}
-        excelFilterDataOnClick={handleFilterDataExcelDownload}
-        CustomSelectComponent={
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            defaultValue="ALL"
-            onValueChange={handleisVisible}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">모든 상태</SelectItem>
-                <SelectItem value="true">노출</SelectItem>
-                <SelectItem value="false">비노출</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
+    <>
+      <title>북카롱 | 표지 관리</title>
+      <BreadcrumbContainer
+        breadcrumbNode={<>전자책 관리 / 표지 관리</>}
+        button={
+          <Link to={COVER_CREATE}>
+            <Button className="rounded-radius-admin w-[180px] h-[48px]">
+              등록
+            </Button>
+          </Link>
         }
-      />
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>
-                <div className="flex items-center justify-center gap-[2px]">
-                  No <IconButton icon={<Updown />} onClick={handleSortOrder} />
-                </div>
-              </TableCell>
-              <TableCell isHeader>표지등록일</TableCell>
-              <TableCell isHeader>표지 판매일</TableCell>
-              <TableCell isHeader>표지명</TableCell>
-              <TableCell isHeader>표지번호</TableCell>
-              <TableCell isHeader>가격</TableCell>
-              <TableCell isHeader>구매자</TableCell>
-              <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+      >
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="등록일"
+          dispatch={dispatch}
+          excel={true}
+          excelAllDataOnClick={handleAllDataExcelDownload}
+          excelFilterDataOnClick={handleFilterDataExcelDownload}
+          CustomSelectComponent={
+            <SelectBox
+              placeholder="모든 상태"
+              className="min-w-[240px]"
+              size="large"
+              defaultValue="ALL"
+              onValueChange={handleisVisible}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="ALL">모든 상태</SelectItem>
+                  <SelectItem value="true">노출</SelectItem>
+                  <SelectItem value="false">비노출</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          }
+        />
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>
+                  <div className="flex items-center justify-center gap-[2px]">
+                    No{" "}
+                    <IconButton icon={<Updown />} onClick={handleSortOrder} />
+                  </div>
+                </TableCell>
+                <TableCell isHeader>표지등록일</TableCell>
+                <TableCell isHeader>표지 판매일</TableCell>
+                <TableCell isHeader>표지명</TableCell>
+                <TableCell isHeader>표지번호</TableCell>
+                <TableCell isHeader>가격</TableCell>
+                <TableCell isHeader>구매자</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data.list.map((item, index) => {
-              return (
-                <TableRow key={index}>
-                  <TableCell>{item.id}</TableCell>
-                  <TableCell>
-                    {formatDateTimeToJSX(item.registeredAt)}
-                  </TableCell>
-                  <TableCell>{item.soldAt ? item.soldAt : "-"}</TableCell>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell>{item.coverNo}</TableCell>
-                  <TableCell>{item.price}</TableCell>
-                  <TableCell>{item.buyerName ? item.buyerName : "-"}</TableCell>
-                  <TableCell className="flex h-[inherit] items-center justify-center content-center">
-                    {item.isVisible ? (
-                      <Label
-                        size="medium"
-                        className="bg-status-positive/[0.08] text-status-positive"
+            <TableBody>
+              {data.list.map((item, index) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>
+                      {formatDateTimeToJSX(item.registeredAt)}
+                    </TableCell>
+                    <TableCell>{item.soldAt ? item.soldAt : "-"}</TableCell>
+                    <TableCell>{item.title}</TableCell>
+                    <TableCell>{item.coverNo}</TableCell>
+                    <TableCell>{item.price}</TableCell>
+                    <TableCell>
+                      {item.buyerName ? item.buyerName : "-"}
+                    </TableCell>
+                    <TableCell className="flex h-[inherit] items-center justify-center content-center">
+                      {item.isVisible ? (
+                        <Label
+                          size="medium"
+                          className="bg-status-positive/[0.08] text-status-positive"
+                        >
+                          노출
+                        </Label>
+                      ) : (
+                        <Label size="medium">비노출</Label>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Link
+                        className="flex justify-center"
+                        to={`${COVER_DETAIL}/${item.id}`}
                       >
-                        노출
-                      </Label>
-                    ) : (
-                      <Label size="medium">비노출</Label>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${COVER_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
-                        }
-                      />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {data.meta.totalPage > 1 && (
-        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
-      )}
-    </BreadcrumbContainer>
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
+      </BreadcrumbContainer>
+    </>
   );
 }
 

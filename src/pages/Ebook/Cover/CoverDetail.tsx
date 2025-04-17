@@ -67,46 +67,49 @@ function CoverDetail() {
   });
 
   return (
-    <CoverDataTemplate
-      type="detail"
-      coverName={coverName}
-      setCoverName={setCoverName}
-      coverNumber={coverNumber}
-      creater={creater}
-      setCreater={setCreater}
-      price={price}
-      setPrice={setPrice}
-      sampleImgName={sampleImgName}
-      setSampleImgName={setSampleImgName}
-      sampleImgId={sampleImgId}
-      setSampleImgId={setSampleImgId}
-      designFileName={designFileName}
-      setDesignFileName={setDesignFileName}
-      designFileId={designFileId}
-      setDesignFileId={setDesignFileId}
-      isCoverExposure={isCoverExposure}
-      setIsCoverExposure={setIsCoverExposure}
-      intro={intro}
-      setIntro={setIntro}
-      onClickSave={() => {
-        //표지 수정
-        const postData: CoverCreateReq = {
-          title: coverName,
-          author: creater,
-          price: price ?? 0,
-          isVisible: isCoverExposure,
-          description: intro,
-        };
+    <>
+      <title>북카롱 | 표지 관리 상세</title>
+      <CoverDataTemplate
+        type="detail"
+        coverName={coverName}
+        setCoverName={setCoverName}
+        coverNumber={coverNumber}
+        creater={creater}
+        setCreater={setCreater}
+        price={price}
+        setPrice={setPrice}
+        sampleImgName={sampleImgName}
+        setSampleImgName={setSampleImgName}
+        sampleImgId={sampleImgId}
+        setSampleImgId={setSampleImgId}
+        designFileName={designFileName}
+        setDesignFileName={setDesignFileName}
+        designFileId={designFileId}
+        setDesignFileId={setDesignFileId}
+        isCoverExposure={isCoverExposure}
+        setIsCoverExposure={setIsCoverExposure}
+        intro={intro}
+        setIntro={setIntro}
+        onClickSave={() => {
+          //표지 수정
+          const postData: CoverCreateReq = {
+            title: coverName,
+            author: creater,
+            price: price ?? 0,
+            isVisible: isCoverExposure,
+            description: intro,
+          };
 
-        if (sampleImgId) {
-          postData.coverSampleUploadId = sampleImgId;
-        }
-        if (designFileId) {
-          postData.coverDesignUploadId = designFileId;
-        }
-        coverUpdateFn({ id: Number(id), data: postData });
-      }}
-    />
+          if (sampleImgId) {
+            postData.coverSampleUploadId = sampleImgId;
+          }
+          if (designFileId) {
+            postData.coverDesignUploadId = designFileId;
+          }
+          coverUpdateFn({ id: Number(id), data: postData });
+        }}
+      />
+    </>
   );
 }
 

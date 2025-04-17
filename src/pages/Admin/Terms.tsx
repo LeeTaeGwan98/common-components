@@ -49,72 +49,75 @@ function Terms() {
   });
 
   return (
-    <BreadcrumbContainer
-      breadcrumbNode={<>관리자 / 약관 관리 </>}
-      button={
-        <Link to={TERMS_REGISTRATION}>
-          <Button className="rounded-radius-admin w-[180px] h-[48px]">
-            등록
-          </Button>
-        </Link>
-      }
-    >
-      <div className="h-[60px]" />
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>수정일</TableCell>
-              <TableCell isHeader>적용일</TableCell>
-              <TableCell isHeader>수정인</TableCell>
-              <TableCell isHeader>구분</TableCell>
-              <TableCell isHeader>이용약관명</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
-            </TableRow>
-          </TableHeader>
+    <>
+      <title>북카롱 | 약관 관리</title>
+      <BreadcrumbContainer
+        breadcrumbNode={<>관리자 / 약관 관리 </>}
+        button={
+          <Link to={TERMS_REGISTRATION}>
+            <Button className="rounded-radius-admin w-[180px] h-[48px]">
+              등록
+            </Button>
+          </Link>
+        }
+      >
+        <div className="h-[60px]" />
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>수정일</TableCell>
+                <TableCell isHeader>적용일</TableCell>
+                <TableCell isHeader>수정인</TableCell>
+                <TableCell isHeader>구분</TableCell>
+                <TableCell isHeader>이용약관명</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {data?.map((item: TermsType, index: number) => {
-              return (
-                <TableRow key={index}>
-                  <TableCell>
-                    <span>
-                      {formatDateTimeToJSX(formatToUTCString(item.updatedAt))}
-                    </span>
-                    <br />
-                  </TableCell>
-                  <TableCell>
-                    {item.effectiveDate
-                      ? formatToUTCString(
-                          item.effectiveDate ?? "",
-                          "yyyy-MM-dd"
-                        )
-                      : "-"}
-                  </TableCell>
-                  <TableCell className="underline">
-                    <Link to={ACCOUNT}>{item.name}</Link>
-                  </TableCell>
-                  <TableCell>{codeToName(typeCodes, item.type)}</TableCell>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell>
-                    <Link
-                      className="flex justify-center"
-                      to={`${TERMS_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
-                        }
-                      />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </BreadcrumbContainer>
+            <TableBody>
+              {data?.map((item: TermsType, index: number) => {
+                return (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <span>
+                        {formatDateTimeToJSX(formatToUTCString(item.updatedAt))}
+                      </span>
+                      <br />
+                    </TableCell>
+                    <TableCell>
+                      {item.effectiveDate
+                        ? formatToUTCString(
+                            item.effectiveDate ?? "",
+                            "yyyy-MM-dd"
+                          )
+                        : "-"}
+                    </TableCell>
+                    <TableCell className="underline">
+                      <Link to={ACCOUNT}>{item.name}</Link>
+                    </TableCell>
+                    <TableCell>{codeToName(typeCodes, item.type)}</TableCell>
+                    <TableCell>{item.title}</TableCell>
+                    <TableCell>
+                      <Link
+                        className="flex justify-center"
+                        to={`${TERMS_DETAIL}/${item.id}`}
+                      >
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </BreadcrumbContainer>
+    </>
   );
 }
 

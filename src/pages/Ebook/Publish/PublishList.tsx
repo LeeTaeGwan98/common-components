@@ -301,279 +301,286 @@ function PublishList() {
   };
 
   return (
-    <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
-      <SubTitleBar
-        filterInfo={filterInfo}
-        title="제출일"
-        dispatch={dispatch}
-        excel={true}
-        excelAllDataOnClick={handleAllDataExcelDownload}
-        excelFilterDataOnClick={handleFilterDataExcelDownload}
-        CustomSelectComponent={
-          <SelectBox
-            placeholder="모든 상태"
-            className="min-w-[240px]"
-            size="large"
-            defaultValue="ALL"
-            onValueChange={handleisVisible}
-          >
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">모든 상태</SelectItem>
-                <SelectItem value="CO017002">검수중</SelectItem>
-                <SelectItem value="CO017003">출간</SelectItem>
-                <SelectItem value="CO017004">보류</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </SelectBox>
-        }
-      />
+    <>
+      <title>북카롱 | 출판 목록</title>
+      <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 출판 목록</>}>
+        <SubTitleBar
+          filterInfo={filterInfo}
+          title="제출일"
+          dispatch={dispatch}
+          excel={true}
+          excelAllDataOnClick={handleAllDataExcelDownload}
+          excelFilterDataOnClick={handleFilterDataExcelDownload}
+          CustomSelectComponent={
+            <SelectBox
+              placeholder="모든 상태"
+              className="min-w-[240px]"
+              size="large"
+              defaultValue="ALL"
+              onValueChange={handleisVisible}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="ALL">모든 상태</SelectItem>
+                  <SelectItem value="CO017002">검수중</SelectItem>
+                  <SelectItem value="CO017003">출간</SelectItem>
+                  <SelectItem value="CO017004">보류</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
+          }
+        />
 
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableCell isHeader>
-                <div className="flex gap-[2px] items-center">
-                  <Checkbox
-                    checked={ebookData.list.every((item) =>
-                      selectId.includes(item.id)
-                    )}
-                    onClick={() => {
-                      const validStatusList = ["CO017001", "CO017002"];
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableCell isHeader>
+                  <div className="flex gap-[2px] items-center">
+                    <Checkbox
+                      checked={ebookData.list.every((item) =>
+                        selectId.includes(item.id)
+                      )}
+                      onClick={() => {
+                        const validStatusList = ["CO017001", "CO017002"];
 
-                      // 조건에 맞는 항목만 필터링
-                      const filteredItems = ebookData.list.filter((item) =>
-                        validStatusList.includes(item.status)
-                      );
-                      const filteredIds = filteredItems.map((item) => item.id);
-
-                      const isAllSelected = filteredIds.every((id) =>
-                        selectId.includes(id)
-                      );
-
-                      if (isAllSelected) {
-                        // 조건에 맞는 아이디만 제거
-                        setSelectId(
-                          selectId.filter((id) => !filteredIds.includes(id))
+                        // 조건에 맞는 항목만 필터링
+                        const filteredItems = ebookData.list.filter((item) =>
+                          validStatusList.includes(item.status)
                         );
-                      } else {
-                        // 조건에 맞는 아이디들만 추가 (중복 없이)
-                        const newIds = filteredIds.filter(
-                          (id) => !selectId.includes(id)
+                        const filteredIds = filteredItems.map(
+                          (item) => item.id
                         );
-                        setSelectId([...selectId, ...newIds]);
-                      }
-                    }}
-                  />
 
-                  <Popover>
-                    <PopoverTrigger asChild className="cursor-pointer">
-                      <IconButton
-                        type="normal"
-                        //className="p-[8px] ml-[-6px]"
-                        icon={<DownArrow width={20} height={20} />}
-                      />
-                    </PopoverTrigger>
-                    <PopoverContent
-                      align="start"
-                      className="w-fit h-fit  bg-white items-start pl-[12px] pr-[8px] rounded-radius-admin"
-                    >
-                      <div className=" text-caption1-regular flex flex-col gap-[12px]">
-                        <Text
-                          onClick={() => {
-                            // 전체 선택: 현재 페이지에 있는 전자책 id 전부 선택
-                            const allIds = ebookData.list
-                              .filter(
-                                (item) =>
-                                  item.status === "CO017001" ||
-                                  item.status === "CO017002"
-                              )
-                              .map((item) => item.id); // 상태가 맞는 아이템만 필터링
-                            setSelectId(allIds);
-                          }}
-                          className="flex items-center text-caption1-regular text-label-normal"
-                        >
-                          <AllSelected className="size-[16px] mr-[2px]" />
-                          전체선택
-                        </Text>
-                        <Text
-                          onClick={() => {
-                            // 전체 해제: 빈 배열로 설정
-                            setSelectId([]);
-                          }}
-                          className="flex items-center text-caption1-regular text-label-normal"
-                        >
-                          <AllDeleted className="size-[16px] mr-[2px]" />
-                          전체해제
-                        </Text>
-                        <Text
-                          onClick={() => {
-                            selectId.forEach((id) => {
-                              approveEbook(id); // 개별 승인 함수 호출
-                            });
-                          }}
-                          className="flex items-center text-caption1-regular text-label-normal"
-                        >
-                          <AllPaused className="size-[16px] text-status-positive mr-[2px]" />
-                          선택승인
-                        </Text>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </TableCell>
-              <TableCell isHeader>
-                <AdminTableTitle title={"제출일"} />
-              </TableCell>
-              <TableCell isHeader>
-                <AdminTableTitle title={"관리자 승인일"} />
-              </TableCell>
-              <TableCell isHeader>
-                <AdminTableTitle title={"닉네임"} />
-              </TableCell>
-              <TableCell isHeader>
-                <AdminTableTitle title={"전자책 정가(판매가)"} />
-              </TableCell>
-              <TableCell isHeader>
-                <AdminTableTitle title={"도서명"} />
-              </TableCell>
-              <TableCell isHeader>
-                <AdminTableTitle title={"저자/역자"} />
-              </TableCell>
-              <TableCell isHeader>
-                <AdminTableTitle title={"상태"} />
-              </TableCell>
-              <TableCell isHeader>
-                <AdminTableTitle title={"관리자"} />
-              </TableCell>
-              <TableCell isHeader>
-                <AdminTableTitle title={"상세정보"} />
-              </TableCell>
-            </TableRow>
-          </TableHeader>
+                        const isAllSelected = filteredIds.every((id) =>
+                          selectId.includes(id)
+                        );
 
-          <TableBody>
-            {ebookData.list.map((item, index) => {
-              return (
-                <TableRow key={index}>
-                  {/* 체크박스 */}
-                  <TableCell>
-                    {item.status === "CO017001" ||
-                    item.status === "CO017002" ? (
-                      <Checkbox
-                        checked={selectId.some((id) => item.id === id)}
-                        onClick={() => {
-                          if (selectId.some((id) => item.id === id)) {
-                            // selectId에서 항목 제거
-                            setSelectId(
-                              selectId.filter((id) => item.id !== id)
-                            );
-                          } else {
-                            // selectId에 항목 추가
-                            setSelectId([...selectId, item.id]);
-                          }
-                        }}
-                      />
-                    ) : (
-                      <div>-</div>
-                    )}
-                  </TableCell>
-                  {/* 제출일 */}
-                  <TableCell>
-                    <AdminTableDescription
-                      className={"w-[83px]"}
-                      text={
-                        item.submittedAt
-                          ? formatToUTCString(item.submittedAt)
-                          : "-"
-                      }
-                    />
-                  </TableCell>
-                  {/* 승인일 */}
-                  <TableCell className="w-[88px]">
-                    <AdminTableDescription
-                      className={"w-[88px]"}
-                      text={
-                        item.approvedAt
-                          ? formatToUTCString(item.approvedAt)
-                          : "-"
-                      }
-                    />
-                  </TableCell>
-                  {/* 닉네임 */}
-                  <TableCell>
-                    <AdminTableDescription
-                      className={"w-[99px]"}
-                      text={item.name}
-                    />
-                  </TableCell>
-                  {/* 전자책 정가(판매가) */}
-                  <TableCell>
-                    <AdminTableDescription
-                      className={"w-[130px]"}
-                      text={item.price}
-                    />
-                  </TableCell>
-                  {/* 도서명 */}
-                  <TableCell>
-                    <AdminTableDescription
-                      className={"w-[300px] text-left"}
-                      text={item.title}
-                    />
-                  </TableCell>
-                  {/* 저자/역자 */}
-                  <TableCell>
-                    <AdminTableDescription
-                      className={"w-[99px]"}
-                      text={item.author}
-                    />
-                  </TableCell>
-                  {/* 상태 */}
-                  <TableCell>
-                    <StatusView
-                      status={item.status}
-                      setStatus={(value: string) => {
-                        handleStatusChange(item.id, value);
+                        if (isAllSelected) {
+                          // 조건에 맞는 아이디만 제거
+                          setSelectId(
+                            selectId.filter((id) => !filteredIds.includes(id))
+                          );
+                        } else {
+                          // 조건에 맞는 아이디들만 추가 (중복 없이)
+                          const newIds = filteredIds.filter(
+                            (id) => !selectId.includes(id)
+                          );
+                          setSelectId([...selectId, ...newIds]);
+                        }
                       }}
-                      ebookId={item.id}
-                      refetch={refetch}
                     />
-                  </TableCell>
-                  {/* 관리자 */}
-                  <TableCell>
-                    <AdminTableDescription
-                      className={"w-[99px]"}
-                      text={item.approveAdminName ? item.approveAdminName : "-"}
-                    />
-                  </TableCell>
-                  {/* 상세정보 */}
-                  <TableCell className="w-[56px]">
-                    <Link
-                      className="flex justify-center"
-                      to={`${PUBLISH_LIST_DETAIL}/${item.id}`}
-                    >
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
+
+                    <Popover>
+                      <PopoverTrigger asChild className="cursor-pointer">
+                        <IconButton
+                          type="normal"
+                          //className="p-[8px] ml-[-6px]"
+                          icon={<DownArrow width={20} height={20} />}
+                        />
+                      </PopoverTrigger>
+                      <PopoverContent
+                        align="start"
+                        className="w-fit h-fit  bg-white items-start pl-[12px] pr-[8px] rounded-radius-admin"
+                      >
+                        <div className=" text-caption1-regular flex flex-col gap-[12px]">
+                          <Text
+                            onClick={() => {
+                              // 전체 선택: 현재 페이지에 있는 전자책 id 전부 선택
+                              const allIds = ebookData.list
+                                .filter(
+                                  (item) =>
+                                    item.status === "CO017001" ||
+                                    item.status === "CO017002"
+                                )
+                                .map((item) => item.id); // 상태가 맞는 아이템만 필터링
+                              setSelectId(allIds);
+                            }}
+                            className="flex items-center text-caption1-regular text-label-normal"
+                          >
+                            <AllSelected className="size-[16px] mr-[2px]" />
+                            전체선택
+                          </Text>
+                          <Text
+                            onClick={() => {
+                              // 전체 해제: 빈 배열로 설정
+                              setSelectId([]);
+                            }}
+                            className="flex items-center text-caption1-regular text-label-normal"
+                          >
+                            <AllDeleted className="size-[16px] mr-[2px]" />
+                            전체해제
+                          </Text>
+                          <Text
+                            onClick={() => {
+                              selectId.forEach((id) => {
+                                approveEbook(id); // 개별 승인 함수 호출
+                              });
+                            }}
+                            className="flex items-center text-caption1-regular text-label-normal"
+                          >
+                            <AllPaused className="size-[16px] text-status-positive mr-[2px]" />
+                            선택승인
+                          </Text>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </TableCell>
+                <TableCell isHeader>
+                  <AdminTableTitle title={"제출일"} />
+                </TableCell>
+                <TableCell isHeader>
+                  <AdminTableTitle title={"관리자 승인일"} />
+                </TableCell>
+                <TableCell isHeader>
+                  <AdminTableTitle title={"닉네임"} />
+                </TableCell>
+                <TableCell isHeader>
+                  <AdminTableTitle title={"전자책 정가(판매가)"} />
+                </TableCell>
+                <TableCell isHeader>
+                  <AdminTableTitle title={"도서명"} />
+                </TableCell>
+                <TableCell isHeader>
+                  <AdminTableTitle title={"저자/역자"} />
+                </TableCell>
+                <TableCell isHeader>
+                  <AdminTableTitle title={"상태"} />
+                </TableCell>
+                <TableCell isHeader>
+                  <AdminTableTitle title={"관리자"} />
+                </TableCell>
+                <TableCell isHeader>
+                  <AdminTableTitle title={"상세정보"} />
+                </TableCell>
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {ebookData.list.map((item, index) => {
+                return (
+                  <TableRow key={index}>
+                    {/* 체크박스 */}
+                    <TableCell>
+                      {item.status === "CO017001" ||
+                      item.status === "CO017002" ? (
+                        <Checkbox
+                          checked={selectId.some((id) => item.id === id)}
+                          onClick={() => {
+                            if (selectId.some((id) => item.id === id)) {
+                              // selectId에서 항목 제거
+                              setSelectId(
+                                selectId.filter((id) => item.id !== id)
+                              );
+                            } else {
+                              // selectId에 항목 추가
+                              setSelectId([...selectId, item.id]);
+                            }
+                          }}
+                        />
+                      ) : (
+                        <div>-</div>
+                      )}
+                    </TableCell>
+                    {/* 제출일 */}
+                    <TableCell>
+                      <AdminTableDescription
+                        className={"w-[83px]"}
+                        text={
+                          item.submittedAt
+                            ? formatToUTCString(item.submittedAt)
+                            : "-"
                         }
                       />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {renderEmptyRows()}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {ebookData.meta.totalPage > 1 && (
-        <TableIndicator
-          PaginationMetaType={ebookData.meta}
-          dispatch={dispatch}
-        />
-      )}
-    </BreadcrumbContainer>
+                    </TableCell>
+                    {/* 승인일 */}
+                    <TableCell className="w-[88px]">
+                      <AdminTableDescription
+                        className={"w-[88px]"}
+                        text={
+                          item.approvedAt
+                            ? formatToUTCString(item.approvedAt)
+                            : "-"
+                        }
+                      />
+                    </TableCell>
+                    {/* 닉네임 */}
+                    <TableCell>
+                      <AdminTableDescription
+                        className={"w-[99px]"}
+                        text={item.name}
+                      />
+                    </TableCell>
+                    {/* 전자책 정가(판매가) */}
+                    <TableCell>
+                      <AdminTableDescription
+                        className={"w-[130px]"}
+                        text={item.price}
+                      />
+                    </TableCell>
+                    {/* 도서명 */}
+                    <TableCell>
+                      <AdminTableDescription
+                        className={"w-[300px] text-left"}
+                        text={item.title}
+                      />
+                    </TableCell>
+                    {/* 저자/역자 */}
+                    <TableCell>
+                      <AdminTableDescription
+                        className={"w-[99px]"}
+                        text={item.author}
+                      />
+                    </TableCell>
+                    {/* 상태 */}
+                    <TableCell>
+                      <StatusView
+                        status={item.status}
+                        setStatus={(value: string) => {
+                          handleStatusChange(item.id, value);
+                        }}
+                        ebookId={item.id}
+                        refetch={refetch}
+                      />
+                    </TableCell>
+                    {/* 관리자 */}
+                    <TableCell>
+                      <AdminTableDescription
+                        className={"w-[99px]"}
+                        text={
+                          item.approveAdminName ? item.approveAdminName : "-"
+                        }
+                      />
+                    </TableCell>
+                    {/* 상세정보 */}
+                    <TableCell className="w-[56px]">
+                      <Link
+                        className="flex justify-center"
+                        to={`${PUBLISH_LIST_DETAIL}/${item.id}`}
+                      >
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                        />
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              {renderEmptyRows()}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        {ebookData.meta.totalPage > 1 && (
+          <TableIndicator
+            PaginationMetaType={ebookData.meta}
+            dispatch={dispatch}
+          />
+        )}
+      </BreadcrumbContainer>
+    </>
   );
 }
 
