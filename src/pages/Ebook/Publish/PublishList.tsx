@@ -22,7 +22,6 @@ import {
   useState,
 } from "react";
 import { useModalStore } from "@/store/modalStore";
-import AdminTableTitle from "@/components/common/BookaroongAdmin/AdminTableTitle";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import { Link } from "react-router-dom";
 import { PUBLISH_LIST_DETAIL } from "@/Constants/ServiceUrl";
@@ -422,33 +421,15 @@ function PublishList() {
                     </Popover>
                   </div>
                 </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"제출일"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"관리자 승인일"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"닉네임"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"전자책 정가(판매가)"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"도서명"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"저자/역자"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"상태"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"관리자"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"상세정보"} />
-                </TableCell>
+                <TableCell isHeader>제출일</TableCell>
+                <TableCell isHeader>관리자 승인일</TableCell>
+                <TableCell isHeader>닉네임</TableCell>
+                <TableCell isHeader>전자책 정가(판매가)</TableCell>
+                <TableCell isHeader>도서명</TableCell>
+                <TableCell isHeader>저자/역자</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>관리자</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
               </TableRow>
             </TableHeader>
 
