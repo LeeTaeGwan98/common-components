@@ -133,10 +133,6 @@ const SIDEBAR_MENU_ITEM: SidebarMenuItem[] = [
         path: VIDEOIMAGE,
         isActive: false,
       },
-      {
-        title: "무료 이미지 관리",
-        path: VIDEOIMAGE,
-      },
     ],
   },
   {
