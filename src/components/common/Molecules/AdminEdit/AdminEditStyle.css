@@ -27,6 +27,24 @@
 .ql-container {
   border: none !important;
 }
+.ql-editor.ql-blank::before {
+  font-family: "Pretendard-Regualr", sans-serif; /* 또는 원하는 폰트명 */
+  font-size: 16px !important; /* 폰트 크기도 원하면 조절 */
+  font-style: normal !important;
+  line-height: 24px !important;
+  letter-spacing: 0.0057em !important;
+  font-weight: 400 !important;
+  color: #37383c47 !important; /* placeholder 색상도 조절 가능 */
+}
+
+.ql-editor p {
+  font-family: "Pretendard-Regualr", sans-serif; /* 또는 원하는 폰트명 */
+  font-style: normal !important;
+  line-height: 24px !important;
+  letter-spacing: 0.0057em !important;
+  font-weight: 400 !important;
+  color: #171719 !important; /* placeholder 색상도 조절 가능 */
+}
 
 #custom-toolbar {
   *:focus {

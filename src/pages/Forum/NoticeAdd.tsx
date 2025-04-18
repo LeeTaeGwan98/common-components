@@ -103,7 +103,11 @@ const NoticeRegistration = () => {
             {/* 세번째 줄 */}
             <div className="w-full flex flex-col gap-[8px]">
               내용
-              <AdminEdit value={content} onChange={setContent} />
+              <AdminEdit
+                placeholder="공지사항 내용을 입력해주세요"
+                value={content}
+                onChange={setContent}
+              />
             </div>
             {/* 버튼 */}
             <div className="mt-[32px] flex justify-end space-x-4">

@@ -122,10 +122,9 @@ const ServiceGuideRegistration = () => {
             {/* 첫번째 줄 */}
             <div className="flex  w-full">
               <div className="w-full">
-                서비스 가이드 제목
                 <TextField
+                  label="서비스 가이드 제목"
                   size="large"
-                  className="w-full h-[48px] mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular text-label-normal"
                   value={formState.title}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     updateFormState("title", e.target.value);
@@ -198,6 +197,7 @@ const ServiceGuideRegistration = () => {
               내용
               <AdminEdit
                 value={formState.content}
+                placeholder="서비스 가이드 내용을 입력해주세요"
                 onChange={(value) => updateFormState("content", value)}
               />
             </div>

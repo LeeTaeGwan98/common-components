@@ -166,6 +166,7 @@ const NoticeDetail = () => {
             <div className="w-full flex flex-col gap-[8px]">
               내용
               <AdminEdit
+                placeholder="공지사항 내용을 입력해주세요"
                 value={formState.content}
                 onChange={(value) => updateFormState("content", value)}
               />

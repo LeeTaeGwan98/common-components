@@ -39,10 +39,9 @@ const ServiceGuideRegistration = () => {
           {/* 첫번째 줄 */}
           <div className="flex  w-full">
             <div className="w-full">
-              서비스 가이드 제목
               <TextField
+                label="서비스 가이드 제목"
                 size="large"
-                className="w-full h-[48px] mt-[8px] border border-label-assistive rounded-radius-admin p-[12px]  text-body1-normal-regular text-label-normal"
                 value={titleContents}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setTitleContents(e.target.value);
@@ -101,7 +100,11 @@ const ServiceGuideRegistration = () => {
           {/* 세번째 줄 */}
           <div className="w-full flex flex-col gap-[8px]">
             내용
-            <AdminEdit value={answerContents} onChange={setAnswerContents} />
+            <AdminEdit
+              placeholder="서비스 가이드 내용을 입력해주세요"
+              value={answerContents}
+              onChange={setAnswerContents}
+            />
           </div>
           {/* 버튼 */}
           <div className="mt-[32px] flex justify-end space-x-4">
