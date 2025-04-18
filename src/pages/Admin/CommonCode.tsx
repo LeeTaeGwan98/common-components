@@ -410,7 +410,9 @@ function CommonCode() {
                     <TableCell isHeader>코드명</TableCell>
                     <TableCell isHeader>싱세 설명</TableCell>
                     <TableCell isHeader>노출 상태</TableCell>
-                    <TableCell isHeader>순서변경</TableCell>
+                    <TableCell isHeader className="p-0">
+                      순서변경
+                    </TableCell>
                     <TableCell isHeader>상세정보</TableCell>
                   </TableRow>
                 </TableHeader>
@@ -435,7 +437,7 @@ function CommonCode() {
                             }}
                           />
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="p-0">
                           <div className="flex gap-[8px]">
                             <MoveButton
                               direction="up"
