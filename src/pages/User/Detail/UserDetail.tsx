@@ -211,7 +211,7 @@ function UserDetail() {
         }
       >
         <div className="flex gap-gutter-horizontal">
-          <div className="w-[440px] h-[720px] flex flex-col border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin gap-[12px] rounded-radius-admin">
+          <div className="min-w-[440px] h-[720px] flex flex-col border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin gap-[12px] rounded-radius-admin">
             <div className="flex items-center justify-between gap-[12px]">
               <div>
                 <CardRow
