@@ -15,14 +15,17 @@ import AdminTitle from "@/components/common/Molecules/AdminTitle/AdminTitle";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
+import TutorialDelModal from "@/components/modal/tutorial/TutorialDelModal";
 import { SelectContent, SelectItem } from "@/components/ui/select";
 import {
   COMMON_GROUP_CODE_MAPPING,
   COMMON_GROUP_CODE_UNION_TYPE,
 } from "@/Constants/CommonGroupCode";
+import { useModalStore } from "@/store/modalStore";
 import { SelectGroup } from "@radix-ui/react-select";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 
 interface TutorialDataStyleProps {
   type: "create" | "detail"; //등록/상세 여부
@@ -66,6 +69,7 @@ function TutorialDataTemplate({
   videoUploadedName,
   uploadedVideoUrl,
 }: TutorialDataStyleProps) {
+  const { id } = useParams(); // id 값 추출
   const [videoFile, setVideoFile] = useState<File | null>(null); //영상 파일
   const [tumbnailFile, setTumbnailFile] = useState<File | null>(null); //썸네일 파일
   //튜토리얼 공통 카테고리 가져오기
@@ -137,6 +141,11 @@ function TutorialDataTemplate({
       }
     };
   }, [videoFile]);
+  const { openModal } = useModalStore();
+
+  const handleDeleteModal = () => {
+    openModal(<TutorialDelModal id={Number(id)} />);
+  };
 
   return (
     <BreadcrumbContainer
@@ -153,7 +162,7 @@ function TutorialDataTemplate({
             <Button
               className="w-[180px]"
               size="large"
-              onClick={onclickDelete && onclickDelete}
+              onClick={handleDeleteModal}
             >
               삭제
             </Button>
@@ -172,6 +181,7 @@ function TutorialDataTemplate({
           onChange={(e) => {
             setTutorialName(e.target.value);
           }}
+          maxLength={30}
         />
         <div className="flex *:flex-1 gap-gutter-horizontal">
           {/* 카테고리 */}

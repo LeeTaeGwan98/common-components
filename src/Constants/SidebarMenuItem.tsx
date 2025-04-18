@@ -24,6 +24,7 @@ import {
   VIDEOIMAGE,
   WITHDRAWL_REASON,
 } from "@/Constants/ServiceUrl";
+import { JSX } from "react";
 
 enum MENU_CODE {
   회원관리 = "CO003001",
@@ -35,30 +36,49 @@ enum MENU_CODE {
   관리자계정관리 = "CO003007",
 }
 
-const SIDEBAR_MENU_ITEM = [
+type SidebarMenuItem = {
+  title: string;
+  icon: JSX.Element;
+  path: string;
+  isActive: boolean;
+  code?: MENU_CODE;
+  child: {
+    title: string;
+    path: string;
+    isActive: boolean;
+    code?: MENU_CODE; // code를 옵셔널로 설정
+  }[];
+};
+
+const SIDEBAR_MENU_ITEM: SidebarMenuItem[] = [
   {
     title: "메인",
     icon: <HomeIcon />,
     path: MAIN,
     child: [],
+    isActive: false,
   },
   {
     title: "회원 관리",
     icon: <User />,
     path: USER_LIST,
     code: MENU_CODE.회원관리,
+    isActive: false,
     child: [
       {
         title: "회원 목록",
         path: USER_LIST,
+        isActive: false,
       },
       {
         title: "결제 관리",
         path: PAY,
+        isActive: false,
       },
       {
         title: "탈퇴 사유 관리",
         path: WITHDRAWL_REASON,
+        isActive: false,
       },
     ],
   },
@@ -67,18 +87,22 @@ const SIDEBAR_MENU_ITEM = [
     icon: <BookIcon />,
     path: PUBLISH_LIST,
     code: MENU_CODE.전자책관리,
+    isActive: false,
     child: [
       {
         title: "출판 목록",
         path: PUBLISH_LIST,
+        isActive: false,
       },
       {
         title: "표지 관리",
         path: COVER,
+        isActive: false,
       },
       {
         title: "충전소 관리",
         path: CHARGING,
+        isActive: false,
       },
     ],
   },
@@ -87,18 +111,27 @@ const SIDEBAR_MENU_ITEM = [
     icon: <VideioIcon />,
     path: PLAN,
     code: MENU_CODE.비디오북관리,
+    isActive: false,
     child: [
       {
         title: "플랜 관리",
         path: PLAN,
+        isActive: false,
       },
       {
         title: "튜토리얼 관리",
         path: TUTORIAL,
+        isActive: false,
       },
       {
         title: "템플릿 관리",
         path: TEMPLATE,
+        isActive: false,
+      },
+      {
+        title: "무료 이미지 관리",
+        path: VIDEOIMAGE,
+        isActive: false,
       },
       {
         title: "무료 이미지 관리",
@@ -111,22 +144,27 @@ const SIDEBAR_MENU_ITEM = [
     icon: <BoardIcon />,
     path: INQUIRY,
     code: MENU_CODE.게시판관리,
+    isActive: false,
     child: [
       {
         title: "1:1 문의",
         path: INQUIRY,
+        isActive: false,
       },
       {
         title: "공지사항",
         path: NOTICE,
+        isActive: false,
       },
       {
         title: "서비스 가이드",
         path: SERVICE_GUIDE,
+        isActive: false,
       },
       {
         title: "쳇봇 관리",
         path: CHATBOT,
+        isActive: false,
       },
     ],
   },
@@ -134,21 +172,25 @@ const SIDEBAR_MENU_ITEM = [
     title: "관리자",
     icon: <Manager />,
     path: TERMS,
+    isActive: false,
     child: [
       {
         title: "약관 관리",
         path: TERMS,
         code: MENU_CODE.약관관리,
+        isActive: false,
       },
       {
         title: "계정 관리",
         path: ACCOUNT,
         code: MENU_CODE.관리자계정관리,
+        isActive: false,
       },
       {
         title: "공통 코드 관리",
         path: COMMON_CODE,
         code: MENU_CODE.공통코드관리,
+        isActive: false,
       },
     ],
   },
