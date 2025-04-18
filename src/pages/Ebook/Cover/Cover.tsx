@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/common/Tables";
-import { getCover, GetCoverRes } from "@/api/cover/coverAPI";
+import { getCover, getCoverDetail, GetCoverRes } from "@/api/cover/coverAPI";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useReducer } from "react";
 import { ActionType, TableQueryStringType } from "@/api/common/commonType";
@@ -18,9 +18,13 @@ import SubTitleBar, {
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
-import { COVER_CREATE, COVER_DETAIL } from "@/Constants/ServiceUrl";
+import {
+  COVER_CREATE,
+  COVER_DETAIL,
+  USER_DETAIL,
+} from "@/Constants/ServiceUrl";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import Button from "@/components/common/Atoms/Button/Solid/Button";
 import Label from "@/components/common/Atoms/Label/Label";
@@ -55,6 +59,7 @@ const reducer = <T extends Record<string, any>>(
   };
 };
 function Cover() {
+  const nav = useNavigate();
   const [filterInfo, dispatch] = useReducer(reducer, initState);
 
   //표지 목록 조회 api
@@ -165,6 +170,12 @@ function Cover() {
     );
   };
 
+  const navToBuyerDetail = async (id: number) => {
+    const data = await getCoverDetail(id);
+    const { buyerId } = data.data.data;
+    nav(`${USER_DETAIL}/${buyerId}`);
+  };
+
   return (
     <>
       <title>북카롱 | 표지 관리</title>
@@ -237,7 +248,16 @@ function Cover() {
                     <TableCell>{item.coverNo}</TableCell>
                     <TableCell>{item.price}</TableCell>
                     <TableCell>
-                      {item.buyerName ? item.buyerName : "-"}
+                      {item.buyerName ? (
+                        <span
+                          onClick={() => navToBuyerDetail(item.id)}
+                          className="underline cursor-pointer"
+                        >
+                          {item.buyerName}
+                        </span>
+                      ) : (
+                        "-"
+                      )}
                     </TableCell>
                     <TableCell className="flex h-[inherit] items-center justify-center content-center">
                       {item.isVisible ? (

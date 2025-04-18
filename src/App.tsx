@@ -101,8 +101,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <Toaster />
-      <Modal />
       <BrowserRouter>
+        <Modal />
         <Layout>
           <Routes>
             <Route path={LOGIN} element={<Login />} />

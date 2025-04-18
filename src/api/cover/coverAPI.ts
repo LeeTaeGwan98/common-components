@@ -118,18 +118,22 @@ export interface GetCoverDetailRes {
   isVisible: boolean;
   coverSampleUploadId: number;
   coverDesignUploadId: number;
+  coverSampleMimeType: string;
+  coverDesignMimeType: string;
   coverSampleUploadName: string;
   coverDesignUploadName: string;
   coverSampleUploadUrl: string;
   coverDesignUploadUrl: string;
   description: string;
+  buyerId: number;
+  buyerName: string;
+  registeredAt: string;
+  soldAt: null | string;
 }
 
 //표지 상세 조회
 export const getCoverDetail = (id: number) => {
-  const queryString = `/admin/cover/${id}`;
-
-  const data = API.get<ApiResType<GetCoverDetailRes>>(queryString);
+  const data = API.get<ApiResType<GetCoverDetailRes>>(`/admin/cover/${id}`);
 
   return data;
 };

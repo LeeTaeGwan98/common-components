@@ -22,12 +22,10 @@ import {
   useState,
 } from "react";
 import { useModalStore } from "@/store/modalStore";
-import AdminTableTitle from "@/components/common/BookaroongAdmin/AdminTableTitle";
-import AdminTableDescription from "@/components/common/BookaroongAdmin/AdminTableDescription";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import { Link } from "react-router-dom";
 import { PUBLISH_LIST_DETAIL } from "@/Constants/ServiceUrl";
-import { dateToString, formatToUTCString } from "@/lib/dateParse";
+import { formatToUTCString } from "@/lib/dateParse";
 import {
   QueryObserverResult,
   RefetchOptions,
@@ -35,16 +33,13 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import {
-  EbookDetailRes,
   EbookQueryStringType,
   EbookRes,
   getEbookList,
   postEbookApprove,
 } from "@/api/ebook";
 import { ActionType, TableDataType } from "@/api/common/commonType";
-import SubTitleBar, {
-  boolToString,
-} from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
+import SubTitleBar from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import Label from "@/components/common/Atoms/Label/Label";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import { PublishPostHoldModal } from "@/components/modal/Ebook/Publish/PublishPostHoldModal";
@@ -66,6 +61,7 @@ import {
   COMMON_GROUP_CODE_UNION_TYPE,
 } from "@/Constants/CommonGroupCode";
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import { formatDateTimeToJSX } from "@/lib/dateParse";
 
 interface StatusViewProps {
   status: string;
@@ -117,7 +113,7 @@ const StatusView = ({
       </div>
     ),
     CO017003: (
-      <div className="w-[142px] flex items-center justify-center">
+      <div className="flex items-center justify-center">
         <Label className="text-status-positive bg-status-positive/normal-focus">
           출간
         </Label>
@@ -128,11 +124,9 @@ const StatusView = ({
         onClick={() =>
           openModal(<PublishRejectReasonModal ebookId={ebookId} />)
         }
+        className="cursor-pointer underline"
       >
-        <AdminTableDescription
-          className={"w-[142px] cursor-pointer underline"}
-          text={"보류"}
-        />
+        보류
       </div>
     ),
   };
@@ -427,33 +421,15 @@ function PublishList() {
                     </Popover>
                   </div>
                 </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"제출일"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"관리자 승인일"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"닉네임"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"전자책 정가(판매가)"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"도서명"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"저자/역자"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"상태"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"관리자"} />
-                </TableCell>
-                <TableCell isHeader>
-                  <AdminTableTitle title={"상세정보"} />
-                </TableCell>
+                <TableCell isHeader>제출일</TableCell>
+                <TableCell isHeader>관리자 승인일</TableCell>
+                <TableCell isHeader>닉네임</TableCell>
+                <TableCell isHeader>전자책 정가(판매가)</TableCell>
+                <TableCell isHeader>도서명</TableCell>
+                <TableCell isHeader>저자/역자</TableCell>
+                <TableCell isHeader>상태</TableCell>
+                <TableCell isHeader>관리자</TableCell>
+                <TableCell isHeader>상세정보</TableCell>
               </TableRow>
             </TableHeader>
 
@@ -485,54 +461,28 @@ function PublishList() {
                     </TableCell>
                     {/* 제출일 */}
                     <TableCell>
-                      <AdminTableDescription
-                        className={"w-[83px]"}
-                        text={
-                          item.submittedAt
-                            ? formatToUTCString(item.submittedAt)
-                            : "-"
-                        }
-                      />
+                      {item.submittedAt
+                        ? formatDateTimeToJSX(
+                            formatToUTCString(item.submittedAt)
+                          )
+                        : "-"}
                     </TableCell>
                     {/* 승인일 */}
-                    <TableCell className="w-[88px]">
-                      <AdminTableDescription
-                        className={"w-[88px]"}
-                        text={
-                          item.approvedAt
-                            ? formatToUTCString(item.approvedAt)
-                            : "-"
-                        }
-                      />
+                    <TableCell>
+                      {item.submittedAt
+                        ? formatDateTimeToJSX(
+                            formatToUTCString(item.approvedAt)
+                          )
+                        : "-"}
                     </TableCell>
                     {/* 닉네임 */}
-                    <TableCell>
-                      <AdminTableDescription
-                        className={"w-[99px]"}
-                        text={item.name}
-                      />
-                    </TableCell>
+                    <TableCell>{item.name}</TableCell>
                     {/* 전자책 정가(판매가) */}
-                    <TableCell>
-                      <AdminTableDescription
-                        className={"w-[130px]"}
-                        text={item.price}
-                      />
-                    </TableCell>
+                    <TableCell>{item.price}</TableCell>
                     {/* 도서명 */}
-                    <TableCell>
-                      <AdminTableDescription
-                        className={"w-[300px] text-left"}
-                        text={item.title}
-                      />
-                    </TableCell>
+                    <TableCell>{item.title}</TableCell>
                     {/* 저자/역자 */}
-                    <TableCell>
-                      <AdminTableDescription
-                        className={"w-[99px]"}
-                        text={item.author}
-                      />
-                    </TableCell>
+                    <TableCell>{item.author}</TableCell>
                     {/* 상태 */}
                     <TableCell>
                       <StatusView
@@ -546,12 +496,7 @@ function PublishList() {
                     </TableCell>
                     {/* 관리자 */}
                     <TableCell>
-                      <AdminTableDescription
-                        className={"w-[99px]"}
-                        text={
-                          item.approveAdminName ? item.approveAdminName : "-"
-                        }
-                      />
+                      {item.approveAdminName ? item.approveAdminName : "-"}
                     </TableCell>
                     {/* 상세정보 */}
                     <TableCell className="w-[56px]">
