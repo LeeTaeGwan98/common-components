@@ -229,6 +229,7 @@ function InquiryDetail() {
               답변내용
               <AdminEdit
                 value={formState.responseContent}
+                placeholder="답변을 입력해주세요."
                 onChange={(value) => updateFormState("responseContent", value)}
               />
             </div>
