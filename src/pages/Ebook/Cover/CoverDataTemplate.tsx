@@ -238,7 +238,7 @@ function CoverDataStyle({
             }}
           >
             <TextField
-              slot={{ inputClassName: "cursor-pointer" }}
+              slot={{ inputClassName: "cursor-pointer pr-[110px]" }}
               label="표지 샘플 이미지"
               value={sampleImgName ? sampleImgName : "파일을 첨부해주세요"}
               readOnly
@@ -262,7 +262,7 @@ function CoverDataStyle({
             }}
           >
             <TextField
-              slot={{ inputClassName: "cursor-pointer" }}
+              slot={{ inputClassName: "cursor-pointer pr-[110px]" }}
               label="표지 디자인 파일"
               value={designFileName ? designFileName : "파일을 첨부해주세요"}
               readOnly
