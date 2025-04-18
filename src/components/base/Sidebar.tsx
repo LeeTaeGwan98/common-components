@@ -54,6 +54,9 @@ function Sidebar({}: SideBarProps) {
           return [menuPath];
         }
       });
+    } else {
+      // 자식이 없는 메뉴를 클릭했을 때 모든 메뉴를 닫기
+      setOpenMenus([]);
     }
   };
 
