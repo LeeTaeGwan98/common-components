@@ -27,7 +27,7 @@ function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
       <textarea
         value={value}
         className={cn(
-          "h-[180px] p-[12px] appearance-none bg-transparent outline-none resize-none w-full border-[1px] border-line-normal-normal rounded-radius-admin text-body-1-normal placeholder:text-label-assistive",
+          "h-[180px] p-[12px] appearance-none bg-transparent outline-none resize-none w-full border-[1px] border-line-normal-normal rounded-radius-admin text-body-1-normal placeholder:text-body1-normal-regular placeholder:text-label-assistive",
           interactiveTypeStyle,
           disableStyle,
           className

@@ -119,13 +119,13 @@ const NoticeDetail = () => {
             {/* 첫번째 줄 */}
             <div className="flex w-full">
               <div className="w-full">
-                제목
                 <TextField
-                  className="w-full mt-[8px] border border-label-assistive rounded-radius-admin p-[12px] text-body1-normal-regular text-label-normal"
+                  label="제목"
                   value={formState.title}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     updateFormState("title", e.target.value);
                   }}
+                  maxLength={100}
                   placeholder="공지사항 제목을 입력해주세요"
                   isVisible={false}
                 />
@@ -166,13 +166,15 @@ const NoticeDetail = () => {
             <div className="w-full flex flex-col gap-[8px]">
               내용
               <AdminEdit
+                placeholder="공지사항 내용을 입력해주세요"
+                isVideo={false}
                 value={formState.content}
                 onChange={(value) => updateFormState("content", value)}
               />
             </div>
 
             {/* 버튼 */}
-            <div className="mt-[32px] flex justify-end space-x-4">
+            <div className="flex justify-end space-x-4">
               <OutlinedButton
                 onClick={() => navigate(-1)}
                 className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium"

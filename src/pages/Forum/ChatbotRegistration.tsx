@@ -76,6 +76,7 @@ const ChatbotRegistration = () => {
             <div className="flex *:flex-1 items-center gap-gutter-horizontal">
               <div className="w-full">
                 <SelectBox
+                  size="large"
                   label="카테고리"
                   placeholder="카테고리를 선택해주세요"
                   onValueChange={(value) => {

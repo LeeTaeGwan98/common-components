@@ -158,7 +158,7 @@ const SIDEBAR_MENU_ITEM: SidebarMenuItem[] = [
         isActive: false,
       },
       {
-        title: "쳇봇 관리",
+        title: "챗봇 관리",
         path: CHATBOT,
         isActive: false,
       },

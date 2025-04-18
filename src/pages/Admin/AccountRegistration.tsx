@@ -266,7 +266,7 @@ function AccountRegistration() {
                     updateFormState("situationSelected", value)
                   }
                   textList={["활성", "비활성"]}
-                  className="ml-auto w-full mt-[12px]"
+                  className="ml-auto w-full mt-[8px]"
                 />
               </div>
             </div>
@@ -283,7 +283,7 @@ function AccountRegistration() {
                         formState.permissionCodes.find(
                           (selectedCode) => code.commDetailCode === selectedCode
                         )
-                          ? "bg-primary-normal/10 text-primary-normal text-body2-normal-medium border border-line-normal-normal rounded-[100px] px-[16px] cursor-pointer "
+                          ? "bg-primary-normal/10 text-primary-normal text-body2-normal-medium border border-transparent rounded-[100px] px-[16px] cursor-pointer "
                           : "bg-white text-label-normal border text-body2-normal-medium rounded-[100px] px-[16px] cursor-pointer"
                       }`}
                     >

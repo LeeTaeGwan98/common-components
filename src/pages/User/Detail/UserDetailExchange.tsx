@@ -56,7 +56,7 @@ function UserDetailExchange() {
   return (
     <div>
       <TableContainer>
-        <Table>
+        <Table className="min-w-0">
           <TableHeader>
             <TableRow>
               <TableCell isHeader>
