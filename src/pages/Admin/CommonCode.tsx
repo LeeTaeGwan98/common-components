@@ -347,7 +347,7 @@ function CommonCode() {
         <div className="flex gap-[20px] justify-between">
           <div className="w-full">
             <TableContainer>
-              <Table>
+              <Table className="min-w-0">
                 <TableHeader>
                   <TableRow>
                     <TableCell isHeader>그룹코드명</TableCell>
@@ -403,7 +403,7 @@ function CommonCode() {
           </div>
           <div className="w-full">
             <TableContainer>
-              <Table>
+              <Table className="min-w-0">
                 <TableHeader>
                   <TableRow>
                     <TableCell isHeader>코드 ID</TableCell>
