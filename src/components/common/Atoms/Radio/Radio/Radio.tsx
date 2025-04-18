@@ -43,6 +43,7 @@ function Radio({
         interactiveTypeStyle,
         className
       )}
+      onMouseUp={(e) => e.currentTarget.blur()}
       onClick={onChecked ? () => onChecked((prev) => !prev) : undefined}
     >
       <div

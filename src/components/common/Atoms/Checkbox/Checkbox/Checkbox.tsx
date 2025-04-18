@@ -83,6 +83,7 @@ function Checkbox({
         disable && "cursor-not-allowed"
       )}
       disabled={disable}
+      onMouseUp={(e) => e.currentTarget.blur()}
       {...props}
     >
       <span
