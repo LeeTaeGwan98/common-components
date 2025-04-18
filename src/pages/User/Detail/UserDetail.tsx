@@ -372,7 +372,7 @@ function UserDetail() {
               }}
             />
           </div>
-          <div className="w-full h-full flex flex-col">
+          <div className="h-full flex flex-col w-[calc(100%-440px-var(--gutter-horizontal))]">
             {/* 메인 카드 부분 */}
 
             {/* 기본일 때 */}
