@@ -30,8 +30,31 @@ import {
   isoStringToDateString,
 } from "@/lib/dateParse";
 import { formatInTimeZone } from "date-fns-tz";
+import { useReducer } from "react";
+import { ActionType, TermsQueryStringType } from "@/api/common/commonType";
+import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
+
+const initState: TermsQueryStringType = {
+  take: 10,
+  page: 1,
+};
+
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
 
 function Terms() {
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
+
   //공통 코드 가져오기
   const { data: codeInfo } = useSuspenseQuery({
     queryKey: ["termsSortGroupCodes", COMMON_GROUP_CODE_MAPPING.약관유형코드],
@@ -43,10 +66,12 @@ function Terms() {
 
   //약관 목록 조회
   const { data } = useSuspenseQuery({
-    queryKey: ["termsGet"],
-    queryFn: () => getTermsList(),
+    queryKey: ["termsGet", filterInfo],
+    queryFn: () => getTermsList(filterInfo),
     select: (data) => data.data.data,
   });
+
+  console.log(data);
 
   return (
     <>
@@ -76,7 +101,7 @@ function Terms() {
             </TableHeader>
 
             <TableBody>
-              {data?.map((item: TermsType, index: number) => {
+              {data.list.map((item: TermsType, index: number) => {
                 return (
                   <TableRow key={index}>
                     <TableCell>
@@ -116,6 +141,9 @@ function Terms() {
             </TableBody>
           </Table>
         </TableContainer>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
       </BreadcrumbContainer>
     </>
   );

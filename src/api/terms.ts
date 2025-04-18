@@ -1,4 +1,5 @@
 import API from "@/api/API";
+import { TableResType, TermsQueryStringType } from "@/api/common/commonType";
 
 //약관 정보
 export interface TermsType {
@@ -35,8 +36,22 @@ export interface PatchTermsType {
 }
 
 // 모든 약관 조회
-export const getTermsList = () => {
-  const data = API.get<{ data: TermsType[] }>("/admin/term");
+export const getTermsList = (queryStringObj: TermsQueryStringType) => {
+  const { take, page } = queryStringObj;
+
+  let qs = "admin/term?";
+
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
+
+  const data = API.get<TableResType<TermsType>>(qs);
   return data;
 };
 

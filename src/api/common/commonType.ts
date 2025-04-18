@@ -29,6 +29,11 @@ export interface TableQueryStringType {
   page?: number;
 }
 
+export interface TermsQueryStringType {
+  take?: number | null;
+  page?: number;
+}
+
 //파일 업로드 응답
 export interface FileUploadRes {
   fileId: number;
