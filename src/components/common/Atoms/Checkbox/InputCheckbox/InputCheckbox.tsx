@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import Checkbox from "../Checkbox/Checkbox";
 
 /**
@@ -31,8 +31,12 @@ interface InputCheckboxProps extends React.HTMLAttributes<HTMLDivElement> {
   disable?: boolean;
   /** 텍스트를 굵게 표시할지 여부 */
   bold?: boolean;
-  /** 체크박스와 함께 표시할 내용 */
-  children?: React.ReactNode | ReactElement<typeof Checkbox>;
+
+  /** children에 Checkbox만 허용 */
+  children?: ReactElement<typeof Checkbox> | ReactNode;
+  /** 별도로 Checkbox만 따로 분리해서 넘길 수 있게 */
+  Checkbox?: ReactNode;
+
   /** 추가 CSS 클래스 */
   className?: string;
 }
@@ -49,6 +53,7 @@ function InputCheckbox({
   bold = false,
   children,
   className,
+  Checkbox,
   onClick,
   ...props
 }: InputCheckboxProps) {
@@ -57,21 +62,39 @@ function InputCheckbox({
     : "text-body2-normal-regular";
 
   const disableStyle =
-    disable &&
-    "text-label-disable/[.16] *:hover:bg-transparent *:focus:bg-transparent *:active:bg-transparent *:opacity-[.43] cursor-not-allowed";
+    disable && "text-label-disable/[.16]  cursor-not-allowed";
+
+  // hover/focus/active가 Checkbox에만 적용되게
+  const interactiveTypeStyle = `
+    [&>*:first-child]:relative
+    [&>*:first-child]:after:content-['']
+    [&>*:first-child]:after:absolute
+    [&>*:first-child]:after:top-[-1px]
+    [&>*:first-child]:after:right-[-1px]
+    [&>*:first-child]:after:bottom-[-1px]
+    [&>*:first-child]:after:left-[-1px]
+    [&>*:first-child]:after:rounded-full
+    [&>*:first-child]:after:transition-colors
+    [&>*:first-child]:after:-z-10
+    [&>*:first-child]:after:hover:bg-label-normal/normal-hover
+    [&>*:first-child]:after:focus:bg-label-normal/normal-focus
+    [&>*:first-child]:after:active:bg-label-normal/normal-active
+  `;
 
   return (
     <div
       className={cn(
-        "w-fit flex items-center *:hover:bg-label-normal/normal-hover *:focus:bg-label-normal/normal-focus *:active:bg-label-normal/normal-active cursor-pointer",
+        "w-fit flex items-center  cursor-pointer",
         boldStyle,
         disableStyle,
+        interactiveTypeStyle,
         className
       )}
       onMouseUp={(e) => e.currentTarget.blur()}
       onClick={disable ? undefined : onClick}
       {...props}
     >
+      {Checkbox && Checkbox}
       {children}
     </div>
   );
