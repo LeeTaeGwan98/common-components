@@ -95,6 +95,7 @@ function UserDetailDefault({ setSeletedMenu }: UserDetailDefaultProps) {
           slot={{
             containerClassName: "w-full",
           }}
+          buttonOnClick={() => setSeletedMenu("출판 내역")}
         >
           <Content
             slot={{
