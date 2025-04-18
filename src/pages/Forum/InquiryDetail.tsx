@@ -229,12 +229,13 @@ function InquiryDetail() {
               답변내용
               <AdminEdit
                 value={formState.responseContent}
+                isVideo={false}
                 placeholder="답변을 입력해주세요"
                 onChange={(value) => updateFormState("responseContent", value)}
               />
             </div>
             {/* 버튼 */}
-            <div className="mt-[32px] flex justify-end space-x-4">
+            <div className="flex justify-end space-x-4">
               <OutlinedButton
                 type="assistive"
                 onClick={() => {

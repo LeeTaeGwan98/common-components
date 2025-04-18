@@ -45,6 +45,7 @@ Quill.register("blots/divider", Divider);
 
 interface AdminEditProps {
   value: string;
+  isVideo?: boolean;
   onChange: (value: string) => void;
   placeholder?: string;
 }
@@ -58,6 +59,7 @@ export function parseHTML(html: string) {
 
 const AdminEdit: React.FC<AdminEditProps> = ({
   value = "",
+  isVideo = true,
   onChange,
   placeholder = "내용을 입력하세요...",
 }) => {
@@ -90,7 +92,7 @@ const AdminEdit: React.FC<AdminEditProps> = ({
 
   return (
     <div className="quill-root-container w-full">
-      <CustomToolbar />
+      <CustomToolbar isVideo={isVideo} />
       <ReactQuill
         ref={quillRef}
         theme="snow"

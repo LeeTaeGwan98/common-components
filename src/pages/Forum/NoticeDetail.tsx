@@ -126,6 +126,7 @@ const NoticeDetail = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     updateFormState("title", e.target.value);
                   }}
+                  maxLength={100}
                   placeholder="공지사항 제목을 입력해주세요"
                   isVisible={false}
                 />
@@ -167,13 +168,14 @@ const NoticeDetail = () => {
               내용
               <AdminEdit
                 placeholder="공지사항 내용을 입력해주세요"
+                isVideo={false}
                 value={formState.content}
                 onChange={(value) => updateFormState("content", value)}
               />
             </div>
 
             {/* 버튼 */}
-            <div className="mt-[32px] flex justify-end space-x-4">
+            <div className="flex justify-end space-x-4">
               <OutlinedButton
                 onClick={() => navigate(-1)}
                 className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium"

@@ -239,12 +239,13 @@ const ServiceGuideDetail = () => {
               내용
               <AdminEdit
                 value={formState.content}
+                isVideo={false}
                 placeholder="서비스 가이드 내용을 입력해주세요"
                 onChange={(value) => updateFormState("content", value)}
               />
             </div>
             {/* 버튼 */}
-            <div className="mt-[32px] flex justify-end space-x-4">
+            <div className="flex justify-end space-x-4">
               <OutlinedButton
                 type="assistive"
                 onClick={() => {

@@ -69,6 +69,7 @@ const NoticeRegistration = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     setTitle(e.target.value);
                   }}
+                  maxLength={100}
                   placeholder="공지사항 제목을 입력해주세요"
                   isVisible={false}
                 />
@@ -105,12 +106,13 @@ const NoticeRegistration = () => {
               내용
               <AdminEdit
                 placeholder="공지사항 내용을 입력해주세요"
+                isVideo={false}
                 value={content}
                 onChange={setContent}
               />
             </div>
             {/* 버튼 */}
-            <div className="mt-[32px] flex justify-end space-x-4">
+            <div className="flex justify-end space-x-4">
               <OutlinedButton
                 onClick={() => {
                   console.log("취소 버튼 클릭");

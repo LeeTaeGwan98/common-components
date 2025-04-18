@@ -102,12 +102,13 @@ const ServiceGuideRegistration = () => {
             내용
             <AdminEdit
               placeholder="서비스 가이드 내용을 입력해주세요"
+              isVideo={false}
               value={answerContents}
               onChange={setAnswerContents}
             />
           </div>
           {/* 버튼 */}
-          <div className="mt-[32px] flex justify-end space-x-4">
+          <div className="flex justify-end space-x-4">
             <Button
               onClick={() => {
                 console.log("취소 버튼 클릭");
