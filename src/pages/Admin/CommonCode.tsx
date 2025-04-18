@@ -192,12 +192,12 @@ function CommonCode() {
   //저장 버튼
   const handleSaveBtn = () => {
     //중복된 순서 있는지 체크
-    if (handleIsSortOrdDupl()) {
-      customToast({
-        title: "중복된 순서가 있습니다.",
-      });
-      return;
-    }
+    // if (handleIsSortOrdDupl()) {
+    //   customToast({
+    //     title: "중복된 순서가 있습니다.",
+    //   });
+    //   return;
+    // }
 
     //상세 코드 업데이트 api 실행
     const updatedDetailCodes: DetailCodeUpdateReq[] = [];
@@ -308,21 +308,21 @@ function CommonCode() {
   };
 
   //각 상세코드들 순서 중복 확인
-  const handleIsSortOrdDupl = () => {
-    //배열을 sortOrd 기준으로 정렬
-    const sortedCodes = [...formState.detailCodes].sort(
-      (a, b) => a.sortOrd - b.sortOrd
-    );
+  // const handleIsSortOrdDupl = () => {
+  //   //배열을 sortOrd 기준으로 정렬
+  //   const sortedCodes = [...formState.detailCodes].sort(
+  //     (a, b) => a.sortOrd - b.sortOrd
+  //   );
 
-    //정렬된 배열에서 연속된 값들만 비교
-    for (let i = 1; i < sortedCodes.length; i++) {
-      if (sortedCodes[i].sortOrd === sortedCodes[i - 1].sortOrd) {
-        return true; //중복
-      }
-    }
+  //   //정렬된 배열에서 연속된 값들만 비교
+  //   for (let i = 1; i < sortedCodes.length; i++) {
+  //     if (sortedCodes[i].sortOrd === sortedCodes[i - 1].sortOrd) {
+  //       return true; //중복
+  //     }
+  //   }
 
-    return false; //중복이 없으면 false 반환
-  };
+  //   return false; //중복이 없으면 false 반환
+  // };
 
   //상세코드 목록 재호출 되면 폼 상태 업데이트
   useEffect(() => {
