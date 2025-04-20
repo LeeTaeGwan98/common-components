@@ -5,18 +5,15 @@ import SIDEBAR_MENU_ITEM from "@/Constants/SidebarMenuItem";
 import { Link, useLocation } from "react-router-dom";
 import React, { cloneElement, useState, useEffect } from "react";
 import BottomArrowIcon from "@/assets/svg/Sidebar/Bottom.svg";
-import RightArrowIcon from "@/assets/svg/common/RightArrow.svg";
 import Menu from "@/components/common/Molecules/Menu/Menu";
 import { SIDEBAR_WIDTH } from "@/Constants/UIMagicNumber";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { logout } from "@/api/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { LOGIN } from "@/Constants/ServiceUrl";
 import { useAuthStore } from "@/store/authStore";
 
-interface SideBarProps {}
-
-function Sidebar({}: SideBarProps) {
+function Sidebar() {
   const delUserInfo = useAuthStore((state) => state.delUserInfo);
   const userName = useAuthStore((state) => state.user?.name);
   const permissions = useAuthStore((state) => state.permissions);
@@ -34,7 +31,7 @@ function Sidebar({}: SideBarProps) {
     ).map((item) => item.path);
 
     setOpenMenus(initialOpenMenus);
-  }, []);
+  }, [currentPathname]);
 
   // 메뉴 토글 함수
   const toggleMenu = (
