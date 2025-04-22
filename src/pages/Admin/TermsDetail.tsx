@@ -186,7 +186,21 @@ function TermsDetail() {
               <DatePicker
                 date={stringToDate(formState.effectiveDate)}
                 setDate={(date: Date) => {
-                  updateFormState("effectiveDate", dateToString(date));
+                  const baseDateString = data.updatedAt;
+                  const baseDate = new Date(baseDateString);
+
+                  const thirtyDaysLater = new Date(baseDate);
+                  thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 30);
+
+                  if (date > thirtyDaysLater) {
+                    //30일 이후일 때 실행할 로직
+                    updateFormState("effectiveDate", dateToString(date));
+                  } else {
+                    //30일 이내일 때 실행할 로직
+                    customToast({
+                      title: "수정일 기준 30일 이후만 선택 가능합니다",
+                    });
+                  }
                 }}
               />
             </div>
