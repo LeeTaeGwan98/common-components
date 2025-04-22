@@ -46,6 +46,8 @@
  * CO024 - 구독상태
  *
  * CO025 - 회원 유형
+ *
+ * CO033 - 스타일
  */
 
 export type COMMON_GROUP_CODE_UNION_TYPE =
@@ -72,7 +74,8 @@ export type COMMON_GROUP_CODE_UNION_TYPE =
   | "CO021"
   | "CO022"
   | "CO024"
-  | "CO025";
+  | "CO025"
+  | "CO033";
 
 export enum COMMON_GROUP_CODE_MAPPING {
   사용자유형 = "CO001",
@@ -99,4 +102,5 @@ export enum COMMON_GROUP_CODE_MAPPING {
   결제주기 = "CO022",
   구독상태 = "CO024",
   회원유형 = "CO025",
+  스타일 = "CO033",
 }

@@ -262,6 +262,7 @@ function AccountDetail() {
                     const regex = /^[A-Za-z0-9]*$/; //입력시 영어, 숫자만 허용
                     if (regex.test(e.target.value)) {
                       updateFormState("passwordField", e.target.value);
+                      console.log("비번", e.target.value);
                     }
                   }}
                   isVisible={false}

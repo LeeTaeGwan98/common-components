@@ -35,7 +35,7 @@ const ChatbotModal = ({ id }: { id: number }) => {
     >
       <DialogDetailContent
         heading="이 챗봇 질문을 삭제하시겠어요?"
-        description="삭제된 챗봇 질문은 복구할 수 없습니다."
+        description="삭제 된 챗봇 질문은 복구 할 수 없습니다."
         close={true}
         buttonElements={
           <Actions className="w-full h-[48px]" priority={"neutral"}>

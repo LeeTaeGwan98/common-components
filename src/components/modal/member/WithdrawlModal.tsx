@@ -75,7 +75,6 @@ function WithdrawlModal({ id }: { id: number }) {
             </div>
           </div>
         </div>
-        ;
       </DialogDetailContent>
     </DialogContent>
   );

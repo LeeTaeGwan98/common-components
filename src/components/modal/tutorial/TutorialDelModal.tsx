@@ -40,7 +40,7 @@ const TutorialDelModal = ({ id }: TutorialDelModalProps) => {
     >
       <DialogDetailContent
         heading="이 튜토리얼을 삭제하시겠어요?"
-        description="삭제된 튜토리얼은 복구할 수 없습니다."
+        description="삭제 된 튜토리얼은 복구 할 수 없습니다."
         close={true}
         buttonElements={
           <Actions className="w-full h-[48px]" priority={"neutral"}>
