@@ -37,7 +37,7 @@ const ServiceGuideModal = ({ id }: { id: number }) => {
     >
       <DialogDetailContent
         heading="이 서비스 가이드를 삭제하시겠어요?"
-        description="삭제된 서비스 가이드는 복구할 수 없습니다."
+        description="삭제 된 서비스 가이드는 복구 할 수 없습니다."
         close={true}
         buttonElements={
           <Actions className="w-full h-[48px]" priority={"neutral"}>

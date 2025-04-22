@@ -46,7 +46,7 @@ const NoticeDetailModal = ({ id }: NoticeDetailModalProps) => {
       </DialogTitle>
 
       <DialogDescription className="text-body1-reading-regular text-label-normal mb-[32px]">
-        삭제된 공지는 복구할 수 없습니다.
+        삭제 된 공지는 복구 할 수 없습니다.
       </DialogDescription>
 
       <Actions priority="neutral">

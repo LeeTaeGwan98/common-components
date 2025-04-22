@@ -37,7 +37,7 @@ const CoverDelModal = ({ id }: CoverDelModalProps) => {
     >
       <DialogDetailContent
         heading="이 표지를 삭제하시겠어요?"
-        description="삭제된 표지는 복구할 수 없습니다."
+        description="삭제 된 표지는 복구 할 수 없습니다."
         close={true}
         buttonElements={
           <Actions className="w-full h-[48px]" priority={"neutral"}>

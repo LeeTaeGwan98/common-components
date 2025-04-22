@@ -61,6 +61,7 @@ function CommonCode() {
     COMMON_GROUP_CODE_MAPPING.비디오북만들기서비스가이드카테고리,
     COMMON_GROUP_CODE_MAPPING.튜토리얼카테고리,
     COMMON_GROUP_CODE_MAPPING.프로젝트저장기간,
+    COMMON_GROUP_CODE_MAPPING.스타일,
   ] as string[];
 
   //모든 그룹코드 목록 가져오기 api
@@ -313,16 +314,7 @@ function CommonCode() {
     <>
       <title>북카롱 | 공통 코드 관리</title>
       <BreadcrumbContainer
-        breadcrumbNode={
-          <>
-            관리자 / 공통 코드 관리{" "}
-            <Divider vertical className="h-[20px] mx-[12px]" />
-            <IconButton
-              icon={<ChevronDown size={18} />}
-              className="border border-line-normal-normal p-[7px] rounded-radius-admin"
-            />
-          </>
-        }
+        breadcrumbNode={<>관리자 / 공통 코드 관리 </>}
         button={
           <div className="flex gap-[8px]">
             <Button
@@ -427,7 +419,9 @@ function CommonCode() {
                       <TableRow key={index}>
                         {/* <TableCell>{item.sortOrd}</TableCell> */}
                         <TableCell>{item.commDetailCode}</TableCell>
-                        <TableCell>{item.detailCodeName}</TableCell>
+                        <TableCell className="">
+                          {item.detailCodeName}
+                        </TableCell>
                         <TableCell>{item.detailCodeDesc}</TableCell>
                         <TableCell>
                           <Checkbox
