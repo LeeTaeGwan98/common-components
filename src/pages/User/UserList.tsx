@@ -219,7 +219,7 @@ function UserList() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell isHeader>
+                <TableCell isChildIcon={true} isHeader>
                   <div className="flex items-center justify-center gap-[2px]">
                     No
                     <IconButton icon={<Updown />} onClick={handleSortOrder} />
@@ -268,7 +268,7 @@ function UserList() {
                     <TableCell className="flex h-[inherit] items-center justify-center content-center">
                       {handleStateLabel(item.isActive)}
                     </TableCell>
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${USER_DETAIL}/${item.id}`}

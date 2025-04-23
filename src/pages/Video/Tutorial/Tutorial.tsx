@@ -175,7 +175,7 @@ function Tutorial() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell isHeader>
+                <TableCell isChildIcon={true} isHeader>
                   <div className="flex items-center justify-center gap-[2px]">
                     등록일
                     <IconButton icon={<Updown />} onClick={handleSortOrder} />
@@ -211,7 +211,7 @@ function Tutorial() {
                         <Label size="medium">비노출</Label>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${TUTORIAL_DETAIL}/${item.id}`}

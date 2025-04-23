@@ -109,7 +109,7 @@ function VideoImage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell isHeader>
+                <TableCell isChildIcon={true} isHeader>
                   <div className="flex items-center justify-center gap-[2px]">
                     등록일
                     <IconButton icon={<Updown />} onClick={handleSortOrder} />
@@ -130,7 +130,7 @@ function VideoImage() {
                     </TableCell>
                     <TableCell>{item.type}</TableCell>
                     <TableCell>{item.name}</TableCell>
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${VIDEOIMAGE_DETAIL}/${item.id}`}

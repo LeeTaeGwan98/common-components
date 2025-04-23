@@ -81,7 +81,7 @@ function Plan() {
                     <TableCell>
                       {item.monthlyFeeYear.toLocaleString("kr")}
                     </TableCell>
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${PLAN_DETAIL}/${item.id}`}

@@ -35,7 +35,7 @@ interface TableCellProps {
   children: ReactNode; // Cell content
   isHeader?: boolean; // If true, renders as <th>, otherwise <td>
   className?: string; // Optional className for styling
-  childClassName?: string;
+  isChildIcon?: boolean;
 }
 
 const TableContainer: React.FC<TableContainerProps> = ({
@@ -106,7 +106,7 @@ const TableCell: React.FC<TableCellProps> = ({
   children,
   isHeader = false,
   className,
-  childClassName,
+  isChildIcon = false,
 }) => {
   const CellTag = isHeader ? "th" : "td";
   return (
@@ -120,11 +120,9 @@ const TableCell: React.FC<TableCellProps> = ({
     >
       <div
         className={
-          `flex ` +
-          cn(
-            "h-full items-center justify-center break-words whitespace-normal text-ellipsis line-clamp-2",
-            childClassName
-          )
+          isChildIcon
+            ? ""
+            : "break-words whitespace-normal text-ellipsis line-clamp-2"
         }
       >
         {children}

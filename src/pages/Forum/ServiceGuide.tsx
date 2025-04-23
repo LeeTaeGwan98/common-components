@@ -186,7 +186,7 @@ const ServiceGuide = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell isHeader>
+                <TableCell isChildIcon={true} isHeader>
                   <div className="flex items-center justify-center gap-[2px]">
                     등록일
                     <IconButton icon={<Updown />} onClick={handleSortOrder} />
@@ -246,7 +246,7 @@ const ServiceGuide = () => {
                       })()}
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${SERVICE_GUIDE_DETAIL}/${item.id}`}

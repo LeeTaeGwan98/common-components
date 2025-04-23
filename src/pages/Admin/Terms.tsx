@@ -105,10 +105,7 @@ function Terms() {
                 return (
                   <TableRow key={index}>
                     <TableCell>
-                      <span>
-                        {formatDateTimeToJSX(formatToUTCString(item.updatedAt))}
-                      </span>
-                      <br />
+                      {formatDateTimeToJSX(formatToUTCString(item.updatedAt))}
                     </TableCell>
                     <TableCell>
                       {item.effectiveDate
@@ -123,7 +120,7 @@ function Terms() {
                     </TableCell>
                     <TableCell>{codeToName(typeCodes, item.type)}</TableCell>
                     <TableCell>{item.title}</TableCell>
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${TERMS_DETAIL}/${item.id}`}
