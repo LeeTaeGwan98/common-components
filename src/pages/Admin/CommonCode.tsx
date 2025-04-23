@@ -395,88 +395,95 @@ function CommonCode() {
               </Table>
             </TableContainer>
           </div>
-          <div className="w-full">
-            <TableContainer>
-              <Table className="min-w-0">
-                <TableHeader>
-                  <TableRow>
-                    <TableCell isHeader>코드 ID</TableCell>
-                    <TableCell isHeader>코드명</TableCell>
-                    <TableCell isHeader>싱세 설명</TableCell>
-                    <TableCell isHeader>노출 상태</TableCell>
-                    <TableCell isHeader className="p-0">
-                      순서변경
-                    </TableCell>
-                    <TableCell isHeader>상세정보</TableCell>
-                  </TableRow>
-                </TableHeader>
 
-                <TableBody>
-                  {/* 상세코드 목록 */}
-                  {(isReverse
-                    ? [...formState.detailCodes].reverse()
-                    : formState.detailCodes
-                  ).map((item, index) => {
-                    return (
-                      <TableRow key={index}>
-                        {/* <TableCell>{item.sortOrd}</TableCell> */}
-                        <TableCell>{item.commDetailCode}</TableCell>
-                        <TableCell>{item.detailCodeName}</TableCell>
-                        <TableCell>{item.detailCodeDesc}</TableCell>
-                        <TableCell>
-                          <Checkbox
-                            checked={item.isUsed}
-                            onClick={() => {
-                              handleExposure(item);
+          <TableContainer>
+            <Table className="min-w-[1044px]">
+              <TableHeader>
+                <TableRow>
+                  <TableCell isHeader>코드 ID</TableCell>
+                  <TableCell className="w-[180px]" isHeader>
+                    코드명
+                  </TableCell>
+                  <TableCell className="w-[300px]" isHeader>
+                    상세 설명
+                  </TableCell>
+                  <TableCell className="w-[92px]" isHeader>
+                    노출 상태
+                  </TableCell>
+                  <TableCell isHeader className="p-0 w-[200px]">
+                    순서변경
+                  </TableCell>
+                  <TableCell className="w-[140px]" isHeader>
+                    상세정보
+                  </TableCell>
+                </TableRow>
+              </TableHeader>
+
+              <TableBody>
+                {/* 상세코드 목록 */}
+                {(isReverse
+                  ? [...formState.detailCodes].reverse()
+                  : formState.detailCodes
+                ).map((item, index) => {
+                  return (
+                    <TableRow key={index}>
+                      {/* <TableCell>{item.sortOrd}</TableCell> */}
+                      <TableCell>{item.commDetailCode}</TableCell>
+                      <TableCell>{item.detailCodeName}</TableCell>
+                      <TableCell>{item.detailCodeDesc}</TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={item.isUsed}
+                          onClick={() => {
+                            handleExposure(item);
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell className="p-0">
+                        <div className="flex justify-center  gap-[8px]">
+                          <MoveButton
+                            direction="up"
+                            index={index}
+                            listLength={formState.detailCodes.length}
+                            detailCodes={formState.detailCodes}
+                            onChange={(reordered) => {
+                              updateFormState("detailCodes", reordered);
+                              updateFormState(
+                                "updatedDetailCodes",
+                                getDiffFromOriginal(reordered)
+                              );
                             }}
                           />
-                        </TableCell>
-                        <TableCell className="p-0">
-                          <div className="flex gap-[8px]">
-                            <MoveButton
-                              direction="up"
-                              index={index}
-                              listLength={formState.detailCodes.length}
-                              detailCodes={formState.detailCodes}
-                              onChange={(reordered) => {
-                                updateFormState("detailCodes", reordered);
-                                updateFormState(
-                                  "updatedDetailCodes",
-                                  getDiffFromOriginal(reordered)
-                                );
-                              }}
-                            />
-                            <MoveButton
-                              direction="down"
-                              index={index}
-                              listLength={formState.detailCodes.length}
-                              detailCodes={formState.detailCodes}
-                              onChange={(reordered) => {
-                                updateFormState("detailCodes", reordered);
-                                updateFormState(
-                                  "updatedDetailCodes",
-                                  getDiffFromOriginal(reordered)
-                                );
-                              }}
-                            />
-                          </div>
-                        </TableCell>
-                        <TableCell isChildIcon={true}>
-                          <IconButton
-                            icon={
-                              <ThreeDot className="size-[24px] fill-label-alternative" />
-                            }
-                            onClick={() => handleUpdateModal("update", item)}
+                          <MoveButton
+                            direction="down"
+                            index={index}
+                            listLength={formState.detailCodes.length}
+                            detailCodes={formState.detailCodes}
+                            onChange={(reordered) => {
+                              updateFormState("detailCodes", reordered);
+                              updateFormState(
+                                "updatedDetailCodes",
+                                getDiffFromOriginal(reordered)
+                              );
+                            }}
                           />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {detailCodeRenderEmptyRows()}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell isChildIcon={true}>
+                        <IconButton
+                          icon={
+                            <ThreeDot className="size-[24px] fill-label-alternative" />
+                          }
+                          onClick={() => handleUpdateModal("update", item)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                {detailCodeRenderEmptyRows()}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
       </BreadcrumbContainer>
     </>
