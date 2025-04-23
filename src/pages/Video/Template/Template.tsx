@@ -45,7 +45,9 @@ function Template() {
             <TableHeader>
               <TableRow>
                 <TableCell isHeader>등록일</TableCell>
-                <TableCell isHeader>템플릿명</TableCell>
+                <TableCell className="w-[300px]" isHeader>
+                  템플릿명
+                </TableCell>
                 <TableCell isHeader>비율</TableCell>
                 <TableCell isHeader>카테고리</TableCell>
                 <TableCell isHeader>길이</TableCell>

@@ -164,7 +164,9 @@ const Notice = () => {
                     <IconButton icon={<Updown />} onClick={handleSortOrder} />
                   </div>
                 </TableCell>
-                <TableCell isHeader>제목</TableCell>
+                <TableCell className="w-[300px]" isHeader>
+                  제목
+                </TableCell>
                 <TableCell isHeader>관리자 고정</TableCell>
                 <TableCell isHeader>상태</TableCell>
                 <TableCell isHeader>상세정보</TableCell>

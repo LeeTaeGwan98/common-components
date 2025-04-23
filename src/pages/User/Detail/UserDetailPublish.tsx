@@ -218,7 +218,9 @@ function UserDetailPublish() {
                 </div>
               </TableCell>
               <TableCell isHeader>제출일</TableCell>
-              <TableCell isHeader>도서명</TableCell>
+              <TableCell className="w-[300px]" isHeader>
+                도서명
+              </TableCell>
               <TableCell isHeader>저자/역자</TableCell>
               <TableCell isHeader>상태</TableCell>
             </TableRow>
@@ -232,7 +234,7 @@ function UserDetailPublish() {
                   <TableCell>
                     {item.submittedAt ? item.submittedAt : "-"}
                   </TableCell>
-                  <TableCell>{item.title}</TableCell>
+                  <TableCell className="text-left">{item.title}</TableCell>
                   <TableCell>{item.author}</TableCell>
 
                   <TableCell>
