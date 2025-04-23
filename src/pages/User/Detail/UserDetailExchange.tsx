@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import { USER_DETAIL } from "@/Constants/ServiceUrl";
+import { useModalStore } from "@/store/modalStore";
+import PaymentModal from "@/components/modal/member/PaymentModal";
 
 const defaultData = [
   {
@@ -53,6 +55,12 @@ const defaultData = [
 ];
 
 function UserDetailExchange() {
+  const { openModal } = useModalStore();
+
+  const handleModal = () => {
+    openModal(<PaymentModal />);
+  };
+
   return (
     <div>
       <TableContainer>
@@ -69,7 +77,9 @@ function UserDetailExchange() {
               <TableCell isHeader>결제 내역 상세</TableCell>
               <TableCell isHeader>결제 금액</TableCell>
               <TableCell isHeader>상태</TableCell>
-              <TableCell isHeader>상세정보</TableCell>
+              <TableCell className="w-[140px]" isHeader>
+                상세정보
+              </TableCell>
             </TableRow>
           </TableHeader>
 
@@ -124,13 +134,12 @@ function UserDetailExchange() {
                     })()}
                   </TableCell>
                   <TableCell isChildIcon={true}>
-                    <Link className="flex justify-center" to={USER_DETAIL}>
-                      <IconButton
-                        icon={
-                          <ThreeDot className="size-[24px] fill-label-alternative" />
-                        }
-                      />
-                    </Link>
+                    <IconButton
+                      icon={
+                        <ThreeDot className="size-[24px] fill-label-alternative" />
+                      }
+                      onClick={handleModal}
+                    />
                   </TableCell>
                 </TableRow>
               );

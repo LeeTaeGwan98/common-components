@@ -39,7 +39,7 @@ function DatePicker({
         <Button
           variant="outline"
           className={cn(
-            "justify-start text-left text-body2-normal-regular py-0 px-[12px] hover:bg-line-normal-normal/light-hover focus:bg-line-normal-normal/light-focus active:bg-line-normal-normal",
+            "!rounded-radius-admin justify-start text-left text-body2-normal-regular py-0 px-[12px] hover:bg-line-normal-normal/light-hover focus:bg-line-normal-normal/light-focus active:bg-line-normal-normal",
             !date && "text-muted-foreground",
             sizeStyle[size],
             pickerClassName

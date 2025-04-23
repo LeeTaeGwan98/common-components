@@ -26,20 +26,19 @@ function WithdrawlModal({ id }: { id: number }) {
         fixed={false}
         close={true}
         buttonElements={
-          <Actions className="w-full h-[48px] !mx-0" priority={"single"}>
-            <Button
-              size="large"
-              onClick={() => {
-                useModalStore.getState().closeModal();
-              }}
-            >
-              확인
-            </Button>
-          </Actions>
+          <Button
+            className="w-full"
+            size="large"
+            onClick={() => {
+              useModalStore.getState().closeModal();
+            }}
+          >
+            확인
+          </Button>
         }
       >
-        <div className="px-[32px] pt-[32px]">
-          <div className="flex flex-col  border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin gap-[12px]">
+        <div className="px-[32px] py-[32px]">
+          <div className="flex flex-col  border border-line-normal-normal px-content-horizon-margin py-content-vertical-margin gap-[12px] rounded-radius-admin">
             <CardRow
               className="w-[432px]"
               data={{

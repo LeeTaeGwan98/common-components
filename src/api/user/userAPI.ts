@@ -156,7 +156,7 @@ export const getBusCertifPreview = (id: number) => {
 
 //통장 사본 미리보기
 export const getBankStatePreview = (id: number) => {
-  const queryString = `/api/v1/admin/user/${id}/bank-statement/preview`;
+  const queryString = `/admin/user/${id}/bank-statement/preview`;
 
   const data = API.get<Blob>(queryString, { responseType: "blob" });
 

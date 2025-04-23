@@ -3,6 +3,8 @@ import React, { ReactElement } from "react";
 import Content from "../Content/Content";
 import Skeleton from "@/components/common/Atoms/Skeleton/Skeleton";
 import Label from "@/components/common/Atoms/Label/Label";
+import Text from "@/components/common/Atoms/Text/NormalText/NormalText";
+import RightArrow from "@/assets/svg/common/ChevronRightArrow.svg";
 
 interface CardProps {
   title?: string;
@@ -67,18 +69,22 @@ function Card({
           {title}
         </div>
         {isButton && (
-          <button
+          <Text
             className={cn(
-              `flex-none text-label-alternative text-label1-normal-bold flex justify-center items-center gap-[4px] ${
-                hasMultiChildren
-                  ? "absolute right-content-horizon-margin top-1/2 -translate-y-1/2"
-                  : ""
-              }`
+              "h-[24px] cursor-pointer",
+              hasMultiChildren ? "absolute right-content-horizon-margin" : ""
             )}
-            onClick={buttonOnClick ? () => buttonOnClick() : undefined}
           >
-            {size === "large" && "자세히"} <span>&gt;</span>
-          </button>
+            <button
+              className={cn(
+                `flex-none text-label-alternative text-label1-normal-bold flex justify-center items-center gap-[4px]`
+              )}
+              onClick={buttonOnClick ? () => buttonOnClick() : undefined}
+            >
+              {size === "large" && "자세히"}{" "}
+              <RightArrow className="w-[8px] h-[16px] text-label-alternative" />
+            </button>
+          </Text>
         )}
       </div>
 

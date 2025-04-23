@@ -25,12 +25,21 @@ function UserDetailDefault({ setSeletedMenu }: UserDetailDefaultProps) {
 
   //공통 코드 가져오기
   const { data: codeInfo } = useSuspenseQuery({
-    queryKey: ["memberTypeCodes", COMMON_GROUP_CODE_MAPPING.회원유형],
-    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.회원유형]),
+    queryKey: [
+      "memberTypeCodes",
+      COMMON_GROUP_CODE_MAPPING.회원유형,
+      COMMON_GROUP_CODE_MAPPING.은행,
+    ],
+    queryFn: () =>
+      getGroupCodes([
+        COMMON_GROUP_CODE_MAPPING.회원유형,
+        COMMON_GROUP_CODE_MAPPING.은행,
+      ]),
     select: (data) => data.data.data,
   });
   const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
   const memberTypeCodes = codeInfo[keys[0]]; // 회원유형 코드들
+  const bankCodes = codeInfo[keys[1]]; //은행 코드들
 
   //회원 목록 기본 조회 api
   const { data } = useSuspenseQuery({
@@ -154,7 +163,6 @@ function UserDetailDefault({ setSeletedMenu }: UserDetailDefaultProps) {
         isSkeleton={false}
         slot={{
           containerClassName: "w-full",
-          bodyClassName: "",
         }}
         buttonOnClick={() => previewModal("bank")}
       >
@@ -170,8 +178,7 @@ function UserDetailDefault({ setSeletedMenu }: UserDetailDefaultProps) {
             summaryClassName: "text-label-alternative text-body1-normal-bold",
           }}
         >
-          {/* todo: 은행코드 받아야함 */}
-          {data.bankCode ? data.bankCode : "No data"}
+          {data.bankCode ? codeToName(bankCodes, data.bankCode) : "No data"}
         </Content>
         <Content
           slot={{

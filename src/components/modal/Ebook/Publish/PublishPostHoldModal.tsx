@@ -74,7 +74,11 @@ export const PublishPostHoldModal = ({
           >
             취소
           </OutlinedButton>
-          <Button onClick={() => CreateEbookHold.mutate()} size="large">
+          <Button
+            onClick={() => CreateEbookHold.mutate()}
+            disable={reason.length < 2}
+            size="large"
+          >
             전송
           </Button>
         </Actions>

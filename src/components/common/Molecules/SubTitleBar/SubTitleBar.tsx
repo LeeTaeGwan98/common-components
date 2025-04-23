@@ -126,7 +126,7 @@ function SubTitleBar({
 
         <SelectBox
           placeholder="10개 씩"
-          className="min-w-[108px]"
+          className="min-w-[108px] rounded-radius-admin"
           size="large"
           defaultValue="10"
           onValueChange={(value) => handleTake(Number(value))}

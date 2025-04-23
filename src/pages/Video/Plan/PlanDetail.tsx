@@ -7,13 +7,14 @@ import { customToast } from "@/components/common/Atoms/Toast/Toast";
 import Title from "@/components/common/BookaroongAdmin/Title";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
+import { PLAN } from "@/Constants/ServiceUrl";
 import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 // formState 타입 정의
 type FormState = {
@@ -638,13 +639,16 @@ function PlanDetail() {
           </div>
 
           <div className="flex justify-end gap-[12px]">
-            <OutlinedButton
-              className="max-w-[180px] w-full"
-              size="large"
-              type="assistive"
-            >
-              취소
-            </OutlinedButton>
+            <Link to={PLAN}>
+              <OutlinedButton
+                className="max-w-[180px] w-full"
+                size="large"
+                type="assistive"
+              >
+                취소
+              </OutlinedButton>
+            </Link>
+
             <OutlinedButton
               type="secondary"
               className="max-w-[180px] w-full"

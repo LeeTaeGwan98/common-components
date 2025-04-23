@@ -411,7 +411,7 @@ function CommonCode() {
                     노출 상태
                   </TableCell>
                   <TableCell isHeader className="p-0 w-[200px]">
-                    순서변경
+                    순서 변경
                   </TableCell>
                   <TableCell className="w-[140px]" isHeader>
                     상세정보
