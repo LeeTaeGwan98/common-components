@@ -238,6 +238,7 @@ const ServiceGuideDetail = () => {
             <div className="w-full flex flex-col gap-[8px]">
               내용
               <AdminEdit
+                className="h-[608px]"
                 value={formState.content}
                 isVideo={false}
                 placeholder="서비스 가이드 내용을 입력해주세요"

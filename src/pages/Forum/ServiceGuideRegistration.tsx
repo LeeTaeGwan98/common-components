@@ -101,6 +101,7 @@ const ServiceGuideRegistration = () => {
           <div className="w-full flex flex-col gap-[8px]">
             내용
             <AdminEdit
+              className="h-[608px]"
               placeholder="서비스 가이드 내용을 입력해주세요"
               isVideo={false}
               value={answerContents}
