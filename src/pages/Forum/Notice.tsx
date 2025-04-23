@@ -158,7 +158,7 @@ const Notice = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell isHeader>
+                <TableCell isChildIcon={true} isHeader>
                   <div className="flex items-center justify-center gap-[2px]">
                     등록일
                     <IconButton icon={<Updown />} onClick={handleSortOrder} />
@@ -180,7 +180,7 @@ const Notice = () => {
                       {formatDateTimeToJSX(formatToUTCString(createdAt))}
                     </TableCell>
                     <TableCell>{title}</TableCell>
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Checkbox
                         checked={isPinned}
                         isInteraction={false}
@@ -204,7 +204,7 @@ const Notice = () => {
                       }
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${NOTICE_DETAIL}/${item.id}`}

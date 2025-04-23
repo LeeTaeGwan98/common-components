@@ -54,7 +54,7 @@ function UserDetailPoint() {
         <Table className="min-w-0">
           <TableHeader>
             <TableRow>
-              <TableCell isHeader>
+              <TableCell isChildIcon={true} isHeader>
                 <div className="flex items-center justify-center gap-[2px]">
                   No <Updown />
                 </div>

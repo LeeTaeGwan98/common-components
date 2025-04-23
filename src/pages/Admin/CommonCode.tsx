@@ -342,7 +342,9 @@ function CommonCode() {
               <Table className="w-[440px] min-w-0">
                 <TableHeader>
                   <TableRow>
-                    <TableCell isHeader>그룹코드명</TableCell>
+                    <TableCell className="w-[190px]" isHeader>
+                      그룹코드명
+                    </TableCell>
                     <TableCell isHeader>그룹 코드 ID</TableCell>
                     <TableCell isHeader>선택</TableCell>
                   </TableRow>
@@ -459,7 +461,7 @@ function CommonCode() {
                             />
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell isChildIcon={true}>
                           <IconButton
                             icon={
                               <ThreeDot className="size-[24px] fill-label-alternative" />

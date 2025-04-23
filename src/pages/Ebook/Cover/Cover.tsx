@@ -218,7 +218,7 @@ function Cover() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell isHeader>
+                <TableCell isChildIcon={true} isHeader>
                   <div className="flex items-center justify-center gap-[2px]">
                     No{" "}
                     <IconButton icon={<Updown />} onClick={handleSortOrder} />
@@ -271,7 +271,7 @@ function Cover() {
                         <Label size="medium">비노출</Label>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${COVER_DETAIL}/${item.id}`}

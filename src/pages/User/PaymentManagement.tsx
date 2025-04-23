@@ -154,7 +154,7 @@ function PaymentManagement() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableCell isHeader>
+                    <TableCell isChildIcon={true} isHeader>
                       <div className="flex items-center justify-center gap-[2px]">
                         No <Updown />
                       </div>
@@ -239,7 +239,7 @@ function PaymentManagement() {
                           )}
                         </TableCell>
 
-                        <TableCell>
+                        <TableCell isChildIcon={true}>
                           <IconButton
                             icon={
                               <ThreeDot className="size-[24px] fill-label-alternative" />

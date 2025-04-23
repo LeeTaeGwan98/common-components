@@ -232,7 +232,7 @@ const Chatbot = () => {
                         </div>
                       }
                     </TableCell>
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${CHATBOT_DETAIL}/${item.id}`}

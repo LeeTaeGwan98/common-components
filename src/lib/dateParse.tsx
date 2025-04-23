@@ -49,9 +49,8 @@ export const formatDateTimeToJSX = (dateString: string) => {
 
   return (
     <div>
-      <span>{date}</span>
-      <br />
-      <span>{time}</span>
+      <div>{date}</div>
+      <div>{time}</div>
     </div>
   );
 };

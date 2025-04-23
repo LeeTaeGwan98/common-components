@@ -329,8 +329,8 @@ function PublishList() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell isHeader>
-                  <div className="flex gap-[2px] items-center">
+                <TableCell isChildIcon={true} isHeader>
+                  <div className="flex gap-[2px] justify-center items-center">
                     <Checkbox
                       checked={ebookData.list.every((item) =>
                         selectId.includes(item.id)
@@ -424,7 +424,9 @@ function PublishList() {
                 <TableCell isHeader>제출일</TableCell>
                 <TableCell isHeader>관리자 승인일</TableCell>
                 <TableCell isHeader>닉네임</TableCell>
-                <TableCell isHeader>전자책 정가(판매가)</TableCell>
+                <TableCell className="w-[200px]" isHeader>
+                  전자책 정가(판매가)
+                </TableCell>
                 <TableCell isHeader>도서명</TableCell>
                 <TableCell isHeader>저자/역자</TableCell>
                 <TableCell isHeader>상태</TableCell>
@@ -438,7 +440,7 @@ function PublishList() {
                 return (
                   <TableRow key={index}>
                     {/* 체크박스 */}
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       {item.status === "CO017001" ||
                       item.status === "CO017002" ? (
                         <Checkbox
@@ -499,7 +501,7 @@ function PublishList() {
                       {item.approveAdminName ? item.approveAdminName : "-"}
                     </TableCell>
                     {/* 상세정보 */}
-                    <TableCell className="w-[56px]">
+                    <TableCell isChildIcon={true} className="w-[56px]">
                       <Link
                         className="flex justify-center"
                         to={`${PUBLISH_LIST_DETAIL}/${item.id}`}

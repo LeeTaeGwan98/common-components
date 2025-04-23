@@ -227,7 +227,7 @@ function Inquiry() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableCell isHeader>
+                <TableCell isChildIcon={true} isHeader>
                   <div className="flex items-center justify-center gap-[2px]">
                     문의일{" "}
                     <IconButton icon={<Updown />} onClick={handleSortOrder} />
@@ -293,7 +293,7 @@ function Inquiry() {
                     <TableCell>
                       {item.responseAdminName ? item.responseAdminName : "-"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
                         to={`${INQUIRY_DETAIL}/${item.id}`}

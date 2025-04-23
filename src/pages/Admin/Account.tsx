@@ -168,7 +168,7 @@ function Account() {
                       )}
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell isChildIcon={true}>
                       <div className="flex justify-center">
                         <Link
                           className="flex justify-center w-fit"
