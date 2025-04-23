@@ -112,17 +112,20 @@ const TableCell: React.FC<TableCellProps> = ({
   return (
     <CellTag
       className={cn(
-        "text-center pl-[29px] first:pl-[48px] last:pr-[48px]",
+        "h-[inherit] text-center pl-[29px] first:pl-[48px] last:pr-[48px]",
         CellTag === "th" && "text-body1-normal-bold",
         CellTag === "td" && "text-label1-normal-regular",
         className
       )}
     >
       <div
-        className={cn(
-          "break-words whitespace-normal text-ellipsis line-clamp-2",
-          childClassName
-        )}
+        className={
+          `flex ` +
+          cn(
+            "h-full items-center justify-center break-words whitespace-normal text-ellipsis line-clamp-2",
+            childClassName
+          )
+        }
       >
         {children}
       </div>
