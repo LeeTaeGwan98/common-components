@@ -118,14 +118,16 @@ const TableCell: React.FC<TableCellProps> = ({
         className
       )}
     >
-      <div
-        className={
-          isChildIcon
-            ? ""
-            : "break-words whitespace-normal text-ellipsis line-clamp-2"
-        }
-      >
-        {children}
+      <div className="flex justify-center">
+        <div
+          className={
+            isChildIcon
+              ? ""
+              : "break-words whitespace-normal text-ellipsis line-clamp-2"
+          }
+        >
+          {children}
+        </div>
       </div>
     </CellTag>
   );

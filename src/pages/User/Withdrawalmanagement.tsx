@@ -221,9 +221,15 @@ function Withdrawalmanagement() {
                 </TableCell>
                 <TableCell isHeader>탈퇴일</TableCell>
                 <TableCell isHeader>닉네임</TableCell>
-                <TableCell isHeader>이메일</TableCell>
-                <TableCell isHeader>탈퇴 사유</TableCell>
-                <TableCell isHeader>기타</TableCell>
+                <TableCell className="w-[329px]" isHeader>
+                  이메일
+                </TableCell>
+                <TableCell className="w-[310px]" isHeader>
+                  탈퇴 사유
+                </TableCell>
+                <TableCell className="w-[329px]" isHeader>
+                  기타
+                </TableCell>
               </TableRow>
             </TableHeader>
 

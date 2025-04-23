@@ -236,7 +236,9 @@ function Inquiry() {
                 <TableCell isHeader>닉네임</TableCell>
                 <TableCell isHeader>서비스</TableCell>
                 <TableCell isHeader>문의유형</TableCell>
-                <TableCell isHeader>제목</TableCell>
+                <TableCell className="w-[300px]" isHeader>
+                  제목
+                </TableCell>
                 <TableCell isHeader>상태</TableCell>
                 <TableCell isHeader>관리자</TableCell>
                 <TableCell isHeader>상세정보</TableCell>

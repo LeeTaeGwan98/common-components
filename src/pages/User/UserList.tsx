@@ -227,7 +227,9 @@ function UserList() {
                 </TableCell>
                 <TableCell isHeader>가입일</TableCell>
                 <TableCell isHeader>닉네임</TableCell>
-                <TableCell isHeader>이메일</TableCell>
+                <TableCell className="w-[300px]" isHeader>
+                  이메일
+                </TableCell>
                 <TableCell isHeader>이용중인 플랜</TableCell>
                 <TableCell isHeader>출판한 전자책</TableCell>
                 <TableCell isHeader>보유 포인트</TableCell>
@@ -244,8 +246,8 @@ function UserList() {
                     <TableCell>
                       {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
                     </TableCell>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.email}</TableCell>
+                    <TableCell className="text-left">{item.name}</TableCell>
+                    <TableCell className="text-left">{item.email}</TableCell>
                     <TableCell>{item.planName}</TableCell>
                     <TableCell>
                       {Number(item.publishedEbookCount) === 0 ? (

@@ -226,7 +226,9 @@ function Cover() {
                 </TableCell>
                 <TableCell isHeader>표지등록일</TableCell>
                 <TableCell isHeader>표지 판매일</TableCell>
-                <TableCell isHeader>표지명</TableCell>
+                <TableCell className="w-[300px]" isHeader>
+                  표지명
+                </TableCell>
                 <TableCell isHeader>표지번호</TableCell>
                 <TableCell isHeader>가격</TableCell>
                 <TableCell isHeader>구매자</TableCell>
