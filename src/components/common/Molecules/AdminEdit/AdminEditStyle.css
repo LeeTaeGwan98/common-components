@@ -25,6 +25,7 @@
 }
 
 .ql-container {
+  height: 100%;
   border: none !important;
 }
 .ql-editor.ql-blank::before {
@@ -123,7 +124,8 @@
 }
 
 .ql-editor {
-  min-height: 552px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .ql-active {

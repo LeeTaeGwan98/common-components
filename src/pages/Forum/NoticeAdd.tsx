@@ -104,6 +104,7 @@ const NoticeRegistration = () => {
             <div className="w-full flex flex-col gap-[8px]">
               내용
               <AdminEdit
+                className="h-[608px]"
                 placeholder="공지사항 내용을 입력해주세요"
                 isVideo={false}
                 value={content}

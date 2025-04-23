@@ -3,6 +3,7 @@ import ReactQuill, { Quill } from "react-quill-new";
 import CustomToolbar from "./CustomToolbar";
 import "react-quill-new/dist/quill.snow.css";
 import "@/components/common/Molecules/AdminEdit/AdminEditStyle.css";
+import { cn } from "@/lib/utils";
 
 // 사용할 사이즈 명시(기본: small, normal, large, huge)
 const Size = Quill.import("formats/size") as {
@@ -44,6 +45,7 @@ Divider.tagName = "hr";
 Quill.register("blots/divider", Divider);
 
 interface AdminEditProps {
+  className?: string;
   value: string;
   isVideo?: boolean;
   onChange: (value: string) => void;
@@ -58,6 +60,7 @@ export function parseHTML(html: string) {
 }
 
 const AdminEdit: React.FC<AdminEditProps> = ({
+  className,
   value = "",
   isVideo = true,
   onChange,
@@ -98,6 +101,7 @@ const AdminEdit: React.FC<AdminEditProps> = ({
         theme="snow"
         value={value}
         onChange={handleChange}
+        className={cn("h-[300px]", className)}
         modules={modules}
         formats={[
           "size",

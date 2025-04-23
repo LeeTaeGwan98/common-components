@@ -228,6 +228,7 @@ function InquiryDetail() {
             <div className="w-full flex flex-col gap-[8px]">
               답변내용
               <AdminEdit
+                className="h-[608px]"
                 value={formState.responseContent}
                 isVideo={false}
                 placeholder="답변을 입력해주세요"
