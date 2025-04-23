@@ -39,6 +39,7 @@ import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { codeToGetGroupCode, codeToName } from "@/utils/uitls";
 import { getExcelSearch } from "@/api/excel/excel";
 import { excelDownload } from "@/components/excel/Excel";
+import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 
 const initState: InquiryQueryStringType = {
   fromDt: undefined,
@@ -311,6 +312,9 @@ function Inquiry() {
             </TableBody>
           </Table>
         </TableContainer>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
       </BreadcrumbContainer>
     </>
   );

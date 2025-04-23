@@ -111,7 +111,11 @@ function TutorialDataTemplate({
   });
 
   //저장 버튼 활성화 여부
-  const formValid = tumbnailFile && category && videoFile && tutorialName;
+  const formValid =
+    ((tumbnailFile && videoFile) ||
+      (thumnailUploadedName && videoUploadedName)) &&
+    category &&
+    tutorialName;
 
   // console.log(!formValid);
 
@@ -219,7 +223,7 @@ function TutorialDataTemplate({
             }}
           >
             <TextField
-              slot={{ inputClassName: "cursor-pointer -z-10" }}
+              slot={{ inputClassName: "cursor-pointer -z-10 pr-[120px]" }}
               label="영상 파일"
               placeholder="파일을 첨부해주세요"
               readOnly={true}
@@ -259,7 +263,7 @@ function TutorialDataTemplate({
             }}
           >
             <TextField
-              slot={{ inputClassName: "cursor-pointer" }}
+              slot={{ inputClassName: "cursor-pointer pr-[120px]" }}
               label="튜토리얼 썸네일"
               placeholder="파일을 첨부해주세요"
               readOnly={true}
