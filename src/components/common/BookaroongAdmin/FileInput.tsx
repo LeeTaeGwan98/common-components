@@ -18,6 +18,7 @@ interface FileInputProps {
   dragActiveText?: string;
   dragInactiveText?: string;
   children: ReactNode;
+  isDisable?: boolean;
   validFn?: (file: File, callback: (isValid: boolean) => void) => void;
   onError?: () => void;
 }
@@ -43,6 +44,7 @@ const FileInput: React.FC<FileInputProps> = ({
   maxSize, // 첨부파일 최대 크기
   className = "",
   children,
+  isDisable = false,
   validFn, //파일 추가 유효성 검사 함수
   onError,
 }) => {
@@ -192,6 +194,7 @@ const FileInput: React.FC<FileInputProps> = ({
         onChange={handleFileSelect}
         accept={accept}
         multiple={multiple}
+        disabled={isDisable}
       />
       {children}
     </div>

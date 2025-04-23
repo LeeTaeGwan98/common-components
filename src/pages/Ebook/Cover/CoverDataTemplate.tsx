@@ -31,6 +31,8 @@ interface CoverDataStyleProps {
   //가격
   price: number | undefined;
   setPrice: Dispatch<SetStateAction<number | undefined>>;
+  //구매자
+  buyer?: string;
   //표지 샘플 이미지
   sampleImgId: number | undefined;
   setSampleImgId: Dispatch<SetStateAction<number | undefined>>;
@@ -59,6 +61,7 @@ function CoverDataStyle({
   setCreater,
   price,
   setPrice,
+  buyer,
   sampleImgName,
   setSampleImgName,
   sampleImgId,
@@ -200,7 +203,7 @@ function CoverDataStyle({
           <TextField
             label="제작자"
             value={creater}
-            maxLength={100}
+            maxLength={30}
             onChange={(e) => {
               setCreater(e.target.value);
             }}
@@ -226,9 +229,14 @@ function CoverDataStyle({
           <FileInput
             accept="image/png,image/jpeg"
             files={sampleImgFile ? [sampleImgFile] : []}
+            isDisable={type === "detail"}
             setFiles={async (files) => {
               //todo: 이미지 리사이즈로 인해 시간이 걸림(저장버튼 깜빡거림) - 이에 대해 문의필요
-              if (Array.isArray(files) && files.length > 0) {
+              if (
+                Array.isArray(files) &&
+                files.length > 0 &&
+                type === "create"
+              ) {
                 setSampleImgId(undefined);
                 const resized = await resizeImage(files[0]); // 여기서 미리 resize
                 setSampleImgFile(resized);
@@ -252,8 +260,13 @@ function CoverDataStyle({
           <FileInput
             accept=".ai,.eps,.indd"
             files={designFile ? [designFile] : []}
+            isDisable={type === "detail"}
             setFiles={(files) => {
-              if (Array.isArray(files) && files.length > 0) {
+              if (
+                Array.isArray(files) &&
+                files.length > 0 &&
+                type === "create"
+              ) {
                 setDesignFile(files[0]);
                 setDesignFileName(files[0].name);
                 //표디 디자인 파일 업로드
@@ -274,8 +287,8 @@ function CoverDataStyle({
             />
           </FileInput>
         </div>
-        <div className="flex gap-gutter-horizontal">
-          <div className="w-[50%]">
+        <div className="flex justify-center *:flex-1 gap-gutter-horizontal">
+          <div>
             <Title size="medium" label={"표지"} />
             <Segement
               className="w-full"
@@ -286,7 +299,11 @@ function CoverDataStyle({
             />
           </div>
 
-          <div className="w-[50%]"></div>
+          {buyer ? (
+            <TextField label="구매자" value={buyer ?? ""} readOnly />
+          ) : (
+            <div></div>
+          )}
         </div>
         <div>
           <Title size="large" label={"소개"} />

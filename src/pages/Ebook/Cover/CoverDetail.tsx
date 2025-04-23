@@ -78,6 +78,7 @@ function CoverDetail() {
         setCreater={setCreater}
         price={price}
         setPrice={setPrice}
+        buyer={data.buyerName}
         sampleImgName={sampleImgName}
         setSampleImgName={setSampleImgName}
         sampleImgId={sampleImgId}

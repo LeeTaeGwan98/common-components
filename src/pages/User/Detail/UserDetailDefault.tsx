@@ -148,6 +148,8 @@ function UserDetailDefault({ setSeletedMenu }: UserDetailDefaultProps) {
             {!data.memberType || data.memberType === "CO025001"
               ? data.phoneNumber
                 ? data.phoneNumber
+                    .replace(/[^0-9]/g, "")
+                    .replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3") //3-3/4-4 형태로 하이픈 추가
                 : "No data"
               : data.businessLicenseNumber
               ? data.businessLicenseNumber
