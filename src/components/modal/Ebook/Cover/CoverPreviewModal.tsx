@@ -57,7 +57,7 @@ export const CoverPreviewModal = ({
           </Button>
         }
       >
-        <img src={imageSrc ?? ""} alt="표지 미리보기" />
+        <img className="w-full" src={imageSrc ?? ""} alt="표지 미리보기" />
       </DialogDetailContent>
     </DialogContent>
   );

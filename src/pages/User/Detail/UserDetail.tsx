@@ -301,14 +301,16 @@ function UserDetail() {
                   size="medium"
                   value={nickName}
                   errorText={
-                    isNickError ? "자음, 모음은 사용이 불가합니다." : ""
+                    isNickError
+                      ? "최소 2자 이상 한글(자음, 모음 x), 영어, 숫자만 입력가능합니다."
+                      : ""
                   }
                   maxLength={30}
                   buttonElement={
                     <Text
                       className="text-label1-normal-regular cursor-pointer"
                       onClick={() => {
-                        if (hasHangulJamo(nickName)) {
+                        if (hasHangulJamo(nickName) || nickName.length < 2) {
                           setIsNickError(true);
                           return;
                         }
@@ -324,7 +326,7 @@ function UserDetail() {
                   onChange={(e) => {
                     setIsNickError(false);
                     //유효한 문자만 입력
-                    const filtered = filterInput(e.target.value);
+                    const filtered = filterInput(e.target.value.toLowerCase());
                     setNickName(filtered);
                   }}
                 />

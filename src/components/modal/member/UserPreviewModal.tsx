@@ -21,7 +21,7 @@ export const UserPreviewModal = ({
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   //미리보기 api
   const { data } = useQuery({
-    queryKey: ["UserFilePreview", id],
+    queryKey: ["UserFilePreview", id, type],
     queryFn: () => {
       if (type === "idcard") {
         return getIdCardPreview(Number(id));

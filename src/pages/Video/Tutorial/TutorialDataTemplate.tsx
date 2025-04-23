@@ -21,11 +21,12 @@ import {
   COMMON_GROUP_CODE_MAPPING,
   COMMON_GROUP_CODE_UNION_TYPE,
 } from "@/Constants/CommonGroupCode";
+import { TUTORIAL } from "@/Constants/ServiceUrl";
 import { useModalStore } from "@/store/modalStore";
 import { SelectGroup } from "@radix-ui/react-select";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 interface TutorialDataStyleProps {
   type: "create" | "detail"; //등록/상세 여부
@@ -278,13 +279,15 @@ function TutorialDataTemplate({
         {video}
         {/* 하단 버튼 */}
         <div className="flex justify-end gap-[12px]">
-          <OutlinedButton
-            className="max-w-[180px] w-full"
-            size="large"
-            type="assistive"
-          >
-            취소
-          </OutlinedButton>
+          <Link to={TUTORIAL}>
+            <OutlinedButton
+              className="max-w-[180px] w-full"
+              size="large"
+              type="assistive"
+            >
+              취소
+            </OutlinedButton>
+          </Link>
           <OutlinedButton
             className="max-w-[180px] w-full"
             type="secondary"

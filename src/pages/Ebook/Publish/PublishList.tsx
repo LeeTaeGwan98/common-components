@@ -429,7 +429,9 @@ function PublishList() {
                 </TableCell>
                 <TableCell isHeader>도서명</TableCell>
                 <TableCell isHeader>저자/역자</TableCell>
-                <TableCell isHeader>상태</TableCell>
+                <TableCell className="w-[180px]" isHeader>
+                  상태
+                </TableCell>
                 <TableCell isHeader>관리자</TableCell>
                 <TableCell isHeader>상세정보</TableCell>
               </TableRow>
@@ -471,7 +473,7 @@ function PublishList() {
                     </TableCell>
                     {/* 승인일 */}
                     <TableCell>
-                      {item.submittedAt
+                      {item.approvedAt
                         ? formatDateTimeToJSX(
                             formatToUTCString(item.approvedAt)
                           )
