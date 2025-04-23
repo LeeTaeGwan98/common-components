@@ -48,11 +48,11 @@ export const formatDateTimeToJSX = (dateString: string) => {
   const [date, time] = dateString.split(" ");
 
   return (
-    <>
+    <div>
       <span>{date}</span>
       <br />
       <span>{time}</span>
-    </>
+    </div>
   );
 };
 

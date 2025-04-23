@@ -85,7 +85,7 @@ function PublishListDetail() {
         button={
           <div>
             <div
-              className={`flex gap-[8px] ${
+              className={`flex gap-[8px] w-fit ${
                 data.status === "CO017002" || data.status === "CO017001"
                   ? ""
                   : "hidden"
