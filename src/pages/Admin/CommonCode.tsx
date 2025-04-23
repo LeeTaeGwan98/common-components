@@ -337,9 +337,9 @@ function CommonCode() {
         </div>
 
         <div className="flex gap-[20px] justify-between">
-          <div className="w-full">
+          <div className="w-fit">
             <TableContainer>
-              <Table className="min-w-0">
+              <Table className="w-[440px] min-w-0">
                 <TableHeader>
                   <TableRow>
                     <TableCell isHeader>그룹코드명</TableCell>
@@ -363,8 +363,8 @@ function CommonCode() {
                     .map((groupCode, index) => {
                       return (
                         <TableRow key={index}>
-                          <TableCell>{groupCode.commGroupCode}</TableCell>
                           <TableCell>{groupCode.groupCodeName}</TableCell>
+                          <TableCell>{groupCode.commGroupCode}</TableCell>
                           <TableCell>
                             <div>
                               <Radio
@@ -419,9 +419,7 @@ function CommonCode() {
                       <TableRow key={index}>
                         {/* <TableCell>{item.sortOrd}</TableCell> */}
                         <TableCell>{item.commDetailCode}</TableCell>
-                        <TableCell className="">
-                          {item.detailCodeName}
-                        </TableCell>
+                        <TableCell>{item.detailCodeName}</TableCell>
                         <TableCell>{item.detailCodeDesc}</TableCell>
                         <TableCell>
                           <Checkbox
