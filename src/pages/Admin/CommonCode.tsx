@@ -397,7 +397,7 @@ function CommonCode() {
           </div>
 
           <TableContainer>
-            <Table className="min-w-[1044px]">
+            <Table className="min-w-[1042px]">
               <TableHeader>
                 <TableRow>
                   <TableCell isHeader>코드 ID</TableCell>
