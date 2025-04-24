@@ -20,7 +20,8 @@ function OutlinedButton({
   const typeStyle = {
     primary: "border-primary-normal text-primary-normal",
     secondary: "border-line-normal-normal text-primary-normal",
-    assistive: "border-line-normal-normal text-label1-normal-regular",
+    assistive:
+      "border-line-normal-normal text-label1-normal-regular text-label-normal",
   };
 
   const interactiveTypeStyle = {

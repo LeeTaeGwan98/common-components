@@ -26,12 +26,15 @@ function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
       )}
       <textarea
         value={value}
-        className={cn(
-          "h-[180px] p-[12px] appearance-none bg-transparent outline-none resize-none w-full border-[1px] border-line-normal-normal rounded-radius-admin text-body-1-normal placeholder:text-body1-normal-regular placeholder:text-label-assistive",
-          interactiveTypeStyle,
-          disableStyle,
-          className
-        )}
+        className={
+          "text-label-normal " +
+          cn(
+            "text-label-normal h-[180px] p-[12px] appearance-none bg-transparent outline-none resize-none w-full border-[1px] border-line-normal-normal rounded-radius-admin text-body1-normal-regular placeholder:text-body1-normal-regular placeholder:text-label-assistive",
+            interactiveTypeStyle,
+            disableStyle,
+            className
+          )
+        }
         maxLength={300}
         {...props}
       />
