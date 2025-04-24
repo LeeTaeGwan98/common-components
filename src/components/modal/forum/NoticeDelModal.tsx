@@ -51,6 +51,7 @@ const NoticeDetailModal = ({ id }: NoticeDetailModalProps) => {
 
       <Actions priority="neutral">
         <OutlinedButton
+          type="assistive"
           onClick={() => closeModal()}
           className="border-line-normal-normal min-w-[84px] !flex-initial"
         >

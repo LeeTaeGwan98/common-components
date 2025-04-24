@@ -53,7 +53,7 @@ const ChatbotModal = ({ id }: { id: number }) => {
                 deleteChatbotFn(Number(id));
               }}
             >
-              확인
+              삭제
             </Button>
           </Actions>
         }

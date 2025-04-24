@@ -78,9 +78,9 @@ function Main() {
               buttonOnClick={() => navigate(USER_LIST)}
             >
               <Content
-                label="오늘"
-                summary={`${data.userIncreaseCount}`}
-                icon={<Up />}
+                label={data.totalUserCount ? "오늘" : ""}
+                summary={data.totalUserCount ? `${data.userIncreaseCount}` : ""}
+                icon={data.totalUserCount ? <Up /> : <></>}
                 slot={{
                   summaryClassName:
                     "text-label-alternative text-body1-normal-bold",

@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 const NoticeRegistration = () => {
   const naviate = useNavigate();
   const [title, setTitle] = useState("");
-  const [isPinned, setIsPinned] = useState(true);
+  const [isPinned, setIsPinned] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [content, setContent] = useState("");
 
@@ -51,7 +51,7 @@ const NoticeRegistration = () => {
       <BreadcrumbContainer
         breadcrumbNode={
           <>
-            관리자 / 공지사항{" "}
+            게시판 관리 / 공지사항{" "}
             <Divider vertical className="h-[20px] mx-[12px]" />
             등록
           </>

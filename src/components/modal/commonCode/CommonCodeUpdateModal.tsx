@@ -75,6 +75,7 @@ export const CommonCodeUpdateModal = ({
         commGroupCode: groupCode.commGroupCode,
         detailCodeName: formState.codeNameField,
         detailCodeDesc: formState.detailDescriptionField,
+        isUsed: false,
         addInfo: formState.colorField,
         createdBy: user!.id,
         updatedBy: user!.id,

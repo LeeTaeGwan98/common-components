@@ -153,14 +153,12 @@ function InquiryDetail() {
           </>
         }
         button={
-          <>
-            <Button
-              className="rounded-radius-admin w-[180px] h-[48px]"
-              onClick={deleteModal}
-            >
-              삭제
-            </Button>
-          </>
+          <Button
+            className="rounded-radius-admin w-[180px] h-[48px]"
+            onClick={deleteModal}
+          >
+            삭제
+          </Button>
         }
       >
         <div className="flex w-full items-center justify-center text-label-alternative text-label1-normal-bold">

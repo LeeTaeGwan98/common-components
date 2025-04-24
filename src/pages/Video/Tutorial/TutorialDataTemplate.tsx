@@ -230,7 +230,7 @@ function TutorialDataTemplate({
               readOnly={true}
               buttonElement={
                 <OutlinedButton size="small" className="">
-                  파일 업로드
+                  {videoFile || videoUploadedName ? "파일 변경" : "파일 업로드"}
                 </OutlinedButton>
               }
               value={videoFile?.name ?? videoUploadedName ?? ""}
@@ -269,7 +269,11 @@ function TutorialDataTemplate({
               placeholder="파일을 첨부해주세요"
               readOnly={true}
               buttonElement={
-                <OutlinedButton size="small">파일 업로드</OutlinedButton>
+                <OutlinedButton size="small">
+                  {tumbnailFile || thumnailUploadedName
+                    ? "파일 변경"
+                    : "파일 업로드"}
+                </OutlinedButton>
               }
               value={tumbnailFile?.name ?? thumnailUploadedName ?? ""}
             />
@@ -279,12 +283,8 @@ function TutorialDataTemplate({
         {video}
         {/* 하단 버튼 */}
         <div className="flex justify-end gap-[12px]">
-          <Link to={TUTORIAL}>
-            <OutlinedButton
-              className="max-w-[180px] w-full"
-              size="large"
-              type="assistive"
-            >
+          <Link to={TUTORIAL} className="max-w-[180px] w-full">
+            <OutlinedButton className="w-full" size="large" type="assistive">
               취소
             </OutlinedButton>
           </Link>
