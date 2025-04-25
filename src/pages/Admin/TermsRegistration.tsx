@@ -167,7 +167,7 @@ function TermsRegistration() {
               placeholder="내용을 입력해주세요"
               value={formState.content}
               label="내용"
-              maxLength={10000}
+              maxLength={100000}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                 updateFormState("content", e.target.value);
               }}
