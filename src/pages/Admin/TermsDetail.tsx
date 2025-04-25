@@ -210,7 +210,7 @@ function TermsDetail() {
               placeholder="내용을 입력해주세요"
               value={formState.content}
               label="내용"
-              maxLength={10000}
+              maxLength={undefined}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                 updateFormState("content", e.target.value);
               }}
