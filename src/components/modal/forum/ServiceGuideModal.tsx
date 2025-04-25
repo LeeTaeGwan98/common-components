@@ -55,7 +55,7 @@ const ServiceGuideModal = ({ id }: { id: number }) => {
                 deleteGuideFn(id);
               }}
             >
-              확인
+              삭제
             </Button>
           </Actions>
         }

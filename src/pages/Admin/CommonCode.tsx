@@ -182,6 +182,9 @@ function CommonCode() {
     mutationFn: (payload: DetailCodeUpdateReq[]) => updateDetailCodes(payload),
     onSuccess() {
       refetch();
+      customToast({
+        title: "저장되었습니다.",
+      });
     },
     onError() {
       customToast({
@@ -431,7 +434,7 @@ function CommonCode() {
                       <TableCell>{item.commDetailCode}</TableCell>
                       <TableCell>{item.detailCodeName}</TableCell>
                       <TableCell>{item.detailCodeDesc}</TableCell>
-                      <TableCell>
+                      <TableCell isChildIcon={true}>
                         <Checkbox
                           checked={item.isUsed}
                           onClick={() => {

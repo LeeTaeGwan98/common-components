@@ -101,7 +101,7 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
             </FileInput>
           ) : (
             <FileInput
-              className="w-full"
+              className="w-full cursor-pointer"
               files={uploadedFiles}
               setFiles={setUpliadedFiles}
               multiple

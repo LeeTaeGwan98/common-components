@@ -639,12 +639,8 @@ function PlanDetail() {
           </div>
 
           <div className="flex justify-end gap-[12px]">
-            <Link to={PLAN}>
-              <OutlinedButton
-                className="max-w-[180px] w-full"
-                size="large"
-                type="assistive"
-              >
+            <Link className="max-w-[180px] w-full" to={PLAN}>
+              <OutlinedButton className="w-full" size="large" type="assistive">
                 취소
               </OutlinedButton>
             </Link>

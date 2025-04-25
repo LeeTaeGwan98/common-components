@@ -85,7 +85,7 @@ Segement.SegementItem = (({
   return (
     <button
       className={cn(
-        "flex-1 text-center",
+        "flex-1 text-center text-label-normal",
         interactiveTypeStyle,
         flagStyle,
         selectedStyle,

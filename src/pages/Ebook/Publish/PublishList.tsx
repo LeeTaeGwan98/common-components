@@ -92,6 +92,7 @@ const StatusView = ({
     CO017002: (
       <div className="flex gap-[8px] w-full">
         <OutlinedButton
+          type="assistive"
           onClick={() =>
             openModal(
               <PublishPostHoldModal

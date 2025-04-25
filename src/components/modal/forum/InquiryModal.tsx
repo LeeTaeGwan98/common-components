@@ -53,7 +53,7 @@ const InquiryModal = ({ id }: { id: number }) => {
                 deleteInquiryFn(Number(id));
               }}
             >
-              확인
+              삭제
             </Button>
           </Actions>
         }

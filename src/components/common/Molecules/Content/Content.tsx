@@ -46,7 +46,7 @@ function Content({
         {label && (
           <Label
             className={cn(
-              "bg-primary-normal/15 text-primary-normal",
+              "bg-primary-normal/[0.08] text-primary-normal",
               sizeStyle[size].label,
               slot.labelClassName
             )}

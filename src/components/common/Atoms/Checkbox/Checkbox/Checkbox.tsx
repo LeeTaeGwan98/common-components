@@ -91,6 +91,7 @@ function Checkbox({
         isInteraction && interactiveTypeStyle,
         disable && "cursor-not-allowed"
       )}
+      onMouseUp={(e) => e.currentTarget.blur()}
       disabled={disable}
       {...props}
     >

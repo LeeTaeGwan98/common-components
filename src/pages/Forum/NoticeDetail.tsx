@@ -19,6 +19,7 @@ import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedBu
 import { useAuthStore } from "@/store/authStore";
 import { updateNotice, type UpdateNoticePayload } from "@/api/notice/noticeAPI";
 import { customToast } from "@/components/common/Atoms/Toast/Toast";
+import Divider from "@/components/common/Atoms/Divider/Divider";
 
 // formState 타입 정의
 type FormState = {
@@ -104,7 +105,13 @@ const NoticeDetail = () => {
     <>
       <title>북카롱 | 공지사항 상세</title>
       <BreadcrumbContainer
-        breadcrumbNode={<>게시판 관리 / 공지사항 상세</>}
+        breadcrumbNode={
+          <>
+            게시판 관리 / 공지사항{" "}
+            <Divider vertical className="h-[20px] mx-[12px]" />
+            상세
+          </>
+        }
         button={
           <Button
             className="rounded-radius-admin w-[180px] h-[48px]"
