@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const NoticeRegistration = () => {
   const naviate = useNavigate();
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [isPinned, setIsPinned] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -114,9 +115,7 @@ const NoticeRegistration = () => {
             {/* 버튼 */}
             <div className="flex justify-end space-x-4">
               <OutlinedButton
-                onClick={() => {
-                  console.log("취소 버튼 클릭");
-                }}
+                onClick={() => navigate(-1)}
                 className="bg-white border border-line-normal-normal rounded-radius-admin w-[180px] h-[48px] text-label-normal text-body1-normal-medium "
               >
                 취소

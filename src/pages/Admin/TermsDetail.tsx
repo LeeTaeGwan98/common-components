@@ -207,6 +207,7 @@ function TermsDetail() {
 
             {/* 내용 */}
             <TextBox
+              className="h-[448px]"
               placeholder="내용을 입력해주세요"
               value={formState.content}
               label="내용"

@@ -78,16 +78,18 @@ function Main() {
               buttonOnClick={() => navigate(USER_LIST)}
             >
               <Content
-                label={data.totalUserCount ? "오늘" : ""}
-                summary={data.totalUserCount ? `${data.userIncreaseCount}` : ""}
-                icon={data.totalUserCount ? <Up /> : <></>}
+                label={data.userIncreaseCount ? "오늘" : ""}
+                summary={
+                  data.userIncreaseCount ? `${data.userIncreaseCount}` : ""
+                }
+                icon={data.userIncreaseCount ? <Up /> : <></>}
                 slot={{
                   summaryClassName:
                     "text-label-alternative text-body1-normal-bold",
                   labelClassName: "text-primary-normal text-caption1-bold",
                 }}
               >
-                {`${data.totalUserCount} 명`}
+                {`${data.totalUserCount}명`}
               </Content>
             </Card>
             <Card
@@ -109,7 +111,7 @@ function Main() {
                   labelClassName: "text-primary-normal text-caption1-bold",
                 }}
               >
-                {`${data.pendingEbookCount} 권`}
+                {`${data.pendingEbookCount}권`}
               </Content>
             </Card>
             <Card
@@ -178,7 +180,7 @@ function Main() {
                   labelClassName: "text-primary-normal text-caption1-bold",
                 }}
               >
-                {`${data.pendingEbookCount} 건`}
+                {`${data.pendingEbookCount}건`}
               </Content>
             </Card>
           </div>

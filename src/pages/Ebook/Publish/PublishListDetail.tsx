@@ -123,7 +123,7 @@ function PublishListDetail() {
       >
         <ContentWrapper>
           <div className="flex justify-center *:flex-1 gap-[20px]">
-            <TextField label="닉네임" readOnly value={"닉네임"} />
+            <TextField label="닉네임" readOnly value={data.name} />
             <TextField
               label="제출일"
               readOnly

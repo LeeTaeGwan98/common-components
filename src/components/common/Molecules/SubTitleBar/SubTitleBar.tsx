@@ -95,7 +95,7 @@ function SubTitleBar({
 
   return (
     <div className="flex items-center justify-between mb-[12px] flex-wrap gap-[8px]">
-      <div className="flex">
+      <div className="flex h-[48px]">
         <AdminTitle
           title={title}
           slot={{
@@ -103,11 +103,19 @@ function SubTitleBar({
             dividerClassName: "mr-[12px]",
           }}
         />
-        <DatePicker date={stringToDate(fromDt)} setDate={handletoFromDt} />
+        <DatePicker
+          pickerClassName="h-[48px]"
+          date={stringToDate(fromDt)}
+          setDate={handletoFromDt}
+        />
         <span className="w-[14px] flex items-center justify-center text-body2-normal-medium">
           ~
         </span>
-        <DatePicker date={stringToDate(toDt)} setDate={handletotoDt} />
+        <DatePicker
+          pickerClassName="h-[48px]"
+          date={stringToDate(toDt)}
+          setDate={handletotoDt}
+        />
       </div>
 
       <div className="flex gap-[12px]">
@@ -115,6 +123,7 @@ function SubTitleBar({
 
         {isSearchField && (
           <TextField
+            slot={{ inputClassName: "w-[240px]" }}
             value={inputKeyword || ""}
             onChange={handleKeywordOnchange}
             onKeyDown={handleKeywordEnter}
