@@ -5,13 +5,21 @@ interface TextBoxProps
   value: string;
   label?: string;
   className?: string;
+  disable?: boolean;
   count?: boolean;
 }
 
-function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
+function TextBox({
+  value,
+  label,
+  className,
+  disable,
+  count,
+  ...props
+}: TextBoxProps) {
   const { readOnly } = props;
   const disableStyle =
-    "disabled:bg-interaction-disable border-line-normal-neutral";
+    "disabled:bg-interaction-disable border-line-normal-neutral disabled:text-label-alternative";
 
   const interactiveTypeStyle =
     !readOnly &&
@@ -26,15 +34,12 @@ function TextBox({ value, label, className, count, ...props }: TextBoxProps) {
       )}
       <textarea
         value={value}
-        className={
-          "text-label-normal " +
-          cn(
-            "text-label-normal h-[180px] p-[12px] appearance-none bg-transparent outline-none resize-none w-full border-[1px] border-line-normal-normal rounded-radius-admin text-body1-normal-regular placeholder:text-body1-normal-regular placeholder:text-label-assistive",
-            interactiveTypeStyle,
-            disableStyle,
-            className
-          )
-        }
+        className={cn(
+          "text-label-normal h-[180px] p-[12px] appearance-none bg-transparent outline-none resize-none w-full border-[1px] border-line-normal-normal rounded-radius-admin text-body1-normal-regular placeholder:text-body1-normal-regular placeholder:text-label-assistive",
+          interactiveTypeStyle,
+          disableStyle,
+          className
+        )}
         maxLength={300}
         {...props}
       />
