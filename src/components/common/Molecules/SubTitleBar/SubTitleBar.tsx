@@ -10,6 +10,7 @@ import { dateToString, stringToDate } from "@/lib/dateParse";
 import { ActionType } from "@/api/common/commonType";
 import { useModalStore } from "@/store/modalStore";
 import ExcelModal from "@/components/modal/Excel/ExcelModal";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
 
 export const boolToString = (boolString: string) => {
   // shadcn의 selectItem에는 string타입만 들어갈 수 있어서 만든 함수
@@ -60,12 +61,30 @@ function SubTitleBar({
     });
   };
 
+  //시작일 설정
   const handletoFromDt = (date: Date) => {
-    dispatchWithPageReset("fromDt", dateToString(date));
+    const endDate = toDt == undefined ? dateToString(new Date()) : toDt;
+    if (date > new Date(endDate)) {
+      customToast({
+        title: "검색 시작 날짜를 종료 날짜 이후로 선택할 수 없습니다.",
+      });
+    } else {
+      dispatchWithPageReset("fromDt", dateToString(date));
+    }
   };
 
+  //종료일 설정
   const handletotoDt = (date: Date) => {
-    dispatchWithPageReset("toDt", dateToString(date));
+    const startDt = toDt == undefined ? dateToString(new Date()) : fromDt;
+    if (dateToString(date) === dateToString(new Date(startDt ?? ""))) {
+      dispatchWithPageReset("toDt", dateToString(date));
+    } else if (date < new Date(startDt ?? "")) {
+      customToast({
+        title: "검색 종료 날짜를 시작 날짜 이전으로 선택할 수 없습니다.",
+      });
+    } else {
+      dispatchWithPageReset("toDt", dateToString(date));
+    }
   };
 
   const handleKeywordOnchange = (e: React.ChangeEvent<HTMLInputElement>) => {

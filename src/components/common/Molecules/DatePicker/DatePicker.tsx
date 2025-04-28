@@ -39,14 +39,14 @@ function DatePicker({
         <Button
           variant="outline"
           className={cn(
-            "!rounded-radius-admin justify-start text-left text-body2-normal-regular py-0 px-[12px] hover:bg-line-normal-normal/light-hover focus:bg-line-normal-normal/light-focus active:bg-line-normal-normal",
+            "!gap-[6px] !rounded-radius-admin justify-start text-left text-body2-normal-regular py-0 px-[12px] hover:bg-line-normal-normal/light-hover focus:bg-line-normal-normal/light-focus active:bg-line-normal-normal",
             !date && "text-muted-foreground",
             sizeStyle[size],
             pickerClassName
           )}
           disabled={disable}
         >
-          <CalendarIcon className="size-[20px]" />
+          <CalendarIcon className="!size-[20px] text-label-normal" />
           <span className="text-line-normal-neutral">|</span>
           {date ? (
             <span className="text-label-normal text-body2-normal-regular">
