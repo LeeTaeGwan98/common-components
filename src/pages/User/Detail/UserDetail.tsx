@@ -224,9 +224,9 @@ function UserDetail() {
                   {data.isDeleted ? (
                     <StateText state={"탈퇴"} />
                   ) : data.isActive ? (
-                    <StateText state={"활성화"} />
+                    <StateText state={"활성"} />
                   ) : (
-                    <StateText state={"비활성화"} />
+                    <StateText state={"비활성"} />
                   )}
                 </div>
               </div>
@@ -251,7 +251,7 @@ function UserDetail() {
                           onClick={userActivateModal}
                         >
                           <StateText
-                            state={"활성화"}
+                            state={"활성"}
                             textClassName="text-caption1-regular text-label-normal py-[2px]"
                           />
                         </ButtonTextList>
@@ -260,7 +260,7 @@ function UserDetail() {
                           onClick={userDeActivateModal}
                         >
                           <StateText
-                            state={"비활성화"}
+                            state={"비활성"}
                             textClassName="text-caption1-regular text-label-normal py-[2px]"
                           />
                         </ButtonTextList>
@@ -306,6 +306,7 @@ function UserDetail() {
                       : ""
                   }
                   maxLength={30}
+                  slot={{ inputClassName: "pr-[50px]" }}
                   buttonElement={
                     <Text
                       className="text-label1-normal-regular cursor-pointer"
@@ -400,14 +401,14 @@ function UserDetail() {
     state,
     textClassName,
   }: {
-    state: "활성화" | "비활성화" | "탈퇴";
+    state: "활성" | "비활성" | "탈퇴";
     textClassName?: string;
   }) {
     let circleColor = "";
 
-    if (state === "활성화") {
+    if (state === "활성") {
       circleColor = "text-status-positive";
-    } else if (state === "비활성화") {
+    } else if (state === "비활성") {
       circleColor = "text-fill-normal";
     } else if (state === "탈퇴") {
       circleColor = "text-status-negative";
