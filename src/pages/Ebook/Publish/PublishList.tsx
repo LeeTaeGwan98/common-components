@@ -391,7 +391,7 @@ function PublishList() {
                                 .map((item) => item.id); // 상태가 맞는 아이템만 필터링
                               setSelectId(allIds);
                             }}
-                            className="flex items-center text-caption1-regular text-label-normal"
+                            className="flex items-center text-caption1-regular text-label-normal cursor-pointer"
                           >
                             <AllSelected className="size-[16px] mr-[2px]" />
                             전체선택
@@ -401,7 +401,7 @@ function PublishList() {
                               // 전체 해제: 빈 배열로 설정
                               setSelectId([]);
                             }}
-                            className="flex items-center text-caption1-regular text-label-normal"
+                            className="flex items-center text-caption1-regular text-label-normal cursor-pointer"
                           >
                             <AllDeleted className="size-[16px] mr-[2px]" />
                             전체해제
@@ -412,7 +412,7 @@ function PublishList() {
                                 approveEbook(id); // 개별 승인 함수 호출
                               });
                             }}
-                            className="flex items-center text-caption1-regular text-label-normal"
+                            className="flex items-center text-caption1-regular text-label-normal cursor-pointer"
                           >
                             <AllPaused className="size-[16px] text-status-positive mr-[2px]" />
                             선택승인

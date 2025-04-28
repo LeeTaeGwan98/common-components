@@ -115,7 +115,7 @@ function PublishListDetail() {
                 size="large"
                 onClick={() => CreateEbookApprove.mutate()}
               >
-                승인
+                출간
               </Button>
             </div>
           </div>
