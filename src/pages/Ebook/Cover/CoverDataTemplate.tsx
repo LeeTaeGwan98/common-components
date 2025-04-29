@@ -251,7 +251,7 @@ function CoverDataStyle({
               value={sampleImgName ? sampleImgName : "파일을 첨부해주세요"}
               readOnly
               buttonElement={
-                <OutlinedButton size="small">
+                <OutlinedButton className="min-w-0" size="small">
                   {sampleImgId ? "파일 변경" : "파일 업로드"}
                 </OutlinedButton>
               }
@@ -280,7 +280,7 @@ function CoverDataStyle({
               value={designFileName ? designFileName : "파일을 첨부해주세요"}
               readOnly
               buttonElement={
-                <OutlinedButton size="small">
+                <OutlinedButton className="min-w-0" size="small">
                   {designFileId ? "파일 변경" : "파일 업로드"}
                 </OutlinedButton>
               }

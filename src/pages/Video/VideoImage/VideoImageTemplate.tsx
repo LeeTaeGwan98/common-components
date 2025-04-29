@@ -28,7 +28,7 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
         <div className="flex justify-center items-center">
           <>비디오북 관리 / 무료 이미지 관리</>
           <Divider vertical className="h-[20px] mx-[12px]" />
-          <>{type === "detail" ? "상세" : "등록"}</>
+          <>{type === "detail" ? "상세" : "추가"}</>
         </div>
       }
       button={
@@ -67,73 +67,79 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
           value={""}
           placeholder="이미지를 대표하는 제목"
         />
-        <div className="w-full">
-          {type === "create" ? (
-            <FileInput
-              className="w-full"
-              files={files}
-              setFiles={setFiles}
-              accept=".png,.jpg,.jpeg,.pdf"
-              maxSize={numberToMb(5)} // 5MB
-              validFn={(file, callback) => {
-                // 예: 파일명에 공백 금지
-                // if (file.name.includes(" ")) {
-                //   alert("파일명에 공백이 있으면 안 됩니다.");
-                //   callback(false);
-                // } else {
-                //   callback(true);
-                // }
-              }}
-              onError={() => {}}
-            >
-              <div className="w-full flex flex-col items-center justify-center border border-line-normal-normal rounded-[4px] gap-space-default py-[54px]">
-                <div className="text-body1-normal-bold flex items-center justify-center gap-[10px]">
-                  <FileUpload className="fill-label-normal" />
-                  이미지 업로드 ({files.length}/1)
+
+        <div>
+          <div className="text-label1-normal-bold text-label-alternative mb-[8px]">
+            이미지
+          </div>
+          <div className="w-full">
+            {type === "create" ? (
+              <FileInput
+                className="w-full cursor-pointer"
+                files={files}
+                setFiles={setFiles}
+                accept=".png,.jpg,.jpeg,.pdf"
+                maxSize={numberToMb(5)} // 5MB
+                validFn={(file, callback) => {
+                  // 예: 파일명에 공백 금지
+                  // if (file.name.includes(" ")) {
+                  //   alert("파일명에 공백이 있으면 안 됩니다.");
+                  //   callback(false);
+                  // } else {
+                  //   callback(true);
+                  // }
+                }}
+                onError={() => {}}
+              >
+                <div className="w-full flex flex-col items-center justify-center border border-line-normal-normal rounded-[4px] gap-space-default py-[54px]">
+                  <div className="text-body1-normal-bold flex items-center justify-center gap-[10px]">
+                    <FileUpload className="fill-label-normal" />
+                    이미지 업로드 ({files.length}/1)
+                  </div>
+                  <div className="text-label1-normal-bold text-label-assistive">
+                    파일 형식: JPG(JPEG), PNG{" "}
+                  </div>
+                  <div className="text-label1-normal-bold text-label-alternative">
+                    ※ 이미지를 등록하면 즉시 반영됩니다
+                  </div>
                 </div>
-                <div className="text-label1-normal-bold text-label-assistive">
-                  파일 형식: JPG(JPEG), PNG{" "}
+              </FileInput>
+            ) : (
+              <FileInput
+                className="w-full cursor-pointer"
+                files={uploadedFiles}
+                setFiles={setUpliadedFiles}
+                multiple
+                accept=".png,.jpg,.jpeg,.pdf"
+                maxSize={numberToMb(5)} // 5MB
+                validFn={(file, callback) => {
+                  // 예: 파일명에 공백 금지
+                  if (file.name.includes(" ")) {
+                    alert("파일명에 공백이 있으면 안 됩니다.");
+                    callback(false);
+                  } else {
+                    callback(true);
+                  }
+                }}
+                onError={() => {
+                  alert("파일 업로드 중 오류 발생!");
+                }}
+              >
+                <div className="w-full flex flex-col items-center justify-center border border-line-normal-normal rounded-[4px] gap-space-default py-[54px]">
+                  <div className="text-body1-normal-bold text-primary-normal flex items-center justify-center gap-[10px]">
+                    <FileUpload className="fill-primary-normal" />
+                    이미지 업로드 (1/1)
+                  </div>
+                  <div className="text-label1-normal-bold text-label-assistive">
+                    파일 형식: JPG(JPEG), PNG{" "}
+                  </div>
+                  <div className="text-label1-normal-bold text-label-alternative">
+                    ※ 이미지를 등록하면 즉시 반영됩니다
+                  </div>
                 </div>
-                <div className="text-label1-normal-bold text-label-alternative">
-                  ※ 이미지를 등록하면 즉시 반영됩니다
-                </div>
-              </div>
-            </FileInput>
-          ) : (
-            <FileInput
-              className="w-full cursor-pointer"
-              files={uploadedFiles}
-              setFiles={setUpliadedFiles}
-              multiple
-              accept=".png,.jpg,.jpeg,.pdf"
-              maxSize={numberToMb(5)} // 5MB
-              validFn={(file, callback) => {
-                // 예: 파일명에 공백 금지
-                if (file.name.includes(" ")) {
-                  alert("파일명에 공백이 있으면 안 됩니다.");
-                  callback(false);
-                } else {
-                  callback(true);
-                }
-              }}
-              onError={() => {
-                alert("파일 업로드 중 오류 발생!");
-              }}
-            >
-              <div className="w-full flex flex-col items-center justify-center border border-line-normal-normal rounded-[4px] gap-space-default py-[54px]">
-                <div className="text-body1-normal-bold text-primary-normal flex items-center justify-center gap-[10px]">
-                  <FileUpload className="fill-primary-normal" />
-                  이미지 업로드 (1/1)
-                </div>
-                <div className="text-label1-normal-bold text-label-assistive">
-                  파일 형식: JPG(JPEG), PNG{" "}
-                </div>
-                <div className="text-label1-normal-bold text-label-alternative">
-                  ※ 이미지를 등록하면 즉시 반영됩니다
-                </div>
-              </div>
-            </FileInput>
-          )}
+              </FileInput>
+            )}
+          </div>
         </div>
 
         {/* 하단 버튼 */}

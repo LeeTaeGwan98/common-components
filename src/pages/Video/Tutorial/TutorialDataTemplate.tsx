@@ -229,7 +229,7 @@ function TutorialDataTemplate({
               placeholder="파일을 첨부해주세요"
               readOnly={true}
               buttonElement={
-                <OutlinedButton size="small" className="">
+                <OutlinedButton size="small" className="min-w-0">
                   {videoFile || videoUploadedName ? "파일 변경" : "파일 업로드"}
                 </OutlinedButton>
               }
@@ -269,7 +269,7 @@ function TutorialDataTemplate({
               placeholder="파일을 첨부해주세요"
               readOnly={true}
               buttonElement={
-                <OutlinedButton size="small">
+                <OutlinedButton className="min-w-0" size="small">
                   {tumbnailFile || thumnailUploadedName
                     ? "파일 변경"
                     : "파일 업로드"}

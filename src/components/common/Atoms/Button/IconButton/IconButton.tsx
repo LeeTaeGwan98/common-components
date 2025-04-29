@@ -57,8 +57,9 @@ function IconButton({
     solid: "bg-primary-normal",
   };
   const disableStyle = {
-    "bg-fill-alternative": disable,
-    "bg-fill-normal": disable && type === "solid",
+    "bg-fill-alternative text-label-disable": disable,
+    "bg-white text-label-disable": disable && type === "outlined",
+    "bg-fill-normal text-fill-normal": disable && type === "solid",
   };
   return (
     <button

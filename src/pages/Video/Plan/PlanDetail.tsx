@@ -127,7 +127,7 @@ function PlanDetail() {
 
   return (
     <>
-      <title>북카롱 | 픞랜 상세</title>
+      <title>북카롱 | 플랜 상세</title>
       <BreadcrumbContainer
         breadcrumbNode={
           <div className="flex justify-center items-center">
