@@ -78,7 +78,8 @@ export type COMMON_GROUP_CODE_UNION_TYPE =
   | "CO024"
   | "CO025"
   | "CO030"
-  | "CO033";
+  | "CO033"
+  | "CO035";
 
 export enum COMMON_GROUP_CODE_MAPPING {
   사용자유형 = "CO001",
@@ -107,4 +108,5 @@ export enum COMMON_GROUP_CODE_MAPPING {
   회원유형 = "CO025",
   은행 = "CO030",
   스타일 = "CO033",
+  무료이미지구분 = "CO035",
 }
