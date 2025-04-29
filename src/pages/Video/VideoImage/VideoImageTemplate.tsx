@@ -10,16 +10,51 @@ import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { useState } from "react";
-
 import FileUpload from "@/assets/svg/common/FileUploadIcon.svg";
+import { getDetailGroupCodes } from "@/api/commonCode/commonCodeAPI";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { COMMON_GROUP_CODE_MAPPING } from "@/Constants/CommonGroupCode";
+import { useNavigate } from "react-router-dom";
+import { registFreeImg } from "@/api/freeImg/freeImgApi";
 
 interface VideoImageTemplateProps {
   type: "create" | "detail"; //등록/상세 여부
 }
 
 function VideoImageTemplate({ type }: VideoImageTemplateProps) {
+  const nav = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
-  const [uploadedFiles, setUpliadedFiles] = useState<File[]>([]);
+  const [category, setCategory] = useState("");
+  const [title, setTitle] = useState("");
+
+  const { data: categories } = useSuspenseQuery({
+    queryKey: ["freeImgCode"],
+    queryFn: () =>
+      getDetailGroupCodes(COMMON_GROUP_CODE_MAPPING.무료이미지구분),
+    select: (data) => data.data.data,
+  });
+
+  const { mutate: registFreeImgFn } = useMutation({
+    mutationKey: ["freeImgRegist"],
+    mutationFn: () => {
+      const formData = new FormData();
+      formData.append("file", files[0]);
+      formData.append("categoryCode", category);
+      formData.append("title", title);
+      formData.append("fileName", title);
+
+      return registFreeImg(formData);
+    },
+  });
+
+  const handleSave = () => {
+    if (type === "create") {
+      registFreeImgFn();
+      return;
+    } else {
+    }
+  };
+
   console.log(files);
 
   return (
@@ -49,14 +84,21 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
           size="large"
           label="구분"
           placeholder="구분을 선택해주세요"
-          value={""}
+          value={category}
           onValueChange={(value) => {
-            //setCategory(value);
+            setCategory(value);
           }}
         >
           <SelectContent>
             <SelectGroup>
-              <SelectItem value={"구분"}>{"구분"}</SelectItem>
+              {categories.map((category) => (
+                <SelectItem
+                  value={category.commDetailCode}
+                  key={category.commDetailCode}
+                >
+                  {category.detailCodeName}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </SelectBox>
@@ -64,8 +106,9 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
         {/* 제목 */}
         <TextField
           label="제목"
-          value={""}
+          value={title}
           placeholder="이미지를 대표하는 제목"
+          onChange={(e) => setTitle(e.target.value)}
         />
 
         <div>
@@ -73,72 +116,41 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
             이미지
           </div>
           <div className="w-full">
-            {type === "create" ? (
-              <FileInput
-                className="w-full cursor-pointer"
-                files={files}
-                setFiles={setFiles}
-                accept=".png,.jpg,.jpeg,.pdf"
-                maxSize={numberToMb(5)} // 5MB
-                validFn={(file, callback) => {
-                  // 예: 파일명에 공백 금지
-                  // if (file.name.includes(" ")) {
-                  //   alert("파일명에 공백이 있으면 안 됩니다.");
-                  //   callback(false);
-                  // } else {
-                  //   callback(true);
-                  // }
-                }}
-                onError={() => {}}
-              >
-                <div className="w-full flex flex-col items-center justify-center border border-line-normal-normal rounded-[4px] gap-space-default py-[54px]">
-                  <div className="text-body1-normal-bold flex items-center justify-center gap-[10px]">
-                    <FileUpload className="fill-label-normal" />
+            <FileInput
+              className="w-full cursor-pointer"
+              files={files}
+              setFiles={setFiles}
+              accept=".png, .jpg, .jpeg"
+              maxSize={numberToMb(5)} // 5MB
+              validFn={(file, callback) => {
+                // 예: 파일명에 공백 금지
+                if (file.name.includes(" ")) {
+                  alert("파일명에 공백이 있으면 안 됩니다.");
+                  callback(false);
+                } else {
+                  callback(true);
+                }
+              }}
+            >
+              <div className="w-full flex flex-col items-center justify-center border border-line-normal-normal rounded-[4px] gap-space-default py-[54px]">
+                <div className="text-body1-normal-bold flex items-center justify-center gap-[10px]">
+                  <FileUpload
+                    className={`fill-label-normal ${
+                      files.length && "fill-primary-normal"
+                    }`}
+                  />
+                  <span className={`${files.length && "text-primary-normal"}`}>
                     이미지 업로드 ({files.length}/1)
-                  </div>
-                  <div className="text-label1-normal-bold text-label-assistive">
-                    파일 형식: JPG(JPEG), PNG{" "}
-                  </div>
-                  <div className="text-label1-normal-bold text-label-alternative">
-                    ※ 이미지를 등록하면 즉시 반영됩니다
-                  </div>
+                  </span>
                 </div>
-              </FileInput>
-            ) : (
-              <FileInput
-                className="w-full cursor-pointer"
-                files={uploadedFiles}
-                setFiles={setUpliadedFiles}
-                multiple
-                accept=".png,.jpg,.jpeg,.pdf"
-                maxSize={numberToMb(5)} // 5MB
-                validFn={(file, callback) => {
-                  // 예: 파일명에 공백 금지
-                  if (file.name.includes(" ")) {
-                    alert("파일명에 공백이 있으면 안 됩니다.");
-                    callback(false);
-                  } else {
-                    callback(true);
-                  }
-                }}
-                onError={() => {
-                  alert("파일 업로드 중 오류 발생!");
-                }}
-              >
-                <div className="w-full flex flex-col items-center justify-center border border-line-normal-normal rounded-[4px] gap-space-default py-[54px]">
-                  <div className="text-body1-normal-bold text-primary-normal flex items-center justify-center gap-[10px]">
-                    <FileUpload className="fill-primary-normal" />
-                    이미지 업로드 (1/1)
-                  </div>
-                  <div className="text-label1-normal-bold text-label-assistive">
-                    파일 형식: JPG(JPEG), PNG{" "}
-                  </div>
-                  <div className="text-label1-normal-bold text-label-alternative">
-                    ※ 이미지를 등록하면 즉시 반영됩니다
-                  </div>
+                <div className="text-label1-normal-bold text-label-assistive">
+                  파일 형식: JPG(JPEG), PNG{" "}
                 </div>
-              </FileInput>
-            )}
+                <div className="text-label1-normal-bold text-label-alternative">
+                  ※ 이미지를 등록하면 즉시 반영됩니다
+                </div>
+              </div>
+            </FileInput>
           </div>
         </div>
 
@@ -148,6 +160,7 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
             className="max-w-[180px] w-full"
             size="large"
             type="assistive"
+            onClick={() => nav(-1)}
           >
             취소
           </OutlinedButton>
@@ -155,6 +168,7 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
             className="max-w-[180px] w-full"
             type="secondary"
             size="large"
+            onClick={handleSave}
           >
             저장
           </OutlinedButton>
