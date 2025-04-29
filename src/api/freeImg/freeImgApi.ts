@@ -1,5 +1,5 @@
 import API from "@/api/API";
-import { ApiResType } from "@/api/common/commonType";
+import { ApiResType, TableResType } from "@/api/common/commonType";
 import { TableQueryStringType } from "@/api/common/commonType";
 
 interface RegistFreeImgRes {
@@ -30,7 +30,7 @@ interface GetFreeImgRes {
 
 export const getFreeImg = (qs: TableQueryStringType) => {
   const { sortOrder, fromDt, toDt, keyword, take, page } = qs;
-  let qsUrl = "/admin/image";
+  let qsUrl = "/admin/image?";
 
   if (sortOrder) {
     qsUrl += `sortOrder=${sortOrder}&`;
@@ -54,7 +54,7 @@ export const getFreeImg = (qs: TableQueryStringType) => {
     qsUrl = qsUrl.slice(0, -1);
   }
 
-  const data = API.get<ApiResType<GetFreeImgRes[]>>(qsUrl);
+  const data = API.get<TableResType<GetFreeImgRes>>(qsUrl);
 
   return data;
 };

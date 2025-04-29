@@ -19,18 +19,8 @@ import { ActionType } from "@/api/common/commonType";
 import { dateToString, formatDateTimeToJSX } from "@/lib/dateParse";
 import { ImageQueryStringType } from "@/api/video/videoAPI";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
-
-const data = {
-  list: [
-    {
-      id: 1,
-      registedAt: "9999-12-31 00:00:00",
-      type: "열두글자열두글자열두글자",
-      name: "여러글자",
-    },
-  ],
-  meta: { totalPage: 1 },
-};
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getFreeImg } from "@/api/freeImg/freeImgApi";
 
 const initState: ImageQueryStringType = {
   fromDt: undefined,
@@ -57,11 +47,17 @@ const reducer = <T extends Record<string, any>>(
 function VideoImage() {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
 
+  const { data: imgData } = useSuspenseQuery({
+    queryKey: ["freeImg", filterInfo],
+    queryFn: () => getFreeImg(filterInfo),
+    select: (data) => data.data.data,
+  });
+
   //테이블 빈 row 처리
   const renderEmptyRows = () => {
     const { take } = filterInfo;
     if (!take) return;
-    const emptyRowsCount = take - data.list.length;
+    const emptyRowsCount = take - imgData.list.length;
     const emptyRows = [];
 
     for (let i = 0; i < emptyRowsCount; i++) {
@@ -85,6 +81,7 @@ function VideoImage() {
       value: filterInfo.sortOrder === "DESC" ? "ASC" : "DESC",
     });
   };
+
   return (
     <>
       <title>북카롱 | 무료 이미지 관리</title>
@@ -122,18 +119,16 @@ function VideoImage() {
             </TableHeader>
 
             <TableBody>
-              {data.list.map((item, index) => {
+              {imgData.list.map((img, index) => {
                 return (
                   <TableRow key={index}>
-                    <TableCell>
-                      {formatDateTimeToJSX(item.registedAt)}
-                    </TableCell>
-                    <TableCell>{item.type}</TableCell>
-                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{formatDateTimeToJSX(img.createdAt)}</TableCell>
+                    <TableCell>{img.categoryCode}</TableCell>
+                    <TableCell>{img.title}</TableCell>
                     <TableCell isChildIcon={true}>
                       <Link
                         className="flex justify-center"
-                        to={`${VIDEOIMAGE_DETAIL}/${item.id}`}
+                        to={`${VIDEOIMAGE_DETAIL}/${img.id}`}
                       >
                         <IconButton
                           icon={

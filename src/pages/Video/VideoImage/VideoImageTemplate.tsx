@@ -55,8 +55,6 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
     }
   };
 
-  console.log(files);
-
   return (
     <BreadcrumbContainer
       breadcrumbNode={
