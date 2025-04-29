@@ -86,6 +86,7 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
           onValueChange={(value) => {
             setCategory(value);
           }}
+          className="w-1/2"
         >
           <SelectContent>
             <SelectGroup>
