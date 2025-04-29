@@ -25,7 +25,7 @@ const datas = [
   { 날짜: "03.04", 유동인구수: 3812600 },
 ];
 
-const renderActiveDot = (props: any) => {
+const renderActiveDot = (props: any, unit: string) => {
   const { cx, cy, value } = props;
 
   return (
@@ -44,7 +44,8 @@ const renderActiveDot = (props: any) => {
         strokeWidth="2"
       />
       <text textAnchor="middle" dy={28} dx={70} fontSize={15} fill="white">
-        {value.toLocaleString()} 원
+        {unit}
+        {value.toLocaleString()}{" "}
       </text>
     </svg>
   );
@@ -127,14 +128,14 @@ function Main() {
             >
               <Content
                 label="오늘"
-                summary="262,200원"
+                summary="$262,200"
                 icon={<Up />}
                 slot={{
                   summaryClassName:
                     "text-label-alternative text-body1-normal-bold",
                 }}
               >
-                324,000,000원
+                $324,000,000
               </Content>
             </Card>
             <Card
@@ -150,7 +151,7 @@ function Main() {
             >
               <Content
                 label="오늘"
-                summary="36,000원"
+                summary="₩36,000"
                 icon={<Up />}
                 slot={{
                   summaryClassName:
@@ -158,7 +159,7 @@ function Main() {
                   labelClassName: "text-primary-normal text-caption1-bold",
                 }}
               >
-                1,160,000원
+                ₩1,160,000
               </Content>
             </Card>
             <Card
@@ -191,7 +192,7 @@ function Main() {
             <div className="text-heading4-bold text-label-normal mb-[13px]">
               최근 일주일 플랜 결제 현황
               <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
-                단위: 원
+                단위: $(달러)
               </span>
             </div>
             <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
@@ -219,7 +220,7 @@ function Main() {
                   type="linear"
                   dataKey="유동인구수"
                   stroke="#28A8FB"
-                  activeDot={renderActiveDot}
+                  activeDot={(props: any) => renderActiveDot(props, "$")}
                   strokeWidth={2}
                   dot={{ r: 5 }}
                 />
@@ -233,7 +234,7 @@ function Main() {
             <div className="text-heading4-bold text-label-normal mb-[13px]">
               최근 일주일 충전소 결제 현황
               <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
-                단위: 원
+                단위: ₩(원)
               </span>
             </div>
 
@@ -261,7 +262,7 @@ function Main() {
                   type="linear"
                   dataKey="유동인구수"
                   stroke="#28A8FB"
-                  activeDot={renderActiveDot}
+                  activeDot={(props: any) => renderActiveDot(props, "₩")}
                   strokeWidth={2}
                   dot={{ r: 5 }}
                 />
