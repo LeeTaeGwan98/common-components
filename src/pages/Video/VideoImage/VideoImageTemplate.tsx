@@ -12,11 +12,17 @@ import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { useState } from "react";
 import FileUpload from "@/assets/svg/common/FileUploadIcon.svg";
 import { getDetailGroupCodes } from "@/api/commonCode/commonCodeAPI";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { COMMON_GROUP_CODE_MAPPING } from "@/Constants/CommonGroupCode";
 import { useNavigate } from "react-router-dom";
-import { registFreeImg } from "@/api/freeImg/freeImgApi";
+import { patchFreeImg, registFreeImg } from "@/api/freeImg/freeImgApi";
 import { GetFreeImgRes } from "@/api/freeImg/freeImgApi";
+import { useModalStore } from "@/store/modalStore";
+import VideoImageDeleteModal from "@/components/modal/VideoImage/VideoImageDeleteModal";
 
 interface VideoImageTemplateProps {
   type: "create" | "detail"; //등록/상세 여부
@@ -24,8 +30,9 @@ interface VideoImageTemplateProps {
 }
 
 function VideoImageTemplate({ type, detailData }: VideoImageTemplateProps) {
+  const { openModal } = useModalStore();
   const nav = useNavigate();
-
+  const queryClient = useQueryClient();
   const { data: categories } = useSuspenseQuery({
     queryKey: ["freeImgCode"],
     queryFn: () =>
@@ -33,6 +40,7 @@ function VideoImageTemplate({ type, detailData }: VideoImageTemplateProps) {
     select: (data) => data.data.data,
   });
 
+  //이미지 등록
   const { mutate: registFreeImgFn } = useMutation({
     mutationKey: ["freeImgRegist"],
     mutationFn: () => {
@@ -40,22 +48,70 @@ function VideoImageTemplate({ type, detailData }: VideoImageTemplateProps) {
       formData.append("file", files[0]);
       formData.append("categoryCode", category);
       formData.append("title", title);
-      formData.append("fileName", title);
+      formData.append("fileName", files[0].name);
 
       return registFreeImg(formData);
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["freeImgDetail", detailData?.id],
+      });
+      nav(-1);
+    },
+  });
+
+  //이미지 수정
+  const { mutate: patchFreeImgFn } = useMutation({
+    mutationKey: ["freeImgPatch"],
+    mutationFn: () => {
+      const formData = new FormData();
+      if (files[0]) {
+        formData.append("file", files[0]);
+        formData.append("fileName", files[0].name);
+      }
+
+      formData.append("categoryCode", category);
+      formData.append("title", title);
+
+      return patchFreeImg(detailData?.id ?? 0, formData);
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["freeImgDetail", detailData?.id],
+      });
+      nav(-1);
     },
   });
 
   const [files, setFiles] = useState<File[]>([]);
-  const [category, setCategory] = useState("");
-  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState(detailData?.categoryCode ?? "");
+  const [title, setTitle] = useState(detailData?.title ?? "");
+
+  const handleSaveDisable = () => {
+    if (
+      category.length > 0 &&
+      title.length > 0 &&
+      (files.length > 0 || (detailData?.fileName.length ?? 0) > 0)
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   const handleSave = () => {
     if (type === "create") {
       registFreeImgFn();
       return;
     } else {
+      patchFreeImgFn();
+      return;
     }
+  };
+
+  //이미지 삭제 모달
+  const handleImageDeleteModal = () => {
+    openModal(<VideoImageDeleteModal id={detailData?.id ?? 0} />);
   };
 
   console.log(detailData?.categoryCode);
@@ -72,7 +128,11 @@ function VideoImageTemplate({ type, detailData }: VideoImageTemplateProps) {
       button={
         type === "detail" ? (
           <div>
-            <Button className="w-[180px]" size="large">
+            <Button
+              className="w-[180px]"
+              size="large"
+              onClick={handleImageDeleteModal}
+            >
               삭제
             </Button>
           </div>
@@ -140,11 +200,23 @@ function VideoImageTemplate({ type, detailData }: VideoImageTemplateProps) {
                 <div className="text-body1-normal-bold flex items-center justify-center gap-[10px]">
                   <FileUpload
                     className={`fill-label-normal ${
-                      files.length && "fill-primary-normal"
+                      (files.length || detailData?.fileName) &&
+                      "fill-primary-normal"
                     }`}
                   />
-                  <span className={`${files.length && "text-primary-normal"}`}>
-                    이미지 업로드 ({files.length}/1)
+                  <span
+                    className={`${
+                      (files.length || detailData?.fileName) &&
+                      "text-primary-normal"
+                    }`}
+                  >
+                    이미지 업로드 (
+                    {files.length > 0
+                      ? files.length
+                      : detailData?.fileName
+                      ? 1
+                      : 0}
+                    /1)
                   </span>
                 </div>
                 <div className="text-label1-normal-bold text-label-assistive">
@@ -172,7 +244,11 @@ function VideoImageTemplate({ type, detailData }: VideoImageTemplateProps) {
             className="max-w-[180px] w-full"
             type="secondary"
             size="large"
-            onClick={handleSave}
+            disable={handleSaveDisable()}
+            onClick={() => {
+              if (handleSaveDisable()) return;
+              handleSave();
+            }}
           >
             저장
           </OutlinedButton>
