@@ -36,7 +36,7 @@ enum MENU_CODE {
   관리자계정관리 = "CO003007",
 }
 
-type SidebarMenuItem = {
+export type SidebarMenuItem = {
   title: string;
   icon: JSX.Element;
   path: string;
