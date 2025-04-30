@@ -32,6 +32,7 @@ import Button from "@/components/common/Atoms/Button/Solid/Button";
 import { useAuthStore } from "@/store/authStore";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import { ChevronDown } from "lucide-react";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 type FormState = {
   detailCodes: GetDetailGroupCodeRes[]; //현재 목록에 나타나는 상세코드들
@@ -87,26 +88,6 @@ function CommonCode() {
       ...prev,
       [field]: value,
     }));
-  };
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const emptyRowsCount = 10 - allGroupCodes.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
   };
 
   //그룹코드의 상세 코드 목록 가져오기 api
@@ -393,7 +374,7 @@ function CommonCode() {
                         </TableRow>
                       );
                     })}
-                  {renderEmptyRows()}
+                  <RenderEmptyRows dataLength={allGroupCodes.length} />
                 </TableBody>
               </Table>
             </TableContainer>

@@ -28,6 +28,7 @@ import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/Ta
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { formatDateTimeToJSX, formatToUTCString } from "@/lib/dateParse";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 // import { formatDateTimeToJSX } from "@/lib/dateParse";
 
 type NoticleTableQueryStringType = TableQueryStringType & {
@@ -95,27 +96,6 @@ const Notice = () => {
       "isVisible",
       visible === "ALL" ? null : boolToString(visible)
     );
-  };
-
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - data.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
   };
 
   return (
@@ -221,7 +201,7 @@ const Notice = () => {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={data.list.length} />
             </TableBody>
           </Table>
         </TableContainer>

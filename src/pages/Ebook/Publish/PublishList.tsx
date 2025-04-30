@@ -62,6 +62,7 @@ import {
 } from "@/Constants/CommonGroupCode";
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { formatDateTimeToJSX } from "@/lib/dateParse";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 interface StatusViewProps {
   status: string;
@@ -172,27 +173,6 @@ function PublishList() {
   });
   const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
   const publishCodes = codeInfo[keys[0]]; // 전자책 상태 사유 코드들
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - ebookData.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   // 전자책 목록 조회
   const { data, refetch } = useSuspenseQuery({
@@ -519,7 +499,7 @@ function PublishList() {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={data.list.length} />
             </TableBody>
           </Table>
         </TableContainer>

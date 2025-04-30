@@ -31,6 +31,7 @@ import Label from "@/components/common/Atoms/Label/Label";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import { getExcelSearch } from "@/api/excel/excel";
 import { excelDownload } from "@/components/excel/Excel";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 type CoverTableQueryStringType = TableQueryStringType & {
   isVisible: boolean | null;
@@ -68,32 +69,6 @@ function Cover() {
     queryFn: () => getCover(filterInfo),
     select: (data) => data.data.data,
   });
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - data.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   const dispatchWithPageReset = (
     type: keyof CoverTableQueryStringType,
@@ -288,7 +263,7 @@ function Cover() {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={data.list.length} />
             </TableBody>
           </Table>
         </TableContainer>

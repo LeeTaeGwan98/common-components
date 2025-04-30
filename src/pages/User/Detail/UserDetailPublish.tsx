@@ -34,6 +34,7 @@ import {
 } from "@/Constants/CommonGroupCode";
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { codeToName } from "@/utils/uitls";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 //유저 상세 출판내역
 function UserDetailPublish() {
@@ -84,27 +85,6 @@ function UserDetailPublish() {
     queryFn: () => getUserPublishList(filterInfo),
     select: (data) => data.data.data,
   });
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - data.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   //페이지 초기화
   const dispatchWithPageReset = (
@@ -277,7 +257,7 @@ function UserDetailPublish() {
                 </TableRow>
               );
             })}
-            {renderEmptyRows()}
+            <RenderEmptyRows dataLength={data.list.length} />
           </TableBody>
         </Table>
       </TableContainer>

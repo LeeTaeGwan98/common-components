@@ -33,6 +33,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { useReducer } from "react";
 import { ActionType, TermsQueryStringType } from "@/api/common/commonType";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 const initState: TermsQueryStringType = {
   take: 10,
@@ -70,29 +71,6 @@ function Terms() {
     queryFn: () => getTermsList(filterInfo),
     select: (data) => data.data.data,
   });
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - data.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   return (
     <>
@@ -156,7 +134,7 @@ function Terms() {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={data.list.length} />
             </TableBody>
           </Table>
         </TableContainer>
