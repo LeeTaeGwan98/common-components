@@ -5,7 +5,13 @@ import SIDEBAR_MENU_ITEM, {
   type SidebarMenuItem,
 } from "@/Constants/SidebarMenuItem";
 import { Link, useLocation } from "react-router-dom";
-import React, { cloneElement, useState, useEffect } from "react";
+import React, {
+  cloneElement,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import BottomArrowIcon from "@/assets/svg/Sidebar/Bottom.svg";
 import Menu from "@/components/common/Molecules/Menu/Menu";
 import { SIDEBAR_WIDTH } from "@/Constants/UIMagicNumber";
@@ -91,6 +97,7 @@ function Sidebar() {
               item={item}
               isActive={isActive}
               isOpen={isOpen}
+              setOpenMenus={setOpenMenus}
               visibleChildren={visibleChildren}
               currentPathname={currentPathname}
               toggleMenu={toggleMenu}
@@ -113,6 +120,7 @@ interface MenuItemWithChildProps {
   item: SidebarMenuItem;
   isActive: boolean;
   isOpen: boolean;
+  setOpenMenus: Dispatch<SetStateAction<string[]>>;
   visibleChildren: SidebarMenuItem["child"];
   currentPathname: string;
   toggleMenu: (menuPath: string) => void;
@@ -122,6 +130,7 @@ function MenuItemWithChild({
   item,
   isActive,
   isOpen,
+  setOpenMenus,
   visibleChildren,
   currentPathname,
   toggleMenu,
@@ -136,20 +145,16 @@ function MenuItemWithChild({
             !hasChildren && "pl-[20px]",
             "w-full text-body2-normal-bold"
           )}
-          icon={cloneElement(item.icon, {
-            className: isActive ? "fill-primary-normal" : "fill-label-normal",
-          })}
           arrowIcon={
-            hasChildren &&
-            (isOpen ? (
-              <BottomArrowIcon className="fill-primary-normal" />
-            ) : (
+            hasChildren && (
               <BottomArrowIcon
-                className={`rotate-[270deg] ${
-                  isActive && "fill-primary-normal"
-                }`}
+                className={cn(
+                  "rotate-[270deg]",
+                  isActive && "fill-primary-normal",
+                  isOpen && "rotate-0"
+                )}
               />
-            ))
+            )
           }
           onArrowIconClick={() => toggleMenu(item.path)}
           {...(item.title === "게시판 관리" && {
@@ -162,11 +167,19 @@ function MenuItemWithChild({
             className="w-full flex py-[13px]"
             onClick={(e) => {
               if (hasChildren) {
-                e.preventDefault();
-                toggleMenu(item.path);
+                setOpenMenus([item.path]);
+              } else {
+                setOpenMenus([]);
               }
             }}
           >
+            <div className="mr-[4px]">
+              {cloneElement(item.icon, {
+                className: isActive
+                  ? "fill-primary-normal"
+                  : "fill-label-normal",
+              })}
+            </div>
             <span className={cn(isActive && "text-primary-normal")}>
               {item.title}
             </span>
@@ -179,7 +192,13 @@ function MenuItemWithChild({
           const isChildActive = currentPathname.startsWith(child.path);
 
           return (
-            <Link to={child.path} key={child.path}>
+            <Link
+              to={child.path}
+              key={child.path}
+              onClick={() => {
+                setOpenMenus([item.path]);
+              }}
+            >
               <Menu className="pl-[44px] py-[8px] text-label1-normal-medium">
                 <span className={cn(isChildActive && "text-primary-normal")}>
                   {child.title}
