@@ -30,6 +30,7 @@ import {
   COMMON_GROUP_CODE_UNION_TYPE,
 } from "@/Constants/CommonGroupCode";
 import { codeToName } from "@/utils/uitls";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 const initState: ImageQueryStringType = {
   fromDt: undefined,
@@ -73,27 +74,6 @@ function VideoImage() {
   });
   const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
   const categoryCodes = codeInfo[keys[0]]; // 카테고리 코드들
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - imgData.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   //정렬
   const handleSortOrder = () => {
@@ -163,7 +143,7 @@ function VideoImage() {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={imgData.list.length} />
             </TableBody>
           </Table>
         </TableContainer>

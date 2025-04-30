@@ -37,6 +37,7 @@ import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { getExcelSearch } from "@/api/excel/excel";
 import { excelDownload } from "@/components/excel/Excel";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 const initState: UserWithdrawlQueryStringType = {
   sortOrder: "DESC",
@@ -82,29 +83,6 @@ function Withdrawalmanagement() {
     queryFn: () => getWithdrwalList(filterInfo),
     select: (data) => data.data.data,
   });
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - data.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   //페이지 초기화
   const dispatchWithPageReset = (
@@ -261,7 +239,7 @@ function Withdrawalmanagement() {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={data.list.length} />
             </TableBody>
           </Table>
         </TableContainer>

@@ -40,6 +40,7 @@ import { codeToGetGroupCode, codeToName } from "@/utils/uitls";
 import { getExcelSearch } from "@/api/excel/excel";
 import { excelDownload } from "@/components/excel/Excel";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 const initState: InquiryQueryStringType = {
   fromDt: undefined,
@@ -86,31 +87,6 @@ function Inquiry() {
   const serviceCodes = codeInfo[keys[0]]; // 서비스 코드들
   const eBookInquiryCodes = codeInfo[keys[1]]; // 전자책 문의 유형 코드들
   const videoInquiryCodes = codeInfo[keys[2]]; // 비디오북 문의 유형 코드들
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - data.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   //문의사항 목록 조회
   const { data } = useSuspenseQuery({
@@ -310,7 +286,7 @@ function Inquiry() {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={data.list.length} />
             </TableBody>
           </Table>
         </TableContainer>

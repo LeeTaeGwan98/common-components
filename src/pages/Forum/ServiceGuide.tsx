@@ -40,6 +40,7 @@ import {
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { codeToGetGroupCode, codeToName } from "@/utils/uitls";
 import { useReducer } from "react";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 const initState: ServiceGuideQueryStringType = {
   fromDt: undefined,
@@ -86,27 +87,6 @@ const ServiceGuide = () => {
   const serviceCodes = codeInfo[keys[0]]; // 서비스 코드들
   const eBookCategoryCodes = codeInfo[keys[1]]; // 전자책 서비스가이드 카테고리 코드들
   const videoCategoryCodes = codeInfo[keys[2]]; // 비디오북 서비스가이드 카테고리 코드들
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - data.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   //서비스 가이드 목록 조회
   const { data } = useSuspenseQuery({
@@ -261,7 +241,7 @@ const ServiceGuide = () => {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={data.list.length} />
             </TableBody>
           </Table>
         </TableContainer>

@@ -13,6 +13,7 @@ import {
 import { PLAN_DETAIL } from "@/Constants/ServiceUrl";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 function Plan() {
   //플랜 목록 조회
@@ -21,26 +22,6 @@ function Plan() {
     queryFn: () => getPlanList(),
     select: (data) => data.data.data,
   });
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const emptyRowsCount = 10 - data.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   return (
     <>
@@ -96,7 +77,7 @@ function Plan() {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={data.length} />
             </TableBody>
           </Table>
         </TableContainer>

@@ -32,6 +32,7 @@ import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { boolToString } from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import { cn } from "@/lib/utils";
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 const initState: ChatBotQueryStringType & { isVisible: boolean | null } = {
   isVisible: null,
@@ -67,27 +68,6 @@ const Chatbot = () => {
   });
   const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
   const categoryCodes = codeInfo[keys[0]]; // 카테고리 코드들
-
-  //테이블 빈 row 처리
-  const renderEmptyRows = () => {
-    const { take } = filterInfo;
-    if (!take) return;
-    const emptyRowsCount = take - data.list.length;
-    const emptyRows = [];
-
-    for (let i = 0; i < emptyRowsCount; i++) {
-      emptyRows.push(
-        <TableRow key={`empty-row-${i}`}>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-          <TableCell>&nbsp;</TableCell>
-        </TableRow>
-      );
-    }
-
-    return emptyRows;
-  };
 
   const dispatchWithPageReset = (
     type: keyof ChatBotQueryStringType,
@@ -247,7 +227,7 @@ const Chatbot = () => {
                   </TableRow>
                 );
               })}
-              {renderEmptyRows()}
+              <RenderEmptyRows dataLength={data.list.length} />
             </TableBody>
           </Table>
         </TableContainer>

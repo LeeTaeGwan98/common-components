@@ -199,7 +199,7 @@ function MenuItemWithChild({
                 setOpenMenus([item.path]);
               }}
             >
-              <Menu className="pl-[44px] py-[8px] text-label1-normal-medium">
+              <Menu className="pl-[44px] py-[10px] text-label1-normal-medium">
                 <span className={cn(isChildActive && "text-primary-normal")}>
                   {child.title}
                 </span>
@@ -212,8 +212,10 @@ function MenuItemWithChild({
 
   if (item.title === "게시판 관리") {
     return (
-      <div className="border-y border-line-normal-normal py-[12px]">
+      <div>
+        <Divider className="bg-line-normal-neutral my-[11.5px]" />
         {menuContent}
+        <Divider className="bg-line-normal-neutral my-[11.5px]" />
       </div>
     );
   }
