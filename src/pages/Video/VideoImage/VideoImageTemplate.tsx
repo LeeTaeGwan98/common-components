@@ -16,16 +16,15 @@ import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { COMMON_GROUP_CODE_MAPPING } from "@/Constants/CommonGroupCode";
 import { useNavigate } from "react-router-dom";
 import { registFreeImg } from "@/api/freeImg/freeImgApi";
+import { GetFreeImgRes } from "@/api/freeImg/freeImgApi";
 
 interface VideoImageTemplateProps {
   type: "create" | "detail"; //등록/상세 여부
+  detailData?: GetFreeImgRes;
 }
 
-function VideoImageTemplate({ type }: VideoImageTemplateProps) {
+function VideoImageTemplate({ type, detailData }: VideoImageTemplateProps) {
   const nav = useNavigate();
-  const [files, setFiles] = useState<File[]>([]);
-  const [category, setCategory] = useState("");
-  const [title, setTitle] = useState("");
 
   const { data: categories } = useSuspenseQuery({
     queryKey: ["freeImgCode"],
@@ -47,6 +46,10 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
     },
   });
 
+  const [files, setFiles] = useState<File[]>([]);
+  const [category, setCategory] = useState("");
+  const [title, setTitle] = useState("");
+
   const handleSave = () => {
     if (type === "create") {
       registFreeImgFn();
@@ -54,6 +57,8 @@ function VideoImageTemplate({ type }: VideoImageTemplateProps) {
     } else {
     }
   };
+
+  console.log(detailData?.categoryCode);
 
   return (
     <BreadcrumbContainer
