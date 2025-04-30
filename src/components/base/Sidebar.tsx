@@ -1,7 +1,9 @@
 import { cn } from "@/lib/utils";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import CompanyIcon from "@/assets/svg/Sidebar/Company.svg";
-import SIDEBAR_MENU_ITEM from "@/Constants/SidebarMenuItem";
+import SIDEBAR_MENU_ITEM, {
+  type SidebarMenuItem,
+} from "@/Constants/SidebarMenuItem";
 import { Link, useLocation } from "react-router-dom";
 import React, { cloneElement, useState, useEffect } from "react";
 import BottomArrowIcon from "@/assets/svg/Sidebar/Bottom.svg";
@@ -20,56 +22,44 @@ function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPathname = location.pathname;
-
-  // 열린 메뉴 상태를 관리하는 상태 추가
   const [openMenus, setOpenMenus] = useState<string[]>([]);
 
-  // 초기 로딩 시 현재 경로에 해당하는 메뉴를 자동으로 열기
-  // useEffect(() => {
-  //   const initialOpenMenus = SIDEBAR_MENU_ITEM.filter((item) =>
-  //     item.child.some((child) => currentPathname.startsWith(child.path))
-  //   ).map((item) => item.path);
+  useEffect(() => {
+    const parentMenu = SIDEBAR_MENU_ITEM.find((item) =>
+      item.child.some((child) => currentPathname.startsWith(child.path))
+    );
 
-  //   setOpenMenus(initialOpenMenus);
-  // }, [currentPathname]);
-
-  // 메뉴 토글 함수
-  const toggleMenu = (
-    menuPath: string,
-    hasChildren: boolean,
-    event: React.MouseEvent
-  ) => {
-    if (hasChildren) {
-      //event.preventDefault(); // 기본 링크 동작 방지
-      if (openMenus.includes(menuPath)) {
-        setOpenMenus((prev) => prev.filter((menu) => menu !== menuPath));
-      } else {
-        openMenus.push(menuPath);
-        setOpenMenus(openMenus);
-      }
-
-      // setOpenMenus((prev) => {
-      //   if (prev.includes(menuPath)) {
-      //     // 이미 열려있으면 닫기
-      //     return [];
-      //   } else {
-      //     // 닫혀있으면 열고 다른 모든 메뉴는 닫기
-      //     return [menuPath];
-      //   }
-      // });
-    } else {
-      // 자식이 없는 메뉴를 클릭했을 때 모든 메뉴를 닫기
-      setOpenMenus([]);
+    if (parentMenu && !openMenus.includes(parentMenu.path)) {
+      setOpenMenus((prev) => [...prev, parentMenu.path]);
     }
+  }, [currentPathname]);
+
+  const toggleMenu = (menuPath: string) => {
+    setOpenMenus((prev) =>
+      prev.includes(menuPath)
+        ? prev.filter((path) => path !== menuPath)
+        : [...prev, menuPath]
+    );
   };
 
-  const { mutate: handleLogoutMutation } = useMutation({
+  const hasPermission = (menuCode?: string) => {
+    if (!menuCode || !permissions) return true;
+    if (menuCode === "관리자") return true;
+    if (menuCode === "메인") return true;
+    return permissions.includes(menuCode);
+  };
+
+  const { mutate: handleLogout } = useMutation({
     mutationFn: () => logout(),
     onSuccess() {
       delUserInfo();
       navigate(LOGIN);
     },
   });
+
+  const visibleMenuItems = SIDEBAR_MENU_ITEM.filter(
+    (menu) => !menu.code || hasPermission(menu.code)
+  );
 
   return (
     <div
@@ -84,113 +74,132 @@ function Sidebar() {
       <Divider className="my-[12px]" />
 
       <div className="flex flex-col px-[16px]">
-        {SIDEBAR_MENU_ITEM.filter((menu) => {
-          if (!permissions) return;
-          if (menu.title === "관리자") return true;
-          if (menu.title === "메인") return true;
-          return permissions.includes(menu.code!);
-        }).map((item) => {
+        {visibleMenuItems.map((item) => {
           const isActive =
             currentPathname.startsWith(item.path) ||
             item.child.some((child) => currentPathname.startsWith(child.path));
-          const hasChildItem = !!item.child.length;
+
           const isOpen = openMenus.includes(item.path);
 
-          const menuContent = (
-            <>
-              <div className={cn("w-full flex gap-[4px] cursor-pointer")}>
-                <Menu
-                  className={cn(
-                    !hasChildItem && "pl-[20px]",
-                    "w-full text-body2-normal-bold"
-                  )}
-                  icon={cloneElement(item.icon, {
-                    className: isActive
-                      ? "fill-primary-normal"
-                      : "fill-label-normal",
-                  })}
-                  arrowIcon={
-                    hasChildItem &&
-                    (isOpen ? (
-                      <BottomArrowIcon className="fill-primary-normal" />
-                    ) : (
-                      <BottomArrowIcon
-                        className={`rotate-[270deg] ${
-                          isActive && "fill-primary-normal"
-                        }`}
-                      />
-                    ))
-                  }
-                  onArrowIconClick={(e) => {
-                    toggleMenu(item.path, hasChildItem, e);
-                  }}
-                  {...(item.title === "게시판 관리" && {
-                    labelText: "텍스트",
-                    slot: { labelClassName: "mr-[34px] " },
-                  })}
-                >
-                  <Link
-                    to={item.path}
-                    className="w-full flex  py-[13px]"
-                    onClick={(e) => toggleMenu(item.path, hasChildItem, e)}
-                  >
-                    <span className={cn(isActive && "text-primary-normal")}>
-                      {item.title}
-                    </span>
-                  </Link>
-                </Menu>
-              </div>
-
-              {item.child.map((child) => {
-                const isChildActive = currentPathname.startsWith(child.path);
-                const childCode = "code" in child ? child.code : null;
-
-                if (childCode && !permissions?.includes(childCode)) {
-                  return null;
-                }
-
-                return (
-                  openMenus.includes(item.path) && (
-                    <Link to={child.path} key={child.path}>
-                      <Menu className="pl-[44px] py-[8px] text-label1-normal-medium">
-                        <span
-                          className={cn(isChildActive && "text-primary-normal")}
-                        >
-                          {child.title}
-                        </span>
-                      </Menu>
-                    </Link>
-                  )
-                );
-              })}
-            </>
+          const visibleChildren = item.child.filter(
+            (child) => !child.code || hasPermission(child.code)
           );
 
-          // 게시판 관리일 경우만 구분선으로 감싼다
-          if (item.title === "게시판 관리") {
-            return (
-              <div
-                key={item.path}
-                className="border-y border-line-normal-normal py-[12px]"
-              >
-                {menuContent}
-              </div>
-            );
-          }
-
-          // 나머지는 기본 프래그먼트로
-          return <React.Fragment key={item.path}>{menuContent}</React.Fragment>;
+          return (
+            <MenuItemWithChild
+              key={item.path}
+              item={item}
+              isActive={isActive}
+              isOpen={isOpen}
+              visibleChildren={visibleChildren}
+              currentPathname={currentPathname}
+              toggleMenu={toggleMenu}
+            />
+          );
         })}
 
         <button
           className="mx-auto mt-[24px] font-semibold text-[14px] text-label-alternative underline"
-          onClick={() => handleLogoutMutation()}
+          onClick={() => handleLogout()}
         >
           로그아웃
         </button>
       </div>
     </div>
   );
+}
+
+interface MenuItemWithChildProps {
+  item: SidebarMenuItem;
+  isActive: boolean;
+  isOpen: boolean;
+  visibleChildren: SidebarMenuItem["child"];
+  currentPathname: string;
+  toggleMenu: (menuPath: string) => void;
+}
+
+function MenuItemWithChild({
+  item,
+  isActive,
+  isOpen,
+  visibleChildren,
+  currentPathname,
+  toggleMenu,
+}: MenuItemWithChildProps) {
+  const hasChildren = visibleChildren.length > 0;
+
+  const menuContent = (
+    <>
+      <div className={cn("w-full flex gap-[4px] cursor-pointer")}>
+        <Menu
+          className={cn(
+            !hasChildren && "pl-[20px]",
+            "w-full text-body2-normal-bold"
+          )}
+          icon={cloneElement(item.icon, {
+            className: isActive ? "fill-primary-normal" : "fill-label-normal",
+          })}
+          arrowIcon={
+            hasChildren &&
+            (isOpen ? (
+              <BottomArrowIcon className="fill-primary-normal" />
+            ) : (
+              <BottomArrowIcon
+                className={`rotate-[270deg] ${
+                  isActive && "fill-primary-normal"
+                }`}
+              />
+            ))
+          }
+          onArrowIconClick={() => toggleMenu(item.path)}
+          {...(item.title === "게시판 관리" && {
+            labelText: "텍스트",
+            slot: { labelClassName: "mr-[34px] " },
+          })}
+        >
+          <Link
+            to={item.path}
+            className="w-full flex py-[13px]"
+            onClick={(e) => {
+              if (hasChildren) {
+                e.preventDefault();
+                toggleMenu(item.path);
+              }
+            }}
+          >
+            <span className={cn(isActive && "text-primary-normal")}>
+              {item.title}
+            </span>
+          </Link>
+        </Menu>
+      </div>
+
+      {isOpen &&
+        visibleChildren.map((child) => {
+          const isChildActive = currentPathname.startsWith(child.path);
+
+          return (
+            <Link to={child.path} key={child.path}>
+              <Menu className="pl-[44px] py-[8px] text-label1-normal-medium">
+                <span className={cn(isChildActive && "text-primary-normal")}>
+                  {child.title}
+                </span>
+              </Menu>
+            </Link>
+          );
+        })}
+    </>
+  );
+
+  if (item.title === "게시판 관리") {
+    return (
+      <div className="border-y border-line-normal-normal py-[12px]">
+        {menuContent}
+      </div>
+    );
+  }
+
+  return <React.Fragment>{menuContent}</React.Fragment>;
 }
 
 export default Sidebar;

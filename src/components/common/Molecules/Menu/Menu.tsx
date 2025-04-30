@@ -8,7 +8,6 @@ interface MenuProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "slot"> {
   rightIcon?: ReactNode;
   arrowIcon?: ReactNode;
   children: ReactNode;
-  path?: string;
   icon?: ReactNode;
   onArrowIconClick?: (e: React.MouseEvent) => void;
   slot?: {
@@ -26,80 +25,64 @@ function Menu({
   className,
   icon,
   onArrowIconClick,
-  path,
   slot,
   ...props
 }: MenuProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isIconHovered, setIsIconHovered] = useState(false); // ⭐️ 추가
+  const [isIconHovered, setIsIconHovered] = useState(false);
 
-  const handleMouseEnter = () => {
-    if (!isIconHovered) setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const handleMouseMove = () => {
-    if (!isIconHovered && !isHovered) {
-      setIsHovered(true);
-    }
-  };
-
-  const handleIconMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+  // 아이콘 영역 호버 상태 처리
+  const handleIconMouseEnter = () => {
     setIsIconHovered(true);
-    setIsHovered(false);
   };
 
   const handleIconMouseLeave = () => {
     setIsIconHovered(false);
   };
 
-  const handleIconClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  // 화살표 아이콘 클릭 처리
+  const handleIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onArrowIconClick && onArrowIconClick(e);
+    onArrowIconClick?.(e);
   };
 
   return (
     <div
       className={cn(
         "flex justify-between rounded-radius-admin",
-        isHovered && "bg-label-normal/light-hover",
+        !isIconHovered && "hover:bg-label-normal/light-hover",
         className
       )}
       {...props}
     >
       <div className="flex items-center flex-1">
-        <IconButton
-          icon={arrowIcon}
-          onMouseEnter={(e) => handleIconMouseEnter(e)}
-          onMouseLeave={handleIconMouseLeave}
-          onClick={handleIconClick}
-        />
-        <div
-          className="flex w-full items-center"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onMouseMove={handleMouseMove}
-        >
-          {icon}
-          <span className="ml-[4px] w-full">{children}</span>
+        {arrowIcon && (
+          <IconButton
+            icon={arrowIcon}
+            onClick={handleIconClick}
+            onMouseEnter={handleIconMouseEnter}
+            onMouseLeave={handleIconMouseLeave}
+          />
+        )}
+        <div className="flex w-full items-center">
+          {icon && <span className="mr-[4px]">{icon}</span>}
+          <span className="w-full">{children}</span>
         </div>
       </div>
 
-      <div className="flex gap-[4px] items-center ">
-        {labelText && (
-          <Label
-            variant="outlined"
-            size="xSmall"
-            className={cn(slot?.labelClassName)}
-          >
-            {labelText}
-          </Label>
-        )}
-        {rightIcon}
-      </div>
+      {(labelText || rightIcon) && (
+        <div className="flex gap-[4px] items-center">
+          {labelText && (
+            <Label
+              variant="outlined"
+              size="xSmall"
+              className={cn(slot?.labelClassName)}
+            >
+              {labelText}
+            </Label>
+          )}
+          {rightIcon}
+        </div>
+      )}
     </div>
   );
 }
