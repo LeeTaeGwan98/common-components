@@ -21,6 +21,15 @@ import { ImageQueryStringType } from "@/api/video/videoAPI";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getFreeImg } from "@/api/freeImg/freeImgApi";
+import {
+  getDetailGroupCodes,
+  getGroupCodes,
+} from "@/api/commonCode/commonCodeAPI";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
+import { codeToName } from "@/utils/uitls";
 
 const initState: ImageQueryStringType = {
   fromDt: undefined,
@@ -52,6 +61,18 @@ function VideoImage() {
     queryFn: () => getFreeImg(filterInfo),
     select: (data) => data.data.data,
   });
+
+  //이미지구분 공통 카테고리 가져오기
+  const { data: codeInfo } = useSuspenseQuery({
+    queryKey: [
+      "chatbotCategoryGroupCodes",
+      COMMON_GROUP_CODE_MAPPING.무료이미지구분,
+    ],
+    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.무료이미지구분]),
+    select: (data) => data.data.data,
+  });
+  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
+  const categoryCodes = codeInfo[keys[0]]; // 카테고리 코드들
 
   //테이블 빈 row 처리
   const renderEmptyRows = () => {
@@ -123,7 +144,9 @@ function VideoImage() {
                 return (
                   <TableRow key={index}>
                     <TableCell>{formatDateTimeToJSX(img.createdAt)}</TableCell>
-                    <TableCell>{img.categoryCode}</TableCell>
+                    <TableCell>
+                      {codeToName(categoryCodes, img.categoryCode)}
+                    </TableCell>
                     <TableCell>{img.title}</TableCell>
                     <TableCell isChildIcon={true}>
                       <Link
@@ -144,10 +167,12 @@ function VideoImage() {
             </TableBody>
           </Table>
         </TableContainer>
-        {/* todo: 기능구현 되면 주석 풀어야함 */}
-        {/* {data.meta.totalPage > 1 && (
-        <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
-      )} */}
+        {imgData.meta.totalPage > 1 && (
+          <TableIndicator
+            PaginationMetaType={imgData.meta}
+            dispatch={dispatch}
+          />
+        )}
       </BreadcrumbContainer>
     </>
   );

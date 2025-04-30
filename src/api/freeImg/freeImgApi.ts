@@ -80,10 +80,10 @@ interface PatchFreeImgRes {
   createdDt: string;
 }
 
-export const patchFreeImg = (id: number, payload: PatchFreeImgPayload) => {
+export const patchFreeImg = (id: number, formData: FormData) => {
   const data = API.patch<ApiResType<PatchFreeImgRes>>(
     `/admin/image/${id}`,
-    payload
+    formData
   );
 
   return data;
