@@ -157,7 +157,7 @@ function Calendar({
   );
   const _todayClassName = cn("relative", props.todayClassName);
   const _outsideClassName = cn(
-    "text-label-normal/normal-active",
+    "!text-label-normal/[.12] pointer-events-none bg-transparent border-none",
     props.outsideClassName
   );
   const _disabledClassName = cn(
