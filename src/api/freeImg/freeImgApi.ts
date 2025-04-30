@@ -19,7 +19,7 @@ export const registFreeImg = (formData: FormData) => {
   });
 };
 
-interface GetFreeImgRes {
+export interface GetFreeImgRes {
   id: number;
   categoryCode: string;
   title: string;
