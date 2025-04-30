@@ -8,7 +8,6 @@ interface MenuProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "slot"> {
   rightIcon?: ReactNode;
   arrowIcon?: ReactNode;
   children: ReactNode;
-  icon?: ReactNode;
   onArrowIconClick?: (e: React.MouseEvent) => void;
   slot?: {
     containerClassName?: string;
@@ -23,7 +22,6 @@ function Menu({
   arrowIcon,
   children,
   className,
-  icon,
   onArrowIconClick,
   slot,
   ...props
@@ -64,7 +62,6 @@ function Menu({
           />
         )}
         <div className="flex w-full items-center">
-          {icon && <span className="mr-[4px]">{icon}</span>}
           <span className="w-full">{children}</span>
         </div>
       </div>
