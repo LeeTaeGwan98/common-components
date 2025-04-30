@@ -20,7 +20,7 @@ import { dateToString, formatDateTimeToJSX } from "@/lib/dateParse";
 import { ImageQueryStringType } from "@/api/video/videoAPI";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getFreeImg } from "@/api/freeImg/freeImgApi";
+import { getFreeImg, GetFreeImgRes } from "@/api/freeImg/freeImgApi";
 import {
   getDetailGroupCodes,
   getGroupCodes,
@@ -31,6 +31,8 @@ import {
 } from "@/Constants/CommonGroupCode";
 import { codeToName } from "@/utils/uitls";
 import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
+import { getExcelSearch } from "@/api/excel/excel";
+import { excelDownload } from "@/components/excel/Excel";
 
 const initState: ImageQueryStringType = {
   fromDt: undefined,
@@ -83,6 +85,39 @@ function VideoImage() {
     });
   };
 
+  //엑셀 조건없이 모든 데이터 다운로드
+  const handleAllDataExcelDownload = async () => {
+    const excelAllData = await getExcelSearch("freeImage");
+
+    handleExcelDownload(excelAllData.data.data);
+  };
+
+  //엑셀 조건 적용 모든 데이터 다운로드
+  const handleFilterDataExcelDownload = async () => {
+    const modifiedFilterInfo = {
+      ...filterInfo,
+      take: imgData.meta.totalCount,
+    };
+
+    const excelFilterData = await getFreeImg(modifiedFilterInfo);
+
+    handleExcelDownload(excelFilterData.data.data.list);
+  };
+
+  //엑셀 다운로드
+  const handleExcelDownload = (excelDatas: GetFreeImgRes[]) => {
+    excelDownload(
+      "무료 이미지 관리",
+      ["등록일", "구분", "이미지명"],
+      [120, 120, 150],
+      excelDatas.map((item) => [
+        item.createdAt ? item.createdAt : "-",
+        item.categoryCode ? codeToName(categoryCodes, item.categoryCode) : "-",
+        item.title ? item.title : "-",
+      ])
+    );
+  };
+
   return (
     <>
       <title>북카롱 | 무료 이미지 관리</title>
@@ -101,6 +136,8 @@ function VideoImage() {
           title="등록일"
           dispatch={dispatch}
           excel={true}
+          excelFilterDataOnClick={handleFilterDataExcelDownload}
+          excelAllDataOnClick={handleAllDataExcelDownload}
           CustomSelectComponent={<></>}
         />
         <TableContainer>

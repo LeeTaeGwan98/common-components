@@ -176,6 +176,34 @@ function UserDetail() {
     setNickName(data.name);
   }, [data]);
 
+  // 부페이지 이동 시 pushState로 기록 남기기
+  const navigateTo = (selectedMenu: UserMenuType) => {
+    window.history.pushState({ view: selectedMenu }, "");
+    setSelectedMenu(selectedMenu);
+  };
+
+  //뒤로가기 시 부페이지 상태만 변경
+  useEffect(() => {
+    const onPopState = (event: PopStateEvent) => {
+      const state = event.state;
+      if (state?.view) {
+        setSelectedMenu(state.view);
+      } else {
+        //기본 페이지 (최초 접근)
+        setSelectedMenu("기본");
+      }
+    };
+
+    window.addEventListener("popstate", onPopState);
+
+    //최초 진입 상태 push
+    window.history.replaceState({ view: "기본" }, "");
+
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+    };
+  }, []);
+
   return (
     <>
       <title>북카롱 | 회원 목록 상세</title>
@@ -193,7 +221,10 @@ function UserDetail() {
             </div>
             <SelectBox
               value={selectedMenu}
-              onValueChange={(value) => setSelectedMenu(value as UserMenuType)}
+              onValueChange={(value) => {
+                setSelectedMenu(value as UserMenuType);
+                navigateTo(value as UserMenuType);
+              }}
               className="[&>span]:hidden size-[32px] p-0 items-center justify-center"
             >
               <SelectContent>

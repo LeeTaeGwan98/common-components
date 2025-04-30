@@ -171,15 +171,7 @@ function AccountDetail() {
 
     //관리자 계정 등록
     if (isFormAllValid) {
-      if (data.isActive != formState.isActive) {
-        if (formState.isActive) {
-          handleActiveModal();
-        } else {
-          handleNonActiveModal();
-        }
-      } else {
-        handleAdminUpdate();
-      }
+      handleAdminUpdate();
     }
   };
 
@@ -203,16 +195,6 @@ function AccountDetail() {
   //관리자 계정 삭제 모달 띄우기
   const handleDeleteModal = () => {
     openModal(<AdminDeleteModal id={Number(id)} />);
-  };
-
-  //관리자 활성화 모달 띄우기
-  const handleActiveModal = () => {
-    openModal(<AdminActiveModal onOkClick={handleAdminUpdate} />);
-  };
-
-  //관리자 비활성화 모달 띄우기
-  const handleNonActiveModal = () => {
-    openModal(<AdminNonActiveModal onOkClick={handleAdminUpdate} />);
   };
 
   return (

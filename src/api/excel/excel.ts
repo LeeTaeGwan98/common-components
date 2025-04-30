@@ -2,6 +2,7 @@ import { GetAccountType } from "@/api/account";
 import API from "@/api/API";
 import { GetCoverRes } from "@/api/cover/coverAPI";
 import { EbookRes } from "@/api/ebook";
+import { GetFreeImgRes } from "@/api/freeImg/freeImgApi";
 import { InquiryRes } from "@/api/inquiry/inquiryAPI";
 import {
   UserListData,
@@ -20,7 +21,8 @@ export type ExcelKey =
   | "publish"
   | "cover"
   | "inquiry"
-  | "admin";
+  | "admin"
+  | "freeImage";
 
 //키에 따라 데이터 타입을 매핑
 //todo: any로 되어있는 페이지는 현재 엑셀 연동 안됨. 엑셀 연동 해야함
@@ -35,6 +37,7 @@ type ExcelDataMap = {
   cover: GetCoverRes[];
   inquiry: InquiryRes[];
   admin: GetAccountType[];
+  freeImage: GetFreeImgRes[];
 };
 
 type ExcelType<T extends ExcelKey> = ExcelDataMap[T];
