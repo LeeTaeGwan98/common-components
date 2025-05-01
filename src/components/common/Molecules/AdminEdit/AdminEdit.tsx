@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useEffect } from "react";
 import ReactQuill, { Quill } from "react-quill-new";
 import CustomToolbar from "./CustomToolbar";
 import "react-quill-new/dist/quill.snow.css";

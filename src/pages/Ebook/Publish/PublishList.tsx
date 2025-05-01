@@ -289,7 +289,7 @@ function PublishList() {
           CustomSelectComponent={
             <SelectBox
               placeholder="모든 상태"
-              className="min-w-[240px]"
+              className="w-[240px]"
               size="large"
               defaultValue="ALL"
               onValueChange={handleisVisible}
