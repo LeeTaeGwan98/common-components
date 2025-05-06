@@ -9,6 +9,7 @@ import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import Actions from "@/components/common/Molecules/Actions/Actions";
 import X from "@/assets/svg/common/X.svg";
+import DialogDetailContent from "@/components/common/BookaroongAdmin/DialogDetailContent";
 
 const dummydata = [
   { label: "닉네임", value: "닉네임" },
@@ -30,54 +31,54 @@ const PaymentModal = () => {
   });
 
   return (
-    <DialogContent className="p-0 h-[720px] rounded-[12px] [&>button]:hidden">
-      <div className="flex justify-between py-content-vertical-margin px-content-horizon-margin">
-        <div className="justify-start text-heading5-bold">결제 상세</div>
-
-        <div className="flex items-center w=[28px] h-[28px] p-0 ">
-          <IconButton
-            onClick={() => useModalStore.getState().closeModal()}
-            icon={<X className="w-[20px] h-[20px] text-label-neutral" />}
-          />
-        </div>
-      </div>
-
-      <Divider className="m-0" />
-
-      <div className="mt-content-vertical-margin mx-content-horizon-margin py-content-vertical-margin px-content-horizon-margin border border-line-normal-normal overflow-y-scroll flex flex-col gap-[12px] rounded-[4px]">
-        {dummydata.map((data) => {
-          const { label, value } = data;
-          return (
-            <CardRow
-              data={{
-                title: label,
-                content: value,
-              }}
-              slot={{
-                titleClassname: "text-label-alternative text-label2-bold",
-                contentClassName: "text-body2-reading-regular",
-                shortcutClassName: "size-[24px]",
-              }}
-            />
-          );
-        })}
-      </div>
-
-      <Actions
-        priority="neutral"
-        isGradient
-        className="flex gap-[8px] pb-content-vertical-margin px-content-vertical-margin"
+    <DialogContent
+      onOpenAutoFocus={(event) => event.preventDefault()}
+      className="max-w-[560px] h-[720px] min-w-0 w-full p-0 border-none rounded-[12px] [&>button]:hidden"
+    >
+      <DialogDetailContent
+        heading="결제 상세"
+        close={true}
+        fixed={true}
+        childrenClassName="h-auto"
+        buttonElements={
+          <Actions
+            priority="neutral"
+            isGradient
+            className="flex w-full gap-[8px]"
+          >
+            <Button className="bg-static-white text-label-normal text-body1-normal-medium border border-line-normal-normal rounded-[4px] !flex-initial">
+              환불
+            </Button>
+            <Button
+              onClick={() => useModalStore.getState().closeModal()}
+              className="w-full py-[12px]"
+            >
+              확인
+            </Button>
+          </Actions>
+        }
       >
-        <Button className="bg-static-white text-label-normal text-body1-normal-medium border border-line-normal-normal rounded-[4px] !flex-initial">
-          환불
-        </Button>
-        <Button
-          onClick={() => useModalStore.getState().closeModal()}
-          className="w-full py-[12px]"
-        >
-          확인
-        </Button>
-      </Actions>
+        <div className="px-content-horizon-margin py-content-vertical-margin">
+          <div className="flex flex-col gap-[12px] px-content-horizon-margin py-content-vertical-margin border-[1px] border-line-normal-normal rounded-radius-admin">
+            {dummydata.map((data) => {
+              const { label, value } = data;
+              return (
+                <CardRow
+                  data={{
+                    title: label,
+                    content: value,
+                  }}
+                  slot={{
+                    titleClassname: "text-label-alternative text-label2-bold",
+                    contentClassName: "text-body2-reading-regular",
+                    shortcutClassName: "size-[24px]",
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </DialogDetailContent>
     </DialogContent>
   );
 };

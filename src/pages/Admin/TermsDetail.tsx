@@ -146,7 +146,7 @@ function TermsDetail() {
             {/* 구분 */}
             <SelectBox
               placeholder="약관 구분을 선택해주세요"
-              className="min-w-[240px]"
+              className="w-[240px]"
               size="large"
               label="구분"
               value={formState.type}
