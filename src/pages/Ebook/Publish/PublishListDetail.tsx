@@ -175,7 +175,7 @@ function PublishListDetail() {
             <TextField
               label="전자책 정가(판매가)"
               readOnly
-              value={data.price}
+              value={data.price?.replace(/\s/g, "")}
             />
           </div>
           <div className="flex justify-end">
