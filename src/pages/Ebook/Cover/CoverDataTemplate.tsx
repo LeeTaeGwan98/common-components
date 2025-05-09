@@ -291,10 +291,11 @@ function CoverDataStyle({
           <div>
             <Title size="medium" label={"표지"} />
             <Segement
+              disable={buyer ? true : false}
               className="w-full"
               size="large"
               setSelected={setIsCoverExposure}
-              selected={isCoverExposure}
+              selected={buyer ? false : isCoverExposure}
               textList={["노출", "비노출"]}
             />
           </div>
