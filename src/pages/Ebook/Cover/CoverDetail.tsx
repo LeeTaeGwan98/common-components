@@ -97,7 +97,7 @@ function CoverDetail() {
             title: coverName,
             author: creater,
             price: price ?? 0,
-            isVisible: isCoverExposure,
+            isVisible: data.buyerId ? false : isCoverExposure,
             description: intro,
           };
 
