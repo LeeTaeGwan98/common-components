@@ -13,7 +13,7 @@ const data = [
   {
     no: 0,
     createAt: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자홍길",
+    nickName: "가데이터 입니다",
     email: "카테고리",
     plan: "Starter",
     ebook: "1",
@@ -24,7 +24,7 @@ const data = [
   {
     no: 0,
     createAt: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자홍길",
+    nickName: "가데이터 입니다.",
     email: "카테고리",
     plan: "Starter",
     ebook: "1",
