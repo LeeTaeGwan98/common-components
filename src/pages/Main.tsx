@@ -270,6 +270,18 @@ function Main() {
               </LineChart>
             </ResponsiveContainer>
           </div>
+          <div className="bg-slate-500 h-[520px]"></div>
+        </div>
+
+        {/* 충전소 현황 표  */}
+        <div className="mt-[49px]">
+          <div className="text-heading4-bold text-label-normal mb-[13px]">
+            최근 일주일 충전소 결제 현황
+            <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
+              단위: 원
+            </span>
+          </div>
+          <div className="bg-slate-500 h-[520px]"></div>
         </div>
       </BreadcrumbContainer>
     </>
