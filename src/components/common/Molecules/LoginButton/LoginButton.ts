@@ -1,9 +1,11 @@
-export interface CommonLoginButtonPrsop {
-  onClick: () => void;
+import { ButtonHTMLAttributes } from "react";
+
+export interface CommonLoginButtonPrsop
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
-export const LoginButtinInteractiveTypeStyle1 =
+export const LoginButtonInteractiveTypeStyle1 =
   "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active";
 
 export const LoginButtonInteractiveTypeStyle2 =

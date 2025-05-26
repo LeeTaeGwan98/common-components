@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Label from "@/components/common/Atoms/Label/Label";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 
 interface MenuProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "slot"> {
   labelText?: string;
   rightIcon?: ReactNode;
   arrowIcon?: ReactNode;
   children: ReactNode;
-  path?: string;
-  icon?: ReactNode;
+  onArrowIconClick?: (e: React.MouseEvent) => void;
   slot?: {
     containerClassName?: string;
     labelClassName?: string;
@@ -22,46 +22,66 @@ function Menu({
   arrowIcon,
   children,
   className,
-  icon,
-  path,
+  onArrowIconClick,
   slot,
   ...props
 }: MenuProps) {
-  const interactiveTypeStyle =
-    "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active";
+  const [isIconHovered, setIsIconHovered] = useState(false);
+
+  // 아이콘 영역 호버 상태 처리
+  const handleIconMouseEnter = () => {
+    setIsIconHovered(true);
+  };
+
+  const handleIconMouseLeave = () => {
+    setIsIconHovered(false);
+  };
+
+  // 화살표 아이콘 클릭 처리
+  const handleIconClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onArrowIconClick?.(e);
+  };
+
   return (
     <div
       className={cn(
-        "flex justify-between py-[13px] rounded-radius-admin",
-        interactiveTypeStyle,
+        "flex justify-between rounded-radius-admin",
+        !isIconHovered && "hover:bg-label-normal/light-hover",
         className
       )}
       {...props}
     >
-      <div className={cn("flex items-center")}>
-        {arrowIcon}
-        {icon}
-        <span className="ml-[4px]">{children}</span>
+      <div className="flex items-center flex-1">
+        {arrowIcon && (
+          <IconButton
+            icon={arrowIcon}
+            onClick={handleIconClick}
+            onMouseEnter={handleIconMouseEnter}
+            onMouseLeave={handleIconMouseLeave}
+          />
+        )}
+        <div className="flex w-full items-center">
+          <span className="w-full">{children}</span>
+        </div>
       </div>
 
-      <div className={cn("flex gap-[4px] items-center")}>
-        {labelText && (
-          <Label
-            variant="outlined"
-            size="xSmall"
-            className={cn(slot?.labelClassName)}
-          >
-            {labelText}
-          </Label>
-        )}
-        {rightIcon && rightIcon}
-      </div>
+      {(labelText || rightIcon) && (
+        <div className="flex gap-[4px] items-center">
+          {labelText && (
+            <Label
+              variant="outlined"
+              size="xSmall"
+              className={cn(slot?.labelClassName)}
+            >
+              {labelText}
+            </Label>
+          )}
+          {rightIcon}
+        </div>
+      )}
     </div>
   );
 }
 
 export default Menu;
-
-/**
- * Todo: asChild 패턴으로 버튼태그로 구현
- */

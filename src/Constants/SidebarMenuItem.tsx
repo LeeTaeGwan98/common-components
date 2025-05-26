@@ -4,110 +4,189 @@ import BookIcon from "@/assets/svg/Sidebar/Book.svg";
 import VideioIcon from "@/assets/svg/Sidebar/Videobook.svg";
 import BoardIcon from "@/assets/svg/Sidebar/Board.svg";
 import Manager from "@/assets/svg/Sidebar/Manager.svg";
+import {
+  ACCOUNT,
+  CHARGING,
+  CHATBOT,
+  COMMON_CODE,
+  COVER,
+  INQUIRY,
+  MAIN,
+  NOTICE,
+  PAY,
+  PLAN,
+  PUBLISH_LIST,
+  SERVICE_GUIDE,
+  TEMPLATE,
+  TERMS,
+  TUTORIAL,
+  USER_LIST,
+  VIDEOIMAGE,
+  WITHDRAWL_REASON,
+} from "@/Constants/ServiceUrl";
+import { JSX } from "react";
 
-const SIDEBAR_MENU_ITEM = [
+enum MENU_CODE {
+  회원관리 = "CO003001",
+  전자책관리 = "CO003002",
+  비디오북관리 = "CO003003",
+  게시판관리 = "CO003004",
+  약관관리 = "CO003005",
+  공통코드관리 = "CO003006",
+  관리자계정관리 = "CO003007",
+}
+
+export type SidebarMenuItem = {
+  title: string;
+  icon: JSX.Element;
+  path: string;
+  isActive: boolean;
+  code?: MENU_CODE;
+  child: {
+    title: string;
+    path: string;
+    isActive: boolean;
+    code?: MENU_CODE; // code를 옵셔널로 설정
+  }[];
+};
+
+const SIDEBAR_MENU_ITEM: SidebarMenuItem[] = [
   {
     title: "메인",
     icon: <HomeIcon />,
-    path: "/main",
+    path: MAIN,
     child: [],
+    isActive: false,
   },
   {
     title: "회원 관리",
     icon: <User />,
-    path: "/user-list",
+    path: USER_LIST,
+    code: MENU_CODE.회원관리,
+    isActive: false,
     child: [
       {
         title: "회원 목록",
-        path: "/user-list",
+        path: USER_LIST,
+        isActive: false,
       },
       {
         title: "결제 관리",
-        path: "/pay",
+        path: PAY,
+        isActive: false,
       },
       {
         title: "탈퇴 사유 관리",
-        path: "/withdraw-reasons",
+        path: WITHDRAWL_REASON,
+        isActive: false,
       },
     ],
   },
   {
     title: "전자책 관리",
     icon: <BookIcon />,
-    path: "/publish-list",
+    path: PUBLISH_LIST,
+    code: MENU_CODE.전자책관리,
+    isActive: false,
     child: [
       {
         title: "출판 목록",
-        path: "/publish-list",
+        path: PUBLISH_LIST,
+        isActive: false,
       },
       {
         title: "표지 관리",
-        path: "/cover",
+        path: COVER,
+        isActive: false,
       },
       {
         title: "충전소 관리",
-        path: "/charging",
+        path: CHARGING,
+        isActive: false,
       },
     ],
   },
   {
     title: "비디오북 관리",
     icon: <VideioIcon />,
-    path: "/plan",
+    path: PLAN,
+    code: MENU_CODE.비디오북관리,
+    isActive: false,
     child: [
       {
         title: "플랜 관리",
-        path: "/plan",
+        path: PLAN,
+        isActive: false,
       },
       {
         title: "튜토리얼 관리",
-        path: "/tutorial",
+        path: TUTORIAL,
+        isActive: false,
       },
       {
         title: "템플릿 관리",
-        path: "/template",
+        path: TEMPLATE,
+        isActive: false,
+      },
+      {
+        title: "무료 이미지 관리",
+        path: VIDEOIMAGE,
+        isActive: false,
       },
     ],
   },
   {
     title: "게시판 관리",
     icon: <BoardIcon />,
-    path: "/inquiry",
+    path: INQUIRY,
+    code: MENU_CODE.게시판관리,
+    isActive: false,
     child: [
       {
         title: "1:1 문의",
-        path: "/inquiry",
+        path: INQUIRY,
+        isActive: false,
       },
       {
         title: "공지사항",
-        path: "/notice",
+        path: NOTICE,
+        isActive: false,
       },
       {
         title: "서비스 가이드",
-        path: "/service-guide",
+        path: SERVICE_GUIDE,
+        isActive: false,
       },
       {
-        title: "쳇봇 관리",
-        path: "/chatbot",
+        title: "챗봇 관리",
+        path: CHATBOT,
+        isActive: false,
       },
     ],
   },
   {
     title: "관리자",
     icon: <Manager />,
-    path: "/terms",
+    path: TERMS,
+    isActive: false,
     child: [
       {
         title: "약관 관리",
-        path: "/terms",
+        path: TERMS,
+        code: MENU_CODE.약관관리,
+        isActive: false,
       },
       {
         title: "계정 관리",
-        path: "/account",
+        path: ACCOUNT,
+        code: MENU_CODE.관리자계정관리,
+        isActive: false,
       },
       {
         title: "공통 코드 관리",
-        path: "/common-code",
+        path: COMMON_CODE,
+        code: MENU_CODE.공통코드관리,
+        isActive: false,
       },
     ],
   },

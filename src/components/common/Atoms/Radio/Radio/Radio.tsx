@@ -27,6 +27,7 @@ function Radio({
     <button
       className="w-fit p-[6px] rounded-full hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active cursor-pointer"
       onClick={onChecked ? () => onChecked((prev) => !prev) : undefined}
+      onMouseUp={(e) => e.currentTarget.blur()}
     >
       <div
         className={cn(

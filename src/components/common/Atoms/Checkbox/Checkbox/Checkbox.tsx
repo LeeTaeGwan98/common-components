@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import Check from "@/assets/svg/check.svg";
-import Dash from "@/assets/svg/partialCheck.svg";
+import Check from "@/assets/svg/common/check.svg";
+import Dash from "@/assets/svg/common/partialCheck.svg";
 
 /**
  * Checkbox 컴포넌트
@@ -37,6 +37,8 @@ interface CheckboxProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isRound?: boolean;
   /** 추가 CSS 클래스 */
   className?: string;
+  /** hover, active, focus 설정 여부 */
+  isInteraction?: boolean;
 }
 
 /**
@@ -53,6 +55,7 @@ function Checkbox({
   disable = false,
   checkIconType = "check",
   isRound = false,
+  isInteraction = true,
   className,
   ...props
 }: CheckboxProps) {
@@ -71,13 +74,24 @@ function Checkbox({
     "opacity-[.43]": disable,
   };
 
+  const interactiveTypeStyle = `
+  relative
+  after:content-['']
+  after:absolute
+  after:rounded-full
+  after:transition-colors
+  after:-z-10
+  after:hover:bg-label-normal/normal-hover after:focus:bg-label-normal/normal-focus after:active:bg-label-normal/normal-active
+`;
+
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center p-[7px] rounded-full",
-        "hover:bg-label-normal/normal-hover focus:bg-label-normal/normal-focus active:bg-label-normal/normal-active",
+        "inline-flex items-center justify-center after:top-[-7px] after:right-[-7px] after:bottom-[-7px] after:left-[-7px] rounded-full",
+        isInteraction && interactiveTypeStyle,
         disable && "cursor-not-allowed"
       )}
+      onMouseUp={(e) => e.currentTarget.blur()}
       disabled={disable}
       {...props}
     >

@@ -24,7 +24,7 @@ function decodeSVG(encodedSVG: string): string {
   return decodedSVG;
 }
 
-function CustomToolbar() {
+function CustomToolbar({ isVideo = true }: { isVideo?: boolean }) {
   // Quill 아이콘 재정의
   const Quill = ReactQuill.Quill;
   const icons = Quill.import("ui/icons") as Record<string, string | object>;
@@ -117,7 +117,9 @@ function CustomToolbar() {
       <hr className="divider" />
       <div className="button-wrapper">
         <button title="이미지 삽입" type="button" className="ql-image" />
-        <button title="비디오 삽입" type="button" className="ql-video" />
+        {isVideo && (
+          <button title="비디오 삽입" type="button" className="ql-video" />
+        )}
       </div>
     </div>
   );

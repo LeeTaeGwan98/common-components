@@ -6,63 +6,156 @@
   font-family: "font-pretendard";
   src: url("../assets/fonts/PretendardVariable.woff2");
   font-weight: 100 900;
+  font-feature-settings: "tnum";
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  @media screen and (min-width: 0px) and (max-width: 599px) {
+  @media screen and (min-width: 1200px) {
+    --detail-top: 64px;
+    --detail-bottom: 48px;
+    --detail-margin: 48px;
+    --detail-content-horizon-margin: 32px;
+    --detail-content-vertical-margin: 32px;
+    --detail-gutter-horizontal: 20px;
+    --detail-gutter-vertical: 32px;
+    --detail-gutter-large: 80px;
+    --detail-gutter-medium: 48px;
+    --detail-gutter-vertical-heading: 60px;
+    --detail-gutter-vertical-section-large: 140px;
+    --detail-gutter-vertical-section-small: 100px;
+    --detail-dialog-max-width: 560px;
+    --detail-dialog-height: 720px;
+    --detail-table-min-width: 1504px;
+    --detail-detailTable-min-width: 1044px;
+    --detail-tableText-min-width: 300px;
+
     --top: 64px;
     --bottom: 48px;
     --margin: 48px;
-    --content-horizon-margin: 16px;
-    --content-vertical-margin: 20px;
+    --content-horizon-margin: 32px;
+    --content-vertical-margin: 32px;
+    --gutter-horizontal: 20px;
+    --gutter-vertical: 32px;
+    --gutter-large: 80px;
+    --gutter-medium: 48px;
+    --gutter-vertical-heading: 60px;
+    --gutter-vertical-section-large: 140px;
+    --gutter-vertical-section-small: 100px;
     --dialog-max-width: 560px;
     --dialog-height: 720px;
-    --gutter-horizon: 20px;
-    --gutter-vertical: 32px;
     --table-min-width: 1504px;
     --detailTable-min-width: 1044px;
     --tableText-min-width: 300px;
   }
-  @media screen and (min-width: 600px) and (max-width: 991px) {
-    --top: 48px;
-    --bottom: 32px;
-    --margin: 24px;
-    --content-horizon-margin: 20px;
-    --content-vertical-margin: 20px;
-    --dialog-max-width: 480px;
-    --dialog-height: 640px;
-    --gutter-horizon: 20px;
-    --gutter-vertical: 32px;
-    --table-min-width: 1151px;
-    --detailTable-min-width: 691px;
-    --tableText-min-width: 200px;
-  }
   @media screen and (min-width: 992px) and (max-width: 1199px) {
-    --top: 32px;
+    --detail-top: 48px;
+    --detail-bottom: 32px;
+    --detail-margin: 24px;
+    --detail-content-horizon-margin: 24px;
+    --detail-content-vertical-margin: 24px;
+    --detail-gutter-horizontal: 20px;
+    --detail-gutter-vertical: 32px;
+    --detail-gutter-large: 64px;
+    --detail-gutter-medium: 32px;
+    --detail-gutter-vertical-heading: 60px;
+    --detail-gutter-vertical-section-large: 100px;
+    --detail-gutter-vertical-section-small: 80px;
+    --detail-dialog-max-width: 480px;
+    --detail-dialog-height: 640px;
+    --detail-table-min-width: 1151px;
+    --detail-detailTable-min-width: 691px;
+    --detail-tableText-min-width: 200px;
+
+    --top: 48px;
     --bottom: 32px;
     --margin: 24px;
     --content-horizon-margin: 24px;
     --content-vertical-margin: 24px;
-    --dialog-max-width: 400px;
-    --dialog-height: 560px;
-    --gutter-horizon: 16px;
-    --gutter-vertical: 28px;
+    --gutter-horizontal: 20px;
+    --gutter-vertical: 32px;
+    --gutter-large: 64px;
+    --gutter-medium: 32px;
+    --gutter-vertical-heading: 60px;
+    --gutter-vertical-section-large: 100px;
+    --gutter-vertical-section-small: 80px;
+    --dialog-max-width: 480px;
+    --dialog-height: 640px;
     --table-min-width: 1151px;
     --detailTable-min-width: 691px;
     --tableText-min-width: 200px;
   }
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 600px) and (max-width: 991px) {
+    --detail-top: 32px;
+    --detail-bottom: 32px;
+    --detail-margin: 24px;
+    --detail-content-horizon-margin: 20px;
+    --detail-content-vertical-margin: 20px;
+    --detail-gutter-horizontal: 16px;
+    --detail-gutter-vertical: 28px;
+    --detail-gutter-large: 48px;
+    --detail-gutter-medium: 28px;
+    --detail-gutter-vertical-heading: 48px;
+    --detail-gutter-vertical-section-large: 80px;
+    --detail-gutter-vertical-section-small: 64px;
+    --detail-dialog-max-width: 400px;
+    --detail-dialog-height: 560px;
+    --detail-table-min-width: 1151px;
+    --detail-detailTable-min-width: 691px;
+    --detail-tableText-min-width: 200px;
+
+    --top: 32px;
+    --bottom: 32px;
+    --margin: 24px;
+    --content-horizon-margin: 20px;
+    --content-vertical-margin: 20px;
+    --gutter-horizontal: 16px;
+    --gutter-vertical: 28px;
+    --gutter-large: 48px;
+    --gutter-medium: 28px;
+    --gutter-vertical-heading: 48px;
+    --gutter-vertical-section-large: 80px;
+    --gutter-vertical-section-small: 64px;
+    --dialog-max-width: 400px;
+    --dialog-height: 560px;
+    --table-min-width: 1151px;
+    --detailTable-min-width: 691px;
+    --tableText-min-width: 200px;
+  }
+  @media screen and (min-width: 0px) and (max-width: 599px) {
+    --detail-top: 20px;
+    --detail-bottom: 32px;
+    --detail-margin: 16px;
+    --detail-content-horizon-margin: 16px;
+    --detail-content-vertical-margin: 20px;
+    --detail-gutter-horizontal: 8px;
+    --detail-gutter-vertical: 20px;
+    --detail-gutter-large: 32px;
+    --detail-gutter-medium: 20px;
+    --detail-gutter-vertical-heading: 32px;
+    --detail-gutter-vertical-section-large: 60px;
+    --detail-gutter-vertical-section-small: 48px;
+    --detail-dialog-max-width: 360px;
+    --detail-dialog-height: 480px;
+    --detail-table-min-width: 0px;
+    --detail-detailTable-min-width: 0px;
+    --detail-tableText-min-width: 0px;
+
     --top: 20px;
     --bottom: 32px;
     --margin: 16px;
-    --content-horizon-margin: 32px;
-    --content-vertical-margin: 32px;
+    --content-horizon-margin: 16px;
+    --content-vertical-margin: 20px;
+    --gutter-horizontal: 8px;
+    --gutter-vertical: 20px;
+    --gutter-large: 32px;
+    --gutter-medium: 20px;
+    --gutter-vertical-heading: 32px;
+    --gutter-vertical-section-large: 60px;
+    --gutter-vertical-section-small: 48px;
     --dialog-max-width: 360px;
     --dialog-height: 480px;
-    --gutter-horizon: 8px;
-    --gutter-vertical: 20px;
     --table-min-width: 0px;
     --detailTable-min-width: 0px;
     --tableText-min-width: 0px;
@@ -71,7 +164,8 @@
 
 @layer base {
   html {
-    font-family: 'font-pretendard', system-ui, sans-serif;
+    font-family: "font-pretendard", system-ui, sans-serif;
+    font-feature-settings: "tnum";
   }
   :root {
     --background: 0 0% 100%;
@@ -98,7 +192,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -124,7 +218,17 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
+  }
+  .custom-scrollbar {
+    padding-right: 10px; /* 아이템과 스크롤바 사이 간격 띄우기 */
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 3px;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(112, 115, 124, 0.16);
   }
 }
 
@@ -135,4 +239,9 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+* {
+  scrollbar-color: #70737c29 transparent;
+  scrollbar-width: thin;
 }

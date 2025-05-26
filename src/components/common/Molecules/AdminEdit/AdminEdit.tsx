@@ -1,8 +1,16 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useEffect } from "react";
 import ReactQuill, { Quill } from "react-quill-new";
 import CustomToolbar from "./CustomToolbar";
 import "react-quill-new/dist/quill.snow.css";
 import "@/components/common/Molecules/AdminEdit/AdminEditStyle.css";
+import { cn } from "@/lib/utils";
+
+// 사용할 사이즈 명시(기본: small, normal, large, huge)
+const Size = Quill.import("formats/size") as {
+  whitelist: string[];
+};
+Size.whitelist = ["14px", "16px", "18px", "24px"];
+Quill.register("formats/size", Size);
 
 // BlockEmbed을 가져오고, 타입을 명확히 지정
 const BlockEmbed = Quill.import("blots/block/embed") as {
@@ -37,13 +45,24 @@ Divider.tagName = "hr";
 Quill.register("blots/divider", Divider);
 
 interface AdminEditProps {
+  className?: string;
   value: string;
+  isVideo?: boolean;
   onChange: (value: string) => void;
   placeholder?: string;
 }
 
+//html 제거
+export function parseHTML(html: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+}
+
 const AdminEdit: React.FC<AdminEditProps> = ({
+  className,
   value = "",
+  isVideo = true,
   onChange,
   placeholder = "내용을 입력하세요...",
 }) => {
@@ -75,14 +94,27 @@ const AdminEdit: React.FC<AdminEditProps> = ({
   };
 
   return (
-    <div className="quill-root-container">
-      <CustomToolbar />
+    <div className="quill-root-container w-full">
+      <CustomToolbar isVideo={isVideo} />
       <ReactQuill
         ref={quillRef}
         theme="snow"
         value={value}
         onChange={handleChange}
+        className={cn("h-[300px]", className)}
         modules={modules}
+        formats={[
+          "size",
+          "bold",
+          "italic",
+          "underline",
+          "align",
+          "list",
+          "background",
+          "image",
+          "video",
+          "divider",
+        ]}
         placeholder={placeholder}
       />
     </div>

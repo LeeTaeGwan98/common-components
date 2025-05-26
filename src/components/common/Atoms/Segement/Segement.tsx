@@ -5,10 +5,11 @@ import { cn } from "@/lib/utils";
 interface SegmentProps {
   size?: "large" | "medium" | "small";
   selected?: boolean; // true면 왼쪽이 활성화 / false면 오른쪽이 활성화
-  setSelected: Dispatch<SetStateAction<boolean>>;
+  setSelected: Dispatch<SetStateAction<boolean>> | ((value: boolean) => void);
   textList: [string | number, string | number]; // 배열크기 2개로 제한
   className?: string;
   itemClassName?: string;
+  disable?: boolean;
 }
 
 function Segement({
@@ -18,6 +19,7 @@ function Segement({
   setSelected,
   className,
   itemClassName,
+  disable = false,
 }: SegmentProps) {
   const sizeStyle = {
     large: "w-[284px]",
@@ -37,6 +39,7 @@ function Segement({
             selected={selected}
             itemClassName={itemClassName}
             setSelected={setSelected}
+            disable={disable}
           >
             {item}
           </Segement.SegementItem>
@@ -48,7 +51,7 @@ function Segement({
 
 type SegementItem = Pick<
   SegmentProps,
-  "selected" | "itemClassName" | "size" | "setSelected"
+  "selected" | "itemClassName" | "size" | "setSelected" | "disable"
 > & {
   children: React.ReactNode;
   flag: 0 | 1;
@@ -61,8 +64,9 @@ Segement.SegementItem = (({
   itemClassName,
   setSelected,
   size = "medium",
+  disable,
 }: SegementItem) => {
-  const isSelected = !!flag === selected;
+  const isSelected = !flag === selected;
 
   const sizeStyle = {
     large: "text-body1-normal-bold py-[12px]",
@@ -75,7 +79,9 @@ Segement.SegementItem = (({
   };
   const selectedStyle = isSelected
     ? "bg-primary-normal/[0.08] text-primary-normal border-[1px] border-transparent"
-    : "border-[1px] border-line-normal-normal";
+    : `border-[1px] border-line-normal-normal ${
+        disable ? "text-label-disable" : ""
+      }`;
 
   const interactiveTypeStyle = {
     "hover:bg-label-normal/light-hover focus:bg-label-normal/light-focus active:bg-label-normal/light-active":
@@ -85,14 +91,14 @@ Segement.SegementItem = (({
   return (
     <button
       className={cn(
-        "flex-1 text-center",
+        "flex-1 text-center text-label-normal",
         interactiveTypeStyle,
         flagStyle,
         selectedStyle,
         sizeStyle[size],
         itemClassName
       )}
-      onClick={() => setSelected(!!flag)}
+      onClick={() => setSelected(!flag)}
     >
       {children}
     </button>

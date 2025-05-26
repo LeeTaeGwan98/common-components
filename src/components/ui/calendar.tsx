@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, buttonVariants } from "@/components/ui/button";
+import { dateToString } from "@/lib/dateParse";
 import { cn } from "@/lib/utils";
 import { differenceInCalendarDays, isSameDay } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -152,12 +153,12 @@ function Calendar({
     props.rangeMiddleClassName
   );
   const _selectedClassName = cn(
-    "border-2 border-primary-normal rounded-full bg-primary-normal/strong-active !text-label-normal",
+    "border-primary-normal rounded-full bg-primary-normal/strong-active !text-label-normal",
     props.selectedClassName
   );
   const _todayClassName = cn("relative", props.todayClassName);
   const _outsideClassName = cn(
-    "text-label-normal/normal-active",
+    "!text-label-normal/[.12] pointer-events-none bg-transparent border-none",
     props.outsideClassName
   );
   const _disabledClassName = cn(
@@ -220,6 +221,36 @@ function Calendar({
             {...props}
           />
         ),
+        DayButton: ({ day, className, modifiers, ...props }) => {
+          const dayText = day ? day.date.getDate() : ""; // 날짜만 추출
+          console.log(`답변 ${modifiers.outside}`);
+
+          // 상태별 클래스 적용
+          const buttonClass = modifiers.selected
+            ? _selectedClassName // 선택된 날짜에 대한 스타일
+            : modifiers.today
+            ? _todayClassName // 오늘 날짜에 대한 스타일
+            : modifiers.disabled
+            ? _disabledClassName // 비활성화된 날짜에 대한 스타일
+            : modifiers.outside
+            ? _outsideClassName
+            : ""; // 기본 스타일
+
+          return (
+            <button
+              key={day.date.toDateString()}
+              className={cn(`relative flex flex-col ${className}`, buttonClass)}
+              {...props}
+            >
+              <div className="absolute">{dayText}</div>
+              {dateToString(day.date) === dateToString(new Date()) && (
+                <div className="absolute top-[100%] -translate-y-[100%] text-caption3-medium text-status-ioformatin">
+                  오늘
+                </div>
+              )}
+            </button>
+          );
+        },
         MonthGrid: ({ className, children, ...props }) => (
           <MonthGrid
             // eslint-disable-next-line react/no-children-prop

@@ -20,7 +20,8 @@ function OutlinedButton({
   const typeStyle = {
     primary: "border-primary-normal text-primary-normal",
     secondary: "border-line-normal-normal text-primary-normal",
-    assistive: "border-line-normal-normal text-label1-normal-regular",
+    assistive:
+      "border-line-normal-normal text-label1-normal-regular text-label-normal",
   };
 
   const interactiveTypeStyle = {
@@ -63,13 +64,13 @@ function OutlinedButton({
   return (
     <button
       className={cn(
-        "min-w-[98px] flex justify-center items-center gap-[6px] rounded-large-button border-[1px]",
+        "min-w-[98px] flex justify-center items-center gap-[6px] rounded-[4px] border-[1px]",
         typeStyle[type],
         !disable && interactiveTypeStyle[type],
         sizeStyle[size],
-        disableStyle,
         fontStyle[type][size],
-        className
+        className,
+        disableStyle
       )}
       onMouseUp={(e) => e.currentTarget.blur()}
       {...props}

@@ -13,4 +13,14 @@ export default defineConfig({
       "@": "/src",
     },
   },
+
+  server: {
+    proxy: {
+      "/api/v1": {
+        target: "http://petpotion.kr:3000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

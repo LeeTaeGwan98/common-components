@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import CalendarIcon from "@/assets/svg/calendar.svg";
+import CalendarIcon from "@/assets/svg/common/calendar.svg";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -15,7 +15,7 @@ interface DatePickerProps {
   size?: "large" | "small";
   disable?: boolean;
   date: Date | undefined;
-  setDate: Dispatch<SetStateAction<Date | undefined>>;
+  setDate: Dispatch<SetStateAction<Date | undefined>> | ((date: Date) => void);
   pickerClassName?: string;
 }
 
@@ -39,14 +39,14 @@ function DatePicker({
         <Button
           variant="outline"
           className={cn(
-            "justify-start text-left text-body2-normal-regular py-0 px-[12px] hover:bg-line-normal-normal/light-hover focus:bg-line-normal-normal/light-focus active:bg-line-normal-normal",
+            "!gap-[6px] !rounded-radius-admin justify-start text-left text-body2-normal-regular py-0 px-[12px] hover:bg-line-normal-normal/light-hover focus:bg-line-normal-normal/light-focus active:bg-line-normal-normal",
             !date && "text-muted-foreground",
             sizeStyle[size],
             pickerClassName
           )}
           disabled={disable}
         >
-          <CalendarIcon className="size-[20px]" />
+          <CalendarIcon className="!size-[20px] text-label-normal" />
           <span className="text-line-normal-neutral">|</span>
           {date ? (
             <span className="text-label-normal text-body2-normal-regular">
@@ -60,7 +60,13 @@ function DatePicker({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar mode="single" selected={date} autoFocus onSelect={setDate} />
+        <Calendar
+          mode="single"
+          selected={date === undefined ? new Date() : date} // Calendar최초 로드시 초기 값은 undefined이기 때문에 오늘날짜로 초기화
+          autoFocus
+          onSelect={setDate}
+          required
+        />
       </PopoverContent>
     </Popover>
   );

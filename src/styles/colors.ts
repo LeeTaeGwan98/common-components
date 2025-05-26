@@ -225,7 +225,7 @@ const colors = {
   "status-positive": "#00BF40",
   "status-cautionary": "#FF9200",
   "status-negative": "#FF4242",
-  "status-ioformatin": "#00BF40",
+  "status-ioformatin": "#0066FF",
 
   // Accent
   "accent-lime": "#58CF04",

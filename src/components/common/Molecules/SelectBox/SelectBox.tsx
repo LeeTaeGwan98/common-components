@@ -24,18 +24,29 @@ function SelectBox({
     medium: "py-[9px] px-[12px]",
     small: "py-[7px] h-[32px]",
   };
+
+  //Select가 열릴 때 data-scroll-locked을 없애기
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      // 드롭다운이 열릴 때 data-scroll-locked 속성을 제거
+      document.querySelectorAll('[data-scroll-locked="1"]').forEach((el) => {
+        el.removeAttribute("data-scroll-locked");
+      });
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-[4px]">
+    <div className="flex flex-col gap-[8px]">
       {label && (
         <div className="text-label1-normal-bold text-label-alternative">
           {label}
         </div>
       )}
 
-      <Select {...props}>
+      <Select {...props} onOpenChange={handleOpenChange}>
         <SelectTrigger
           className={cn(
-            "hover:border-label-alternative w-full focus:ring-0 focus:ring-offset-0 data-[placeholder]:text-body1-normal-regular data-[placeholder]:text-label-assistive rounded-[12px] disabled:bg-interaction-disable text-label-normal",
+            "hover:border-label-alternative w-full focus:ring-0 text-body1-normal-regular focus:ring-offset-0 data-[placeholder]:text-body1-normal-regular data-[placeholder]:text-label-assistive !rounded-large-input disabled:bg-interaction-disable text-label-normal",
             sizeStyle[size],
             className
           )}

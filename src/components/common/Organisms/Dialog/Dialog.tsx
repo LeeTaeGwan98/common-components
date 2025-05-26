@@ -1,15 +1,13 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import Divider from "@/components/Atoms/Divider/Divider";
-import OutlinedButton from "@/components/Atoms/Button/Outlined/OutlinedButton";
-import Button from "@/components/Atoms/Button/Solid/Button";
+import { DialogContent, DialogTitle } from "@/components/ui/dialog";
+import Divider from "@/components/common/Atoms/Divider/Divider";
+import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
+import X from "@/assets/svg/common/X.svg";
+import { useModalStore } from "@/store/modalStore";
 
 interface DialogProps {
+  className?: string;
   fixed?: boolean;
   illustrationSrc?: string;
   bottomSpace?: boolean;
@@ -17,10 +15,13 @@ interface DialogProps {
   subTitle?: string;
   summary?: string;
   description?: string;
+  close?: boolean;
   children?: ReactNode; // contents대신 children으로 contents를 받아옴
+  buttonElements?: ReactNode;
 }
 
 function Dialog({
+  className,
   fixed,
   illustrationSrc,
   bottomSpace,
@@ -29,58 +30,84 @@ function Dialog({
   summary,
   description,
   children,
+  close,
+  buttonElements,
 }: DialogProps) {
   return (
     <DialogContent
-      className={cn("min-w-[360px] w-fit p-0 border-none rounded-[12px] gap-0")}
+      onOpenAutoFocus={(event) => event.preventDefault()}
+      className={cn(
+        "min-w-[360px] w-fit p-0 border-none rounded-[12px] gap-0 [&>button]:hidden",
+        className
+      )}
     >
-      <DialogHeader
+      <div
         className={cn(
           "pt-content-vertical-margin px-content-horizon-margin",
           fixed && "pb-content-vertical-margin"
         )}
       >
         <DialogTitle>
-          <img src={illustrationSrc} className="w-[100px] h-[100px] mx-auto" />
+          {illustrationSrc && (
+            <img
+              src={illustrationSrc}
+              className="w-[100px] h-[100px] mx-auto"
+            />
+          )}
 
-          <div
-            className={cn(
-              "flex flex-col items-start",
-              bottomSpace && "pb-[20px]"
-            )}
-          >
-            {heading && (
-              <h1 className={cn("text-heading5-bold text-label-normal")}>
-                제목
-              </h1>
-            )}
+          <div className="flex gap-[12px] items-center justify-between">
+            <div
+              className={cn(
+                "flex flex-col items-start",
+                bottomSpace && "pb-[20px]"
+              )}
+            >
+              {heading && (
+                <h1 className={cn("text-heading5-bold text-label-normal")}>
+                  {heading}
+                </h1>
+              )}
 
-            {/* Todo subfont로 적용 */}
-            {subTitle && (
-              <div
-                className={cn("text-heading2-bold text-label-normal mb-[12px]")}
-              >
-                타이틀
+              {/* Todo subfont로 적용 */}
+              {subTitle && (
+                <div
+                  className={cn(
+                    "text-heading2-bold text-label-normal mb-[12px]"
+                  )}
+                >
+                  {subTitle}
+                </div>
+              )}
+
+              {summary && (
+                <div
+                  className={cn(
+                    "text-body2-normal-regular text-label-alternative mb-[16px]"
+                  )}
+                >
+                  {summary}
+                </div>
+              )}
+              {description && (
+                <p
+                  className={cn("text-body1-normal-regular text-label-normal")}
+                >
+                  {description}
+                </p>
+              )}
+            </div>
+
+            {close && (
+              <div className="flex items-center h-[28px]">
+                <IconButton
+                  onClick={() => useModalStore.getState().closeModal()}
+                  icon={<X className="w-[20px] h-[20px] text-label-neutral" />}
+                />
               </div>
-            )}
-
-            {summary && (
-              <div
-                className={cn(
-                  "text-body2-normal-regular text-label-alternative mb-[16px]"
-                )}
-              >
-                요약
-              </div>
-            )}
-            {description && (
-              <p className={cn("text-body1-normal-regular text-label-normal")}>
-                설명
-              </p>
             )}
           </div>
         </DialogTitle>
-      </DialogHeader>
+      </div>
 
       {fixed && <Divider />}
 
@@ -100,10 +127,7 @@ function Dialog({
           fixed ? "after:opacity-100" : "after:opacity-0"
         )}
       >
-        <OutlinedButton type="assistive" size="large" className="flex-[1]">
-          텍스트
-        </OutlinedButton>
-        <Button className="flex-[2]">텍스트</Button>
+        {buttonElements && buttonElements}
       </div>
     </DialogContent>
   );

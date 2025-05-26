@@ -1,4 +1,4 @@
-import Avatar from "@/components/Atoms/Avatar/Avatar/Avatar";
+import Avatar from "@/components/common/Atoms/Avatar/Avatar/Avatar";
 import { ButtonHTMLAttributes, ReactElement } from "react";
 import { cn } from "@/lib/utils";
 

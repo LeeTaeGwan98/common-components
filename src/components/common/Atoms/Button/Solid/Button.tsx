@@ -28,7 +28,7 @@ const Button = ({
   return (
     <button
       className={cn(
-        "bg-primary-normal text-white min-w-[98px] rounded-large-button flex justify-center gap-[6px] items-center",
+        "bg-primary-normal text-white min-w-[98px] rounded-[4px] flex justify-center gap-[6px] items-center",
         !disable && interactiveTypeStyle,
         disableStyle,
         sizeStyle[size],

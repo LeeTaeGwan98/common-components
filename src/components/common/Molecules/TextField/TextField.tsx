@@ -9,22 +9,27 @@ import InVisible from "@/assets/svg/common/invisible.svg";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 
 interface TextFieldProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "slot"> {
   size?: "large" | "medium";
   label?: string;
   count?: boolean;
   helperText?: string;
-  errorInfo?: {
-    isError?: boolean;
-    text?: string;
-  };
-  leftIcon?: boolean;
+  errorText?: string;
+  successText?: string;
+  searchIcon?: boolean;
   subText?: string;
   isVisible?: boolean;
   buttonElement?: ReactNode;
   closeButton?: boolean;
   onClear?: () => void;
   value: string;
+  slot?: {
+    containerClassName?: string;
+    labelClassname?: string;
+    searchIconClassName?: string;
+    inputClassName?: string;
+    subTextClassName?: string;
+  };
 }
 
 function TextField({
@@ -32,17 +37,20 @@ function TextField({
   label,
   count = false,
   helperText = "",
-  errorInfo,
-  leftIcon = false,
+  errorText,
+  successText,
+  searchIcon = false,
   subText = "",
-  isVisible = true,
+  isVisible = false,
   value = "",
   buttonElement,
   closeButton = false,
   onClear,
+  slot = {},
   ...props
 }: TextFieldProps) {
   const [isVisibleIcon, setIsVisibleIcon] = useState(true);
+  const { readOnly } = props;
 
   const sizeStyle = {
     label: {
@@ -55,24 +63,19 @@ function TextField({
     },
   };
 
-  const leftIconStyle = leftIcon && "pl-[44px]";
+  const searchIconStyle = searchIcon && "pl-[44px]";
   const rightIconStyle = subText && "pr-[54px]";
 
-  const interactiveTypeStyle = `hover:border-coolNeutral-50/[.52] focus:border-primary-normal ${
-    errorInfo?.isError !== undefined
-      ? errorInfo.isError
-        ? "border-status-negative"
-        : "border-status-positive"
-      : ""
-  }`;
+  const interactiveTypeStyle = `hover:border-coolNeutral-50/[.52] focus:border-primary-normal`;
 
   return (
-    <div className="flex flex-col gap-[4px]">
+    <div className={cn("flex flex-col flex-1", slot.containerClassName)}>
       {label && (
         <label
           className={cn(
-            "text-label1-normal-bold text-label-alternative ",
-            sizeStyle.label[size]
+            "text-label1-normal-bold text-label-alternative mb-[8px]",
+            sizeStyle.label[size],
+            slot.labelClassname
           )}
         >
           {label}
@@ -80,16 +83,27 @@ function TextField({
       )}
 
       <div className={cn("relative")}>
-        {leftIcon && (
-          <SearchIcon className="absolute top-1/2 -translate-y-1/2 left-[12px]" />
+        {searchIcon && (
+          <SearchIcon
+            className={cn(
+              "absolute top-1/2 -translate-y-1/2 left-[12px]",
+              slot.searchIconClassName
+            )}
+          />
         )}
         <input
           className={cn(
-            "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-[12px] text-body1-normal-regular placeholder:text-label-assistive",
+            "w-full focus:outline-none border-[1px] border-line-normal-normal rounded-large-input text-body1-normal-regular text-label-normal placeholder:text-label-assistive",
+            readOnly &&
+              "border-line-normal-neutral bg-interaction-disable placeholder:text-label-assistive text-label-alternative",
             sizeStyle.input[size],
-            interactiveTypeStyle,
-            leftIconStyle,
-            rightIconStyle
+            !readOnly && interactiveTypeStyle,
+            searchIconStyle,
+            rightIconStyle,
+            successText &&
+              "border-status-positive hover:border-status-positive",
+            errorText && "border-status-negative hover:border-status-negative",
+            slot.inputClassName
           )}
           value={value}
           type={isVisibleIcon ? "text" : "password"}
@@ -104,22 +118,26 @@ function TextField({
           subText={subText}
           closeButton={closeButton}
           onClear={onClear}
+          slot={slot}
         />
       </div>
 
-      <TextField.HelperTextArea
-        helperText={helperText}
-        errorInfo={errorInfo}
-        count={count}
-        value={value}
-      />
+      {(helperText || errorText || successText) && (
+        <TextField.HelperTextArea
+          helperText={helperText}
+          errorText={errorText}
+          successText={successText}
+          count={count}
+          value={value}
+        />
+      )}
     </div>
   );
 }
 
 type RightIconAreaProps = Pick<
   TextFieldProps,
-  "isVisible" | "buttonElement" | "subText" | "closeButton" | "onClear"
+  "isVisible" | "buttonElement" | "subText" | "closeButton" | "onClear" | "slot"
 > & {
   isVisibleIcon: boolean;
   setIsVisibleIcon: React.Dispatch<React.SetStateAction<boolean>>;
@@ -133,10 +151,26 @@ TextField.RightIconArea = (({
   subText,
   closeButton,
   onClear,
+  slot,
 }: RightIconAreaProps) => {
   return (
     <div className="flex absolute top-1/2 -translate-y-1/2 right-[12px] items-center">
-      {buttonElement}
+      {subText && (
+        <span
+          className={cn(
+            "text-body1-normal-regular text-primary-normal",
+            slot?.subTextClassName
+          )}
+        >
+          {subText}
+        </span>
+      )}
+      {closeButton && (
+        <IconButton
+          icon={<CloseButton className="size-[24px] text-label-alternative" />}
+          onClick={onClear}
+        />
+      )}
       {isVisible && (
         <IconButton
           icon={
@@ -149,17 +183,7 @@ TextField.RightIconArea = (({
           onClick={() => setIsVisibleIcon((prev) => !prev)}
         />
       )}
-      {subText && (
-        <span className="text-body1-normal-regular text-primary-normal">
-          {subText}
-        </span>
-      )}
-      {closeButton && (
-        <IconButton
-          icon={<CloseButton className="size-[24px] fill-label-alternative" />}
-          onClick={onClear}
-        />
-      )}
+      {buttonElement}
     </div>
   );
 }) as React.FC<RightIconAreaProps>;
@@ -167,39 +191,38 @@ TextField.RightIconArea.displayName = "TextFieldRightIconArea";
 
 type HelperTextAreaProps = Pick<
   TextFieldProps,
-  "helperText" | "errorInfo" | "count"
+  "helperText" | "errorText" | "count" | "successText"
 > & {
   value: string;
 };
 
 TextField.HelperTextArea = (({
   helperText,
-  errorInfo,
+  successText,
+  errorText,
   count,
   value,
 }: HelperTextAreaProps) => {
+  console.log(successText);
+
   return (
-    <div className="flex justify-between *:text-caption1-regular">
+    <div className="flex justify-between *:text-caption1-regular mt-[4px]">
       <div className="w-fit text-label-assistive ml-[12px]">
         <span>{helperText && helperText}</span>
-        {errorInfo && (
-          <div className="flex gap-[2px] text-status-positive">
+        {errorText && (
+          <div className="flex gap-[2px]">
             <span>
-              {errorInfo?.isError ? (
-                <ErrorIcon className="size-[16px] fill-status-negative" />
-              ) : (
-                <SuccessIcon className="size-[16px] fill-status-positive" />
-              )}
+              <ErrorIcon className="size-[16px] text-status-negative" />
             </span>
-            <span
-              className={
-                errorInfo?.isError
-                  ? "text-status-negative"
-                  : "text-status-positive"
-              }
-            >
-              {errorInfo?.text}
+            <span className="text-status-negative">{errorText}</span>
+          </div>
+        )}
+        {successText && (
+          <div className="flex gap-[2px]">
+            <span>
+              <SuccessIcon className="size-[16px] text-status-positive" />
             </span>
+            <span className="text-status-positive">{successText}</span>
           </div>
         )}
       </div>

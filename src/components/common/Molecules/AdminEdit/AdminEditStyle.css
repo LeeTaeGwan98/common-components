@@ -6,26 +6,45 @@
 
 .divider {
   border: none;
-  border-left: 1px solid #70737C29;
-  height : 20px;
+  border-left: 1px solid #70737c29;
+  height: 20px;
   margin: 0 12px;
 }
 
 .quill-root-container {
   width: 630px;
-  border: 1px solid #70737C38;
+  border: 1px solid #70737c38;
   border-radius: 4px;
 }
 
 .quill-root-container:hover {
-  border-color: #70737C85;
+  border-color: #70737c85;
 }
 .quill-root-container:focus-within {
-  border-color: #6B39F6;
+  border-color: #28a8fb;
 }
 
 .ql-container {
+  height: 100%;
   border: none !important;
+}
+.ql-editor.ql-blank::before {
+  font-family: "Pretendard-Regualr", sans-serif; /* 또는 원하는 폰트명 */
+  font-size: 16px !important; /* 폰트 크기도 원하면 조절 */
+  font-style: normal !important;
+  line-height: 24px !important;
+  letter-spacing: 0.0057em !important;
+  font-weight: 400 !important;
+  color: #37383c47 !important; /* placeholder 색상도 조절 가능 */
+}
+
+.ql-editor p {
+  font-family: "Pretendard-Regualr", sans-serif; /* 또는 원하는 폰트명 */
+  font-style: normal !important;
+  line-height: 24px !important;
+  letter-spacing: 0.0057em !important;
+  font-weight: 400 !important;
+  color: #171719 !important; /* placeholder 색상도 조절 가능 */
 }
 
 #custom-toolbar {
@@ -33,7 +52,7 @@
     outline: none;
   }
   border: none;
-  border-bottom: 1px solid #70737C38;
+  border-bottom: 1px solid #70737c38;
   padding: 12px 16px;
   display: flex;
   align-items: center;
@@ -85,11 +104,11 @@
 .ql-picker-label {
   border: none !important;
   padding: 0 12px !important;
-  border: 1px solid #70737C38 !important;
+  border: 1px solid #70737c38 !important;
   border-radius: 4px !important;
   display: flex !important;
   align-items: center !important;
-  background-image: url('./assets/Down.svg');
+  background-image: url("./assets/Down.svg");
   background-repeat: no-repeat;
   background-position: 40px;
   background-size: 16px;
@@ -105,9 +124,23 @@
 }
 
 .ql-editor {
-  min-height: 552px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .ql-active {
-  color: #6B39F6 !important; 
+  color: #28a8fb !important;
+}
+
+.ql-size-14px {
+  font-size: 14px;
+}
+.ql-size-16px {
+  font-size: 16px;
+}
+.ql-size-18px {
+  font-size: 18px;
+}
+.ql-size-24px {
+  font-size: 24px;
 }

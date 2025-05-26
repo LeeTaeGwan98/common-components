@@ -45,15 +45,37 @@ const spacing = {
   margin: "var(--margin)",
   "content-horizon-margin": "var(--content-horizon-margin)",
   "content-vertical-margin": "var(--content-vertical-margin)",
+  "gutter-horizontal": "var(--gutter-horizontal)",
+  "gutter-vertical": "var(--gutter-vertical)",
+  "gutter-large": "var(--gutter-large)",
+  "gutter-medium": "var(--gutter-medium)",
+  "gutter-vertical-heading": "var(--gutter-vertical-heading)",
+  "gutter-vertical-section-large": "var(--gutter-vertical-section-large)",
+  "gutter-vertical-section-small": "var(--gutter-vertical-section-small)",
   "dialog-max-width": "var(--dialog-max-width)",
   "dialog-height": "var(--dialog-height)",
-  "gutter-horizon": "var(--gutter-horizon)",
-  "gutter-vertical": "var(--gutter-vertical)",
   "table-min-width": "var(--table-min-width)",
   "detailTable-min-width": "var(--detailTable-min-width)",
   "tableText-min-width": "var(--tableText-min-width)",
+  "detail-top": "var(--detail-top)",
+  "detail-bottom": "var(--detail-bottom)",
+  "detail-margin": "var(--detail-margin)",
+  "detail-content-horizon-margin": "var(--detail-content-horizon-margin)",
+  "detail-content-vertical-margin": "var(--detail-content-vertical-margin)",
+  "detail-gutter-horizontal": "var(--detail-gutter-horizontal)",
+  "detail-gutter-vertical": "var(--detail-gutter-vertical)",
+  "detail-gutter-large": "var(--detail-gutter-large)",
+  "detail-gutter-medium": "var(--detail-gutter-medium)",
+  "detail-gutter-vertical-heading": "var(--detail-gutter-vertical-heading)",
+  "detail-gutter-vertical-section-large":
+    "var(--detail-gutter-vertical-section-large)",
+  "detail-gutter-vertical-section-small":
+    "var(--detail-gutter-vertical-section-small)",
+  "detail-dialog-max-width": "var(--detail-dialog-max-width)",
+  "detail-dialog-height": "var(--detail-dialog-height)",
+  "detail-table-min-width": "var(--detail-table-min-width)",
+  "detail-detailTable-min-width": "var(--detail-detailTable-min-width)",
+  "detail-tableText-min-width": "var(--detail-tableText-min-width)",
 };
 
 export default spacing;
-
-// Todo: Wep Responsive부분은 추후 추가

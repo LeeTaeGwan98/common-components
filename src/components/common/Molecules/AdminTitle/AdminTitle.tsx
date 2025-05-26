@@ -3,8 +3,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import DownIcon from "@/assets/svg/down.svg";
-import Divider from "@/components/Atoms/Divider/Divider";
+import DownIcon from "@/assets/svg/common/down.svg";
+import Divider from "@/components/common/Atoms/Divider/Divider";
 import { cn } from "@/lib/utils";
 
 interface AdminTitleProps {
@@ -13,6 +13,12 @@ interface AdminTitleProps {
   isButton?: boolean;
   isDivider?: boolean;
   popoverContent?: React.ReactElement<typeof PopoverContent>;
+  slot?: {
+    containerClassName?: string;
+    titleClassName?: string;
+    buttonClassName?: string;
+    dividerClassName?: string;
+  };
 }
 
 function AdminTitle({
@@ -21,6 +27,7 @@ function AdminTitle({
   isButton = false,
   isDivider = true,
   popoverContent,
+  slot = {},
 }: AdminTitleProps) {
   const sizeTitleStyle = {
     title: {
@@ -42,8 +49,10 @@ function AdminTitle({
   };
 
   return (
-    <div className="flex items-center gap-[8px]">
-      <span className={cn(sizeTitleStyle.title[size])}>{title}</span>
+    <div className={cn("flex items-center gap-[8px]", slot.containerClassName)}>
+      <span className={cn(sizeTitleStyle.title[size], slot.titleClassName)}>
+        {title}
+      </span>
       {isButton && (
         <Popover>
           <PopoverTrigger
@@ -52,7 +61,9 @@ function AdminTitle({
               sizeTitleStyle.checkBox[size]
             )}
           >
-            <DownIcon className={cn(sizeTitleStyle.icon[size])} />
+            <DownIcon
+              className={(cn(sizeTitleStyle.icon[size]), slot.buttonClassName)}
+            />
           </PopoverTrigger>
           {popoverContent}
         </Popover>
@@ -60,7 +71,11 @@ function AdminTitle({
       {isDivider && (
         <Divider
           vertical={true}
-          className={cn("ml-[4px]", sizeTitleStyle.divider[size])}
+          className={cn(
+            "ml-[4px]",
+            sizeTitleStyle.divider[size],
+            slot.dividerClassName
+          )}
         />
       )}
     </div>
@@ -69,7 +84,7 @@ function AdminTitle({
 
 export default AdminTitle;
 /**
- * 사용법
+ * 사용방법
  * import { PopoverContent } from "@/components/ui/popover";
  * <AdminTitle
         title="asdf"
