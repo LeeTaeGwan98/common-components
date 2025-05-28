@@ -56,7 +56,7 @@ function PlanDetail() {
 
   //플랜 상세 조회
   const { data } = useSuspenseQuery({
-    queryKey: ["planDetailApi"],
+    queryKey: ["planDetailApi", id],
     queryFn: () => getPlanDetail(Number(id)),
     select: (data) => data.data.data,
   });
@@ -195,7 +195,16 @@ function PlanDetail() {
           <div className="flex gap-gutter-horizontal">
             {/* 포인트 */}
             <div className="w-full">
-              <TextField label="포인트" value={"10,000"} />
+              <TextField
+                label="포인트"
+                value={formState.point?.toLocaleString("kr")}
+                onChange={(e) => {
+                  // 숫자만 필터링
+                  const numericValue = e.target.value.replace(/\D/g, "");
+
+                  updateFormState("point", Number(numericValue));
+                }}
+              />
             </div>
             {/* 전자책 출판 등록 */}
             <div className="flex w-full gap-gutter-horizontal">
