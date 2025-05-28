@@ -17,7 +17,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api/v1": {
-        target: "http://petpotion.kr:3000",
+        target: "https://api.bookaroon.com",
         changeOrigin: true,
         secure: false,
       },
