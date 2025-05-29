@@ -152,6 +152,31 @@ function PlanDetail() {
         <ContentWrapper>
           {/* 플랜 */}
           <TextField label="플랜" readOnly={true} value={data.planName} />
+          {/* 주의사항 */}
+          <div className="flex flex-col gap-[12px] px-[16px] py-space-default bg-fill-alternative rounded-[10px]">
+            <div className="flex flex-col gap-[4px]">
+              <div className="text-caption1-bold text-primary-normal">
+                플랜 할인율
+              </div>
+              <div className="flex text-label2-regular text-label-neutral">
+                <div>&nbsp;•&nbsp;</div>
+                <div>
+                  플랜 별 요금을 입력하실 경우 할인율에 맞춰 입력해주세요
+                  <br />
+                  ex) starter 할인율이 20%일 경우 다른 플랜들도 20%로 맞춰주세요
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-[4px]">
+              <div className="text-caption1-bold text-primary-normal">
+                제공 횟수
+              </div>
+              <div className="flex text-label2-regular text-label-neutral">
+                <div>&nbsp;•&nbsp;</div>
+                <div>제공 항목이 무제한일 경우 숫자 ‘99999’를 입력해주세요</div>
+              </div>
+            </div>
+          </div>
           {/* 연/월간 요금 */}
           <div className="flex gap-gutter-horizontal">
             <TextField
