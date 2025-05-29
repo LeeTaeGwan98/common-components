@@ -68,6 +68,8 @@ function PlanDetail() {
 
   // 폼 상태 관리
   const [formState, setFormState] = useState({
+    isUnlimitPlan: data.isUnlimitPlan, //무제한 플랜 여부
+    isDefault: data.isDefault, //free 플랜 여부
     annualFeeYear: data.annualFeeYear ?? 0, //연간 요금(연)
     annualFeeMonth: data.annualFeeMonth ?? 0, //연간 요금(월)
     monthlyFeeYear: data.monthlyFeeYear ?? 0, //월간 요금(연)
@@ -155,7 +157,12 @@ function PlanDetail() {
             <TextField
               label="연간 요금(연)"
               placeholder="Placeholder"
-              value={formState.annualFeeYear?.toLocaleString("kr")}
+              value={
+                formState.isDefault || formState.isUnlimitPlan
+                  ? "-"
+                  : formState.annualFeeYear?.toLocaleString("kr")
+              }
+              readOnly={formState.isDefault || formState.isUnlimitPlan}
               maxLength={12}
               onChange={(e) => {
                 // 숫자만 필터링
@@ -167,7 +174,12 @@ function PlanDetail() {
             <TextField
               label="연간 요금(월)"
               placeholder="Placeholder"
-              value={formState.annualFeeMonth?.toLocaleString("kr")}
+              value={
+                formState.isDefault || formState.isUnlimitPlan
+                  ? "-"
+                  : formState.annualFeeMonth?.toLocaleString("kr")
+              }
+              readOnly={formState.isDefault || formState.isUnlimitPlan}
               maxLength={12}
               onChange={(e) => {
                 // 숫자만 필터링
@@ -180,7 +192,12 @@ function PlanDetail() {
             <TextField
               label="월간 요금(월)"
               placeholder="Placeholder"
-              value={formState.monthlyFeeMonth?.toLocaleString("kr")}
+              value={
+                formState.isDefault || formState.isUnlimitPlan
+                  ? "-"
+                  : formState.monthlyFeeMonth?.toLocaleString("kr")
+              }
+              readOnly={formState.isDefault || formState.isUnlimitPlan}
               maxLength={12}
               onChange={(e) => {
                 // 숫자만 필터링
@@ -192,7 +209,12 @@ function PlanDetail() {
             <TextField
               label="월간 요금(연)"
               placeholder="Placeholder"
-              value={formState.monthlyFeeYear?.toLocaleString("kr")}
+              value={
+                formState.isDefault || formState.isUnlimitPlan
+                  ? "-"
+                  : formState.monthlyFeeYear?.toLocaleString("kr")
+              }
+              readOnly={formState.isDefault || formState.isUnlimitPlan}
               maxLength={12}
               onChange={(e) => {
                 // 숫자만 필터링
@@ -239,9 +261,18 @@ function PlanDetail() {
               {/* AI 글쓰기 */}
               <TextField
                 label="AI 글쓰기"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.aiWritingCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.aiWritingCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -252,10 +283,15 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.aiWritingDeductedPoint?.toLocaleString("kr")}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.aiWritingDeductedPoint?.toLocaleString("kr")
+                }
                 maxLength={12}
+                readOnly={formState.isUnlimitPlan}
                 onChange={(e) => {
                   // 숫자만 필터링
                   const numericValue = e.target.value.replace(/\D/g, "");
@@ -271,9 +307,18 @@ function PlanDetail() {
               {/* 대본생성 */}
               <TextField
                 label="AI 대본생성"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.aiScriptCreationCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.aiScriptCreationCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -287,11 +332,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.aiScriptCreationDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.aiScriptCreationDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -311,9 +361,18 @@ function PlanDetail() {
               {/* 커스텀 챗봇 */}
               <TextField
                 label="커스텀 챗봇"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.chatbotUseCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.chatbotUseCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -324,9 +383,14 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.chatbotUseDeductedPoint?.toLocaleString("kr")}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.chatbotUseDeductedPoint?.toLocaleString("kr")
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -343,9 +407,18 @@ function PlanDetail() {
               {/* 씬별 이미지 생성 */}
               <TextField
                 label="씬별 이미지 생성"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.sceneImageCreationCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.sceneImageCreationCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -359,11 +432,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.sceneImageCreationDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.sceneImageCreationDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -383,9 +461,18 @@ function PlanDetail() {
               {/* 씬별 이미지 생성 */}
               <TextField
                 label="씬별 영상 생성"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.sceneVideoCreationCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.sceneVideoCreationCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -399,11 +486,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.sceneVideoCreationDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.sceneVideoCreationDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -420,11 +512,20 @@ function PlanDetail() {
               {/* 아바타 배경 생성 */}
               <TextField
                 label="아바타 배경 생성"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.avatarBackgroundCreationCount?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.avatarBackgroundCreationCount?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -438,11 +539,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.avatarBackgroundCreationDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.avatarBackgroundCreationDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -462,9 +568,18 @@ function PlanDetail() {
               {/* 아바타 음성 생성 */}
               <TextField
                 label="아바타 음성 생성"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.avatarVoiceCreationCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.avatarVoiceCreationCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -478,11 +593,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.avatarVoiceCreationDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.avatarVoiceCreationDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -499,9 +619,18 @@ function PlanDetail() {
               {/* 아바타 립싱크 */}
               <TextField
                 label="아바타 립싱크"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.avatarLipsyncCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.avatarLipsyncCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -512,11 +641,14 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.avatarLipsyncDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.avatarLipsyncDeductedPoint?.toLocaleString("kr")
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -536,9 +668,18 @@ function PlanDetail() {
               {/* AI 목소리 생성 */}
               <TextField
                 label="AI 목소리 생성"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.aiVoiceCreationCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.aiVoiceCreationCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -549,11 +690,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.aiVoiceCreationDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.aiVoiceCreationDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -570,9 +716,18 @@ function PlanDetail() {
               {/* AI 이미지 생성 */}
               <TextField
                 label="AI 이미지 생성"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.aiImageCreationCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.aiImageCreationCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -583,11 +738,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.aiImageCreationDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.aiImageCreationDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -607,11 +767,20 @@ function PlanDetail() {
               {/* AI 배경음 생성 */}
               <TextField
                 label="AI 배경음 생성"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.backgroundSoundCreationCount?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.backgroundSoundCreationCount?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -625,11 +794,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.backgroundSoundCreationDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.backgroundSoundCreationDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -646,9 +820,18 @@ function PlanDetail() {
               {/* AI 효과음 생성 */}
               <TextField
                 label="AI 효과음 생성"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.soundEffectCreationCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.soundEffectCreationCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -662,11 +845,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.soundEffectCreationDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.soundEffectCreationDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -686,9 +874,18 @@ function PlanDetail() {
               {/* AI 배경음 연장 */}
               <TextField
                 label="AI 배경음 연장"
-                subText="회"
+                subText={
+                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
+                }
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.soundExtensionCount?.toLocaleString("kr")}
+                value={
+                  formState.isDefault
+                    ? "-"
+                    : formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.soundExtensionCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isDefault || formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -699,11 +896,16 @@ function PlanDetail() {
               />
               <TextField
                 label="&nbsp;"
-                subText="차감"
+                subText={formState.isUnlimitPlan ? "" : "차감"}
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.soundExtensionDeductedPoint?.toLocaleString(
-                  "kr"
-                )}
+                value={
+                  formState.isUnlimitPlan
+                    ? "-"
+                    : formState.soundExtensionDeductedPoint?.toLocaleString(
+                        "kr"
+                      )
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링
@@ -719,10 +921,15 @@ function PlanDetail() {
             <div className="w-full">
               <TextField
                 label="무료 아바타"
-                subText="종"
+                subText={formState.isUnlimitPlan ? "" : "종"}
                 placeholder="사용 가능 개수"
                 slot={{ subTextClassName: "text-label-alternative" }}
-                value={formState.freeAvatarCount?.toLocaleString("kr")}
+                value={
+                  formState.isUnlimitPlan
+                    ? "무제한"
+                    : formState.freeAvatarCount?.toLocaleString("kr")
+                }
+                readOnly={formState.isUnlimitPlan}
                 maxLength={12}
                 onChange={(e) => {
                   // 숫자만 필터링

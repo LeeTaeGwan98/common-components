@@ -18,6 +18,8 @@ export const getPlanList = () => {
 
 interface PlanDetailRes {
   id: number;
+  isUnlimitPlan: boolean;
+  isDefault: boolean;
   planName: string;
   annualFeeYear: number;
   annualFeeMonth: number;
