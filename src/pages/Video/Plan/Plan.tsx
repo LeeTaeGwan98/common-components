@@ -51,16 +51,24 @@ function Plan() {
                       {item.usePersonCnt.toLocaleString("kr")}
                     </TableCell>
                     <TableCell>
-                      {item.annualFeeYear.toLocaleString("kr")}
+                      {item.annualFeeYear
+                        ? item.annualFeeYear.toLocaleString("kr")
+                        : "-"}
                     </TableCell>
                     <TableCell>
-                      {item.annualFeeMonth.toLocaleString("kr")}
+                      {item.annualFeeMonth
+                        ? item.annualFeeMonth.toLocaleString("kr")
+                        : "-"}
                     </TableCell>
                     <TableCell>
-                      {item.monthlyFeeMonth.toLocaleString("kr")}
+                      {item.monthlyFeeMonth
+                        ? item.monthlyFeeMonth.toLocaleString("kr")
+                        : "-"}
                     </TableCell>
                     <TableCell>
-                      {item.monthlyFeeYear.toLocaleString("kr")}
+                      {item.monthlyFeeYear
+                        ? item.monthlyFeeYear.toLocaleString("kr")
+                        : "-"}
                     </TableCell>
                     <TableCell isChildIcon={true}>
                       <Link
