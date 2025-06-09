@@ -229,6 +229,7 @@ function InquiryDetail() {
                 className="h-[608px]"
                 value={formState.responseContent}
                 isVideo={false}
+                isImage={false}
                 placeholder="답변을 입력해주세요"
                 onChange={(value) => updateFormState("responseContent", value)}
               />

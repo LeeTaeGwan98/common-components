@@ -77,16 +77,18 @@ function Charging() {
     select: (data) => data.data.data,
   });
 
+  //포인트 목록 데이터 세팅
+  useEffect(() => {
+    setPointList(pointListData);
+  }, [pointListData]);
+
   //포인트목록 저장
   const { mutate: updatePointListFn } = useMutation({
     mutationFn: () => updatePointList(updatedPointList),
     onSuccess() {},
   });
 
-  useEffect(() => {
-    setPointList(pointListData);
-  }, [pointListData]);
-
+  //포인트 목록 업데이트된 목록 저장
   useEffect(() => {
     let updatedData: UpdatePointListReq[] = updatedPointList;
     updatedData = [];

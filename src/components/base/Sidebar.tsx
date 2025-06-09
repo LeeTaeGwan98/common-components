@@ -158,7 +158,7 @@ function MenuItemWithChild({
           }
           onArrowIconClick={() => toggleMenu(item.path)}
           {...(item.title === "게시판 관리" && {
-            labelText: "텍스트",
+            labelText: "",
             slot: { labelClassName: "mr-[34px] " },
           })}
         >

@@ -81,7 +81,7 @@ function Main() {
               <Content
                 label={data.userIncreaseCount ? "오늘" : ""}
                 summary={
-                  data.userIncreaseCount ? `${data.userIncreaseCount}` : ""
+                  data.userIncreaseCount ? `${data.userIncreaseCount}명` : ""
                 }
                 icon={data.userIncreaseCount ? <Up /> : <></>}
                 slot={{

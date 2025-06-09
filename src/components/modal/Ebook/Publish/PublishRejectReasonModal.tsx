@@ -75,7 +75,7 @@ export const PublishRejectReasonModal = ({
               className="gap-[6px] h-[166px] text-label-alternative"
               label=""
               value={data.holdReason}
-              maxLength={1000}
+              maxLength={300}
               disabled
             />
           </div>
