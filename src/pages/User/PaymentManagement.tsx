@@ -15,7 +15,7 @@ import Updown from "@/assets/svg/common/UpdownIcons.svg";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import test from "@/assets/svg/common/visible.svg";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Divider from "@/components/common/Atoms/Divider/Divider";
 import { useModalStore } from "@/store/modalStore";
 import PaymentModal from "@/components/modal/member/PaymentModal";
@@ -31,63 +31,9 @@ import { ActionType, TableQueryStringType } from "@/api/common/commonType";
 import { useReducer } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ExchangeQueryStringType, getExchangeList } from "@/api/user/userAPI";
-
-const data = [
-  {
-    no: 0,
-    paymentDay: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자",
-    email: "a1234@gmail.com",
-    paymentHistory: "플랜",
-    paymentDetail: "Professional",
-    paymentAmount: "120,000",
-    state: "error",
-    manager: "",
-    detail: true,
-  },
-  {
-    no: 0,
-    paymentDay: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자",
-    email: "a1234@gmail.com",
-    paymentHistory: "플랜",
-    paymentDetail: "Professional",
-    paymentAmount: "120,000",
-    state: "payment",
-    manager: "",
-    detail: true,
-  },
-
-  {
-    no: 0,
-    paymentDay: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자",
-    email: "a1234@gmail.com",
-    paymentHistory: "충전소",
-    paymentDetail: "Professional",
-    paymentAmount: "120,000",
-    state: "cancle",
-    manager: "",
-    detail: true,
-  },
-  {
-    no: 0,
-    paymentDay: "9999-12-31 24:59:00",
-    nickName: "여덟글자여덟글자",
-    email: "a1234@gmail.com",
-    paymentHistory: "플랜",
-    paymentDetail: "Professional",
-    paymentAmount: "120,000",
-    state: "refund",
-    manager: "홍길동",
-    detail: true,
-  },
-];
-
-export interface PaymentStringType
-  extends Omit<TableQueryStringType, "isVisible"> {
-  isActive: "TRUE" | "FALSE" | "WITHDRAWAL" | null;
-}
+import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
+import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
+import UserDetailDefault from "@/pages/User/Detail/UserDetailDefault";
 
 const initState: ExchangeQueryStringType = {
   sortOrder: "DESC",
@@ -115,6 +61,7 @@ const reducer = <T extends Record<string, any>>(
 };
 
 function PaymentManagement() {
+  const nav = useNavigate();
   const [filterInfo, dispatch] = useReducer(reducer, initState);
   const { openModal } = useModalStore();
 
@@ -142,8 +89,22 @@ function PaymentManagement() {
     });
   };
 
-  const handleModal = () => {
-    openModal(<PaymentModal />);
+  const handleModal = (id: string) => {
+    openModal(<PaymentModal id={id} />);
+  };
+
+  //카테고리 변경시 핸들
+  const handleIsActive = (isActive: string | null) => {
+    if (!isActive) return;
+    dispatchWithPageReset("status", isActive === "ALL" ? null : isActive);
+  };
+
+  //정렬 변경시 핸들
+  const handleSortOrder = () => {
+    dispatch({
+      type: "sortOrder",
+      value: filterInfo.sortOrder === "DESC" ? "ASC" : "DESC",
+    });
   };
 
   return (
@@ -153,22 +114,22 @@ function PaymentManagement() {
         <SubTitleBar
           filterInfo={filterInfo}
           title="결제일"
-          dispatch={() => {}}
+          dispatch={dispatch}
           CustomSelectComponent={
             <SelectBox
               placeholder="모든 상태"
               className="w-[240px]"
               size="large"
               defaultValue="ALL"
-              onValueChange={() => {}}
+              onValueChange={handleIsActive}
             >
               <SelectContent>
                 <SelectGroup>
                   <SelectItem value="ALL">모든 상태</SelectItem>
-                  <SelectItem value="TRUE">결제완료</SelectItem>
-                  <SelectItem value="FALSE">취소완료</SelectItem>
-                  <SelectItem value="REFUND">환불완료</SelectItem>
-                  <SelectItem value="WITHDRAWAL">결제오류</SelectItem>
+                  <SelectItem value="paid">결제완료</SelectItem>
+                  <SelectItem value="cancelled">취소완료</SelectItem>
+                  <SelectItem value="refund">환불완료</SelectItem>
+                  <SelectItem value="error">결제오류</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </SelectBox>
@@ -182,7 +143,11 @@ function PaymentManagement() {
                   <TableRow>
                     <TableCell isChildIcon={true} isHeader>
                       <div className="flex items-center justify-center gap-[2px]">
-                        No <Updown />
+                        No{" "}
+                        <IconButton
+                          icon={<Updown />}
+                          onClick={handleSortOrder}
+                        />
                       </div>
                     </TableCell>
                     <TableCell isHeader>결제일</TableCell>
@@ -198,27 +163,31 @@ function PaymentManagement() {
                 </TableHeader>
 
                 <TableBody>
-                  {data.map((item) => {
+                  {data.list.map((item, index) => {
                     return (
                       <TableRow>
-                        <TableCell>{item.no}</TableCell>
                         <TableCell>
-                          {formatDateTimeToJSX(
-                            formatToUTCString(item.paymentDay)
-                          )}
+                          {index + 1 + 10 * ((filterInfo.page ?? 1) - 1)}
                         </TableCell>
-                        <TableCell className="underline">
-                          {item.nickName}
+                        <TableCell>{item.paidAt}</TableCell>
+                        <TableCell className="underline cursor-pointer">
+                          <div onClick={() => nav(USER_DETAIL)}>
+                            {item.name}
+                          </div>
                         </TableCell>
                         <TableCell>{item.email}</TableCell>
-                        <TableCell>{item.paymentHistory}</TableCell>
-                        <TableCell>{item.paymentDetail}</TableCell>
-                        <TableCell>{item.paymentAmount}</TableCell>
+                        <TableCell>{item.orderType}</TableCell>
+                        <TableCell>{item.orderDesc}</TableCell>
+                        <TableCell>
+                          {item.orderType === "플랜"
+                            ? "$" + item.paidAmount
+                            : "￦" + item.paidAmount}
+                        </TableCell>
 
                         <TableCell>
                           {(() => {
-                            switch (item.state) {
-                              case "payment":
+                            switch (item.status) {
+                              case "결제완료":
                                 return (
                                   <div className="w-full flex justify-center items-center">
                                     <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-positive/10 text-label1-normal-bold text-status-positive">
@@ -226,7 +195,7 @@ function PaymentManagement() {
                                     </div>
                                   </div>
                                 );
-                              case "refund":
+                              case "환불완료":
                                 return (
                                   <div className="w-full flex justify-center items-center">
                                     <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-fill-normal text-label1-normal-bold text-label-alternative">
@@ -234,7 +203,7 @@ function PaymentManagement() {
                                     </div>
                                   </div>
                                 );
-                              case "cancle":
+                              case "결제취소":
                                 return (
                                   <div className="w-full flex justify-center items-center">
                                     <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-cautionary/10 text-label1-normal-bold text-status-cautionary">
@@ -242,7 +211,7 @@ function PaymentManagement() {
                                     </div>
                                   </div>
                                 );
-                              case "error":
+                              case "결제오류":
                                 return (
                                   <div className="w-full flex justify-center items-center">
                                     <div className="w-fit border border-none rounded-[4px] py-[6px] px-[12px] bg-status-negative/10 text-label1-normal-bold text-status-negative">
@@ -256,13 +225,9 @@ function PaymentManagement() {
                           })()}
                         </TableCell>
                         <TableCell>
-                          {item.manager === "" ? (
-                            <div className="flex items-center justify-center h-[20px]">
-                              <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
-                            </div>
-                          ) : (
-                            item.manager
-                          )}
+                          <div className="flex items-center justify-center h-[20px]">
+                            <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
+                          </div>
                         </TableCell>
 
                         <TableCell isChildIcon={true}>
@@ -270,17 +235,21 @@ function PaymentManagement() {
                             icon={
                               <ThreeDot className="size-[24px] fill-label-alternative" />
                             }
-                            onClick={handleModal}
+                            onClick={() => handleModal(item.id)}
                           />
                         </TableCell>
                       </TableRow>
                     );
                   })}
+                  <RenderEmptyRows dataLength={data.list.length} />
                 </TableBody>
               </Table>
             </TableContainer>
           </div>
         </div>
+        {data.meta.totalPage > 1 && (
+          <TableIndicator PaginationMetaType={data.meta} dispatch={dispatch} />
+        )}
       </BreadcrumbContainer>
     </>
   );

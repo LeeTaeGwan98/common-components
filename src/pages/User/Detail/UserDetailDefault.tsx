@@ -195,6 +195,3 @@ function UserDetailDefault({ setSeletedMenu }: UserDetailDefaultProps) {
 }
 
 export default UserDetailDefault;
-function openModal(arg0: JSX.Element) {
-  throw new Error("Function not implemented.");
-}

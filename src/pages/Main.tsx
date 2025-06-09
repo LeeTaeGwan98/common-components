@@ -92,7 +92,7 @@ function Main() {
             Number(getMax(chartData.planData.map((item) => item.amount)))
           )
         : 100;
-    setPlanMaxValue(planMaxYAxis);
+    setPlanMaxValue(planMaxYAxis > 999999 ? 999999 : planMaxYAxis);
 
     const planData: {
       날짜: string;
@@ -119,7 +119,7 @@ function Main() {
             Number(getMax(chartData.chargeData.map((item) => item.amount)))
           )
         : 100000;
-    setPointMaxValue(pointMaxYAxis);
+    setPointMaxValue(pointMaxYAxis > 999999999 ? 999999999 : pointMaxYAxis);
 
     const pointData: {
       날짜: string;

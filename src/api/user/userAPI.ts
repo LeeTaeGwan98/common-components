@@ -307,6 +307,17 @@ export interface ExchangeQueryStringType
   status: "pending" | "paid" | "cancelled" | null;
 }
 
+interface ExchangeListRes {
+  id: string;
+  paidAt: string;
+  name: string;
+  email: string;
+  orderType: string;
+  orderDesc: string;
+  paidAmount: string;
+  status: string;
+}
+
 //결제 목록 가져오기
 export const getExchangeList = (queryStringObj: ExchangeQueryStringType) => {
   const {
@@ -346,7 +357,7 @@ export const getExchangeList = (queryStringObj: ExchangeQueryStringType) => {
     qs = qs.slice(0, -1);
   }
 
-  const data = API.get<TableResType<{}>>(qs);
+  const data = API.get<TableResType<ExchangeListRes>>(qs);
 
   return data;
 };
@@ -391,5 +402,23 @@ export const getUserExchangeList = (
 
   const data = API.get<TableResType<{}>>(qs);
 
+  return data;
+};
+
+interface ExchangeDetailRes {
+  name: string;
+  email: string;
+  orderType: string;
+  orderDesc: string;
+  paidAt: string;
+  paidAmount: string;
+  cardName: string;
+  cardNumber: string;
+  status: string;
+}
+
+//결제 상세 가져오기
+export const getExchangeDetail = (id: string) => {
+  const data = API.get<ApiResType<ExchangeDetailRes>>(`/payment/${id}`);
   return data;
 };
