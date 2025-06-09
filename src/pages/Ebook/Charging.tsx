@@ -1,8 +1,17 @@
+import {
+  createPointList,
+  CreatePointListReq,
+  getPointList,
+  PointListRes,
+  updatePointList,
+  UpdatePointListReq,
+} from "@/api/charging/chargingAPI";
 import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface DataListProps {
   number: number;
@@ -56,49 +65,48 @@ function TextList({
 }
 
 function Charging() {
-  //가데이터
-  const [data, setData] = useState<DataListProps[]>([
-    {
-      number: 1,
-      point: 1000,
-      amount: 1000,
-    },
-    {
-      number: 2,
-      point: 3000,
-      amount: 3000,
-    },
-    {
-      number: 3,
-      point: 5000,
-      amount: 5000,
-    },
-    {
-      number: 4,
-      point: 10000,
-      amount: 10000,
-    },
-    {
-      number: 5,
-      point: 30000,
-      amount: 30000,
-    },
-    {
-      number: 6,
-      point: 50000,
-      amount: 50000,
-    },
-    {
-      number: 7,
-      point: 100000,
-      amount: 100000,
-    },
-    {
-      number: 8,
-      point: 300000,
-      amount: 300000,
-    },
-  ]);
+  const [pointList, setPointList] = useState<PointListRes[]>([]);
+  const [updatedPointList, setUpdatedPointList] = useState<
+    UpdatePointListReq[]
+  >([]);
+
+  //포인트목록 불러오기
+  const { data: pointListData } = useSuspenseQuery({
+    queryKey: ["pointList"], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getPointList(),
+    select: (data) => data.data.data,
+  });
+
+  //포인트목록 저장
+  const { mutate: updatePointListFn } = useMutation({
+    mutationFn: () => updatePointList(updatedPointList),
+    onSuccess() {},
+  });
+
+  useEffect(() => {
+    setPointList(pointListData);
+  }, [pointListData]);
+
+  useEffect(() => {
+    let updatedData: UpdatePointListReq[] = updatedPointList;
+    updatedData = [];
+
+    pointList.forEach((point) => {
+      const data = pointListData.find((data) => data.id == point.id);
+      if (
+        data?.paidAmount !== point.paidAmount ||
+        data?.chargeAmount !== point.chargeAmount
+      ) {
+        updatedData.push({
+          id: point.id,
+          chargeAmount: point.chargeAmount,
+          paidAmount: point.paidAmount,
+        });
+      }
+    });
+
+    setUpdatedPointList(updatedData);
+  }, [pointList]);
 
   // 포인트or금액상태를 업데이트하는 함수
   const updateData = (
@@ -106,18 +114,21 @@ function Charging() {
     index: number,
     value: SetStateAction<number>
   ) => {
-    setData((prevData) =>
+    setPointList((prevData) =>
       prevData.map((item, i) =>
         i === index
           ? type === "point"
             ? {
                 ...item,
-                point: typeof value === "function" ? value(item.point) : value,
+                chargeAmount:
+                  typeof value === "function"
+                    ? value(item.chargeAmount)
+                    : value,
               }
             : {
                 ...item,
-                amount:
-                  typeof value === "function" ? value(item.amount) : value,
+                paidAmount:
+                  typeof value === "function" ? value(item.paidAmount) : value,
               }
           : item
       )
@@ -129,12 +140,12 @@ function Charging() {
       <title>북카롱 | 충전소 관리</title>
       <BreadcrumbContainer breadcrumbNode={<>전자책 관리 / 충전소 관리</>}>
         <ContentWrapper>
-          {data.map((item, index) => {
+          {pointList.map((item, index) => {
             return (
               <TextList
-                number={item.number}
-                point={item.point}
-                amount={item.amount}
+                number={index + 1}
+                point={item.chargeAmount}
+                amount={item.paidAmount}
                 setPoint={(value) => updateData("point", index, value)}
                 setAmount={(value) => updateData("amount", index, value)}
               />
@@ -145,6 +156,11 @@ function Charging() {
               className="max-w-[180px] w-full"
               type="secondary"
               size="large"
+              disable={updatedPointList.length <= 0}
+              onClick={() => {
+                if (updatedPointList.length <= 0) return;
+                updatePointListFn();
+              }}
             >
               저장
             </OutlinedButton>
