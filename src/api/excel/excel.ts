@@ -1,5 +1,6 @@
 import { GetAccountType } from "@/api/account";
 import API from "@/api/API";
+import { MyPointListRes } from "@/api/charging/chargingAPI";
 import { GetCoverRes } from "@/api/cover/coverAPI";
 import { EbookRes } from "@/api/ebook";
 import { GetFreeImgRes } from "@/api/freeImg/freeImgApi";
@@ -25,11 +26,10 @@ export type ExcelKey =
   | "freeImage";
 
 //키에 따라 데이터 타입을 매핑
-//todo: any로 되어있는 페이지는 현재 엑셀 연동 안됨. 엑셀 연동 해야함
 type ExcelDataMap = {
   user: UserListData[];
   userPay: any;
-  userPoint: any;
+  userPoint: MyPointListRes[];
   userPublish: UserPublishRes[];
   pay: any;
   withdrawal: UserWithdrawlListRes[];
@@ -43,6 +43,11 @@ type ExcelDataMap = {
 type ExcelType<T extends ExcelKey> = ExcelDataMap[T];
 
 //엑셀 다운로드 조회
-export const getExcelSearch = <T extends ExcelKey>(key: T) => {
-  return API.get<{ data: ExcelType<T> }>(`/common/excel/search?key=${key}`);
+export const getExcelSearch = <T extends ExcelKey>(key: T, userId?: number) => {
+  let qs = `/common/excel/search?key=${key}`;
+
+  if (userId) {
+    qs = qs + `&userId=${userId}`;
+  }
+  return API.get<{ data: ExcelType<T> }>(qs);
 };

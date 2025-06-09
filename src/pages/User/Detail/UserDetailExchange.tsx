@@ -7,13 +7,19 @@ import {
   TableRow,
 } from "@/components/common/Tables";
 import Updown from "@/assets/svg/common/UpdownIcons.svg";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useReducer } from "react";
+import { Link, useParams } from "react-router-dom";
 import IconButton from "@/components/common/Atoms/Button/IconButton/IconButton";
 import ThreeDot from "@/assets/svg/common/threeDot.svg";
 import { USER_DETAIL } from "@/Constants/ServiceUrl";
 import { useModalStore } from "@/store/modalStore";
 import PaymentModal from "@/components/modal/member/PaymentModal";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  getUserExchangeList,
+  UserExchangeQueryStringType,
+} from "@/api/user/userAPI";
+import { ActionType } from "@/api/common/commonType";
 
 const defaultData = [
   {
@@ -54,8 +60,41 @@ const defaultData = [
   },
 ];
 
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
+
 function UserDetailExchange() {
   const { openModal } = useModalStore();
+  const { id } = useParams();
+
+  const initState: UserExchangeQueryStringType = {
+    fromDt: undefined,
+    toDt: undefined,
+    sortOrder: "DESC",
+    status: null,
+    keyword: "",
+    take: 10,
+    page: 1,
+    userId: Number(id),
+  };
+
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
+
+  const { data, refetch } = useSuspenseQuery({
+    queryKey: ["myExchnageList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getUserExchangeList(filterInfo),
+    select: (data) => data.data.data,
+  });
 
   const handleModal = () => {
     openModal(<PaymentModal />);

@@ -29,6 +29,8 @@ import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { ActionType, TableQueryStringType } from "@/api/common/commonType";
 import { useReducer } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ExchangeQueryStringType, getExchangeList } from "@/api/user/userAPI";
 
 const data = [
   {
@@ -87,7 +89,7 @@ export interface PaymentStringType
   isActive: "TRUE" | "FALSE" | "WITHDRAWAL" | null;
 }
 
-const initState: PaymentStringType = {
+const initState: ExchangeQueryStringType = {
   sortOrder: "DESC",
   fromDt: dateToString(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1)
@@ -96,7 +98,7 @@ const initState: PaymentStringType = {
   keyword: "",
   take: 10,
   page: 1,
-  isActive: null,
+  status: null,
 };
 
 const reducer = <T extends Record<string, any>>(
@@ -115,6 +117,30 @@ const reducer = <T extends Record<string, any>>(
 function PaymentManagement() {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
   const { openModal } = useModalStore();
+
+  //회원 목록 조회 api
+  const { data } = useSuspenseQuery({
+    queryKey: ["exchangeList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getExchangeList(filterInfo),
+    select: (data) => data.data.data,
+  });
+
+  //페이지 초기화
+  const dispatchWithPageReset = (
+    type: keyof ExchangeQueryStringType,
+    value: any
+  ) => {
+    // 필터 값 변경
+    dispatch({
+      type,
+      value,
+    });
+    // 페이지 초기화
+    dispatch({
+      type: "page",
+      value: 1,
+    });
+  };
 
   const handleModal = () => {
     openModal(<PaymentModal />);
