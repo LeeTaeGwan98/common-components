@@ -424,6 +424,7 @@ interface ExchangeDetailRes {
   orderType: string;
   orderDesc: string;
   paidAt: string;
+  cancelledAt: string;
   paidAmount: string;
   cardName: string;
   cardNumber: string;

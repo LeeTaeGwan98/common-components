@@ -1005,48 +1005,72 @@ function PlanDetail() {
                     monthlyFeeMonth: formState.monthlyFeeMonth,
                     isEbookPublish: formState.isEbookPublish,
                     isExcludeWatermark: formState.isExcludeWatermark,
-                    aiWritingCount: formState.aiWritingCount,
+                    aiWritingCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.aiWritingCount,
                     aiWritingDeductedPoint: formState.aiWritingDeductedPoint,
-                    aiScriptCreationCount: formState.aiScriptCreationCount,
+                    aiScriptCreationCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.aiScriptCreationCount,
                     aiScriptCreationDeductedPoint:
                       formState.aiScriptCreationDeductedPoint,
-                    chatbotUseCount: formState.chatbotUseCount,
+                    chatbotUseCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.chatbotUseCount,
                     chatbotUseDeductedPoint: formState.chatbotUseDeductedPoint,
-                    sceneImageCreationCount: formState.sceneImageCreationCount,
+                    sceneImageCreationCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.sceneImageCreationCount,
                     sceneImageCreationDeductedPoint:
                       formState.sceneImageCreationDeductedPoint,
-                    sceneVideoCreationCount: formState.sceneVideoCreationCount,
+                    sceneVideoCreationCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.sceneVideoCreationCount,
                     sceneVideoCreationDeductedPoint:
                       formState.sceneVideoCreationDeductedPoint,
-                    avatarBackgroundCreationCount:
-                      formState.avatarBackgroundCreationCount,
+                    avatarBackgroundCreationCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.avatarBackgroundCreationCount,
                     avatarBackgroundCreationDeductedPoint:
                       formState.avatarBackgroundCreationDeductedPoint,
-                    avatarVoiceCreationCount:
-                      formState.avatarVoiceCreationCount,
+                    avatarVoiceCreationCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.avatarVoiceCreationCount,
                     avatarVoiceCreationDeductedPoint:
                       formState.avatarVoiceCreationDeductedPoint,
-                    avatarLipsyncCount: formState.avatarLipsyncCount,
+                    avatarLipsyncCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.avatarLipsyncCount,
                     avatarLipsyncDeductedPoint:
                       formState.avatarLipsyncDeductedPoint,
-                    aiVoiceCreationCount: formState.aiVoiceCreationCount,
+                    aiVoiceCreationCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.aiVoiceCreationCount,
                     aiVoiceCreationDeductedPoint:
                       formState.aiVoiceCreationDeductedPoint,
-                    aiImageCreationCount: formState.aiImageCreationCount,
+                    aiImageCreationCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.aiImageCreationCount,
                     aiImageCreationDeductedPoint:
                       formState.aiImageCreationDeductedPoint,
-                    backgroundSoundCreationCount:
-                      formState.backgroundSoundCreationCount,
+                    backgroundSoundCreationCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.backgroundSoundCreationCount,
                     backgroundSoundCreationDeductedPoint:
                       formState.backgroundSoundCreationDeductedPoint,
-                    soundEffectCreationCount:
-                      formState.soundEffectCreationCount,
+                    soundEffectCreationCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.soundEffectCreationCount,
                     soundEffectCreationDeductedPoint:
                       formState.soundEffectCreationDeductedPoint,
-                    soundExtensionCount: formState.soundExtensionCount,
+                    soundExtensionCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.soundExtensionCount,
                     soundExtensionDeductedPoint:
                       formState.soundExtensionDeductedPoint,
-                    freeAvatarCount: formState.freeAvatarCount,
+                    freeAvatarCount: formState.isUnlimitPlan
+                      ? 99999
+                      : formState.freeAvatarCount,
                     isImageDb: formState.isImageDb,
                   },
                 })

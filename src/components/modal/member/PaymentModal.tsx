@@ -85,6 +85,12 @@ const PaymentModal = ({
       label: "결제일",
       value: data?.paidAt ?? "",
     });
+    if (data?.status === "결제취소") {
+      datas.push({
+        label: "취소일",
+        value: data?.cancelledAt ?? "",
+      });
+    }
     datas.push({
       label: "결제 금액",
       value:
