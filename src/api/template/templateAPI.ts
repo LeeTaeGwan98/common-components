@@ -1,5 +1,9 @@
 import API from "@/api/API";
-import { TableQueryStringType, TableResType } from "@/api/common/commonType";
+import {
+  ApiResType,
+  TableQueryStringType,
+  TableResType,
+} from "@/api/common/commonType";
 
 //템플릿 목록 조회
 export interface TemplateQueryStringType
@@ -42,5 +46,27 @@ export const getTemplateList = (queryStringObj: TemplateQueryStringType) => {
 
   const data = API.get<TableResType<{}>>(qs);
 
+  return data;
+};
+
+//템플릿 상세
+export const getTemplateDetail = (id: string) => {
+  const data = API.get<ApiResType<{}>>(`/admin/video/project/template/${id}`);
+  return data;
+};
+
+export interface UpdateTmplateReq {
+  userId: number;
+  templateId: number;
+  categoryCode: string;
+  title: string;
+}
+
+//템플릿 수정
+export const updateTemplate = (payload: UpdateTmplateReq) => {
+  const data = API.patch<ApiResType<{}>>(
+    `/admin/video/project/template/${payload.templateId}`,
+    payload
+  );
   return data;
 };
