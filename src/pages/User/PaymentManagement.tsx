@@ -72,8 +72,8 @@ function PaymentManagement() {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
   const { openModal } = useModalStore();
 
-  //회원 목록 조회 api
-  const { data } = useSuspenseQuery({
+  //결제 목록 조회 api
+  const { data, refetch } = useSuspenseQuery({
     queryKey: ["exchangeList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getExchangeList(filterInfo),
     select: (data) => data.data.data,
@@ -97,7 +97,9 @@ function PaymentManagement() {
   };
 
   const handleModal = (id: string, userId: number) => {
-    openModal(<PaymentModal id={id} userId={userId} />);
+    openModal(
+      <PaymentModal id={id} userId={userId} onCancelSuccess={() => refetch()} />
+    );
   };
 
   //카테고리 변경시 핸들
@@ -157,7 +159,7 @@ function PaymentManagement() {
           ? "$" + item.paidAmount
           : "￦" + item.paidAmount,
         item.status === "결제취소" ? "취소완료" : item.status,
-        "-",
+        item.adminName ? item.adminName : "-",
       ])
     );
   };
@@ -186,7 +188,6 @@ function PaymentManagement() {
                   <SelectItem value="ALL">모든 상태</SelectItem>
                   <SelectItem value="paid">결제완료</SelectItem>
                   <SelectItem value="cancelled">취소완료</SelectItem>
-                  <SelectItem value="refund">환불완료</SelectItem>
                   <SelectItem value="error">결제오류</SelectItem>
                 </SelectGroup>
               </SelectContent>
@@ -292,9 +293,7 @@ function PaymentManagement() {
                           })()}
                         </TableCell>
                         <TableCell>
-                          <div className="flex items-center justify-center h-[20px]">
-                            <Divider className="w-[7px] h-[2px] text-label1-normal-regular  bg-label-normal" />
-                          </div>
+                          {item.adminName ? item.adminName : "-"}
                         </TableCell>
 
                         <TableCell isChildIcon={true}>

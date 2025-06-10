@@ -316,6 +316,7 @@ export interface ExchangeListRes {
   orderType: string;
   orderDesc: string;
   paidAmount: string;
+  adminName: string;
   status: string;
 }
 
@@ -431,5 +432,18 @@ interface ExchangeDetailRes {
 //결제 상세 가져오기
 export const getExchangeDetail = (id: string) => {
   const data = API.get<ApiResType<ExchangeDetailRes>>(`/payment/${id}`);
+  return data;
+};
+
+export interface PaymentCancelReq {
+  userId: number;
+  merchantUid: string;
+  isAdmin: boolean;
+}
+
+//결제 취소
+export const exchangeCancel = (body: PaymentCancelReq) => {
+  const data = API.post<ApiResType<{}>>(`/payment/cancel`, body);
+
   return data;
 };

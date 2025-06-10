@@ -1,5 +1,5 @@
 import { useModalStore } from "@/store/modalStore";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { testGet, testPost } from "@/api/example";
 
 import Button from "@/components/common/Atoms/Button/Solid/Button";
@@ -10,23 +10,52 @@ import Divider from "@/components/common/Atoms/Divider/Divider";
 import Actions from "@/components/common/Molecules/Actions/Actions";
 import X from "@/assets/svg/common/X.svg";
 import DialogDetailContent from "@/components/common/BookaroongAdmin/DialogDetailContent";
-import { getExchangeDetail } from "@/api/user/userAPI";
+import {
+  exchangeCancel,
+  getExchangeDetail,
+  PaymentCancelReq,
+} from "@/api/user/userAPI";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { USER_DETAIL } from "@/Constants/ServiceUrl";
 import { UserMenuType } from "@/pages/User/Detail/UserDetail";
+import { useAuthStore } from "@/store/authStore";
 
-const PaymentModal = ({ id, userId }: { id: string; userId?: number }) => {
+const PaymentModal = ({
+  id,
+  userId,
+  onCancelSuccess,
+}: {
+  id: string;
+  userId: number;
+  onCancelSuccess: () => void;
+}) => {
   const nav = useNavigate();
+  const queryClient = useQueryClient();
   const { closeModal } = useModalStore();
   const [detailData, setDetailData] = useState<
     { label: string; value: string; isUnderLine?: boolean }[]
   >([]);
   // 결제 상세
   const { data } = useQuery({
-    queryKey: ["getExchangeDetail"],
+    queryKey: ["getExchangeDetail", id],
     queryFn: () => getExchangeDetail(id),
     select: (data) => data.data.data,
+  });
+
+  //결제취소
+  const { mutate: exchangeCancelMutate } = useMutation({
+    mutationFn: (body: PaymentCancelReq) => {
+      if (!body.userId) return Promise.resolve(null);
+      return exchangeCancel(body);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["getExchangeDetail", id],
+      });
+      //결제 취소 성공
+      closeModal();
+    },
   });
 
   useEffect(() => {
@@ -99,7 +128,16 @@ const PaymentModal = ({ id, userId }: { id: string; userId?: number }) => {
             className="flex w-full gap-[8px]"
           >
             {data?.status === "결제완료" && (
-              <Button className="bg-static-white text-label-normal text-body1-normal-medium border border-line-normal-normal rounded-[4px] !flex-initial">
+              <Button
+                className="bg-static-white text-label-normal text-body1-normal-medium border border-line-normal-normal rounded-[4px] !flex-initial"
+                onClick={() =>
+                  exchangeCancelMutate({
+                    userId: userId,
+                    merchantUid: id,
+                    isAdmin: true,
+                  })
+                }
+              >
                 환불
               </Button>
             )}

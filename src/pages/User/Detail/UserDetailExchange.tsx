@@ -67,8 +67,14 @@ function UserDetailExchange() {
     select: (data) => data.data.data,
   });
 
-  const handleModal = (id: string) => {
-    openModal(<PaymentModal id={id} />);
+  const handleModal = (payId: string) => {
+    openModal(
+      <PaymentModal
+        id={payId}
+        userId={Number(id)}
+        onCancelSuccess={() => refetch()}
+      />
+    );
   };
 
   //페이지 초기화
@@ -160,7 +166,6 @@ function UserDetailExchange() {
                 <SelectItem value="ALL">모든 상태</SelectItem>
                 <SelectItem value="paid">결제완료</SelectItem>
                 <SelectItem value="cancelled">취소완료</SelectItem>
-                <SelectItem value="refund">환불완료</SelectItem>
                 <SelectItem value="error">결제오류</SelectItem>
               </SelectGroup>
             </SelectContent>
