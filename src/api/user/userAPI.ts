@@ -35,6 +35,7 @@ export interface UserDetailSideRes {
   marketingConsentAt: string;
   isActive: boolean;
   isDeleted: boolean;
+  isUnlimitPlan: boolean;
 }
 
 //모든 회원 목록 가져오기
@@ -299,5 +300,159 @@ export const getWithdrawlDetail = (id: number) => {
   const data = API.get<{ data: UserWithdrawlDetailRes }>(
     `/admin/user/withdrawal/${id}`
   );
+  return data;
+};
+
+export interface ExchangeQueryStringType
+  extends Omit<TableQueryStringType, "isVisible"> {
+  status: "pending" | "paid" | "cancelled" | null;
+}
+
+export interface ExchangeListRes {
+  id: string;
+  paidAt: string;
+  userId: number;
+  name: string;
+  email: string;
+  orderType: string;
+  orderDesc: string;
+  paidAmount: string;
+  adminName: string;
+  status: string;
+}
+
+//결제 목록 가져오기
+export const getExchangeList = (queryStringObj: ExchangeQueryStringType) => {
+  const {
+    sortOrder,
+    fromDt,
+    toDt,
+    status,
+    keyword = "",
+    take,
+    page,
+  } = queryStringObj;
+
+  let qs = "/payment/admin/history?";
+
+  if (sortOrder) {
+    qs += `sortOrder=${sortOrder}&`;
+  }
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (status !== null) {
+    qs += `status=${status}&`;
+  }
+  if (keyword) {
+    qs += `keyword=${keyword}&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
+
+  const data = API.get<TableResType<ExchangeListRes>>(qs);
+
+  return data;
+};
+
+//회원 결제 목록 요청 타입
+export interface UserExchangeQueryStringType
+  extends Omit<TableQueryStringType, "isVisible"> {
+  status: string | null;
+  userId: number;
+}
+
+//회원 결제 목록 응답
+export interface UserExchangeRes {
+  id: string;
+  paidAt: string;
+  orderType: string;
+  orderDesc: string;
+  paidAmount: string;
+  status: string;
+}
+
+//회원 결제 목록 가져오기
+export const getUserExchangeList = (
+  queryStringObj: UserExchangeQueryStringType
+) => {
+  const { userId, sortOrder, fromDt, toDt, status, take, page } =
+    queryStringObj;
+
+  let qs = `/payment/history?userId=${userId}&`;
+
+  if (sortOrder) {
+    qs += `sortOrder=${sortOrder}&`;
+  }
+  if (fromDt) {
+    qs += `fromDt=${fromDt}&`;
+  }
+  if (toDt) {
+    qs += `toDt=${toDt}&`;
+  }
+  if (status != null) {
+    qs += `status=${status}&`;
+  }
+  if (take !== null) {
+    qs += `take=${take}&`;
+  }
+  if (page !== null) {
+    qs += `page=${page}&`;
+  }
+  if (qs.endsWith("&")) {
+    qs = qs.slice(0, -1);
+  }
+
+  const data = API.get<TableResType<UserExchangeRes>>(qs);
+
+  return data;
+};
+
+interface ExchangeDetailRes {
+  name: string;
+  email: string;
+  orderType: string;
+  orderDesc: string;
+  paidAt: string;
+  paidAmount: string;
+  cardName: string;
+  cardNumber: string;
+  status: string;
+  merchantUid: string;
+}
+
+//결제 상세 가져오기
+export const getExchangeDetail = (id: string) => {
+  const data = API.get<ApiResType<ExchangeDetailRes>>(`/payment/${id}`);
+  return data;
+};
+
+export interface PaymentCancelReq {
+  userId: number;
+  merchantUid: string;
+  isAdmin: boolean;
+}
+
+//결제 취소
+export const exchangeCancel = (body: PaymentCancelReq) => {
+  const data = API.post<ApiResType<{}>>(`/payment/cancel`, body);
+
+  return data;
+};
+
+//플랜 변경
+export const planChange = (userId: number) => {
+  const data = API.post<ApiResType<{}>>(`/plan/enterprise/toggle`, { userId });
+
   return data;
 };

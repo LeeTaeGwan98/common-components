@@ -16,9 +16,10 @@ interface CardRowProps {
     contentClassName?: string;
     shortcutClassName?: string;
   };
+  onContentClick?: () => void;
 }
 
-function CardRow({ data = {}, slot = {} }: CardRowProps) {
+function CardRow({ data = {}, slot = {}, onContentClick }: CardRowProps) {
   const { title, content, shortcut } = data;
   return (
     <div className={cn("flex flex-col gap-[2px]", slot.containerClassName)}>
@@ -36,6 +37,7 @@ function CardRow({ data = {}, slot = {} }: CardRowProps) {
             "text-body2-reading-bold-regular text-label-normal",
             slot.contentClassName
           )}
+          onClick={onContentClick}
         >
           {content}
         </span>

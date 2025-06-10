@@ -12,9 +12,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getDashboard } from "@/api/main/dashboardApi";
+import { getDashboard, getMainChart } from "@/api/main/dashboardApi";
 import { INQUIRY, PAY, PUBLISH_LIST, USER_LIST } from "@/Constants/ServiceUrl";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const datas = [
   { 날짜: "02.27", 유동인구수: 7276000 },
@@ -53,12 +54,128 @@ const renderActiveDot = (props: any, unit: string) => {
 
 function Main() {
   const navigate = useNavigate();
+  const [planMaxValue, setPlanMaxValue] = useState<number>(0);
+  const [pointMaxValue, setPointMaxValue] = useState<number>(0);
+  const [planChartData, setPlanChartData] = useState<
+    {
+      날짜: string;
+      금액: number;
+    }[]
+  >([]);
+  const [pointChartData, setPointChartData] = useState<
+    {
+      날짜: string;
+      금액: number;
+    }[]
+  >([]);
 
+  //대시보드 데이터
   const { data } = useSuspenseQuery({
     queryKey: ["dashboardList"],
     queryFn: () => getDashboard(),
     select: (data) => data.data.data,
   });
+
+  //차트 데이터
+  const { data: chartData } = useSuspenseQuery({
+    queryKey: ["mainChartList"],
+    queryFn: () => getMainChart(),
+    select: (data) => data.data.data,
+  });
+
+  useEffect(() => {
+    //플랜 그래프 데이터 세팅
+    const planMaxYAxis: number =
+      getMax(chartData.planData.map((item) => item.amount)) > 0 &&
+      getMax(chartData.planData.map((item) => item.amount)) > 100
+        ? increaseDigit(
+            Number(getMax(chartData.planData.map((item) => item.amount)))
+          )
+        : 100;
+    setPlanMaxValue(planMaxYAxis > 999999 ? 999999 : planMaxYAxis);
+
+    const planData: {
+      날짜: string;
+      금액: number;
+    }[] = [];
+
+    getPastDates().forEach((date) => {
+      planData.push({
+        날짜: date,
+        금액:
+          chartData.planData.find(
+            (plan) => formatDateToMMDD(plan.date) === date
+          )?.amount ?? 0,
+      });
+    });
+
+    setPlanChartData(planData);
+
+    //충전소 그래프 데이터 세팅
+    const pointMaxYAxis: number =
+      getMax(chartData.chargeData.map((item) => item.amount)) > 0 &&
+      getMax(chartData.chargeData.map((item) => item.amount)) > 100000
+        ? increaseDigit(
+            Number(getMax(chartData.chargeData.map((item) => item.amount)))
+          )
+        : 100000;
+    setPointMaxValue(pointMaxYAxis > 999999999 ? 999999999 : pointMaxYAxis);
+
+    const pointData: {
+      날짜: string;
+      금액: number;
+    }[] = [];
+
+    getPastDates().forEach((date) => {
+      pointData.push({
+        날짜: date,
+        금액:
+          chartData.chargeData.find(
+            (point) => formatDateToMMDD(point.date) === date
+          )?.amount ?? 0,
+      });
+    });
+    setPointChartData(pointData);
+  }, [chartData]);
+
+  //과거 8일전 ~ 전날 날짜 목록
+  const getPastDates = () => {
+    const result: string[] = [];
+    const today = new Date();
+
+    for (let i = 8; i >= 1; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+
+      result.push(`${month}.${day}`);
+    }
+
+    return result;
+  };
+
+  //MM.DD형식으로 날짜 포맷 변경
+  const formatDateToMMDD = (dateStr: string): string => {
+    const date = new Date(dateStr);
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${month}.${day}`;
+  };
+
+  //숫자의 자리수를 +1
+  const increaseDigit = (num: number): number => {
+    const digit = num.toString().length;
+    return Math.pow(10, digit);
+  };
+
+  //수배열 에서 가장 큰 수
+  const getMax = (arr: number[]): number => {
+    if (arr.length === 0) return 0;
+    const maxNum = Math.max(...arr);
+    return maxNum;
+  };
 
   return (
     <>
@@ -81,7 +198,7 @@ function Main() {
               <Content
                 label={data.userIncreaseCount ? "오늘" : ""}
                 summary={
-                  data.userIncreaseCount ? `${data.userIncreaseCount}` : ""
+                  data.userIncreaseCount ? `${data.userIncreaseCount}명` : ""
                 }
                 icon={data.userIncreaseCount ? <Up /> : <></>}
                 slot={{
@@ -127,15 +244,33 @@ function Main() {
               buttonOnClick={() => navigate(PAY)}
             >
               <Content
-                label="오늘"
-                summary="$262,200"
-                icon={<Up />}
+                label={
+                  data.todayPlanPaidAmount &&
+                  Number(data.todayPlanPaidAmount) > 0
+                    ? "오늘"
+                    : ""
+                }
+                summary={
+                  data.todayPlanPaidAmount &&
+                  Number(data.todayPlanPaidAmount) > 0
+                    ? "$" +
+                      Number(data.todayPlanPaidAmount).toLocaleString("kr")
+                    : ""
+                }
+                icon={
+                  data.todayPlanPaidAmount &&
+                  Number(data.todayPlanPaidAmount) > 0 ? (
+                    <Up />
+                  ) : (
+                    <></>
+                  )
+                }
                 slot={{
                   summaryClassName:
                     "text-label-alternative text-body1-normal-bold",
                 }}
               >
-                $324,000,000
+                {"$" + Number(data.totalPlanPaidAmount).toLocaleString("kr")}
               </Content>
             </Card>
             <Card
@@ -150,16 +285,34 @@ function Main() {
               buttonOnClick={() => navigate(PAY)}
             >
               <Content
-                label="오늘"
-                summary="₩36,000"
-                icon={<Up />}
+                label={
+                  data.todayChargePaidAmount &&
+                  Number(data.todayChargePaidAmount) > 0
+                    ? "오늘"
+                    : ""
+                }
+                summary={
+                  data.todayChargePaidAmount &&
+                  Number(data.todayChargePaidAmount) > 0
+                    ? "₩" +
+                      Number(data.todayChargePaidAmount).toLocaleString("kr")
+                    : ""
+                }
+                icon={
+                  data.todayChargePaidAmount &&
+                  Number(data.todayChargePaidAmount) > 0 ? (
+                    <Up />
+                  ) : (
+                    <></>
+                  )
+                }
                 slot={{
                   summaryClassName:
                     "text-label-alternative text-body1-normal-bold",
                   labelClassName: "text-primary-normal text-caption1-bold",
                 }}
               >
-                ₩1,160,000
+                {"₩" + Number(data.totalChargePaidAmount).toLocaleString("kr")}
               </Content>
             </Card>
             <Card
@@ -181,7 +334,7 @@ function Main() {
                   labelClassName: "text-primary-normal text-caption1-bold",
                 }}
               >
-                {`${data.pendingEbookCount}건`}
+                {`${data.unansweredInquiryCount}건`}
               </Content>
             </Card>
           </div>
@@ -197,7 +350,7 @@ function Main() {
             </div>
             <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
               <LineChart
-                data={datas}
+                data={planChartData}
                 margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="" />
@@ -207,9 +360,9 @@ function Main() {
                   axisLine={{ stroke: "#70737C" }}
                 />
                 <YAxis
-                  domain={[0, 10000000]}
-                  ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
+                  domain={[0, planMaxValue]}
                   tickFormatter={(value) => value.toLocaleString()}
+                  tickCount={5}
                   width={90}
                   tickLine={false}
                   axisLine={{ stroke: "#70737C" }}
@@ -218,13 +371,12 @@ function Main() {
 
                 <Line
                   type="linear"
-                  dataKey="유동인구수"
+                  dataKey="금액"
                   stroke="#28A8FB"
                   activeDot={(props: any) => renderActiveDot(props, "$")}
                   strokeWidth={2}
                   dot={{ r: 5 }}
                 />
-                <Line type="linear" dataKey="비유동인구수" stroke="##82ca9d" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -240,7 +392,7 @@ function Main() {
 
             <ResponsiveContainer className="min-h-[520px] border border-line-normal-normal py-[32px] pl-[12px]">
               <LineChart
-                data={datas}
+                data={pointChartData}
                 margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="" />
@@ -250,8 +402,8 @@ function Main() {
                   axisLine={{ stroke: "#70737C" }}
                 />
                 <YAxis
-                  domain={[0, 10000000]}
-                  ticks={[2000000, 4000000, 6000000, 8000000, 10000000]}
+                  domain={[0, pointMaxValue]}
+                  tickCount={5}
                   tickFormatter={(value) => value.toLocaleString()}
                   width={90}
                   tickLine={false}
@@ -260,28 +412,15 @@ function Main() {
                 <Tooltip content={() => null} />
                 <Line
                   type="linear"
-                  dataKey="유동인구수"
+                  dataKey="금액"
                   stroke="#28A8FB"
                   activeDot={(props: any) => renderActiveDot(props, "₩")}
                   strokeWidth={2}
                   dot={{ r: 5 }}
                 />
-                <Line type="linear" dataKey="비유동인구수" stroke="#82ca9d" />
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div className="bg-slate-500 h-[520px]"></div>
-        </div>
-
-        {/* 충전소 현황 표  */}
-        <div className="mt-[49px]">
-          <div className="text-heading4-bold text-label-normal mb-[13px]">
-            최근 일주일 충전소 결제 현황
-            <span className="text-body1-normal-medium text-label-alternative ml-[12px]">
-              단위: 원
-            </span>
-          </div>
-          <div className="bg-slate-500 h-[520px]"></div>
         </div>
       </BreadcrumbContainer>
     </>
