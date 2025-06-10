@@ -35,6 +35,7 @@ export interface UserDetailSideRes {
   marketingConsentAt: string;
   isActive: boolean;
   isDeleted: boolean;
+  isUnlimitPlan: boolean;
 }
 
 //모든 회원 목록 가져오기
@@ -445,6 +446,13 @@ export interface PaymentCancelReq {
 //결제 취소
 export const exchangeCancel = (body: PaymentCancelReq) => {
   const data = API.post<ApiResType<{}>>(`/payment/cancel`, body);
+
+  return data;
+};
+
+//플랜 변경
+export const planChange = (userId: number) => {
+  const data = API.post<ApiResType<{}>>(`/plan/enterprise/toggle`, { userId });
 
   return data;
 };

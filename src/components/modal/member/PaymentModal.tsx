@@ -57,6 +57,9 @@ const PaymentModal = ({
       //결제 취소 성공
       closeModal();
     },
+    onError: (error: any) => {
+      alert(error?.response?.data?.message);
+    },
   });
 
   useEffect(() => {

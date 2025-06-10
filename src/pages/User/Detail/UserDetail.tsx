@@ -24,6 +24,7 @@ import {
 } from "@tanstack/react-query";
 import {
   getUserDetailSide,
+  planChange,
   userActivate,
   userDeactivate,
   userNickChange,
@@ -54,6 +55,9 @@ import { AxiosError } from "axios";
 import { ApiResType } from "@/api/common/commonType";
 import UserDeActivateModal from "@/components/modal/member/UserDeActivateModal";
 import { cn } from "@/lib/utils";
+import Button from "@/components/common/Atoms/Button/Solid/Button";
+import EnterprisePlanChangeModal from "@/components/modal/admin/EnterprisePlanChangeModal";
+import FreePlanChangeModal from "@/components/modal/admin/FreePlanChangeModal";
 
 export type UserMenuType = "기본" | "결제 내역" | "포인트 내역" | "출판 내역";
 
@@ -151,6 +155,18 @@ function UserDetail() {
     },
   });
 
+  //플랜 변경
+  const { mutate: planChangeFn } = useMutation({
+    mutationFn: (id: number) => planChange(id),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["userDetailSide", id] });
+      queryClient.invalidateQueries({
+        queryKey: ["userDetailDefaultInfo", id],
+      });
+      closeModal();
+    },
+  });
+
   //회원 활성화 모달
   const userActivateModal = () => {
     openModal(
@@ -163,6 +179,23 @@ function UserDetail() {
     openModal(
       <UserDeActivateModal onClickOkBtn={() => userDeactivateFn(Number(id))} />
     );
+  };
+
+  //플랜 변경 모달
+  const handlePlanChangeModal = () => {
+    if (data.isUnlimitPlan) {
+      openModal(
+        <FreePlanChangeModal onClickOkBtn={() => planChangeFn(Number(id))} />
+      );
+    } else {
+      openModal(
+        <EnterprisePlanChangeModal
+          onClickOkBtn={() => {
+            planChangeFn(Number(id));
+          }}
+        />
+      );
+    }
   };
 
   //닉네임 유효한 문자만 입력
@@ -251,6 +284,11 @@ function UserDetail() {
               </SelectContent>
             </SelectBox>
           </>
+        }
+        button={
+          <Button className="w-[180px]" onClick={handlePlanChangeModal}>
+            플랜 변경
+          </Button>
         }
       >
         <div className="flex gap-gutter-horizontal">
