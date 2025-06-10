@@ -427,6 +427,7 @@ interface ExchangeDetailRes {
   cardName: string;
   cardNumber: string;
   status: string;
+  merchantUid: string;
 }
 
 //결제 상세 가져오기

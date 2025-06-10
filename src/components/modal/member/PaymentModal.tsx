@@ -53,6 +53,7 @@ const PaymentModal = ({
       queryClient.invalidateQueries({
         queryKey: ["getExchangeDetail", id],
       });
+      onCancelSuccess();
       //결제 취소 성공
       closeModal();
     },
@@ -133,12 +134,12 @@ const PaymentModal = ({
                 onClick={() =>
                   exchangeCancelMutate({
                     userId: userId,
-                    merchantUid: id,
+                    merchantUid: data?.merchantUid ?? "",
                     isAdmin: true,
                   })
                 }
               >
-                환불
+                결제 취소
               </Button>
             )}
             <Button
