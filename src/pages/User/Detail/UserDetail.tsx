@@ -16,7 +16,7 @@ import {
   SelectLabel,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   useMutation,
   useQueryClient,
@@ -66,6 +66,11 @@ function UserDetail() {
   ];
   const { openModal, closeModal } = useModalStore();
   const { id } = useParams();
+  const { menu } =
+    useLocation().state ??
+    ({} as {
+      menu: UserMenuType;
+    });
   const queryClient = useQueryClient();
   const [selectedMenu, setSelectedMenu] = useState<UserMenuType>(
     menuList[0] ?? "기본"
@@ -170,6 +175,13 @@ function UserDetail() {
     const jamoRegex = /[\u3131-\u314e\u314f-\u3163]/;
     return jamoRegex.test(value);
   };
+
+  //이동해야 되는 메뉴를 전달 받은 경우
+  useEffect(() => {
+    if (menu) {
+      setSelectedMenu(menu);
+    }
+  }, [menu]);
 
   //유저 닉네임 저장
   useEffect(() => {

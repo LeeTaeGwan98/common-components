@@ -60,12 +60,12 @@ export const PublishRejectReasonModal = ({
     >
       <div className="py-content-vertical-margin px-content-horizon-margin">
         <div className="grid gap-[12px] py-[calc(var(--content-vertical-margin)-1px)] px-content-horizon-margin border-[1px] border-solid border-line-normal-normal rounded-radius-admin !box-border">
-          <Row label={"닉네임"} description={data.name} />
-          <Row label={"도서명"} description={data.title} />
-          <Row label={"저자/역자"} description={data.author} />
+          <Row label={"닉네임"} description={data?.name} />
+          <Row label={"도서명"} description={data?.title} />
+          <Row label={"저자/역자"} description={data?.author} />
           <Row
             label={"제출일"}
-            description={data.submittedAt ? data.submittedAt : "-"}
+            description={data?.submittedAt ? data?.submittedAt : "-"}
           />
           <div>
             <div className="text-label2-bold text-label-alternative mb-[6px]">
@@ -74,7 +74,7 @@ export const PublishRejectReasonModal = ({
             <TextBox
               className="gap-[6px] h-[166px] text-label-alternative"
               label=""
-              value={data.holdReason}
+              value={data?.holdReason}
               maxLength={300}
               disabled
             />

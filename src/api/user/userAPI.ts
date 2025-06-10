@@ -307,9 +307,10 @@ export interface ExchangeQueryStringType
   status: "pending" | "paid" | "cancelled" | null;
 }
 
-interface ExchangeListRes {
+export interface ExchangeListRes {
   id: string;
   paidAt: string;
+  userId: number;
   name: string;
   email: string;
   orderType: string;
@@ -362,11 +363,21 @@ export const getExchangeList = (queryStringObj: ExchangeQueryStringType) => {
   return data;
 };
 
-//회원 출판 목록 요청 타입
+//회원 결제 목록 요청 타입
 export interface UserExchangeQueryStringType
   extends Omit<TableQueryStringType, "isVisible"> {
   status: string | null;
   userId: number;
+}
+
+//회원 결제 목록 응답
+export interface UserExchangeRes {
+  id: string;
+  paidAt: string;
+  orderType: string;
+  orderDesc: string;
+  paidAmount: string;
+  status: string;
 }
 
 //회원 결제 목록 가져오기
@@ -400,7 +411,7 @@ export const getUserExchangeList = (
     qs = qs.slice(0, -1);
   }
 
-  const data = API.get<TableResType<{}>>(qs);
+  const data = API.get<TableResType<UserExchangeRes>>(qs);
 
   return data;
 };

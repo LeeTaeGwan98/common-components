@@ -30,10 +30,17 @@ import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 import { ActionType, TableQueryStringType } from "@/api/common/commonType";
 import { useReducer } from "react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { ExchangeQueryStringType, getExchangeList } from "@/api/user/userAPI";
+import {
+  ExchangeListRes,
+  ExchangeQueryStringType,
+  getExchangeList,
+} from "@/api/user/userAPI";
 import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import UserDetailDefault from "@/pages/User/Detail/UserDetailDefault";
+import { UserMenuType } from "@/pages/User/Detail/UserDetail";
+import { getExcelSearch } from "@/api/excel/excel";
+import { excelDownload } from "@/components/excel/Excel";
 
 const initState: ExchangeQueryStringType = {
   sortOrder: "DESC",
@@ -89,8 +96,8 @@ function PaymentManagement() {
     });
   };
 
-  const handleModal = (id: string) => {
-    openModal(<PaymentModal id={id} />);
+  const handleModal = (id: string, userId: number) => {
+    openModal(<PaymentModal id={id} userId={userId} />);
   };
 
   //카테고리 변경시 핸들
@@ -107,6 +114,54 @@ function PaymentManagement() {
     });
   };
 
+  //엑셀 조건없이 모든 데이터 다운로드
+  const handleAllDataExcelDownload = async () => {
+    const excelAllData = await getExcelSearch("pay");
+
+    handleExcelDownload(excelAllData.data.data);
+  };
+
+  //엑셀 조건 적용 모든 데이터 다운로드
+  const handleFilterDataExcelDownload = async () => {
+    const modifiedFilterInfo = { ...filterInfo, take: data.meta.totalCount };
+
+    const excelFilterData = await getExchangeList(modifiedFilterInfo);
+
+    handleExcelDownload(excelFilterData.data.data.list);
+  };
+
+  //엑셀 다운로드
+  const handleExcelDownload = (excelDatas: ExchangeListRes[]) => {
+    excelDownload(
+      "결제 관리",
+      [
+        "No",
+        "결제일",
+        "닉네임",
+        "결제 이메일",
+        "결제 내역",
+        "결제 내역 상세",
+        "결제 금액",
+        "상태",
+        "관리자",
+      ],
+      [80, 120, 100, 200, 100, 200, 200, 150, 150],
+      excelDatas.map((item, index) => [
+        index + 1,
+        item.paidAt,
+        item.name,
+        item.email,
+        item.orderType,
+        item.orderDesc,
+        item.orderType === "플랜"
+          ? "$" + item.paidAmount
+          : "￦" + item.paidAmount,
+        item.status === "결제취소" ? "취소완료" : item.status,
+        "-",
+      ])
+    );
+  };
+
   return (
     <>
       <title>북카롱 | 결제 관리</title>
@@ -115,6 +170,9 @@ function PaymentManagement() {
           filterInfo={filterInfo}
           title="결제일"
           dispatch={dispatch}
+          excel={true}
+          excelAllDataOnClick={handleAllDataExcelDownload}
+          excelFilterDataOnClick={handleFilterDataExcelDownload}
           CustomSelectComponent={
             <SelectBox
               placeholder="모든 상태"
@@ -171,7 +229,16 @@ function PaymentManagement() {
                         </TableCell>
                         <TableCell>{item.paidAt}</TableCell>
                         <TableCell className="underline cursor-pointer">
-                          <div onClick={() => nav(USER_DETAIL)}>
+                          <div
+                            onClick={() => {
+                              const menu: UserMenuType = "결제 내역";
+                              nav(`${USER_DETAIL}/${item.userId}`, {
+                                state: {
+                                  menu: menu,
+                                },
+                              });
+                            }}
+                          >
                             {item.name}
                           </div>
                         </TableCell>
@@ -235,7 +302,7 @@ function PaymentManagement() {
                             icon={
                               <ThreeDot className="size-[24px] fill-label-alternative" />
                             }
-                            onClick={() => handleModal(item.id)}
+                            onClick={() => handleModal(item.id, item.userId)}
                           />
                         </TableCell>
                       </TableRow>

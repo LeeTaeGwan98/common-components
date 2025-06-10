@@ -14,8 +14,9 @@ import { getExchangeDetail } from "@/api/user/userAPI";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { USER_DETAIL } from "@/Constants/ServiceUrl";
+import { UserMenuType } from "@/pages/User/Detail/UserDetail";
 
-const PaymentModal = ({ id }: { id: string }) => {
+const PaymentModal = ({ id, userId }: { id: string; userId?: number }) => {
   const nav = useNavigate();
   const { closeModal } = useModalStore();
   const [detailData, setDetailData] = useState<
@@ -64,7 +65,9 @@ const PaymentModal = ({ id }: { id: string }) => {
     });
     datas.push({
       label: "카드 번호",
-      value: data?.cardNumber ? data?.cardNumber : "-",
+      value: data?.cardNumber
+        ? getLastDot4CharsCardName(data?.cardNumber)
+        : "-",
     });
     datas.push({
       label: "결제 상태",
@@ -74,6 +77,10 @@ const PaymentModal = ({ id }: { id: string }) => {
 
     setDetailData(datas);
   }, [data]);
+
+  const getLastDot4CharsCardName = (str: string): string => {
+    return str.length > 4 ? "************" + str.slice(-4) : str.slice(-4);
+  };
 
   return (
     <DialogContent
@@ -91,9 +98,11 @@ const PaymentModal = ({ id }: { id: string }) => {
             isGradient
             className="flex w-full gap-[8px]"
           >
-            <Button className="bg-static-white text-label-normal text-body1-normal-medium border border-line-normal-normal rounded-[4px] !flex-initial">
-              환불
-            </Button>
+            {data?.status === "결제완료" && (
+              <Button className="bg-static-white text-label-normal text-body1-normal-medium border border-line-normal-normal rounded-[4px] !flex-initial">
+                환불
+              </Button>
+            )}
             <Button
               onClick={() => useModalStore.getState().closeModal()}
               className="w-full py-[12px]"
@@ -118,13 +127,20 @@ const PaymentModal = ({ id }: { id: string }) => {
                     titleClassname: "text-label-alternative text-label2-bold",
                     contentClassName:
                       "text-body2-reading-regular" +
-                      (data.isUnderLine && " underline cursor-pointer"),
+                      (data.isUnderLine &&
+                        userId &&
+                        " underline cursor-pointer"),
                     shortcutClassName: "size-[24px]",
                   }}
                   onContentClick={() => {
-                    if (data.isUnderLine) {
+                    if (data.isUnderLine && userId) {
                       closeModal();
-                      nav(USER_DETAIL);
+                      const menu: UserMenuType = "결제 내역";
+                      nav(`${USER_DETAIL}/${userId}`, {
+                        state: {
+                          menu: menu,
+                        },
+                      });
                     }
                   }}
                 />
