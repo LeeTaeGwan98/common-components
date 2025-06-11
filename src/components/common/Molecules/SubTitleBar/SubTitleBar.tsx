@@ -26,6 +26,7 @@ interface SubtitleBarProps {
   excel?: boolean;
   excelAllDataOnClick?: () => void;
   excelFilterDataOnClick?: () => void;
+  excelDownload?: () => void;
 }
 
 function SubTitleBar({
@@ -37,6 +38,7 @@ function SubTitleBar({
   excel = false,
   excelAllDataOnClick,
   excelFilterDataOnClick,
+  excelDownload,
 }: SubtitleBarProps) {
   const { openModal } = useModalStore();
   // 입력 중인 keyword를 별도로 관리
@@ -168,7 +170,7 @@ function SubTitleBar({
           </SelectContent>
         </SelectBox>
         {excel && (
-          <button onClick={handleExcelModal}>
+          <button onClick={excelDownload ? excelDownload : handleExcelModal}>
             <img src={ExcelImage} className="size-[48px]" />
           </button>
         )}

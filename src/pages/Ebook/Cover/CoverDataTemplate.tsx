@@ -289,15 +289,20 @@ function CoverDataStyle({
         </div>
         <div className="flex justify-center *:flex-1 gap-gutter-horizontal">
           <div>
-            <Title size="medium" label={"표지"} />
+            <Title size="medium" label={"노출 상태"} />
             <Segement
               disable={buyer ? true : false}
               className="w-full"
               size="large"
               setSelected={setIsCoverExposure}
-              selected={buyer ? false : isCoverExposure}
+              selected={buyer ? true : isCoverExposure}
               textList={["노출", "비노출"]}
             />
+            {buyer && (
+              <div className="text-caption2-medium text-label-assistive mt-[4px]">
+                구매가 완료된 표지는 스토어 화면에만 비노출로 반영됩니다
+              </div>
+            )}
           </div>
 
           {buyer ? (
