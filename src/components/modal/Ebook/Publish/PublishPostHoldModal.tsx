@@ -99,7 +99,7 @@ export const PublishPostHoldModal = ({
               label=""
               placeholder="보류 사유를 입력해주세요"
               value={reason}
-              maxLength={1000}
+              maxLength={300}
               onChange={(e) => {
                 setReason(e.target.value);
               }}

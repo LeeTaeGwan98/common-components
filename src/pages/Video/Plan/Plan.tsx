@@ -34,10 +34,10 @@ function Plan() {
               <TableRow>
                 <TableCell isHeader>플랜명</TableCell>
                 <TableCell isHeader>이용 회원 수</TableCell>
-                <TableCell isHeader>연간 요금(연)</TableCell>
-                <TableCell isHeader>연간 요금(월)</TableCell>
-                <TableCell isHeader>월간 요금(월)</TableCell>
-                <TableCell isHeader>월간 요금(연)</TableCell>
+                <TableCell isHeader>연간 요금(연)/달러</TableCell>
+                <TableCell isHeader>연간 요금(월)/달러</TableCell>
+                <TableCell isHeader>월간 요금(월)/달러</TableCell>
+                <TableCell isHeader>월간 요금(연)/달러</TableCell>
                 <TableCell isHeader>상세정보</TableCell>
               </TableRow>
             </TableHeader>

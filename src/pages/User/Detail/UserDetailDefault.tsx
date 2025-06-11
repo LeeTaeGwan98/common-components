@@ -43,7 +43,7 @@ function UserDetailDefault({ setSeletedMenu }: UserDetailDefaultProps) {
 
   //회원 목록 기본 조회 api
   const { data } = useSuspenseQuery({
-    queryKey: ["userDetailDefaultInfo"], // filterInfo가 변경될 때마다 API 호출
+    queryKey: ["userDetailDefaultInfo", id], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getUserDefaultInfo(Number(id)),
     select: (data) => data.data.data,
   });
@@ -195,6 +195,3 @@ function UserDetailDefault({ setSeletedMenu }: UserDetailDefaultProps) {
 }
 
 export default UserDetailDefault;
-function openModal(arg0: JSX.Element) {
-  throw new Error("Function not implemented.");
-}

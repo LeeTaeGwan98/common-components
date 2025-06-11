@@ -36,6 +36,6 @@ jobs:
           script: |
             sudo docker load -i /home/${{ secrets.PROD_SERVER_USER }}/bookaroon-admin.tar
             sudo docker stop bookaroon-admin || true
-            sudo docker rm bookaroon-admin-admin-admin-admin-admin-admin-admin-admin-admin || true
+            sudo docker rm bookaroon-admin || true
             sudo docker run -d --name bookaroon-admin -p 5174:80 bookaroon-admin:prod
             rm /home/${{ secrets.PROD_SERVER_USER }}/bookaroon-admin.tar

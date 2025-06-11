@@ -170,7 +170,10 @@ function App() {
                 element={<TutorialDetail />}
               />
               <Route path={TEMPLATE} element={<Template />} />
-              <Route path={TEMPLATE_DETAIL} element={<TemplateDetail />} />
+              <Route
+                path={`${TEMPLATE_DETAIL}/:id`}
+                element={<TemplateDetail />}
+              />
               <Route path={VIDEOIMAGE} element={<VideoImage />} />
               <Route path={VIDEOIMAGE_CREATE} element={<VideoImageCreate />} />
               <Route

@@ -181,10 +181,10 @@ function PublishList() {
     select: (data) => data.data.data,
   });
   const [ebookData, setEbookData] = useState(data);
+
   useEffect(() => {
     setEbookData(data);
-    refetch();
-  }, [data, ebookData]);
+  }, [data]);
 
   // 선택 승인 하기 위한 전자책 승인 api
   const approveEbook = (ebookId: number) => {

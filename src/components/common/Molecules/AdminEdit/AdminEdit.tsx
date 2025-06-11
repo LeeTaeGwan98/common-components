@@ -44,10 +44,24 @@ Divider.tagName = "hr";
 // 생성한 커스텀 Blot을 Quill에 등록
 Quill.register("blots/divider", Divider);
 
+const format = [
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "align",
+  "list",
+  "background",
+  "image",
+  "video",
+  "divider",
+];
+
 interface AdminEditProps {
   className?: string;
   value: string;
   isVideo?: boolean;
+  isImage?: boolean;
   onChange: (value: string) => void;
   placeholder?: string;
 }
@@ -63,6 +77,7 @@ const AdminEdit: React.FC<AdminEditProps> = ({
   className,
   value = "",
   isVideo = true,
+  isImage = true,
   onChange,
   placeholder = "내용을 입력하세요...",
 }) => {
@@ -95,7 +110,7 @@ const AdminEdit: React.FC<AdminEditProps> = ({
 
   return (
     <div className="quill-root-container w-full">
-      <CustomToolbar isVideo={isVideo} />
+      <CustomToolbar isVideo={isVideo} isImage={isImage} />
       <ReactQuill
         ref={quillRef}
         theme="snow"
@@ -103,18 +118,7 @@ const AdminEdit: React.FC<AdminEditProps> = ({
         onChange={handleChange}
         className={cn("h-[300px]", className)}
         modules={modules}
-        formats={[
-          "size",
-          "bold",
-          "italic",
-          "underline",
-          "align",
-          "list",
-          "background",
-          "image",
-          "video",
-          "divider",
-        ]}
+        formats={format}
         placeholder={placeholder}
       />
     </div>

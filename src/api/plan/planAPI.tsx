@@ -4,6 +4,8 @@ import { ApiResType } from "@/api/common/commonType";
 interface PlanListRes {
   id: number;
   planName: string;
+  isUnlimitPlan: boolean;
+  isDefault: boolean;
   usePersonCnt: number;
   annualFeeYear: number;
   annualFeeMonth: number;
@@ -13,6 +15,13 @@ interface PlanListRes {
 // 플랜 목록 조회
 export const getPlanList = () => {
   const data = API.get<{ data: PlanListRes[] }>(`/admin/video/plan`);
+  return data;
+};
+
+// 북카롱 플랜 목록
+export const getPlans = () => {
+  const data = API.get<ApiResType<PlanListRes[]>>(`/plan`);
+
   return data;
 };
 
