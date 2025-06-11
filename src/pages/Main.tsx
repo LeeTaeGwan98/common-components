@@ -17,15 +17,6 @@ import { INQUIRY, PAY, PUBLISH_LIST, USER_LIST } from "@/Constants/ServiceUrl";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const datas = [
-  { 날짜: "02.27", 유동인구수: 7276000 },
-  { 날짜: "02.28", 유동인구수: 4327000 },
-  { 날짜: "03.01", 유동인구수: 1585000 },
-  { 날짜: "03.02", 유동인구수: 2000000 },
-  { 날짜: "03.03", 유동인구수: 1685000 },
-  { 날짜: "03.04", 유동인구수: 3812600 },
-];
-
 const renderActiveDot = (props: any, unit: string) => {
   const { cx, cy, value } = props;
 

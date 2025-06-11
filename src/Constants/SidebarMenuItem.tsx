@@ -3,6 +3,7 @@ import User from "@/assets/svg/Sidebar/User.svg";
 import BookIcon from "@/assets/svg/Sidebar/Book.svg";
 import VideioIcon from "@/assets/svg/Sidebar/Videobook.svg";
 import BoardIcon from "@/assets/svg/Sidebar/Board.svg";
+import Pie from "@/assets/svg/Sidebar/Pie.svg";
 import Manager from "@/assets/svg/Sidebar/Manager.svg";
 import {
   ACCOUNT,
@@ -109,15 +110,10 @@ const SIDEBAR_MENU_ITEM: SidebarMenuItem[] = [
   {
     title: "비디오북 관리",
     icon: <VideioIcon />,
-    path: PLAN,
+    path: TUTORIAL,
     code: MENU_CODE.비디오북관리,
     isActive: false,
     child: [
-      {
-        title: "플랜 관리",
-        path: PLAN,
-        isActive: false,
-      },
       {
         title: "튜토리얼 관리",
         path: TUTORIAL,
@@ -134,6 +130,13 @@ const SIDEBAR_MENU_ITEM: SidebarMenuItem[] = [
         isActive: false,
       },
     ],
+  },
+  {
+    title: "플랜 관리",
+    path: PLAN,
+    isActive: false,
+    icon: <Pie />,
+    child: [],
   },
   {
     title: "게시판 관리",
