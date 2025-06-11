@@ -169,7 +169,7 @@ function CoverDataStyle({
           >
             표지 미리보기
           </OutlinedButton>
-          {type === "detail" && (
+          {type === "detail" && !buyer && (
             <Button
               className="w-[180px]"
               size="large"
