@@ -34,7 +34,7 @@ export const useAuthStore = create<AuthState>()(
 
       // 로그아웃시 발동
       delUserInfo: () => {
-        localStorage.removeItem("auth-storage");
+        localStorage.removeItem("auth-admin-storage");
         set({
           user: null,
           accessToken: null,
