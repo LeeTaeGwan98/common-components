@@ -70,3 +70,11 @@ export const updateTemplate = (payload: UpdateTmplateReq) => {
   );
   return data;
 };
+
+//템플릿 삭제
+export const deleteTemplate = (id: string) => {
+  const data = API.delete<ApiResType<{}>>(
+    `/admin/video/project/template/${id}`
+  );
+  return data;
+};

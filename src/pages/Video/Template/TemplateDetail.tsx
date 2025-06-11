@@ -1,4 +1,6 @@
+import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import {
+  deleteTemplate,
   getTemplateDetail,
   updateTemplate,
   UpdateTmplateReq,
@@ -12,6 +14,11 @@ import Title from "@/components/common/BookaroongAdmin/Title";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
+import {
+  COMMON_GROUP_CODE_MAPPING,
+  COMMON_GROUP_CODE_UNION_TYPE,
+} from "@/Constants/CommonGroupCode";
 import {
   useMutation,
   useQuery,
@@ -32,6 +39,20 @@ function TemplateDetail() {
   const [ratio, setRatio] = useState<string>(""); //비율
   const [length, setLength] = useState<string>(""); //길이
 
+  //템플릿 카테고리 가져오기
+  const { data: codeInfo } = useQuery({
+    queryKey: [
+      "templateCategoryCode",
+      COMMON_GROUP_CODE_MAPPING.템플릿카테고리,
+    ],
+    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.템플릿카테고리]),
+    select: (data) => data.data.data,
+  });
+  const keys =
+    (codeInfo && (Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[])) ??
+    [];
+  const categoryCodes = codeInfo && codeInfo[keys[0]]; // 카테고리 코드들
+
   //템플릿 상세 정보 가져오기
   const { data } = useQuery({
     queryKey: ["templateDetail", id],
@@ -43,6 +64,18 @@ function TemplateDetail() {
   const { mutate: templatePatchFn } = useMutation({
     mutationKey: ["templatePatch"],
     mutationFn: (payload: UpdateTmplateReq) => updateTemplate(payload),
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["templateDetail", id],
+      });
+      nav(-1);
+    },
+  });
+
+  //템플릿 삭제
+  const { mutate: deleteTemplateFn } = useMutation({
+    mutationKey: ["deleteTemplate", id],
+    mutationFn: () => deleteTemplate(id ?? ""),
     onSuccess() {
       queryClient.invalidateQueries({
         queryKey: ["templateDetail", id],
@@ -86,7 +119,20 @@ function TemplateDetail() {
               label="카테고리"
               placeholder="카테고리를 선택해주세요"
               value={category}
-            />
+              onValueChange={(value) => setCategory(value)}
+            >
+              <SelectContent>
+                <SelectGroup>
+                  {categoryCodes?.map((item, index) => {
+                    return (
+                      <SelectItem key={index} value={item.commDetailCode}>
+                        {item.detailCodeName}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </SelectBox>
           </div>
 
           <div className="flex *:flex-1 gap-gutter-horizontal">
@@ -142,7 +188,11 @@ function TemplateDetail() {
               className="max-w-[180px] w-full"
               type="secondary"
               size="large"
+              disable={!templName || !category}
               onClick={() => {
+                if (!templName || !category) {
+                  return;
+                }
                 templatePatchFn({
                   userId: 0,
                   templateId: Number(id),
