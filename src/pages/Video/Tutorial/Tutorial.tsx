@@ -41,7 +41,7 @@ import { codeToName } from "@/utils/uitls";
 import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 const initState: TutorialQueryStringType = {
-  fromDt: undefined,
+  fromDt: dateToString(new Date()),
   toDt: dateToString(new Date()),
   sortOrder: "DESC",
   isVisible: null,

@@ -43,7 +43,7 @@ import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/Ta
 import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 const initState: InquiryQueryStringType = {
-  fromDt: undefined,
+  fromDt: dateToString(new Date()),
   toDt: dateToString(new Date()),
   sortOrder: "DESC",
   isResponse: null,

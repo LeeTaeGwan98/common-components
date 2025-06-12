@@ -27,7 +27,11 @@ import { ActionType } from "@/api/common/commonType";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
 import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
-import { formatDateTimeToJSX, formatToUTCString } from "@/lib/dateParse";
+import {
+  dateToString,
+  formatDateTimeToJSX,
+  formatToUTCString,
+} from "@/lib/dateParse";
 import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 // import { formatDateTimeToJSX } from "@/lib/dateParse";
 
@@ -37,8 +41,8 @@ type NoticleTableQueryStringType = TableQueryStringType & {
 
 const initState: NoticleTableQueryStringType = {
   sortOrder: "DESC",
-  fromDt: undefined,
-  toDt: undefined,
+  fromDt: dateToString(new Date()),
+  toDt: dateToString(new Date()),
   isVisible: null,
   keyword: "",
   take: 10,

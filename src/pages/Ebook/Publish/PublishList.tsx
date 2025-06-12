@@ -25,7 +25,7 @@ import { useModalStore } from "@/store/modalStore";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import { Link } from "react-router-dom";
 import { PUBLISH_LIST_DETAIL } from "@/Constants/ServiceUrl";
-import { formatToUTCString } from "@/lib/dateParse";
+import { dateToString, formatToUTCString } from "@/lib/dateParse";
 import {
   QueryObserverResult,
   RefetchOptions,
@@ -142,8 +142,8 @@ const StatusView = ({
 };
 
 const initState: EbookQueryStringType = {
-  fromDt: undefined,
-  toDt: undefined,
+  fromDt: dateToString(new Date()),
+  toDt: dateToString(new Date()),
   sortOrder: "DESC",
   status: "ALL",
   keyword: "",

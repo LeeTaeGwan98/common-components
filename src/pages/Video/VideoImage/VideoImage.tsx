@@ -35,7 +35,7 @@ import { getExcelSearch } from "@/api/excel/excel";
 import { excelDownload } from "@/components/excel/Excel";
 
 const initState: ImageQueryStringType = {
-  fromDt: undefined,
+  fromDt: dateToString(new Date()),
   toDt: dateToString(new Date()),
   sortOrder: "DESC",
   keyword: "",
