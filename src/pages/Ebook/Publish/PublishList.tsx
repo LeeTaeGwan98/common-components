@@ -67,6 +67,7 @@ import {
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { formatDateTimeToJSX } from "@/lib/dateParse";
 import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
 
 interface StatusViewProps {
   status: string;
@@ -273,6 +274,10 @@ function PublishList() {
       ebookExcelDatadFn(selectId.map((item) => item.id));
       //전자책 파일들 다운로드
       ebookFileDownloadFn(selectId.map((item) => item.id));
+    } else {
+      customToast({
+        title: "다운로드할 목록을 선택해주세요.",
+      });
     }
   };
 
