@@ -198,7 +198,7 @@ function PublishList() {
         const fileURL = URL.createObjectURL(data.data);
         const link = document.createElement("a");
         link.href = fileURL;
-        link.download = "출판 목록";
+        link.download = "출판 파일 목록";
         document.body.appendChild(link);
         link.click();
 

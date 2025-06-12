@@ -895,54 +895,6 @@ function PlanDetail() {
           </div>
 
           <div className="flex gap-gutter-horizontal">
-            <div className="flex w-full gap-gutter-horizontal">
-              {/* AI 배경음 연장 */}
-              <TextField
-                label="AI 배경음 연장"
-                subText={
-                  formState.isDefault || formState.isUnlimitPlan ? "" : "회"
-                }
-                slot={{ subTextClassName: "text-label-alternative" }}
-                value={
-                  formState.isDefault
-                    ? "-"
-                    : formState.isUnlimitPlan
-                    ? "무제한"
-                    : formState.soundExtensionCount?.toLocaleString("kr")
-                }
-                readOnly={formState.isDefault || formState.isUnlimitPlan}
-                maxLength={12}
-                onChange={(e) => {
-                  // 숫자만 필터링
-                  const numericValue = e.target.value.replace(/\D/g, "");
-
-                  updateFormState("soundExtensionCount", Number(numericValue));
-                }}
-              />
-              <TextField
-                label="&nbsp;"
-                subText={formState.isUnlimitPlan ? "" : "차감"}
-                slot={{ subTextClassName: "text-label-alternative" }}
-                value={
-                  formState.isUnlimitPlan
-                    ? "-"
-                    : formState.soundExtensionDeductedPoint?.toLocaleString(
-                        "kr"
-                      )
-                }
-                readOnly={formState.isUnlimitPlan}
-                maxLength={12}
-                onChange={(e) => {
-                  // 숫자만 필터링
-                  const numericValue = e.target.value.replace(/\D/g, "");
-
-                  updateFormState(
-                    "soundExtensionDeductedPoint",
-                    Number(numericValue)
-                  );
-                }}
-              />
-            </div>
             <div className="w-full">
               <TextField
                 label="무료 아바타"
@@ -964,10 +916,6 @@ function PlanDetail() {
                 }}
               />
             </div>
-          </div>
-
-          <div className="flex gap-gutter-horizontal">
-            {/* 이미지 DB*/}
             <div className="w-full">
               <Title label={"이미지 DB"} />
               <Segement
@@ -981,7 +929,6 @@ function PlanDetail() {
                 textList={["O", "X"]}
               />
             </div>
-            <div className="w-full"></div>
           </div>
 
           <div className="flex justify-end gap-[12px]">

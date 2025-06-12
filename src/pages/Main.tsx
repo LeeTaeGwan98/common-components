@@ -352,7 +352,9 @@ function Main() {
                 />
                 <YAxis
                   domain={[0, planMaxValue]}
-                  tickFormatter={(value) => value.toLocaleString()}
+                  tickFormatter={(value) =>
+                    value > 0 ? value.toLocaleString() : ""
+                  }
                   tickCount={5}
                   width={90}
                   tickLine={false}
@@ -395,7 +397,9 @@ function Main() {
                 <YAxis
                   domain={[0, pointMaxValue]}
                   tickCount={5}
-                  tickFormatter={(value) => value.toLocaleString()}
+                  tickFormatter={(value) =>
+                    value > 0 ? value.toLocaleString() : ""
+                  }
                   width={90}
                   tickLine={false}
                   axisLine={{ stroke: "#70737C" }}
