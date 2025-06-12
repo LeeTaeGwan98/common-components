@@ -11,7 +11,7 @@ import { getCover, getCoverDetail, GetCoverRes } from "@/api/cover/coverAPI";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useReducer } from "react";
 import { ActionType, TableQueryStringType } from "@/api/common/commonType";
-import { formatDateTimeToJSX } from "@/lib/dateParse";
+import { dateToString, formatDateTimeToJSX } from "@/lib/dateParse";
 import SubTitleBar, {
   boolToString,
 } from "@/components/common/Molecules/SubTitleBar/SubTitleBar";
@@ -39,8 +39,8 @@ type CoverTableQueryStringType = TableQueryStringType & {
 
 const initState: CoverTableQueryStringType = {
   sortOrder: "DESC",
-  fromDt: undefined,
-  toDt: undefined,
+  fromDt: dateToString(new Date()),
+  toDt: dateToString(new Date()),
   isVisible: null,
   keyword: "",
   take: 10,

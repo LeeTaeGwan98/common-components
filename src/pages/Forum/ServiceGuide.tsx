@@ -43,7 +43,7 @@ import { useReducer } from "react";
 import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
 
 const initState: ServiceGuideQueryStringType = {
-  fromDt: undefined,
+  fromDt: dateToString(new Date()),
   toDt: dateToString(new Date()),
   sortOrder: "DESC",
   isVisible: null,

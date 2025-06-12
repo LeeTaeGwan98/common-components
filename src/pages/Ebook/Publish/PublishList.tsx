@@ -25,14 +25,18 @@ import { useModalStore } from "@/store/modalStore";
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import { Link } from "react-router-dom";
 import { PUBLISH_LIST_DETAIL } from "@/Constants/ServiceUrl";
-import { formatToUTCString } from "@/lib/dateParse";
+import { dateToString, formatToUTCString } from "@/lib/dateParse";
 import {
   QueryObserverResult,
   RefetchOptions,
   useMutation,
+  useQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import {
+  ebookExcelData,
+  EbookExcelDataRes,
+  ebookFileDownload,
   EbookQueryStringType,
   EbookRes,
   getEbookList,
@@ -63,6 +67,7 @@ import {
 import { getGroupCodes } from "@/api/commonCode/commonCodeAPI";
 import { formatDateTimeToJSX } from "@/lib/dateParse";
 import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows";
+import { customToast } from "@/components/common/Atoms/Toast/Toast";
 
 interface StatusViewProps {
   status: string;
@@ -137,8 +142,8 @@ const StatusView = ({
 };
 
 const initState: EbookQueryStringType = {
-  fromDt: undefined,
-  toDt: undefined,
+  fromDt: dateToString(new Date()),
+  toDt: dateToString(new Date()),
   sortOrder: "DESC",
   status: "ALL",
   keyword: "",
@@ -161,18 +166,49 @@ const reducer = <T extends Record<string, any>>(
 
 function PublishList() {
   const [filterInfo, dispatch] = useReducer(reducer, initState);
-  const [selectId, setSelectId] = useState<number[]>([]); //선택한 목록 아이디
-  //전자책 상태 공통 코드 가져오기
-  const { data: codeInfo } = useSuspenseQuery({
-    queryKey: [
-      "ebookStatusGroupCodes",
-      COMMON_GROUP_CODE_MAPPING.전자책출판상태,
-    ],
-    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.전자책출판상태]),
+  const [selectId, setSelectId] = useState<{ id: number; status: string }[]>(
+    []
+  ); //선택한 목록 아이디
+  //전자책 카테고리 가져오기
+  const { data: codeInfo } = useQuery({
+    queryKey: ["ebookCategoryCode", COMMON_GROUP_CODE_MAPPING.전자책카테고리],
+    queryFn: () => getGroupCodes([COMMON_GROUP_CODE_MAPPING.전자책카테고리]),
     select: (data) => data.data.data,
   });
-  const keys = Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[];
-  const publishCodes = codeInfo[keys[0]]; // 전자책 상태 사유 코드들
+  const keys =
+    (codeInfo && (Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[])) ??
+    [];
+  const categoryCodes = codeInfo && codeInfo[keys[0]]; // 카테고리 코드들
+
+  //전자책 엑셀 데이터 목록 조회
+  const { mutate: ebookExcelDatadFn } = useMutation({
+    mutationFn: (ids: number[]) => ebookExcelData(ids),
+    onSuccess(data) {
+      if (data.data.data) {
+        handleExcelDownload(data.data.data);
+      }
+    },
+  });
+
+  //전자책 파일들 다운로드
+  const { mutate: ebookFileDownloadFn } = useMutation({
+    mutationFn: (ids: number[]) => ebookFileDownload(ids),
+    onSuccess(data) {
+      if (data.data) {
+        const fileURL = URL.createObjectURL(data.data);
+        const link = document.createElement("a");
+        link.href = fileURL;
+        link.download = "출판 파일 목록";
+        document.body.appendChild(link);
+        link.click();
+
+        return () => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(fileURL); // 정리해줘야 메모리 누수 없음
+        };
+      }
+    },
+  });
 
   // 전자책 목록 조회
   const { data, refetch } = useSuspenseQuery({
@@ -232,45 +268,57 @@ function PublishList() {
   };
 
   //엑셀 조건없이 모든 데이터 다운로드
-  const handleAllDataExcelDownload = async () => {
-    const excelAllData = await getExcelSearch("publish");
-
-    handleExcelDownload(excelAllData.data.data);
-  };
-
-  //엑셀 조건 적용 모든 데이터 다운로드
-  const handleFilterDataExcelDownload = async () => {
-    const modifiedFilterInfo = { ...filterInfo, take: data.meta.totalCount };
-
-    const excelFilterData = await getEbookList(modifiedFilterInfo);
-
-    handleExcelDownload(excelFilterData.data.data.list);
+  const handleExcelDataDownload = async () => {
+    if (selectId.length > 0) {
+      //엑셀 데이터 다운로드
+      ebookExcelDatadFn(selectId.map((item) => item.id));
+      //전자책 파일들 다운로드
+      ebookFileDownloadFn(selectId.map((item) => item.id));
+    } else {
+      customToast({
+        title: "다운로드할 목록을 선택해주세요.",
+      });
+    }
   };
 
   //엑셀 다운로드
-  const handleExcelDownload = (excelDatas: EbookRes[]) => {
+  const handleExcelDownload = (excelDatas: EbookExcelDataRes[]) => {
     excelDownload(
-      "출판 내역",
+      "출판 목록",
       [
-        "제출일",
-        "관리자 승인일",
-        "닉네임",
-        "전자책 정가(판매가)",
         "도서명",
-        "저자/역자",
-        "상태",
-        "관리자",
+        "부제명",
+        "저자(역자)",
+        "출판사",
+        "카테고리",
+        "성인도서여부",
+        "전자책 ISBN",
+        "부가기호",
+        "전자책 정가(판매가)",
+        "전자책 출판일",
+        "책소개",
+        "저자소개",
+        "목차",
+        "책리뷰",
       ],
-      [80, 120, 120, 100, 200, 100, 100, 100],
+      [120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120],
       excelDatas.map((item) => [
-        item.submittedAt ? item.submittedAt : "-",
-        item.approvedAt ? item.approvedAt : "-",
-        item.name ? item.name : "-",
-        item.price ? item.price : "-",
         item.title ? item.title : "-",
+        item.subTitle ? item.subTitle : "-",
         item.author ? item.author : "-",
-        item.status ? codeToName(publishCodes, item.status) : "-",
-        item.approveAdminName ? item.approveAdminName : "-",
+        item.publisher ? item.publisher : "-",
+        item.categoryCode
+          ? codeToName(categoryCodes ?? [], item.categoryCode)
+          : "-",
+        item.isAdult ? "성인(+19)" : "전연령",
+        item.isbn ? item.isbn : "-",
+        item.addSymbol ? item.addSymbol : "-",
+        item.price ? item.price.toLocaleString("kr") : "-",
+        item.publishedDate ? item.publishedDate : "-",
+        item.description ? item.description : "-",
+        item.authorBio ? item.authorBio : "-",
+        item.tableOfContent ? item.tableOfContent : "-",
+        item.review ? item.review : "-",
       ])
     );
   };
@@ -284,8 +332,7 @@ function PublishList() {
           title="제출일"
           dispatch={dispatch}
           excel={true}
-          excelAllDataOnClick={handleAllDataExcelDownload}
-          excelFilterDataOnClick={handleFilterDataExcelDownload}
+          excelDownload={handleExcelDataDownload}
           CustomSelectComponent={
             <SelectBox
               placeholder="모든 상태"
@@ -313,34 +360,34 @@ function PublishList() {
                 <TableCell isChildIcon={true} isHeader>
                   <div className="flex gap-[2px] justify-center items-center">
                     <Checkbox
-                      checked={ebookData.list.every((item) =>
-                        selectId.includes(item.id)
-                      )}
+                      checked={
+                        ebookData.list.length > 0 &&
+                        ebookData.list.every((item) =>
+                          selectId.find((id) => id.id == item.id)
+                        )
+                      }
                       onClick={() => {
-                        const validStatusList = ["CO017001", "CO017002"];
-
                         // 조건에 맞는 항목만 필터링
-                        const filteredItems = ebookData.list.filter((item) =>
-                          validStatusList.includes(item.status)
-                        );
-                        const filteredIds = filteredItems.map(
-                          (item) => item.id
-                        );
 
-                        const isAllSelected = filteredIds.every((id) =>
-                          selectId.includes(id)
+                        const isAllSelected = ebookData.list.every((item) =>
+                          selectId.find((selectid) => selectid.id == item.id)
                         );
 
                         if (isAllSelected) {
-                          // 조건에 맞는 아이디만 제거
-                          setSelectId(
-                            selectId.filter((id) => !filteredIds.includes(id))
-                          );
+                          setSelectId([]);
                         } else {
                           // 조건에 맞는 아이디들만 추가 (중복 없이)
-                          const newIds = filteredIds.filter(
-                            (id) => !selectId.includes(id)
-                          );
+                          const newIds = ebookData.list
+                            .filter(
+                              (item) =>
+                                !selectId.find(
+                                  (selectid) => selectid.id === item.id
+                                )
+                            )
+                            .map((item) => ({
+                              id: item.id,
+                              status: item.status,
+                            }));
                           setSelectId([...selectId, ...newIds]);
                         }
                       }}
@@ -362,13 +409,11 @@ function PublishList() {
                           <Text
                             onClick={() => {
                               // 전체 선택: 현재 페이지에 있는 전자책 id 전부 선택
-                              const allIds = ebookData.list
-                                .filter(
-                                  (item) =>
-                                    item.status === "CO017001" ||
-                                    item.status === "CO017002"
-                                )
-                                .map((item) => item.id); // 상태가 맞는 아이템만 필터링
+                              const allIds: { id: number; status: string }[] =
+                                ebookData.list.map((item) => ({
+                                  id: item.id,
+                                  status: item.status,
+                                }));
                               setSelectId(allIds);
                             }}
                             className="flex items-center text-caption1-regular text-label-normal cursor-pointer"
@@ -389,7 +434,8 @@ function PublishList() {
                           <Text
                             onClick={() => {
                               selectId.forEach((id) => {
-                                approveEbook(id); // 개별 승인 함수 호출
+                                if (id.status === "CO017002")
+                                  approveEbook(id.id); // 개별 승인 함수 호출
                               });
                             }}
                             className="flex items-center text-caption1-regular text-label-normal cursor-pointer"
@@ -424,25 +470,23 @@ function PublishList() {
                   <TableRow key={index}>
                     {/* 체크박스 */}
                     <TableCell isChildIcon={true}>
-                      {item.status === "CO017001" ||
-                      item.status === "CO017002" ? (
-                        <Checkbox
-                          checked={selectId.some((id) => item.id === id)}
-                          onClick={() => {
-                            if (selectId.some((id) => item.id === id)) {
-                              // selectId에서 항목 제거
-                              setSelectId(
-                                selectId.filter((id) => item.id !== id)
-                              );
-                            } else {
-                              // selectId에 항목 추가
-                              setSelectId([...selectId, item.id]);
-                            }
-                          }}
-                        />
-                      ) : (
-                        <div>-</div>
-                      )}
+                      <Checkbox
+                        checked={selectId.some((id) => item.id === id.id)}
+                        onClick={() => {
+                          if (selectId.some((id) => item.id === id.id)) {
+                            // selectId에서 항목 제거
+                            setSelectId(
+                              selectId.filter((id) => item.id !== id.id)
+                            );
+                          } else {
+                            // selectId에 항목 추가
+                            setSelectId([
+                              ...selectId,
+                              { id: item.id, status: item.status },
+                            ]);
+                          }
+                        }}
+                      />
                     </TableCell>
                     {/* 제출일 */}
                     <TableCell>

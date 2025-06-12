@@ -125,3 +125,41 @@ export const getEbookCoverPreview = (id: number) => {
 
   return data;
 };
+
+export interface EbookExcelDataRes {
+  id: number;
+  title: string;
+  subTitle: string;
+  author: string;
+  publisher: string;
+  categoryCode: string;
+  isAdult: boolean;
+  isbn: string;
+  addSymbol: string;
+  price: number;
+  publishedDate: string;
+  description: string;
+  authorBio: string;
+  tableOfContent: string;
+  review: string;
+}
+
+//전자책 메타 데이터 목록
+export const ebookExcelData = (ids: number[]) => {
+  const data = API.post<ApiResType<EbookExcelDataRes[]>>(`/admin/ebook/excel`, {
+    ids,
+  });
+  return data;
+};
+
+//전자책 파일 다운로드
+export const ebookFileDownload = (ids: number[]) => {
+  const data = API.post<Blob>(
+    `/admin/ebook/download`,
+    { ids },
+    {
+      responseType: "blob",
+    }
+  );
+  return data;
+};
