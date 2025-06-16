@@ -188,6 +188,7 @@ function CoverDataStyle({
             placeholder="표지명을 입력해주세요"
             value={coverName}
             maxLength={30}
+            readOnly={buyer ? true : false}
             onChange={(e) => {
               setCoverName(e.target.value);
             }}
@@ -204,11 +205,13 @@ function CoverDataStyle({
             label="제작자"
             value={creater}
             maxLength={30}
+            readOnly={buyer ? true : false}
             onChange={(e) => {
               setCreater(e.target.value);
             }}
           />
           <TextField
+            readOnly={buyer ? true : false}
             label="가격"
             placeholder="표지 가격을 입력해주세요"
             value={price !== undefined ? price.toLocaleString("kr") : ""}
@@ -319,30 +322,44 @@ function CoverDataStyle({
             onChange={(e) => {
               setIntro(e.target.value);
             }}
+            disabled={buyer ? true : false}
           />
         </div>
 
         <div className="flex justify-end gap-[12px]">
-          <OutlinedButton
-            className="max-w-[180px] w-full"
-            size="large"
-            type="assistive"
-            onClick={() => history.back()}
-          >
-            취소
-          </OutlinedButton>
-          <OutlinedButton
-            className="max-w-[180px] w-full"
-            size="large"
-            type="secondary"
-            disable={!isFormValid}
-            onClick={() => {
-              if (!isFormValid) return;
-              onClickSave();
-            }}
-          >
-            저장
-          </OutlinedButton>
+          {buyer ? (
+            <OutlinedButton
+              className="max-w-[180px] w-full"
+              size="large"
+              type="assistive"
+              onClick={() => history.back()}
+            >
+              확인
+            </OutlinedButton>
+          ) : (
+            <>
+              <OutlinedButton
+                className="max-w-[180px] w-full"
+                size="large"
+                type="assistive"
+                onClick={() => history.back()}
+              >
+                취소
+              </OutlinedButton>
+              <OutlinedButton
+                className="max-w-[180px] w-full"
+                size="large"
+                type="secondary"
+                disable={!isFormValid}
+                onClick={() => {
+                  if (!isFormValid) return;
+                  onClickSave();
+                }}
+              >
+                저장
+              </OutlinedButton>
+            </>
+          )}
         </div>
       </ContentWrapper>
     </BreadcrumbContainer>
