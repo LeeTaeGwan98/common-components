@@ -167,7 +167,6 @@ function Withdrawalmanagement() {
           CustomSelectComponent={
             <SelectBox
               placeholder="모든 상태"
-              className="w-[240px]"
               size="large"
               defaultValue="ALL"
               onValueChange={handleIsActive}
