@@ -10,7 +10,11 @@ import BreadcrumbContainer from "@/components/BreadcrumbContainer";
 import OutlinedButton from "@/components/common/Atoms/Button/Outlined/OutlinedButton";
 import TextField from "@/components/common/Molecules/TextField/TextField";
 import ContentWrapper from "@/components/ContentWrapper";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface DataListProps {
@@ -65,6 +69,7 @@ function TextList({
 }
 
 function Charging() {
+  const queryClient = useQueryClient();
   const [pointList, setPointList] = useState<PointListRes[]>([]);
   const [updatedPointList, setUpdatedPointList] = useState<
     UpdatePointListReq[]
@@ -85,7 +90,10 @@ function Charging() {
   //포인트목록 저장
   const { mutate: updatePointListFn } = useMutation({
     mutationFn: () => updatePointList(updatedPointList),
-    onSuccess() {},
+    onSuccess() {
+      updatedPointList.splice(0);
+      queryClient.invalidateQueries({ queryKey: ["pointList"] });
+    },
   });
 
   //포인트 목록 업데이트된 목록 저장

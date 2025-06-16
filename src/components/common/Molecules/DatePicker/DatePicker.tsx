@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import CalendarIcon from "@/assets/svg/common/calendar.svg";
@@ -33,8 +33,10 @@ function DatePicker({
     small: "h-[42px]",
   };
 
+  const [open, setOpen] = useState(false);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={(open) => setOpen(open)}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -64,7 +66,10 @@ function DatePicker({
           mode="single"
           selected={date === undefined ? new Date() : date} // Calendar최초 로드시 초기 값은 undefined이기 때문에 오늘날짜로 초기화
           autoFocus
-          onSelect={setDate}
+          onSelect={(date) => {
+            setOpen(false);
+            setDate(date);
+          }}
           required
         />
       </PopoverContent>
