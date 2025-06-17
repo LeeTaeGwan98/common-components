@@ -68,7 +68,7 @@ function SubTitleBar({
     const endDate = toDt == undefined ? dateToString(new Date()) : toDt;
     if (date > new Date(endDate)) {
       customToast({
-        title: "검색 시작 날짜를 종료 날짜 이후로 선택할 수 없습니다.",
+        title: "시작일이 종료일보다 클 수 없습니다.",
       });
     } else {
       dispatchWithPageReset("fromDt", dateToString(date));
@@ -82,7 +82,7 @@ function SubTitleBar({
       dispatchWithPageReset("toDt", dateToString(date));
     } else if (date < new Date(startDt ?? "")) {
       customToast({
-        title: "검색 종료 날짜를 시작 날짜 이전으로 선택할 수 없습니다.",
+        title: "시작일이 종료일보다 클 수 없습니다.",
       });
     } else {
       dispatchWithPageReset("toDt", dateToString(date));
