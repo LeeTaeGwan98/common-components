@@ -167,11 +167,12 @@ function Withdrawalmanagement() {
           CustomSelectComponent={
             <SelectBox
               placeholder="모든 상태"
+              className="w-[240px]"
               size="large"
               defaultValue="ALL"
               onValueChange={handleIsActive}
             >
-              <SelectContent>
+              <SelectContent className="w-[360px]">
                 <SelectGroup>
                   <SelectItem value="ALL">모든 탈퇴 사유</SelectItem>
                   {withdrawlCodes.map((code, index) => {
