@@ -16,7 +16,11 @@ import React, {
 import BottomArrowIcon from "@/assets/svg/Sidebar/Bottom.svg";
 import Menu from "@/components/common/Molecules/Menu/Menu";
 import { SIDEBAR_WIDTH } from "@/Constants/UIMagicNumber";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { logout } from "@/api/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { LOGIN } from "@/Constants/ServiceUrl";
@@ -171,6 +175,16 @@ function MenuItemWithChild({
     queryFn: () => getInquiry(filterInfo),
     select: (data) => data.data.data,
   });
+
+  const queryClient = useQueryClient();
+
+  const handleRefetch = () => {
+    queryClient.invalidateQueries({ queryKey: ["inquiryList"] });
+  };
+
+  useEffect(() => {
+    handleRefetch();
+  }, [location.pathname]);
 
   const menuContent = (
     <>
