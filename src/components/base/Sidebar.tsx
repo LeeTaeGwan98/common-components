@@ -11,15 +11,42 @@ import React, {
   useEffect,
   Dispatch,
   SetStateAction,
+  useReducer,
 } from "react";
 import BottomArrowIcon from "@/assets/svg/Sidebar/Bottom.svg";
 import Menu from "@/components/common/Molecules/Menu/Menu";
 import { SIDEBAR_WIDTH } from "@/Constants/UIMagicNumber";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { logout } from "@/api/auth/auth";
 import { useNavigate } from "react-router-dom";
 import { LOGIN } from "@/Constants/ServiceUrl";
 import { useAuthStore } from "@/store/authStore";
+import { getInquiry, InquiryQueryStringType } from "@/api/inquiry/inquiryAPI";
+import { ActionType } from "@/api/common/commonType";
+import { dateToString } from "@/lib/dateParse";
+
+const reducer = <T extends Record<string, any>>(
+  queryInfo: T,
+  action: ActionType<T>
+): T => {
+  if (!action) return queryInfo; // undefined 체크
+
+  const { type, value } = action;
+  return {
+    ...queryInfo,
+    [type]: value,
+  };
+};
+
+const initState: InquiryQueryStringType = {
+  fromDt: "2025-01-01",
+  toDt: dateToString(new Date()),
+  sortOrder: "DESC",
+  isResponse: false,
+  keyword: "",
+  take: 1000,
+  page: 1,
+};
 
 function Sidebar() {
   const delUserInfo = useAuthStore((state) => state.delUserInfo);
@@ -137,6 +164,14 @@ function MenuItemWithChild({
 }: MenuItemWithChildProps) {
   const hasChildren = visibleChildren.length > 0;
 
+  const [filterInfo, dispatch] = useReducer(reducer, initState);
+  //문의사항 목록 조회
+  const { data: inquiryAllList } = useSuspenseQuery({
+    queryKey: ["inquiryList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryFn: () => getInquiry(filterInfo),
+    select: (data) => data.data.data,
+  });
+
   const menuContent = (
     <>
       <div className={cn("w-full flex gap-[4px] cursor-pointer")}>
@@ -158,7 +193,10 @@ function MenuItemWithChild({
           }
           onArrowIconClick={() => toggleMenu(item.path)}
           {...(item.title === "게시판 관리" && {
-            labelText: "",
+            labelText:
+              inquiryAllList.list.length <= 999
+                ? String(inquiryAllList.list.length)
+                : "999+",
             slot: { labelClassName: "mr-[34px] " },
           })}
         >
@@ -199,7 +237,20 @@ function MenuItemWithChild({
                 setOpenMenus([item.path]);
               }}
             >
-              <Menu className="pl-[44px] py-[10px] text-label1-normal-medium">
+              <Menu
+                className="pl-[44px] py-[10px] text-label1-normal-medium"
+                labelText={
+                  child.title == "1:1 문의"
+                    ? inquiryAllList.list.length <= 999
+                      ? String(inquiryAllList.list.length)
+                      : "999+"
+                    : ""
+                }
+                slot={{
+                  labelClassName: "mr-[34px]",
+                  labelVariant: "filled",
+                }}
+              >
                 <span className={cn(isChildActive && "text-primary-normal")}>
                   {child.title}
                 </span>

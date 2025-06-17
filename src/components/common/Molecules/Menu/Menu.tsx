@@ -12,6 +12,7 @@ interface MenuProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "slot"> {
   slot?: {
     containerClassName?: string;
     labelClassName?: string;
+    labelVariant?: "filled" | "outlined";
   };
   className?: string;
 }
@@ -70,7 +71,7 @@ function Menu({
         <div className="flex gap-[4px] items-center">
           {labelText && (
             <Label
-              variant="outlined"
+              variant={slot?.labelVariant ? slot.labelVariant : "outlined"}
               size="xSmall"
               className={cn(slot?.labelClassName)}
             >
