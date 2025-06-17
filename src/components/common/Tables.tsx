@@ -1,4 +1,10 @@
-import { ReactNode } from "react";
+import {
+  Children,
+  createContext,
+  ReactElement,
+  ReactNode,
+  useContext,
+} from "react";
 import { cn } from "@/lib/utils";
 
 interface TableContainerProps {
@@ -56,17 +62,47 @@ const TableContainer: React.FC<TableContainerProps> = ({
 
 // Table Component
 const Table: React.FC<TableProps> = ({ children, className }) => {
+  const columnCount = getColumnCount(children);
+
   return (
-    <table
-      className={cn(
-        "min-w-[1491px] overflow-hidden whitespace-nowrap table-fixed w-full",
-        className
-      )}
-    >
-      {children}
-    </table>
+    <TableContext.Provider value={{ columnCount }}>
+      <table
+        className={cn(
+          "min-w-[1491px] overflow-hidden whitespace-nowrap table-fixed w-full",
+          className
+        )}
+      >
+        {children}
+      </table>
+    </TableContext.Provider>
   );
 };
+
+function getColumnCount(children: React.ReactNode): number {
+  let count = 0;
+
+  Children.forEach(children, (child) => {
+    if (
+      typeof child === "object" &&
+      child !== null &&
+      (child as any).type?.displayName === "TableHeader"
+    ) {
+      const headerRows = (child as ReactElement<any>).props.children;
+      Children.forEach(headerRows, (row) => {
+        if (
+          typeof row === "object" &&
+          row !== null &&
+          (row as any).type?.displayName === "TableRow"
+        ) {
+          const cells = (row as ReactElement<any>).props.children;
+          count = Children.toArray(cells).length;
+        }
+      });
+    }
+  });
+
+  return count || 1;
+}
 
 // TableHeader Component
 const TableHeader: React.FC<TableHeaderProps> = ({ children, className }) => {
@@ -98,6 +134,14 @@ const TableRow: React.FC<TableRowProps> = ({ children, className }) => {
     >
       {children}
     </tr>
+  );
+};
+
+const NoData: React.FC = () => {
+  return (
+    <div className="flex flex-col justify-center w-full h-[600px] text-center text-body1-normal-bold text-label-normal">
+      No data
+    </div>
   );
 };
 
@@ -133,4 +177,24 @@ const TableCell: React.FC<TableCellProps> = ({
   );
 };
 
-export { TableContainer, Table, TableHeader, TableBody, TableRow, TableCell };
+export const TableContext = createContext<{
+  columnCount: number;
+}>({
+  columnCount: 1, // default 값
+});
+
+export const useTableContext = () => useContext(TableContext);
+
+TableHeader.displayName = "TableHeader";
+TableRow.displayName = "TableRow";
+TableCell.displayName = "TableCell";
+
+export {
+  TableContainer,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableCell,
+  NoData,
+};
