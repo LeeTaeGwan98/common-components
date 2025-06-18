@@ -35,6 +35,7 @@ import RenderEmptyRows from "@/components/common/BookaroongAdmin/RenderEmptyRows
 import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/TableIndicator";
 import { useNavigate } from "react-router-dom";
 import { TEMPLATE_DETAIL } from "@/Constants/ServiceUrl";
+import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
 
 const data = [
   {
@@ -92,7 +93,7 @@ function Template() {
   const nav = useNavigate();
   //탈퇴 목록 조회 api
   const { data: templateData } = useSuspenseQuery({
-    queryKey: ["templateList", filterInfo], // filterInfo가 변경될 때마다 API 호출
+    queryKey: ["templateList"], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getTemplateList(filterInfo),
     select: (data) => data.data.data,
   });
@@ -191,25 +192,31 @@ function Template() {
             </TableHeader>
 
             <TableBody>
-              {data.map((item, index) => {
+              {templateData.list.map((item, index) => {
                 return (
                   <TableRow key={index}>
                     <TableCell>
-                      {formatDateTimeToJSX(formatToUTCString(item.createAt))}
+                      {formatDateTimeToJSX(formatToUTCString(item.createdAt))}
                     </TableCell>
-                    <TableCell>{item.no}</TableCell>
-                    <TableCell>{item.nickName}</TableCell>
-                    <TableCell>{item.email}</TableCell>
-                    <TableCell>{item.plan}</TableCell>
-                    <TableCell>{item.ebook}</TableCell>
-                    <TableCell>{item.state}</TableCell>
+                    <TableCell>{item.title}</TableCell>
+                    <TableCell>
+                      {item.ratioCode === "CO013001"
+                        ? "16:9 (가로)"
+                        : "9:16 (세로)"}
+                    </TableCell>
+                    <TableCell>{item.categoryCode ?? "-"}</TableCell>
+                    <TableCell>{item.videoLength ?? "-"}</TableCell>
+                    <TableCell>
+                      <Checkbox size="large" checked={item.isRecommend} />
+                    </TableCell>
+                    <TableCell>{item.isVisible ? "노출" : "비노출"}</TableCell>
                     <TableCell isChildIcon={true}>
                       <IconButton
                         icon={
                           <ThreeDot className="size-[24px] fill-label-alternative" />
                         }
                         onClick={() => {
-                          nav(`${TEMPLATE_DETAIL}/${item.no}`);
+                          nav(`${TEMPLATE_DETAIL}/${item.id}`);
                         }}
                       />
                     </TableCell>

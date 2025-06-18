@@ -19,6 +19,7 @@ import {
   COMMON_GROUP_CODE_MAPPING,
   COMMON_GROUP_CODE_UNION_TYPE,
 } from "@/Constants/CommonGroupCode";
+import { useAuthStore } from "@/store/authStore";
 import {
   useMutation,
   useQuery,
@@ -30,14 +31,25 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function TemplateDetail() {
   const { id } = useParams(); //템플릿 아이디
+  const { user } = useAuthStore();
   const nav = useNavigate();
   const queryClient = useQueryClient();
-  const [templName, setTemplName] = useState<string>(""); //템플릿명
-  const [category, setCategory] = useState<string>(""); //카테고리
-  const [isNoExposure, setIsNoExposure] = useState<boolean>(true); //비노출 여부
-  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(true); //관리자 비추천 여부
-  const [ratio, setRatio] = useState<string>(""); //비율
-  const [length, setLength] = useState<string>(""); //길이
+
+  //템플릿 상세 정보 가져오기
+  const { data } = useQuery({
+    queryKey: ["templateDetail", id],
+    queryFn: () => getTemplateDetail(Number(id) ?? 0),
+    select: (data) => data.data.data,
+  });
+
+  const [templName, setTemplName] = useState<string>(data?.title ?? ""); //템플릿명
+  const [category, setCategory] = useState<string>(data?.categoryCode ?? ""); //카테고리
+  const [isNoExposure, setIsNoExposure] = useState<boolean>(
+    data?.isVisible ?? false
+  ); //비노출 여부
+  const [isNoRecommend, setIsNoRecommend] = useState<boolean>(
+    data?.isRecommend ?? false
+  ); //관리자 비추천 여부
 
   //템플릿 카테고리 가져오기
   const { data: codeInfo } = useQuery({
@@ -52,13 +64,6 @@ function TemplateDetail() {
     (codeInfo && (Object.keys(codeInfo) as COMMON_GROUP_CODE_UNION_TYPE[])) ??
     [];
   const categoryCodes = codeInfo && codeInfo[keys[0]]; // 카테고리 코드들
-
-  //템플릿 상세 정보 가져오기
-  const { data } = useQuery({
-    queryKey: ["templateDetail", id],
-    queryFn: () => getTemplateDetail(id ?? ""),
-    select: (data) => data.data.data,
-  });
 
   //템플릿 수정
   const { mutate: templatePatchFn } = useMutation({
@@ -97,7 +102,11 @@ function TemplateDetail() {
         }
         button={
           <div>
-            <Button className="w-[180px]" size="large">
+            <Button
+              onClick={() => deleteTemplateFn()}
+              className="w-[180px]"
+              size="large"
+            >
               삭제
             </Button>
           </div>
@@ -164,13 +173,21 @@ function TemplateDetail() {
 
           <div className="flex *:flex-1 gap-gutter-horizontal">
             {/* 비율 */}
-            <TextField label="비율" readOnly value={ratio} />
+            <TextField
+              label="비율"
+              readOnly
+              value={
+                data?.ratioCode === "CO013001" ? "16:9 (가로)" : "9:16 (세로)"
+              }
+            />
             {/* 길이 */}
-            <TextField label="길이" readOnly value={length} />
+            <TextField label="길이" readOnly value={data?.videoLength ?? ""} />
           </div>
 
           {/* 비디오 */}
-          <div className="w-full h-[565px] bg-black"></div>
+          <div className="w-full h-[565px] bg-black">
+            <video src={data?.mergedVideoUrl} />
+          </div>
 
           {/* 하단 버튼 */}
           <div className="flex justify-end gap-[12px]">
@@ -194,10 +211,12 @@ function TemplateDetail() {
                   return;
                 }
                 templatePatchFn({
-                  userId: 0,
+                  userId: user!.id,
                   templateId: Number(id),
-                  categoryCode: "",
-                  title: "",
+                  categoryCode: category,
+                  title: templName,
+                  isVisible: isNoExposure,
+                  is_recommend: isNoRecommend,
                 });
               }}
             >

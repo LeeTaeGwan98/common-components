@@ -12,6 +12,19 @@ export interface TemplateQueryStringType
   category: string;
 }
 
+interface TemplateRes {
+  categoryCode: string;
+  createdAt: string;
+  id: number;
+  isRecommend: boolean;
+  isVisible: boolean;
+  mergedVideoUrl: string;
+  ratioCode: string;
+  title: string;
+  updatedAt: string;
+  videoLength: string;
+}
+
 //템플릿 목록
 export const getTemplateList = (queryStringObj: TemplateQueryStringType) => {
   const { sortOrder, fromDt, toDt, isVisible, keyword, take, page } =
@@ -44,14 +57,16 @@ export const getTemplateList = (queryStringObj: TemplateQueryStringType) => {
     qs = qs.slice(0, -1);
   }
 
-  const data = API.get<TableResType<{}>>(qs);
+  const data = API.get<TableResType<TemplateRes>>(qs);
 
   return data;
 };
 
 //템플릿 상세
-export const getTemplateDetail = (id: string) => {
-  const data = API.get<ApiResType<{}>>(`/admin/video/project/template/${id}`);
+export const getTemplateDetail = (id: number) => {
+  const data = API.get<ApiResType<TemplateRes>>(
+    `/admin/video/project/template/${id}`
+  );
   return data;
 };
 
@@ -60,6 +75,8 @@ export interface UpdateTmplateReq {
   templateId: number;
   categoryCode: string;
   title: string;
+  isVisible: boolean;
+  is_recommend: boolean;
 }
 
 //템플릿 수정
