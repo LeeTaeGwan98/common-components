@@ -19,6 +19,7 @@ interface TemplateRes {
   isRecommend: boolean;
   isVisible: boolean;
   mergedVideoUrl: string;
+  finalVideoUrl: string;
   ratioCode: string;
   title: string;
   updatedAt: string;

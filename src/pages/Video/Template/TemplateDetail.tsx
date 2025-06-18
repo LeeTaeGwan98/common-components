@@ -29,6 +29,8 @@ import {
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import EmptyTemplateVideo from "@/assets/Image/EmptyTemplateVideo.png";
+
 function TemplateDetail() {
   const { id } = useParams(); //템플릿 아이디
   const { user } = useAuthStore();
@@ -185,9 +187,16 @@ function TemplateDetail() {
           </div>
 
           {/* 비디오 */}
-          <div className="w-full h-[565px] bg-black">
-            <video src={data?.mergedVideoUrl} />
-          </div>
+          {data?.mergedVideoUrl ? (
+            <div className="w-full h-[565px] ">
+              <video
+                controls
+                src={data?.finalVideoUrl || data?.mergedVideoUrl}
+              />
+            </div>
+          ) : (
+            <img src={EmptyTemplateVideo} className="w-full h-[565px]" />
+          )}
 
           {/* 하단 버튼 */}
           <div className="flex justify-end gap-[12px]">
