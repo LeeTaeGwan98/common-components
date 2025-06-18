@@ -68,7 +68,7 @@ function Template() {
   const nav = useNavigate();
   //탈퇴 목록 조회 api
   const { data: templateData } = useSuspenseQuery({
-    queryKey: ["templateList"], // filterInfo가 변경될 때마다 API 호출
+    queryKey: ["templateList", filterInfo], // filterInfo가 변경될 때마다 API 호출
     queryFn: () => getTemplateList(filterInfo),
     select: (data) => data.data.data,
   });
