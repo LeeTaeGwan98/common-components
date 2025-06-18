@@ -181,7 +181,7 @@ function TemplateDetail() {
               }
             />
             {/* 길이 */}
-            <TextField label="길이" readOnly value={data?.videoLength ?? ""} />
+            <TextField label="길이" readOnly value={data?.videoLength ?? "-"} />
           </div>
 
           {/* 비디오 */}

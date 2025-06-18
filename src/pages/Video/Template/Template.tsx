@@ -37,31 +37,6 @@ import { useNavigate } from "react-router-dom";
 import { TEMPLATE_DETAIL } from "@/Constants/ServiceUrl";
 import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
 
-const data = [
-  {
-    no: 0,
-    createAt: "9999-12-31 24:59:00",
-    nickName: "가데이터 입니다",
-    email: "카테고리",
-    plan: "Starter",
-    ebook: "1",
-    point: "1,000",
-    state: "asdf",
-    detail: true,
-  },
-  {
-    no: 0,
-    createAt: "9999-12-31 24:59:00",
-    nickName: "가데이터 입니다.",
-    email: "카테고리",
-    plan: "Starter",
-    ebook: "1",
-    point: "1,000",
-    state: "asdf",
-    detail: true,
-  },
-];
-
 const initState: TemplateQueryStringType = {
   sortOrder: "DESC",
   fromDt: dateToString(
