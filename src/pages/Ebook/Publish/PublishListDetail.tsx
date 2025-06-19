@@ -95,25 +95,33 @@ function PublishListDetail() {
                 className="w-[180px]"
                 type="assistive"
                 size="large"
-                onClick={() =>
-                  openModal(
-                    <PublishPostHoldModal
-                      ebookId={Number(id)}
-                      onHoldSuccess={() => {
-                        queryClient.invalidateQueries({
-                          queryKey: ["ebookDetailApi"],
-                        });
-                      }}
-                    />
-                  )
-                }
+                onClick={() => {
+                  if (data.name != "탈퇴한 사용자") {
+                    openModal(
+                      <PublishPostHoldModal
+                        ebookId={Number(id)}
+                        onHoldSuccess={() => {
+                          queryClient.invalidateQueries({
+                            queryKey: ["ebookDetailApi"],
+                          });
+                        }}
+                      />
+                    );
+                  }
+                }}
+                disable={data.name == "탈퇴한 사용자"}
               >
                 보류
               </OutlinedButton>
               <Button
                 className="w-[180px]"
                 size="large"
-                onClick={() => CreateEbookApprove.mutate()}
+                onClick={() => {
+                  if (data.name != "탈퇴한 사용자") {
+                    CreateEbookApprove.mutate();
+                  }
+                }}
+                disable={data.name == "탈퇴한 사용자"}
               >
                 출간
               </Button>

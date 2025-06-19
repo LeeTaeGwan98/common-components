@@ -76,6 +76,7 @@ interface StatusViewProps {
   refetch: (
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<TableDataType<EbookRes>, Error>>;
+  name: string;
 }
 
 const StatusView = ({
@@ -83,6 +84,7 @@ const StatusView = ({
   setStatus,
   ebookId,
   refetch,
+  name,
 }: StatusViewProps) => {
   const { openModal } = useModalStore();
 
@@ -99,21 +101,29 @@ const StatusView = ({
       <div className="flex gap-[8px] w-full">
         <OutlinedButton
           type="assistive"
-          onClick={() =>
-            openModal(
-              <PublishPostHoldModal
-                ebookId={ebookId}
-                onHoldSuccess={() => setStatus("CO017004")}
-              />
-            )
-          }
+          onClick={() => {
+            if (name != "탈퇴한 사용자") {
+              openModal(
+                <PublishPostHoldModal
+                  ebookId={ebookId}
+                  onHoldSuccess={() => setStatus("CO017004")}
+                />
+              );
+            }
+          }}
           className="px-[20px] py-[9px] min-w-fit border-line-normal-normal text-label-normal"
+          disable={name == "탈퇴한 사용자"}
         >
           보류
         </OutlinedButton>
         <OutlinedButton
-          onClick={() => CreateEbookApprove.mutate()}
+          onClick={() => {
+            if (name != "탈퇴한 사용자") {
+              CreateEbookApprove.mutate();
+            }
+          }}
           className="px-[20px] py-[9px] min-w-fit "
+          disable={name == "탈퇴한 사용자"}
         >
           출간
         </OutlinedButton>
@@ -521,6 +531,7 @@ function PublishList() {
                         }}
                         ebookId={item.id}
                         refetch={refetch}
+                        name={item.name}
                       />
                     </TableCell>
                     {/* 관리자 */}
