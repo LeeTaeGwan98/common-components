@@ -36,6 +36,7 @@ import TableIndicator from "@/components/common/Molecules/AdminTableIndicator/Ta
 import { useNavigate } from "react-router-dom";
 import { TEMPLATE_DETAIL } from "@/Constants/ServiceUrl";
 import Checkbox from "@/components/common/Atoms/Checkbox/Checkbox/Checkbox";
+import { codeToName } from "@/utils/uitls";
 
 const initState: TemplateQueryStringType = {
   sortOrder: "DESC",
@@ -179,7 +180,9 @@ function Template() {
                         ? "16:9 (가로)"
                         : "9:16 (세로)"}
                     </TableCell>
-                    <TableCell>{item.categoryCode ?? "-"}</TableCell>
+                    <TableCell>
+                      {codeToName(codeInfo.CO007, item.categoryCode) ?? "-"}
+                    </TableCell>
                     <TableCell>{item.videoLength ?? "-"}</TableCell>
                     <TableCell>
                       <Checkbox size="large" checked={item.isRecommend} />
