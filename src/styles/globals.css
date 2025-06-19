@@ -245,3 +245,10 @@
   scrollbar-color: #70737c29 transparent;
   scrollbar-width: thin;
 }
+
+[data-sonner-toast] {
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}

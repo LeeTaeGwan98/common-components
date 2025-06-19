@@ -31,7 +31,7 @@ export function Toast({ id, title, icon, action, className }: ToastProps) {
   return (
     <div
       className={cn(
-        "bg-material-toast w-[312px] h-[54px] rounded-[8px] p-[16px] flex justify-between items-center text-white",
+        "bg-material-toast w-[312px] h-[54px] rounded-[8px] p-[16px] flex justify-between items-center text-white overflow-hidden",
         className
       )}
     >
