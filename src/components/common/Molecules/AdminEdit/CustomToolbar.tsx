@@ -13,6 +13,9 @@ import MarkPenLineIcon from "@/assets/svg/common/MarkPenLine.svg?url";
 import LineHorizontalIcon from "@/assets/svg/common/lineHorizontal.svg?url";
 import ImageAddLineIcon from "@/assets/svg/common/ImageAddLine.svg?url";
 import VideoUploadLineIcon from "@/assets/svg/common/VideoUploadLine.svg?url";
+import SelectBox from "@/components/common/Molecules/SelectBox/SelectBox";
+import { SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
+import { ChevronDown } from "lucide-react";
 
 function decodeSVG(encodedSVG: string): string {
   // data:image/svg+xml, 접두사 제거
@@ -53,12 +56,16 @@ function CustomToolbar({
 
   return (
     <div id="custom-toolbar" className="toolbar">
-      <select className="ql-size">
+      <select className="ql-size" defaultValue={"16px"}>
         <option value="14px">14</option>
         <option value="16px">16</option>
         <option value="18px">18</option>
         <option value="24px">24</option>
       </select>
+
+      <div className="pointer-events-none absolute ml-[40px]">
+        <ChevronDown className="size-[16px]"></ChevronDown>
+      </div>
 
       <hr className="divider" />
 
