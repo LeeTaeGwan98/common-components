@@ -172,13 +172,15 @@ function Withdrawalmanagement() {
               defaultValue="ALL"
               onValueChange={handleIsActive}
             >
-              <SelectContent className="w-[360px]">
+              <SelectContent>
                 <SelectGroup>
                   <SelectItem value="ALL">모든 탈퇴 사유</SelectItem>
                   {withdrawlCodes.map((code, index) => {
                     return (
                       <SelectItem key={index} value={code.commDetailCode}>
-                        {code.detailCodeName}
+                        <div className="max-w-[162px]">
+                          {code.detailCodeName}
+                        </div>
                       </SelectItem>
                     );
                   })}
