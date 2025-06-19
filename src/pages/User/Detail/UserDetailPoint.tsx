@@ -193,7 +193,9 @@ function UserDetailPoint() {
                   <TableCell>{item.createdAt}</TableCell>
                   <TableCell>
                     {item.transactionType != "CO026002"
-                      ? "￦" + item.orderAmount.toLocaleString("kr")
+                      ? item.orderAmount
+                        ? "￦" + item.orderAmount.toLocaleString("kr")
+                        : "-"
                       : "-"}
                   </TableCell>
                   <TableCell>{item.pointAmount.toLocaleString("kr")}</TableCell>
