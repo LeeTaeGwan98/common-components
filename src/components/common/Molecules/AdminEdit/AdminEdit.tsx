@@ -108,13 +108,6 @@ const AdminEdit: React.FC<AdminEditProps> = ({
     onChange(content);
   };
 
-  useEffect(() => {
-    const quill = quillRef.current?.getEditor();
-    if (quill && quill.getLength() <= 1) {
-      quill.format("size", "16px"); // 기본 사이즈를 명시적으로 설정
-    }
-  }, []);
-
   return (
     <div className="quill-root-container w-full">
       <CustomToolbar isVideo={isVideo} isImage={isImage} />
