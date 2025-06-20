@@ -188,14 +188,15 @@ function TemplateDetail() {
 
           {/* 비디오 */}
           {data?.mergedVideoUrl ? (
-            <div className="w-full h-[565px] ">
+            <div className="w-full max-h-[565px]">
               <video
                 controls
                 src={data?.finalVideoUrl || data?.mergedVideoUrl}
+                className="w-full max-h-[565px]"
               />
             </div>
           ) : (
-            <img src={EmptyTemplateVideo} className="w-full h-[565px]" />
+            <img src={EmptyTemplateVideo} className="w-full max-h-[565px]" />
           )}
 
           {/* 하단 버튼 */}
