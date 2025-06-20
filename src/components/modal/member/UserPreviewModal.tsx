@@ -70,7 +70,7 @@ export const UserPreviewModal = ({
         fixed={true}
         heading={handleDialogTitle()}
         close={true}
-        childrenClassName="max-h-[548px] h-full py-detail-content-vertical-margin px-detail-content-vertical-margin"
+        childrenClassName="max-h-[548px] h-full py-detail-content-vertical-margin px-detail-content-vertical-margin flex justify-center"
         buttonElements={
           <Button
             className="w-full h-[48px]"
