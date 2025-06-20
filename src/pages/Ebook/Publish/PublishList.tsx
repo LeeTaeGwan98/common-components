@@ -106,7 +106,9 @@ const StatusView = ({
               openModal(
                 <PublishPostHoldModal
                   ebookId={ebookId}
-                  onHoldSuccess={() => setStatus("CO017004")}
+                  onHoldSuccess={() => {
+                    setStatus("CO017004"), refetch();
+                  }}
                 />
               );
             }
