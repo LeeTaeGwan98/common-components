@@ -92,9 +92,11 @@ const AdminEdit: React.FC<AdminEditProps> = ({
             const quill = quillRef.current?.getEditor();
             if (quill) {
               const range = quill.getSelection();
+              const format = quill.getFormat();
               if (range) {
                 quill.insertEmbed(range.index, "divider", true); // 'divider'는 사용자 정의 포맷
                 quill.setSelection(range.index + 2);
+                quill.format("ql-size", format.size);
               }
             }
           },
@@ -129,6 +131,26 @@ const AdminEdit: React.FC<AdminEditProps> = ({
     if (quill && quill.getLength() <= 1) {
       quill.format("size", "16px"); // 기본 사이즈를 명시적으로 설정
     }
+  }, []);
+
+  useEffect(() => {
+    const quill = quillRef.current?.getEditor();
+    if (!quill) return;
+
+    quill.on("text-change", (delta, oldDelta, source) => {
+      if (source !== "user") return;
+
+      delta.ops?.forEach((op: any, i) => {
+        if (op.insert && op.insert.image) {
+          const range = quill.getSelection();
+          if (!range) return;
+
+          const currentFormat = quill.getFormat();
+          quill.setSelection(range.index + 1);
+          quill.format("ql-size", currentFormat.size);
+        }
+      });
+    });
   }, []);
 
   return (
