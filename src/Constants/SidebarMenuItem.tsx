@@ -35,6 +35,7 @@ enum MENU_CODE {
   약관관리 = "CO003005",
   공통코드관리 = "CO003006",
   관리자계정관리 = "CO003007",
+  플랜관리 = "CO003008",
 }
 
 export type SidebarMenuItem = {
@@ -135,6 +136,7 @@ const SIDEBAR_MENU_ITEM: SidebarMenuItem[] = [
     title: "플랜 관리",
     path: PLAN,
     isActive: false,
+    code: MENU_CODE.플랜관리,
     icon: <Pie />,
     child: [],
   },
