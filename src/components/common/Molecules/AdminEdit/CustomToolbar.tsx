@@ -56,7 +56,7 @@ function CustomToolbar({
 
   return (
     <div id="custom-toolbar" className="toolbar">
-      <select className="ql-size" defaultValue={"16px"}>
+      <select className="ql-size" value="16px">
         <option value="14px">14</option>
         <option value="16px">16</option>
         <option value="18px">18</option>

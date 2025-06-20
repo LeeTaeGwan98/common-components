@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useEffect } from "react";
+import React, { useRef, useMemo, useEffect, useState } from "react";
 import ReactQuill, { Quill } from "react-quill-new";
 import CustomToolbar from "./CustomToolbar";
 import "react-quill-new/dist/quill.snow.css";
@@ -100,6 +100,22 @@ const AdminEdit: React.FC<AdminEditProps> = ({
           },
         },
       },
+      keyboard: {
+        bindings: {
+          enter: {
+            key: "Enter",
+            handler: function (range: any) {
+              const quill = quillRef.current?.getEditor();
+              if (!quill) return;
+
+              const format = quill.getFormat();
+              quill.insertText(range.index, "\n");
+              quill.setSelection(range.index + 1);
+              quill.format("ql-size", format.size);
+            },
+          },
+        },
+      },
     }),
     []
   );
@@ -107,6 +123,13 @@ const AdminEdit: React.FC<AdminEditProps> = ({
   const handleChange = (content: string) => {
     onChange(content);
   };
+
+  useEffect(() => {
+    const quill = quillRef.current?.getEditor();
+    if (quill && quill.getLength() <= 1) {
+      quill.format("size", "16px"); // 기본 사이즈를 명시적으로 설정
+    }
+  }, []);
 
   return (
     <div className="quill-root-container w-full">
